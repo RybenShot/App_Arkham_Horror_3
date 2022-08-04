@@ -1,0 +1,34 @@
+.clearfix{
+  clear: both;
+  float: none;
+}
+
+@media only screen and (min-width: 1398px){
+  .container{
+    width: 80% ;
+  }
+
+}
+
+/* Desde el px 0 hasta la anchura de 740 px... */
+@media only screen and (min-width: 766px) and (max-width:1024px){
+  /* se ejecutan estos estilos */
+  .BGJuegos{
+  
+  }
+
+  .container{
+   width: 90% ;
+ }
+}
+
+@media only screen and (min-width: 600px) and (max-width:765px){
+
+
+}
+
+
+
+@media only screen and (max-width: 600px){
+
+}
