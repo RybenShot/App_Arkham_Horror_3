@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" id="BGGameGeneral">
     <div class="container">
       <br />
 
@@ -120,7 +120,7 @@
 
 <script>
 export default {
-  name: "juego de Dados",
+  name: "GameGeneral",
   data() {
     return {
       // Variables necesarias para ver CUANTOS DADOS y CANTAS CARAS necesitamos
@@ -169,12 +169,12 @@ export default {
 @import "./CssJuegoDados.css";
 
 .acierto {
-  background-color: rgb(0, 255, 0);
-  border: 1mm ridge rgba(211, 220, 50, 0.6);
+  background: #D9D9D9;
+  border: 3px solid rgb(0, 255, 0);
 }
 .fatal {
-  background-color: rgb(255, 124, 124);
-  border: 1mm ridge rgba(220, 50, 50, 0.6);
+  background: #D9D9D9;
+  border: 3px solid #EB5757;
 }
 
 #resultados-css {
@@ -187,6 +187,7 @@ export default {
   padding: 3px;
   margin: 10px;
   text-align: center;
+  background: #D9D9D9;
 }
 
 .v-enter-active,
@@ -203,4 +204,13 @@ export default {
   width: 60px ; 
   text-align: center
 }
+
+#BGGameGeneral {
+  background-image: url(../../assets/img/Games/General/BGGameGeneral.jpg);
+  min-height: 100vh;
+  background-position: center;
+  background-size: cover;
+}
+
+
 </style>

@@ -1,6 +1,6 @@
 <template>
 <div class="BGJuegos">
-  <router-view class="container"/>
+  <router-view/>
 </div>
   
 </template>
@@ -19,6 +19,8 @@ export default {
 
 <style>
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap');
+
 
  * {
    padding: 0; 
@@ -27,7 +29,7 @@ export default {
  }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto Flex', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

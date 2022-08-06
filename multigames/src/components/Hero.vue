@@ -1,8 +1,7 @@
 <template>
   <section class="hero is-warning card">
     <div class="hero-body">
-      <p class="title is-1 has-text-dark">GAMES!</p>
-      <p class="subtitle">Pasa y disfruta!</p>
+      <p class="title is-1">Multigames!</p>
     </div>
   </section>
 </template>
@@ -11,5 +10,20 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
+
+  .hero-body{
+    background-image: url(../assets/img/HeroHomeIMG.jpg) ;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 168px ;
+  }
+
+  .title{
+    -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+    color: transparent; 
+  }
+
 </style>
