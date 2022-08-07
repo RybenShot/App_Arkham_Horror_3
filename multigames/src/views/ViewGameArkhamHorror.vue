@@ -1,37 +1,39 @@
 <template>
-<div>
-  <section class="hero is-warning">
+  <div>
+
+    <section class="hero is-warning">
     <div class="hero-body">
        <router-link to="/"><i class="fas fa-home has-background-white p-1" id="iconHome"
       ></i></router-link>
-      <p class="title is-2 py-3">Tirador General</p>
+      <p class="title is-2 py-3">Arkham Horror</p>
     </div>
   </section>
-  
-  <div class="container">
-    <GameGeneral/>
+
+  <div>
+    <GameArkhamHorror/>
   </div>
-  
-</div>
-  
+
+
+
+
+  </div>
 </template>
 
 <script>
-import GameGeneral from '@/components/AllGames/GameGeneral.vue'
-
-
+import GameArkhamHorror from "@/components/AllGames/GameArkhamHorror.vue";
 export default {
-  name: 'View Game General',
+  name: 'View Game Arkham Horror',
   components: {
-    GameGeneral,
+    GameArkhamHorror
   }
 
 }
 </script>
 
+
 <style scoped>
   .hero-body{
-    background-image: url(../assets/img/Games/General/FondoGamesGeneral.jpg) !important;
+    background-image: url(../assets/img/Games/ArkhamHorror/1FondoGamesArkhamHorror.jpg) !important;
     background-size: contain;
     background-repeat: no-repeat;
     background-size: cover;
@@ -50,11 +52,5 @@ export default {
   top: 2%;
   border-radius: 5px;
   }
-
-  .container{
-    height: 80vh;
-  }
-
-
 </style>>
 

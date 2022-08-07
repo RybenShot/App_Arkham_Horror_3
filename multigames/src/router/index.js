@@ -1,8 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import GameGeneral from '../views/ViewGameGeneral.vue'
-import Practicas from '../views/VistaDePracticas.vue'
 import EnProceso from '../views/EnProceso.vue'
+import HomeArkhamHorror from '../views/ViewGameArkhamHorror.vue'
+import MapasArkhamHorror from '../views/ViewGameArkhamHorrorMapas.vue'
 
 const routes = [
   {
@@ -17,9 +18,14 @@ const routes = [
     component: GameGeneral
   },
   {
-    path: '/practicas',
-    name: 'practicas',
-    component: Practicas
+    path: '/HomeArkhamHorror',
+    name: 'homearkhamhorror',
+    component: HomeArkhamHorror
+  },
+  {
+    path: '/MapasArkhamHorror',
+    name: 'mapasarkhamhorror',
+    component: MapasArkhamHorror
   },
   {
     path: '/enproceso',

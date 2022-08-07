@@ -120,7 +120,7 @@
 
 <script>
 export default {
-  name: "GameGeneral",
+  name: "Game General",
   data() {
     return {
       // Variables necesarias para ver CUANTOS DADOS y CANTAS CARAS necesitamos
@@ -207,7 +207,7 @@ export default {
 
 #BGGameGeneral {
   background-image: url(../../assets/img/Games/General/BGGameGeneral.jpg);
-  min-height: 100vh;
+    min-height: 82vh;
   background-position: center;
   background-size: cover;
 }

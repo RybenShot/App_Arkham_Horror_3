@@ -9,41 +9,41 @@
           </button>
         </router-link>
 
-        <router-link to="/" style="width: 111px;">
+        <router-link to="/HomeArkhamHorror" style="width: 111px;">
           <button class="card Game" id="GamesArkhamHorror">
             <h1 class="titletextGames" style="font-size: 14px;">Arkham Horror</h1>
             <p class="subtitletextGames">3 Eddition</p>
           </button>
         </router-link>
 
-        <router-link to="/#" style="width: 111px;">
+        <router-link to="/enproceso" style="width: 111px;">
           <button class="card Game" id="GamesZombicide">
             <h1 class="titletextGames">Zombicide</h1>
             <p class="subtitletextGames">Black Plage</p>
           </button>
         </router-link>
 
-        <router-link to="/#" style="width: 111px;">
+        <router-link to="/enproceso" style="width: 111px;">
           <button class="card Game" id="GamesBloodborne">
             <h1 class="titletextGames">Bloodborne</h1>
             <p class="subtitletextGames">el juego de tablero</p>
           </button>
         </router-link>
 
-        <router-link to="/#" style="width: 111px;">
+        <router-link to="/enproceso" style="width: 111px;">
           <button class="card Game" id="GamesMansionesDeLaLocura">
             <h1 class="titletextGames" style="font-size: 14px;" >Mansiones de</h1>
             <p class="subtitletextGames">la locura</p>
           </button>
         </router-link>
 
-        <router-link to="/#" style="width: 111px;">
+        <router-link to="/enproceso" style="width: 111px;">
           <button class="card Game" id="GamesDyD">
             <h1 class="titletextGames">D & D</h1>
           </button>
         </router-link>
 
-        <router-link to="/#" style="width: 111px;">
+        <router-link to="/enproceso" style="width: 111px;">
           <button class="card Game" id="GamesWarhammer">
             <h1 class="titletextGames" style="font-size: 16px" >Warhammer</h1>
             <p class="subtitletextGames">40.000</p>

@@ -1,37 +1,40 @@
 <template>
-<div>
-  <section class="hero is-warning">
+  <div>
+
+    <section class="hero is-warning">
     <div class="hero-body">
        <router-link to="/"><i class="fas fa-home has-background-white p-1" id="iconHome"
       ></i></router-link>
-      <p class="title is-2 py-3">Tirador General</p>
+      <p class="title titleDecoration is-2 pt-3 mb-3">Arkham Horror</p>
+      <p class="subtitle is-6 titleDecoration pl-6" style="text-align: left">SELECCION DE MAPA</p>
     </div>
   </section>
-  
-  <div class="container">
-    <GameGeneral/>
+
+  <div>
+    <GameArkhamHorrorMapas/>
   </div>
-  
-</div>
-  
+
+
+
+
+  </div>
 </template>
 
 <script>
-import GameGeneral from '@/components/AllGames/GameGeneral.vue'
-
-
+import GameArkhamHorrorMapas from "@/components/AllGames/GameArkhamHorrorMapas.vue";
 export default {
-  name: 'View Game General',
+  name: 'View Game Arkham Horror',
   components: {
-    GameGeneral,
+    GameArkhamHorrorMapas
   }
 
 }
 </script>
 
+
 <style scoped>
   .hero-body{
-    background-image: url(../assets/img/Games/General/FondoGamesGeneral.jpg) !important;
+    background-image: url(../assets/img/Games/ArkhamHorror/1FondoGamesArkhamHorror.jpg) !important;
     background-size: contain;
     background-repeat: no-repeat;
     background-size: cover;
@@ -39,7 +42,7 @@ export default {
     height: 168px ;
   }
 
-  .title{
+  .titleDecoration{
     -webkit-text-stroke: 0.5px rgb(255, 255, 255);
     color: transparent; 
   }
@@ -50,11 +53,5 @@ export default {
   top: 2%;
   border-radius: 5px;
   }
-
-  .container{
-    height: 80vh;
-  }
-
-
 </style>>
 

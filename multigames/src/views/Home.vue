@@ -3,20 +3,20 @@
 
     <div><Hero/></div>
 
-    <div class="mt-2"><Games/></div>
+    <div class="mt-2"><MenuGames/></div>
       
    </div><!-- End home -->
 </template>
 
 <script>
 import Hero from '@/components/Hero.vue'
-import Games from '@/components/Games.vue'
+import MenuGames from '@/components/MenuGames.vue'
 
 export default {
   name: 'Home',
   components: {
     Hero,
-    Games,
+    MenuGames,
   }
 }
 </script>
