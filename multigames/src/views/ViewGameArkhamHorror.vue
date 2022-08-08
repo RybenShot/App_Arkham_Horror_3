@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <section class="hero is-warning">
     <div class="hero-body">
        <router-link to="/"><i class="fas fa-home has-background-white p-1" id="iconHome"
@@ -12,9 +11,6 @@
   <div>
     <GameArkhamHorror/>
   </div>
-
-
-
 
   </div>
 </template>

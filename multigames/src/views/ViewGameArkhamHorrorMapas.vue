@@ -3,8 +3,8 @@
 
     <section class="hero is-warning">
     <div class="hero-body">
-       <router-link to="/"><i class="fas fa-home has-background-white p-1" id="iconHome"
-      ></i></router-link>
+       <router-link to="/"><i class="fas fa-home has-background-white p-1" id="iconHome"></i></router-link>
+       <router-link to="/HomeArkhamHorror"><i class="fas fa-backward has-background-white p-1" id="iconback"></i></router-link>
       <p class="title titleDecoration is-2 pt-3 mb-3">Arkham Horror</p>
       <p class="subtitle is-6 titleDecoration pl-6" style="text-align: left">SELECCION DE MAPA</p>
     </div>
@@ -12,6 +12,10 @@
 
   <div>
     <GameArkhamHorrorMapas/>
+  </div>
+
+  <div>
+    <!-- <GameArkhamHorrorEnermigos/> -->
   </div>
 
 
@@ -48,10 +52,16 @@ export default {
   }
 
   #iconHome{
-  position: absolute;
-  left: 88%;
-  top: 2%;
-  border-radius: 5px;
+    position: absolute;
+    left: 88%;
+    top: 2%;
+    border-radius: 5px;
+  }
+  #iconback{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border-radius: 5px;
   }
 </style>>
 
