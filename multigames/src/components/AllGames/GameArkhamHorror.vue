@@ -15,7 +15,7 @@
         </div>
       </router-link>
 
-      <router-link to="">
+      <router-link to="/PersonajesArkhamHorror">
         <div class="my-5 mx-4 " id="botonSeleccionarJugador">
           <h2 class="title py-4">Seleccionar Investigador</h2>
         </div>

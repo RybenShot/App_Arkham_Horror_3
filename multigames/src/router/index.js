@@ -4,6 +4,7 @@ import GameGeneral from '../views/ViewGameGeneral.vue'
 import EnProceso from '../views/EnProceso.vue'
 import HomeArkhamHorror from '../views/ViewGameArkhamHorror.vue'
 import MapasArkhamHorror from '../views/ViewGameArkhamHorrorMapas.vue'
+import PersonajesArkhamHorror from '../views/ViewGameArkhamHorrorPersonajes.vue'
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
     path: '/MapasArkhamHorror',
     name: 'mapasarkhamhorror',
     component: MapasArkhamHorror
+  },
+  {
+    path: '/PersonajesArkhamHorror',
+    name: 'personajesarkhamhorror',
+    component: PersonajesArkhamHorror
   },
   {
     path: '/enproceso',

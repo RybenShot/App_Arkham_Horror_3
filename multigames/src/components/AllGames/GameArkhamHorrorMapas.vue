@@ -10,8 +10,7 @@
           <h1 class="title titleDecoration is-1 pt-3 mb-3">{{ this.title }}</h1>
         </div>
 
-
-          <h2 class="title titleDecoration is-1 pt-3 mb-3">enemigos</h2>
+          <h2 class="title titleDecoration is-1 pt-3 mb-3">Enemigos</h2>
 
             <div v-if="this.contador == 1">
               <div id="enemisList" class="px-1">
@@ -61,8 +60,6 @@
               </div>
             </div><!-- end IF MAPA 4  -->
 
-
-
           <h2 class="title titleDecoration is-1 pt-3 mb-3" >Enemigos extras</h2>
 
             <div v-if="this.contador == 1"> 
@@ -97,10 +94,8 @@
               <p class="has-text-white">Sin enemigos extras</p>
             </div><!-- end IF MAPA 4  -->
 
-
         <button @click="this.viewMapa = true" class="button is-success has-text-black mt-5 p-5">Ver Mapas</button>
 
-        
       </div>
     </div>
 
@@ -141,34 +136,36 @@
           </div>
 
           <!-- ARROW derecha -->
-          <div class="column column is-one-fifth is-vcentered p-0">
-            <!-- boton deshabilitado -->
-            <div v-if="this.contador >= 4">
-              <button title="Disabled button" disabled class="p-2">
-                <i class="fa-2x fas fa-angle-double-right"></i>
-              </button>
+            <div class="column column is-one-fifth is-vcentered p-0">
+              <!-- boton deshabilitado -->
+              <div v-if="this.contador >= 4">
+                <button title="Disabled button" disabled class="p-2">
+                  <i class="fa-2x fas fa-angle-double-right"></i>
+                </button>
+              </div>
+
+              <!-- boton funcionando!  -->
+              <div v-if="this.contador < 4">
+                <button @click="cambiaMapa(contador++)" class="p-2">
+                  <i class="fa-2x fas fa-angle-double-right"></i>
+                </button>
+              </div>
             </div>
 
-            <!-- boton funcionando!  -->
-            <div v-if="this.contador < 4">
-              <button @click="cambiaMapa(contador++)" class="p-2">
-                <i class="fa-2x fas fa-angle-double-right"></i>
-              </button>
-            </div>
-          </div>
         </div>
-      </div>
-      <!-- end container  -->
+      </div><!-- end container  -->
 
       <!-- SELECCION DE PERSONAJE -->
-      <div>
-        <p class="subtitle titleDecoration has-text-right is-5 py-3">
-          Ir a seleccion de personaje <i class="fa-2x fas fa-forward"></i>
-        </p>
-      </div>
+      <router-link to="/PersonajesArkhamHorror">
+        <div>
+          <p class="subtitle titleDecoration has-text-right is-5 py-3">
+            Ir a seleccion de personaje <i class="fa-2x fas fa-forward"></i>
+          </p>
+        </div> <!-- end seleccion de personaje  -->
+      </router-link>
     </div>
-  </div>
-  <!-- end BGGame  -->
+  </div><!-- end BGGame  -->
+  
 </template>
 
 <script>
@@ -285,7 +282,7 @@ export default {
         this.BGGeneral = "BGGameGeneralMapa4";
         this.imgMapa = "imgMapa4";
       }
-    },
+    }, // end cambiaMapa
   }, // end methods
 
   watch: {}, // end watch
