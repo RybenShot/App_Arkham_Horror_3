@@ -1,10 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import GameGeneral from '../views/ViewGameGeneral.vue'
+import HomeAHClasico from '../views/HomeAHClasico.vue'
 import EnProceso from '../views/EnProceso.vue'
-import HomeArkhamHorror from '../views/ViewGameArkhamHorror.vue'
-import MapasArkhamHorror from '../views/ViewGameArkhamHorrorMapas.vue'
-import PersonajesArkhamHorror from '../views/ViewGameArkhamHorrorPersonajes.vue'
+// import HomeArkhamHorror from '../views/ViewGameArkhamHorror.vue'
+import MapasAHClasico from '../views/MapasEnemigosAHClasico.vue'
+
+import PersonajesAHClasico from '../views/PersonajesAHClasico.vue'
 
 const routes = [
   {
@@ -12,26 +13,25 @@ const routes = [
     name: 'home',
     component: Home
   },
-
   {
-    path: '/GameGeneral',
-    name: 'GameGeneral',
-    component: GameGeneral
+    path: '/HomeAHClasico',
+    name: 'homeAHclasico',
+    component: HomeAHClasico
+  },
+  // {
+  //   path: '/HomeArkhamHorror',
+  //   name: 'homearkhamhorror',
+  //   component: HomeArkhamHorror
+  // },
+  {
+    path: '/MapasAHClasico',
+    name: 'mapasAHclasico',
+    component: MapasAHClasico
   },
   {
-    path: '/HomeArkhamHorror',
-    name: 'homearkhamhorror',
-    component: HomeArkhamHorror
-  },
-  {
-    path: '/MapasArkhamHorror',
-    name: 'mapasarkhamhorror',
-    component: MapasArkhamHorror
-  },
-  {
-    path: '/PersonajesArkhamHorror',
-    name: 'personajesarkhamhorror',
-    component: PersonajesArkhamHorror
+    path: '/PersonajesAHClasico',
+    name: 'personajesAHclasico',
+    component: PersonajesAHClasico
   },
   {
     path: '/enproceso',

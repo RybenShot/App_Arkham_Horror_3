@@ -1,53 +1,70 @@
 <template>
   <div>
     <div class="todo">
-      <div class="container mx-2 " id="gamesList">
+      <div class="container mx-4 px-2 ">
 
-        <router-link to="/GameGeneral" style="width: 111px;">
-          <button class="card Game" id="GamesGeneral">
-            <h1 class="titletextGames title is-5"><strong>General</strong></h1>
-          </button>
+        <h1 class="has-text-centered title is-4">SELECCIONA UNA CAJA</h1>
+
+        <router-link to="/GameGeneral">
+          <div class="columns is-mobile box p-1">
+            <div class="column p-1 is-one-third">
+              <img src="../assets/img/Games/ArkhamHorror/cajaAHClasico.png" alt="Arkham Horror Caja Clasico" class="cajasimg" >
+            </div>
+            <div class="column p-1">
+              <h1>Arkham Horror Clasico</h1>
+              <p>4 mapas</p>
+              <p>12 investigadores</p>
+              <button>Ver mas</button>
+            </div>
+          </div>
         </router-link>
 
-        <router-link to="/HomeArkhamHorror" style="width: 111px;">
-          <button class="card Game" id="GamesArkhamHorror">
-            <h1 class="titletextGames" style="font-size: 14px;">Arkham Horror</h1>
-            <p class="subtitletextGames">3 Eddition</p>
-          </button>
+        <br>
+
+        <router-link to="/HomeArkhamHorror">
+          <div class="columns is-mobile box p-1">
+            <div class="column p-1 is-one-third">
+              <img src="../assets/img/Games/ArkhamHorror/cajaAHMareasTenebrosas.png" alt="Arkham Horror Caja Clasico" class="cajasimg" >
+            </div>
+            <div class="column p-1">
+              <h1>Mareas Tenebrosas</h1>
+              <p>4 mapas</p>
+              <p>8 investigadores</p>
+              <button>Ver mas</button>
+            </div>
+          </div>
         </router-link>
 
-        <router-link to="/enproceso" style="width: 111px;">
-          <button class="card Game" id="GamesZombicide">
-            <h1 class="titletextGames">Zombicide</h1>
-            <p class="subtitletextGames">Black Plage</p>
-          </button>
+        <br>
+
+        <router-link to="/enproceso">
+          <div class="columns is-mobile box p-1">
+            <div class="column p-1 is-one-third">
+              <img src="../assets/img/Games/ArkhamHorror/cajaAHNocheCerrada.png" alt="Arkham Horror Caja Clasico" class="cajasimg" >
+            </div>
+            <div class="column p-1">
+              <h1>noche cerrada</h1>
+              <p>2 mapas</p>
+              <p>4 investigadores</p>
+              <button>Ver mas</button>
+            </div>
+          </div>
         </router-link>
 
-        <router-link to="/enproceso" style="width: 111px;">
-          <button class="card Game" id="GamesBloodborne">
-            <h1 class="titletextGames">Bloodborne</h1>
-            <p class="subtitletextGames">el juego de tablero</p>
-          </button>
-        </router-link>
+        <br>
 
-        <router-link to="/enproceso" style="width: 111px;">
-          <button class="card Game" id="GamesMansionesDeLaLocura">
-            <h1 class="titletextGames" style="font-size: 14px;" >Mansiones de</h1>
-            <p class="subtitletextGames">la locura</p>
-          </button>
-        </router-link>
-
-        <router-link to="/enproceso" style="width: 111px;">
-          <button class="card Game" id="GamesDyD">
-            <h1 class="titletextGames">D & D</h1>
-          </button>
-        </router-link>
-
-        <router-link to="/enproceso" style="width: 111px;">
-          <button class="card Game" id="GamesWarhammer">
-            <h1 class="titletextGames" style="font-size: 16px" >Warhammer</h1>
-            <p class="subtitletextGames">40.000</p>
-          </button>
+        <router-link to="/enproceso">
+          <div class="columns is-mobile box p-1">
+            <div class="column p-1 is-one-third">
+              <img src="../assets/img/Games/ArkhamHorror/cajaAHSecretosDeLaOrden.png" alt="Arkham Horror Caja Clasico" class="cajasimg" >
+            </div>
+            <div class="column p-1">
+              <h1>Secretos de la orden</h1>
+              <p>3 mapas</p>
+              <p>4 investigadores</p>
+              <button>Ver mas</button>
+            </div>
+          </div>
         </router-link>
 
       </div> <!-- end container   -->
@@ -68,82 +85,16 @@ export default {
 </script>
 
 <style scoped>
-#gamesList{
-    display: grid;
-    grid-template-columns: auto auto auto ;
-    grid-column-gap: 3vmin;
-}
 
-.Game{
-  width: 111px;
-  height: 111px;
-}
-
-.card{
-  margin-top: 10px;
-}
-
-.titletextGames{
-  -webkit-text-stroke: 0.8px rgb(255, 255, 255);
-  color: black; 
-  font-family: 'Roboto Flex', sans-serif;
-  font-weight: 1000;
-  font-size: 18px;
-}
-
-.subtitletextGames{
-  -webkit-text-stroke: 0.8px rgb(255, 255, 255);
-  color: black; 
-  font-family: 'Roboto Flex', sans-serif;
-  font-weight: 1000;
-  font-size: 13px;
+.cajasimg{
+  width: 100%;
 }
 
 
-
-
-
-#GamesGeneral{
-  background-image: url(../assets/img/Games/General/FondoGamesGeneral.jpg); 
-  background-repeat: no-repeat;
-  background-size: cover;
+#BGAHHome {
+  background-image: url(../assets/img/Games/ArkhamHorror/1FondoGamesArkhamHorror.jpg);
+  min-height: 100vh;
   background-position: center;
-}
-#GamesArkhamHorror{
-  background-image: url(../assets/img/Games/FondoGamesArkham.jpg); 
-  background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
 }
-#GamesZombicide{
-  background-image: url(../assets/img/Games/FondoGamesZombicide.jpg); 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-#GamesBloodborne{
-  background-image: url(../assets/img/Games/FondoGamesBloodborne.jpg); 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-#GamesMansionesDeLaLocura{
-  background-image: url(../assets/img/Games/FondoGamesMansionesDeLaLocura.jpg); 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-#GamesDyD{
-  background-image: url(../assets/img/Games/FondoGamesD&D.jpg); 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-#GamesWarhammer{
-  background-image: url(../assets/img/Games/FondoGamesWarhammer.jpg); 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
 </style>

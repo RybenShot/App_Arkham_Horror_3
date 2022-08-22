@@ -1,7 +1,7 @@
 <template>
-  <section class="hero is-warning card">
+  <section class="hero card">
     <div class="hero-body">
-      <p class="title is-1">Multigames!</p>
+      <p class="f-x2 has-text-left"><i class="fas fa-undo"></i></p>
     </div>
   </section>
 </template>
@@ -13,12 +13,11 @@ export default {};
 <style scoped>
 
   .hero-body{
-    background-image: url(../assets/img/HeroHomeIMG.jpg) ;
-    background-size: contain;
+    background-image: url(../assets/img/TituloArkhamHorrorEDITADO.png) ;
     background-repeat: no-repeat;
-    background-size: cover;
     background-position: center;
     height: 168px ;
+    background-color: rgba(255, 255, 255, 0);
   }
 
   .title{

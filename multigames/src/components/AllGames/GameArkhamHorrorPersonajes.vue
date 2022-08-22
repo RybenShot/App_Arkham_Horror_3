@@ -6,8 +6,8 @@
     <div v-if="viewPJ == true">
       <div class="mx-3 container allWindow card">
         <!-- TITULO -->
-        <div id="tituloDescripcion">
-          <h1 class="title titleDecoration is-1 pt-3 mb-3">{{ this.nombrePJ }}</h1>
+        <div>
+          <h1 class="title titleDecoration pt-3 mb-3">{{ this.nombrePJ }}</h1>
         </div>
 
         <!-- DatosPJ , FLECHAS -->
@@ -477,7 +477,7 @@ export default {
   -webkit-text-stroke: 0.5px rgb(255, 255, 255);
   color: black;
   font-family: "Roboto Flex", sans-serif;
-  font-weight: 800;
+  font-weight: 700;
   text-align: center;
 }
 
