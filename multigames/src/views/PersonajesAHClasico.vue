@@ -14,7 +14,7 @@
       <div class="allWindow">
 
         <!-- IMG -->
-        <section class="hero is-small" :class="[imgPersonaje]">
+        <section class="hero is-small helperImgPjs" :class="[imgPersonaje]">
           <div class="hero-body columns is-vcentered is-mobile">
 
             <!-- ARROW izquierda -->
@@ -118,28 +118,28 @@
           <p class="has-text-white is-italic pt-2">{{this.frase}}</p>
         </div>
 
-
-
-
-        <button @click="comenzar()" class="button is-success has-text-white mt-5 p-5">Comenzar!</button>
-
-
+        <!-- Boton de Comenzar -->
+        <div class="columns is-mobile">
+          <div class="column is-4"></div>
+          <div class="column"><button @click="comenzar()" class="button is-success has-text-white mt-5 p-5">Comenzar!</button></div>
+          <div class="column is-4"></div>
+        </div>
         <br />
-      </div>
-      <!-- end container  -->
-    </div>
-    <!-- end SELECCION DE PJ  -->
+      </div><!-- end container  -->
+    </div><!-- end SELECCION DE PJ  -->
 
     <!-- VIEW PLAY!!!!! -->
     <div v-if="viewPlay == true">
       <div class="container allWindow">
         
         <!-- IMG -->
-        <section class="hero is-small" :class="[imgPersonaje]">
+        <section class="hero is-small helperImgPjs" :class="[imgPersonaje]">
           <div class="hero-body columns is-vcentered is-mobile">
+            <div class="column is-2"></div>
             <div class="column">
               <h1 class="title titleDecoration is-2 pt-3 mb-3">{{ this.nombrePJ }}</h1>
             </div>
+            <div class="column is-2 has-text-white"><router-link to="/"><i class="fa-2x fas fa-home"></i></router-link></div>
           </div>
         </section>
 
@@ -204,30 +204,55 @@
             <p class="has-text-info"><i class="fa-3x fab fa-hornbill"></i></p>
             <p class="contadorAtributos title is-5 mb-0">{{ this.voluntad }}</p>
           </button>
-        </div>
-        <!-- end ATRIBUTOS -->
+        </div><!-- end ATRIBUTOS -->
 
-        <div>
-          <p class="has-text-centered">Dados extras</p>
+        <div><!-- Dados Extras -->
+          <p class="has-text-centered has-text-white">Dados extras</p>
           <div class="columns is-mobile mt-2 px-6">
             <button @click="NDeDadosExtra--" class="column py-2 px-4 mr-3">-</button>
             <input type="number" v-model="NDeDadosExtra" class="column py-2 px-2 px-2" />
             <button @click="NDeDadosExtra++" class="column py-2 px-4 ml-3">+</button>
           </div>
         </div><!-- end Dados Extras -->
-        
-        <br />
 
         <!-- BOTON DE LANZAR DADOS -->
         <!-- Aqui indicamos ya el minimo del resultado que debe salir y el maximo lo indicamos con "NDeLados" -->
-        <button @click="tirarDados(1)" class="button is-success is-active mx-5">
-          TIRAR!
-        </button>
+        <div class="columns is-mobile mt-3">
+          <div class="column is-4"><p class="subtitle has-text-white is-6 is-italic px-2">Total de dados: {{this.NDeDadosExtra + this.NDadosAtributo}}</p></div>
+          <div class="column">
+            <button @click="tirarDados(1)" class="button is-success is-active">TIRAR!</button>
+            </div>
+          <div class="column mr-3">
+            <!-- BOTON DE MAS OPCIONES -->
+            <button v-if="masOpciones == false" @click="masOpciones = !masOpciones" class="button is-warning"> + opciones + </button>
+            <button v-if="masOpciones == true" @click="masOpciones = !masOpciones" class="button is-warning" > - opciones - </button>
+          </div>
+        </div>
 
+        <!-- AVANZADO -->
+        <Transition>
+          <div v-show="masOpciones" class="card p-2 mt-2">
+            <h3>Avanzado</h3>
+            <dir class="columns is-mobile">
+              <div class="column">
+                <h4>Fatal</h4>
+                <input class="p-2 inputs" type="number" v-model="AvFatal" placeholder="Fatal" >
+                <input class="p-2 inputs" type="number" v-model="AvFatal2" placeholder="Fatal">
+                <input class="p-2 inputs" type="number" v-model="AvFatal3" placeholder="Fatal">
+              </div>
+              <div class="column">
+                <h4>Acierto</h4>
+                <input class="p-2 inputs" type="number" v-model="AvAcierto" placeholder="Acierto">
+                <input class="p-2 inputs" type="number" v-model="AvAcierto2" placeholder="Acierto">
+                <input class="p-2 inputs" type="number" v-model="AvAcierto3" placeholder="Acierto">
+              </div>
+            </dir>
+          </div>
+        </Transition>
+        
         <!-- RESULTADOS -->
-        <br />
         <div class="resultados mx-6">
-          <h1 class="title is-3">RESULTADOS</h1>
+          <h1 class="title has-text-centered has-text-white is-3">RESULTADOS</h1>
           <div id="resultados-css" class="container">
             <!-- Aqui pintamos todos los resultados, OJO!! ense;amos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
             <div v-for="item in resultados" :key="item">
@@ -240,23 +265,21 @@
           <br />
 
           <Transition>
-            <div v-if="masOpciones" class="suma card p-2">
-              <h1 class="title">Suma de todo</h1>
-              <p class="subtitle">{{ SumaDetodo }}{{ this.sumaResultado }}</p>
+            <div v-if="masOpciones" class="p-2">
+              <h1 class="title has-text-white">Suma de todo {{ SumaDetodo }}{{ this.sumaResultado }}</h1>
             </div>
           </Transition>
 
-          <button
-            @click="volver()"
-            class="button is-link mt-5 p-5 has-text-white"
-          >
-            Volver
-          </button>
+          <div class="columns is-mobile"><!-- Boton de VOLVER -->
+            <div class="column"></div>
+            <div class="column"><button @click="volver()" class="button is-link p-5 has-text-white">Volver</button></div>
+            <div class="column"></div>
+          </div>
+          
         </div>
-      </div>
-      <!-- end card - container -->
-    </div>
-    <!-- end VIEW PLAY -->
+      </div><!-- end card - container -->
+    </div><!-- end VIEW PLAY -->
+
   </div>
 </template>
 
@@ -289,8 +312,7 @@ export default {
       // Objeto3: require("@BlaBla"),
 
       Personajes: [
-        {
-          nombrePJ: "Tommy Muldoon",
+        {nombrePJ: "Tommy Muldoon",
           vida: 7,
           cordura: 5,
           saber: 2,
@@ -315,8 +337,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: null,
         },
-        {
-          nombrePJ: "Marie Lambeau",
+        {nombrePJ: "Marie Lambeau",
           vida: 5,
           cordura: 7,
           saber: 3,
@@ -340,8 +361,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: null,
         },
-        {
-          nombrePJ: "Jenny Barnes",
+        {nombrePJ: "Jenny Barnes",
           vida: 7,
           cordura: 5,
           saber: 1,
@@ -365,8 +385,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: null,
         },
-        {
-          nombrePJ: "Dexter Drake",
+        {nombrePJ: "Dexter Drake",
           vida: 5,
           cordura: 7,
           saber: 4,
@@ -390,8 +409,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: null,
         },
-        {
-          nombrePJ: "Wendy Adams",
+        {nombrePJ: "Wendy Adams",
           vida: 5,
           cordura: 7,
           saber: 3,
@@ -416,8 +434,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: null,
         },
-        {
-          nombrePJ: "Rex Murphy",
+        {nombrePJ: "Rex Murphy",
           vida: 7,
           cordura: 7,
           saber: 3,
@@ -444,8 +461,7 @@ export default {
           Objeto4: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
         },
-        {
-          nombrePJ: "Calvin Wrigth",
+        {nombrePJ: "Calvin Wrigth",
           vida: 6,
           cordura: 6,
           saber: 3,
@@ -470,8 +486,7 @@ export default {
           Objeto4: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
         },
-        {
-          nombrePJ: "Agnes Baker",
+        {nombrePJ: "Agnes Baker",
           vida: 6,
           cordura: 6,
           saber: 4,
@@ -496,8 +511,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
         },
-        {
-          nombrePJ: "Michael McGlen",
+        {nombrePJ: "Michael McGlen",
           vida: 8,
           cordura: 4,
           saber: 2,
@@ -521,8 +535,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
         },
-        {
-          nombrePJ: "Daniela Reyes",
+        {nombrePJ: "Daniela Reyes",
           vida: 7,
           cordura: 5,
           saber: 3,
@@ -546,8 +559,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
         },
-        {
-          nombrePJ: "Norman Withers",
+        {nombrePJ: "Norman Withers",
           vida: 5,
           cordura: 7,
           saber: 3,
@@ -572,8 +584,7 @@ export default {
           Objeto3: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
           Objeto4: require("@/assets/img/Games/ArkhamHorror/enemigos/enemigo18.png"),
         },
-        {
-          nombrePJ: "Minh Thi Phan",
+        {nombrePJ: "Minh Thi Phan",
           vida: 6,
           cordura: 6,
           saber: 3,
@@ -793,7 +804,6 @@ export default {
     selectAtributo(dato) {
       this.NDadosAtributo = dato;
     },
-
     // TIRADA DE DADOS
     async tirarDados(min) {
       let max = 6; // maximo de lados de dados
@@ -818,6 +828,8 @@ export default {
       }
     },
   },
+  watch: {}
+
 };
 </script>
 
@@ -848,6 +860,17 @@ export default {
   background-color: chartreuse;
 } */
 
+/* HELPERS */
+/* Necesario para las transiciones */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .titleDecoration {
   -webkit-text-stroke: 0.5px rgb(255, 255, 255);
   color: black;
@@ -858,7 +881,7 @@ export default {
 
 .BGGeneralAH {
   background-image: url(../assets/img/Games/ArkhamHorror/BGGeneralAH.jpg);
-  min-height: 100vh;
+  min-height: 110vh;
   background-position: center;
   background-size: cover;
 }
@@ -867,67 +890,25 @@ export default {
   min-height: 70vh;
 }
 
+
 /* imgPersonajes */
-.imgTommy {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ1.png);
+.helperImgPjs{
   background-position: center;
   background-size: cover;
 }
-.imgMarie {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ2.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgJenny {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ3.png);
-  background-position: center;
-  background-size: cover;
-}
-.imgDexter {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ4.png);
-  background-position: center;
-  background-size: cover;
-}
-.imgWendy {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ5.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgRex {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ6.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgCalvin {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ7.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgAgnes {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ8.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgMichael {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ9.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgDaniela {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ10.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgNorman {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ11.jpg);
-  background-position: center;
-  background-size: cover;
-}
-.imgMinh {
-  background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ12.jpg);
-  background-position: center;
-  background-size: cover;
-}
+.imgTommy {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ1.png);}
+.imgMarie {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ2.jpg);}
+.imgJenny {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ3.png);}
+.imgDexter {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ4.png);}
+.imgWendy {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ5.jpg);}
+.imgRex {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ6.jpg);}
+.imgCalvin {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ7.jpg);}
+.imgAgnes {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ8.jpg);}
+.imgMichael {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ9.jpg);}
+.imgDaniela {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ10.jpg);}
+.imgNorman {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ11.jpg);}
+.imgMinh {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ12.jpg);}
+
 
 /* colores para atributos */
 .has-text-purple {
