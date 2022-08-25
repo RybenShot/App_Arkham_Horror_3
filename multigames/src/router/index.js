@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import HomeAHClasico from '../views/HomeAHClasico.vue'
 import EnProceso from '../views/EnProceso.vue'
-// import HomeArkhamHorror from '../views/ViewGameArkhamHorror.vue'
 import MapasAHClasico from '../views/MapasEnemigosAHClasico.vue'
 
 import PersonajesAHClasico from '../views/PersonajesAHClasico.vue'
@@ -18,11 +17,6 @@ const routes = [
     name: 'homeAHclasico',
     component: HomeAHClasico
   },
-  // {
-  //   path: '/HomeArkhamHorror',
-  //   name: 'homearkhamhorror',
-  //   component: HomeArkhamHorror
-  // },
   {
     path: '/MapasAHClasico',
     name: 'mapasAHclasico',

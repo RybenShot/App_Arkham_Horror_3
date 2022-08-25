@@ -1,27 +1,18 @@
 <template>
-<div>
-  <router-view/>
-</div>
-  
+  <div>
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import Hero from '@/components/Hero.vue'
-
-
 export default {
-  name: 'TODO',
-  components: {
-    Hero,
-  }
+  name: 'app',
 }
 </script>
 
 <style>
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap');
-
-
  * {
    padding: 0; 
    margin: 0;

@@ -3,9 +3,9 @@
 
     <!-- HERO -->
     <div class="hero-body columns is-mobile p-1 m-0">
-      <p class="f-x2 column is-one-fifth p-0"><i class="fas fa-undo"></i></p>
+      <p class="f-x2 column"></p>
       <img id="imgTitleAH" class="column p-0" src="../assets/img/TituloArkhamHorrorEDITADO.png" alt="">
-      <p class="column is-one-fifth p-0"></p>
+      <p class="column"></p>
     </div>
 
     <!-- MENU LIST -->
@@ -16,7 +16,7 @@
 
         <!-- CLASICO -->
         <router-link to="/HomeAHClasico">
-          <div class="columns is-mobile box p-1 m-1 card1">
+          <div class="columns is-mobile box p-1 m-1 helperCards1234 card1">
             <div class="column p-1 is-one-third">
               <img src="../assets/img/Games/ArkhamHorror/cajaAHClasico.png" alt="Arkham Horror Caja Clasico" class="cajasimg" >
             </div>
@@ -30,8 +30,8 @@
         </router-link>
 
         <!-- MAREAS TENEBROSAS -->
-        <router-link to="/HomeArkhamHorror">
-          <div class="columns is-mobile box p-1 m-1 card2">
+        <router-link to="/enproceso">
+          <div class="columns is-mobile box p-1 m-1 helperCards1234 card2">
             <div class="column p-1">
               <h1 class="has-text-right has-text-weight-bold">Mareas Tenebrosas</h1>
               <p class="has-text-right has-text-weight-medium">4 mapas</p>
@@ -46,7 +46,7 @@
 
         <!-- NOCHE CERRADA -->
         <router-link to="/enproceso">
-          <div class="columns is-mobile box p-1 m-1 card3">
+          <div class="columns is-mobile box p-1 m-1 helperCards1234 card3">
             <div class="column p-1 is-one-third">
               <img src="../assets/img/Games/ArkhamHorror/cajaAHNocheCerrada.png" alt="Arkham Horror Caja Clasico" class="cajasimg" >
             </div>
@@ -61,7 +61,7 @@
 
         <!-- SECRETOS DE LA ORDEN -->
         <router-link to="/enproceso">
-          <div class="columns is-mobile box p-1 m-1 card4">
+          <div class="columns is-mobile box p-1 m-1 helperCards1234 card4">
             <div class="column p-1">
               <h1 class="has-text-right has-text-weight-bold">Secretos de la orden</h1>
               <p class="has-text-right has-text-weight-medium">3 mapas</p>
@@ -115,31 +115,17 @@ export default {
 .cajasimg{
   width: 100%;
 }
-.card1{
-  background-image: url(../assets/img/SeleccionarMapa.jpg);
-  background-position: center;
-  background-size: cover;
-  border-radius: 0px;
-}
-.card2{
-  background-image: url(../assets/img/SeleccionarMapa4.jpg);
-  background-position: center;
-  background-size: cover;
-  border-radius: 0px;
-}
-.card3{
-  background-image: url(../assets/img/SeleccionarMapa2.jpg);
-  background-position: center;
-  background-size: cover;
-  border-radius: 0px;
-}
-.card4{
-  background-image: url(../assets/img/SeleccionarMapa3.jpg);
-  background-position: center;
-  background-size: cover;
-  border-radius: 0px;
-}
 
+/* HELPERS  */
+.helperCards1234{
+  background-position: center;
+  background-size: cover;
+  border-radius: 0px;
+}
+.card1{background-image: url(../assets/img/SeleccionarMapa.jpg);}
+.card2{background-image: url(../assets/img/SeleccionarMapa4.jpg);}
+.card3{background-image: url(../assets/img/SeleccionarMapa2.jpg);}
+.card4{background-image: url(../assets/img/SeleccionarMapa3.jpg);}
 
 #BGAHHome {
   background-image: url(../assets/img/Games/ArkhamHorror/BG2MapaArkham.jpg);
