@@ -1,399 +1,65 @@
 <template>
   <div class="BGGeneralAH">
+    
     <!-- SELECCION DE PJ -->
     <div v-if="viewPJ == true">
-      <div class="allWindow">
-
-        <!-- IMG -->
-        <section class="hero is-small helperImgPjs" :class="[imgPersonaje]">
-          <div class="hero-body columns is-vcentered is-mobile p-0 pt-6 mt-5 pb-3">
-
-            <!-- ARROW izquierda -->
-            <div class="column is-2 pl-4">
-              <!-- si no cumple la regla, simplemente no hay nada --> 
-              <!-- boton funcionando!  -->
-              <div v-if="this.contador > 1">
-                <button @click="cambiaPJ(contador--)" class="p-2">
-                  <i class="fa-2x fas fa-angle-double-left"></i>
-                </button>
-              </div>
-            </div><!-- end ARROW izquierda -->
-
-            <div class="column">
-              <h1 class="title titleDecoration is-4 pt-3 mb-0">
-                {{ this.nombrePJ }}
-              </h1>
-              <p class="has-background-grey-dark has-text-light has-text-centered">{{this.posicion}}</p>
-            </div>
-
-            <!-- ARROW derecha -->
-            <div class="column is-2 p-2">
-              <!-- si no cumple la regla, simplemente no hay nada -->
-              <!-- boton funcionando!  -->
-              <div v-if="this.contador < 12">
-                <button @click="cambiaPJ(contador++)" class="p-2">
-                  <i class="fa-2x fas fa-angle-double-right"></i>
-                </button>
-              </div>
-            </div><!-- end ARROW derecha -->
-
-          </div>
-        </section>
-
-        <!-- NAVEGACION -->
-        <section class="section columns is-mobile has-background-dark p-0">
-          <div class="column is-4 has-background-light pl-5"><p @click="this.VerDatos('Historia')">Historia <i class="far fa-id-card"></i></p> </div>
-          <div class="column has-background-light"><p @click="this.VerDatos('Pertenencias')">Pertenencias <i class="fas fa-briefcase"></i></p> </div>
-          <div class="column is-3 px-0 has-background-light"><p @click="this.VerDatos('Arquetipo')">Arquetipo <i class="fas fa-bolt"></i></p> </div>
-        </section>
-
-        <!-- MODAL HISTORIA -->
-        <div v-if="ModalHistoria" class="modal is-active">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-head">
-                <p class="modal-card-title">La historia hasta ahora</p>
-                <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
-              </section>
-              <section class="modal-card-body">
-                <p>{{this.historia}}</p>
-              </section>
-            </div>
-          </div>
-        </div>
-
-        <!-- MODAL PERTENENCIAS -->
-        <div v-if="ModalPertenencias" class="modal is-active ">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-head">
-                <p class="modal-card-title">Pertenencias iniciales</p>
-                <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
-              </section>
-              <section class="modal-card-body">
-                <p>- {{this.dinero}}$</p>
-                <p>- {{this.Pertenencia1}}</p>
-                <p v-if="this.Pertenencia2 != null">- {{this.Pertenencia2}}</p>
-                <h1 class="subtitle is-3 mb-0 has-text-centered"> Elige 1 </h1>
-                <hr class="my-1">
-                <p>- {{this.Pertenencia3}}</p>
-                <p>- {{this.Pertenencia4}}</p>
-              </section>
-            </div>
-          </div>
-        </div>
-
-        <!-- MODAL ARQUETIPO -->
-        <div v-if="ModalArquetipo" class="modal is-active">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-head">
-                <p class="modal-card-title">Arquetipo principal</p>
-                <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
-              </section>
-              <section class="modal-card-body">
-                <p>{{this.arquetipo1}}</p>
-                <br>
-                <p>{{this.arquetipo2}}</p>
-              </section>
-            </div>
-          </div>
-        </div>
-        
-        <!-- DatosVida/Cordura-->
-        <div class="columns is-mobile mt-2">
-          <!-- Vida y cordura -->
-            <div class="column">
-              <p class="has-text-danger has-text-centered">
-                <i class="fa-5x fas fa-heartbeat"></i>
-              </p>
-              <p class="contadorVidaCordura has-text-centered title is-3 mb-0">
-                {{ this.vida }}
-              </p>
-            </div>
-
-            <div class="column">
-              <p class="has-text-info has-text-centered">
-                <i class="fa-5x fas fa-brain"></i>
-              </p>
-              <p class="contadorVidaCordura has-text-centered title is-3 mb-0">
-                {{ this.cordura }}
-              </p>
-            </div>
-        </div><!-- end DatosVida/Cordura -->
-        
-        <!-- ATRIBUTOS y Boton -->
-        <div class="columns mx-3 is-mobile">
-          <div class="column p-1">
-            <p class="has-text-purple has-text-centered">
-              <i class="fa-3x fas fa-book-open"></i>
-            </p>
-            <p class="contadorAtributos title is-5 has-text-centered">{{ this.saber }}</p>
-          </div>
-          <div class="column p-0">
-            <p class="has-text-orange has-text-centered">
-              <i class="fa-3x fas fa-handshake"></i>
-            </p>
-            <p class="contadorAtributos title is-5 has-text-centered">{{ this.influencia }}</p>
-          </div>
-          <div class="column p-0">
-            <p class="has-text-primary has-text-centered"><i class="fa-3x fas fa-eye"></i></p>
-            <p class="contadorAtributos title is-5 has-text-centered">{{ this.observacion }}</p>
-          </div>
-          <div class="column p-0">
-            <p class="has-text-danger has-text-centered">
-              <i class="fa-3x fas fa-fist-raised"></i>
-            </p>
-            <p class="contadorAtributos title is-5 has-text-centered">{{ this.fuerza }}</p>
-          </div>
-          <div class="column p-0">
-            <p class="has-text-info has-text-centered"><i class="fa-3x fab fa-hornbill"></i></p>
-            <p class="contadorAtributos title is-5 has-text-centered">{{ this.voluntad }}</p>
-          </div>
-        </div>
-
-        <!-- Datos -->
-        <div class="px-3">
-          <p class="has-text-white pb-1">--> {{ this.efecto1 }}</p>
-          <p class="has-text-white pb-1" v-if=" this.efecto2 != null ">--> {{ this.efecto2 }}</p>
-          <p class="has-text-white is-italic pt-2">{{this.frase}}</p>
-          <p class="has-text-white has-text-weight-semibold pt-3"> <u> Limite de concentracion</u>: {{this.limConcentracion}}</p>
-        </div>
-
-        <!-- Boton de Comenzar -->
-        <div class="columns is-mobile">
-          <div class="column is-4"></div>
-          <div class="column"><button @click="comenzar()" class="button is-success has-text-white mt-3 p-5">Comenzar!</button></div>
-          <div class="column is-4"></div>
-        </div>
-        <br />
-      </div><!-- end container  -->
+      <SeleccionPJcomponent
+        :contador="contador"
+        :datosPJactual ="datosPJactual"
+        @cambioPersonaje ="cambiaPJ"
+        @cambiarVistaHijo ="cambioVista"
+        />
     </div><!-- end SELECCION DE PJ  -->
 
     <!-- VIEW PLAY!!!!! -->
-    <div v-if="viewPlay == true">
-      <div class="container allWindow">
-        
-        <!-- IMG -->
-        <section class="hero is-small helperImgPjs" :class="[imgPersonaje]">
-          <div class="hero-body columns is-vcentered is-mobile p-0 pt-6 mt-5 pb-0">
-
-            <div class="column is-2 pl-5 p-0 has-text-grey-lighter" @click="volver(), reseteaTodo()"><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div>
-
-            <div class="column">
-              <h1 class="title titleDecoration is-4 pt-3 mb-0">
-                {{ this.nombrePJ }}
-              </h1>
-              <p class="has-background-grey-dark has-text-light has-text-centered">{{this.posicion}}</p>
-            </div>
-
-            <router-link class="column is-2 pl-2" to="/"><div class="has-text-grey-lighter"><i class="fa-2x fas fa-home"></i></div></router-link>
-          </div>
-        </section>
-
-        <!-- PACTO SINIESTRO -->
-        <div class="columns is-mobile mt-0 is-centered">
-          <h2 v-if="PactoSiniestro" @click="modalPacto = true" class="column is-4 has-background-danger has-text-centered has-text-light p-1 ">Pacto siniestro</h2>
-          <h2 v-if="EstadoMaldito" class="column is-4 has-background-warning-dark has-text-centered has-text-light p-1 ">Maldito</h2>
-          <h2 v-if="EstadoBendecido" class="column is-4 has-background-info has-text-centered has-text-light p-1 ">Bendecido</h2>
-        </div>
-
-        <!-- MODAL PACTO SINIESTRO -->
-        <div v-if="modalPacto" class="modal is-active">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-body hero is-large has-background-danger-dark py-6" id="modalPactoSiniestro">
-                <div class="hero-body py-6">
-                  <div v-if="verResultadoPacto == false">
-                    <h1 class="title is-1 has-text-centered has-text-grey-lighter titlePactosiniestro">Hora de saldar tu deuda?</h1>
-                    <button @click="tirarPacto(1), verResultadoPacto = true" class="button is-danger is-medium is-fullwidth">Tirar</button>
-                    <div class="columns is-mobile m-1 ml-0">
-                      <p class="column"></p>
-                      <button @click="modalPacto = false , this.ResultadoPacto = null" class="button column is-3 is-link p-1">Aun no</button>
-                    </div>
-                  </div>
-                  
-                  <div v-if="verResultadoPacto" >
-                    <p class="title is-1 has-text-centered has-text-white mt-2 resultadoPactosiniestro">{{ResultadoPacto}}</p>
-                    <p v-if="ResultadoPacto == 1" class="subtitle is-3 titlePactosiniestro has-text-white">Dale la vuelta a la carta y cumple con tu destino!</p>
-                    <p v-else class="subtitle is-3 titlePactosiniestro has-text-white">La proxima vez no tendrás tanta suerte ...</p>
-                    <button v-if="ResultadoPacto == 1" @click="modalPacto = false , ResultadoPacto = null, verResultadoPacto = false, PactoSiniestro = false" class="button column is-3 is-link p-1">Volver y quitar pacto siniestro</button>
-                    <button v-else @click="modalPacto = false , ResultadoPacto = null, verResultadoPacto = false " class="button column is-3 is-link p-1">Volver</button>
-                  </div>
-                </div>
-                
-              </section>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIDA Y CORDURA -->
-        <div class="columns is-mobile pt-2">
-          <!-- VIDA -->
-          <div class="column">
-            <p class="has-text-danger has-text-centered"><i class="fa-5x fas fa-heartbeat"></i></p>
-            <p class="contadorVidaCordura has-text-centered title is-3 mb-0">{{ this.vida }}</p>
-            <!-- botones + - -->
-            <div class="columns is-mobile pb-2">
-              <div class="column ml-4 pt-0">
-                <button class="button is-danger" @click="vida--">-</button>
-              </div>
-
-              <div class="column ml-3 pt-0">
-                <button class="button is-success" @click="vida++">+</button>
-              </div>
-            </div>
-          </div><!-- end VIDA -->
-          
-          <!-- CORDURA -->
-          <div class="column">
-            <p class="has-text-info has-text-centered"><i class="fa-5x fas fa-brain"></i></p>
-            <p class="contadorVidaCordura has-text-centered title is-3 mb-0">{{ this.cordura }}</p>
-            <!-- botones + - -->
-            <div class="columns is-mobile pb-2">
-              <div class="column ml-4 pt-0">
-                <button class="button is-danger" @click="cordura--">-</button>
-              </div>
-
-              <div class="column ml-3 pt-0">
-                <button class="button is-success" @click="cordura++">+</button>
-              </div>
-            </div>
-          </div><!-- end CORDURA -->
-        </div><!-- END VIDA Y CORDURA -->
-        
-        <!-- ATRIBUTOS -->
-        <div class="columns is-mobile" id="botonesAtributos">
-          <button class="column helpermaxheigth p-1 mx-2 ml-4 botonesAtributos" @click="selectAtributo(this.saber)">
-            <p class="has-text-purple"><i class="fa-3x fas fa-book-open"></i></p>
-            <p class="contadorAtributos title is-5 mb-0">{{ this.saber }}</p>
-          </button>
-
-          <button class="column helpermaxheigth p-1 mx-2" @click="selectAtributo(this.influencia)">
-            <p class="has-text-orange"><i class="fa-3x fas fa-handshake"></i></p>
-            <p class="contadorAtributos title is-5 mb-0">{{ this.influencia }}</p>
-          </button>
-
-          <button class="column helpermaxheigth p-1 mx-2" @click="selectAtributo(this.observacion)">
-            <p class="has-text-primary"><i class="fa-3x fas fa-eye"></i></p>
-            <p class="contadorAtributos title is-5 mb-0">{{ this.observacion }}</p>
-          </button>
-
-          <button class="column helpermaxheigth p-1 mx-2" @click="selectAtributo(this.fuerza)">
-            <p class="has-text-danger"><i class="fa-3x fas fa-fist-raised"></i></p>
-            <p class="contadorAtributos title is-5 mb-0">{{ this.fuerza }}</p>
-          </button>
-
-          <button class="column helpermaxheigth p-1 mx-2 mr-4" @click="selectAtributo(this.voluntad)">
-            <p class="has-text-info"><i class="fa-3x fab fa-hornbill"></i></p>
-            <p class="contadorAtributos title is-5 mb-0">{{ this.voluntad }}</p>
-          </button>
-        </div><!-- end ATRIBUTOS -->
-
-        <div><!-- Dados Extras -->
-          <p class="has-text-centered has-text-white">Dados extras</p>
-          <div class="columns is-mobile mt-2 px-6">
-            <button @click="NDeDadosExtra--" class="column py-2 px-4 mr-3">-</button>
-            <input type="number" v-model="NDeDadosExtra" class="column py-2 px-2 px-2" />
-            <button @click="NDeDadosExtra++" class="column py-2 px-4 ml-3">+</button>
-          </div>
-        </div><!-- end Dados Extras -->
-
-        <!-- BOTON DE LANZAR DADOS y MAS OPCIONES -->
-        <!-- Aqui indicamos ya el minimo del resultado que debe salir y el maximo lo indicamos con "NDeLados" -->
-        <div class="columns is-mobile mt-3">
-          <div class="column is-4"><p class="subtitle has-text-white is-6 is-italic px-2">Total de dados: {{this.NDeDadosExtra + this.NDadosAtributo}}</p></div>
-          <div class="column">
-            <button @click="tirarDados(1)" class="button is-success is-active">TIRAR!</button>
-            </div>
-          <div class="column mr-3">
-            <!-- BOTON DE MAS OPCIONES -->
-            <button v-if="masOpciones == false" @click="masOpciones = !masOpciones" class="button is-warning"> + opciones + </button>
-            <button v-if="masOpciones == true" @click="masOpciones = !masOpciones" class="button is-warning" > - opciones - </button>
-          </div>
-        </div>
-
-        <!-- AVANZADO -->
-        <Transition>
-          <div v-show="masOpciones" class=" has-background-white p-2 mt-2 pt-0">
-            <h3 class="has-text-centered has-background-warning has-text-grey-darker mb-2">Avanzado</h3>
-
-            <button @click="PactoSiniestro = !PactoSiniestro" class="checkbox mr-4 has-text-danger button">Pacto siniestro</button>
-            <button @click="Maldito()" class="checkbox mr-4 has-text-warning-dark button">Maldito</button>
-            <button @click="Bendecido()" class="checkbox has-text-info button">Bendecido</button>
-
-            <dir class="columns is-mobile mt-2">
-              <div class="column">
-                <h4 class="has-text-centered">Fatal</h4>
-                <input class="p-2 input inputsAvanzado" type="number" v-model="AvFatal" placeholder="Fatal" >
-                <input class="p-2 input inputsAvanzado" type="number" v-model="AvFatal2" placeholder="Fatal">
-                <input class="p-2 input inputsAvanzado" type="number" v-model="AvFatal3" placeholder="Fatal">
-              </div>
-              <div class="column">
-                <h4>Acierto</h4>
-                <input class="p-2 input inputsAvanzado" type="number" v-model="AvAcierto" placeholder="Acierto">
-                <input class="p-2 input inputsAvanzado" type="number" v-model="AvAcierto2" placeholder="Acierto">
-                <input class="p-2 input inputsAvanzado" type="number" v-model="AvAcierto3" placeholder="Acierto">
-              </div>
-            </dir>
-
-            <div v-if="masOpciones" class="p-2">
-              <h1 class="title">Suma total: {{ SumaDetodo }}{{ this.sumaResultado }}</h1>
-            </div>
-          </div>
-        </Transition>
-        
-        <!-- RESULTADOS -->
-        <div class="resultados mx-2">
-          <h1 class="title has-text-centered has-text-white is-3 mb-2">RESULTADOS</h1>
-          <div id="resultados-css" class="container">
-            <!-- Aqui pintamos todos los resultados, OJO!! ense;amos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
-            <div v-for="item in resultados" :key="item">
-              <!-- SI OPCIONES AVANZADAS -->
-                <p v-if="(item == AvAcierto) |(item == AvAcierto2) |(item == AvAcierto3)" class="acierto resultado-css has-text-white">{{ item }}</p>
-                <p v-else-if="(item == AvFatal) | (item == AvFatal2) | (item == AvFatal3)" class="fatal resultado-css has-text-white">{{ item }}</p>
-                <p v-else class="resultado-css has-text-white">{{ item }}</p>
-            </div>
-          </div>
-        </div>
-      </div><!-- end card - container -->
+    <div v-if="viewPJ == false">
+      <PlayAHcomponent
+      :datosPJactual ="datosPJactual"
+      @cambiarVistaHijo ="cambioVista"
+      />
     </div><!-- end VIEW PLAY -->
 
   </div>
 </template>
 
 <script>
+import SeleccionPJcomponent from "@/components/AHClasico/seleccionPJAHClasico.vue";
+import PlayAHcomponent from "@/components/AHClasico/playAHClasico.vue";
+
 export default {
   name: "PersonajesAHClasico",
+  components:{
+    SeleccionPJcomponent,
+    PlayAHcomponent
+  },
 
   data() {
     return {
-      imgPersonaje: "imgTommy",
-      nombrePJ: "Tommy MulDoon",
-      posicion: "Poli Novato",
-      vida: 7,
-      cordura: 5,
-      saber: 2,
-      influencia: 2,
-      observacion: 3,
-      fuerza: 3,
-      voluntad: 3,
-      dinero: 2,
-      limConcentracion: 2,
-      efecto1: "Protector: Si un Mounstruo va a enfrentarse a otro investigador en tu espacio, puedes enfrentarte tu a ese Mounstro en su lugar.",
-      efecto2: null,
-      frase: '“Vamos allá, Tommy. Es hora de hacerse el héroe.”',
-      historia: "Los Muldoon habian servido en el cuerpo de policia durante generaciones, y Tommy no hiba a ser menos. Fue el orgullo de su familia cuando se graduo en la academia de boston. Por eso no hizo mucha gracia que lo transladasen a la comisaria de Arkham; despues de todo ¿ que podia ocurrir en aquel pueblucho compararo con los crimenes que habria sido capaz de resolver en boston? Al final resulto que el trabajo policial en arkham no estaba exento de interes, despues de todo. Habia mchos sucesos inexplicables, y la policia local parecia mas interesada en aparentar normalidad que en buscar una solucion. Asiq e tommy echo mano a Becky, el rifle de s abuelo, y se dispuso a buscar soluciones por su cuenta ...",
-      arquetipo1: "Como DEFENSOR, tu responsavilidad consiste en proteger a tus compañeros investigadores. Esto podria significar aydarles a recuperarse de daños fisicos y mentales, o bien despachar Mounstruos antes de que se conviertan en una amenaza.",
-      arquetipo2: "Como SUPERVIVIENTE, tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducira a la victoria",
-      Pertenencia1: "Becky",
-      Pertenencia2: null,
-      Pertenencia3: "Esposas",
-      Pertenencia4: "Motocicleta",
+      datosPJactual:{
+        imgPersonaje: "imgTommy",
+        nombrePJ: "Tommy MulDoon",
+        posicion: "Poli Novato",
+        vida: 7,
+        cordura: 5,
+        saber: 2,
+        influencia: 2,
+        observacion: 3,
+        fuerza: 3,
+        voluntad: 3,
+        dinero: 2,
+        limConcentracion: 2,
+        efecto1: "Protector: Si un Mounstruo va a enfrentarse a otro investigador en tu espacio, puedes enfrentarte tu a ese Mounstro en su lugar.",
+        efecto2: null,
+        frase: '“Vamos allá, Tommy. Es hora de hacerse el héroe.”',
+        historia: "Los Muldoon habian servido en el cuerpo de policia durante generaciones, y Tommy no hiba a ser menos. Fue el orgullo de su familia cuando se graduo en la academia de boston. Por eso no hizo mucha gracia que lo transladasen a la comisaria de Arkham; despues de todo ¿ que podia ocurrir en aquel pueblucho compararo con los crimenes que habria sido capaz de resolver en boston? Al final resulto que el trabajo policial en arkham no estaba exento de interes, despues de todo. Habia mchos sucesos inexplicables, y la policia local parecia mas interesada en aparentar normalidad que en buscar una solucion. Asiq e tommy echo mano a Becky, el rifle de s abuelo, y se dispuso a buscar soluciones por su cuenta ...",
+        arquetipo1: "Como DEFENSOR, tu responsavilidad consiste en proteger a tus compañeros investigadores. Esto podria significar aydarles a recuperarse de daños fisicos y mentales, o bien despachar Mounstruos antes de que se conviertan en una amenaza.",
+        arquetipo2: "Como SUPERVIVIENTE, tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducira a la victoria",
+        Pertenencia1: "Becky",
+        Pertenencia2: null,
+        Pertenencia3: "Esposas",
+        Pertenencia4: "Motocicleta",
+      },
+      
       Personajes: [
         {nombrePJ: "Tommy Muldoon",
           posicion: "Poli Novato",
@@ -703,397 +369,68 @@ export default {
           Pertenencia4: "Sinergia" ,
         },
       ],
-      // SELECCION DE PERSONAJE
-      ModalHistoria: false,
-      ModalPertenencias: false,
-      ModalArquetipo: false,
 
-      // TIRADA DE DADOS
-      NDadosAtributo: 0,
-      NDeDadosExtra: 0,
-      resultados: [1, 6, 5, 4],
-      sumaResultado: 0,
-
-      masOpciones: false,
-      // estados
-      EstadoBendecido: false,
-      EstadoMaldito: false,
-      // pacto siniestro
-      modalPacto:false,
-      PactoSiniestro:false,
-      verResultadoPacto: false,
-      ResultadoPacto: null,
-      // aciertos fatal
-      AvAcierto: 6,
-      AvAcierto2: 5,
-      AvAcierto3: null,
-      AvFatal: 1,
-      AvFatal2: null,
-      AvFatal3: null,
-
-      contador: "1",
+      contador: "0",
       viewPJ: true,
-      viewPlay: false,
+      // viewPlay: false,
     }; // end return
   }, // end data
+  updated(){
+    this.datosPJactual.nombrePJ = this.Personajes[this.contador].nombrePJ;
+    this.datosPJactual.posicion = this.Personajes[this.contador].posicion;
+    this.datosPJactual.vida = this.Personajes[this.contador].vida;
+    this.datosPJactual.cordura = this.Personajes[this.contador].cordura;
+    this.datosPJactual.saber = this.Personajes[this.contador].saber;
+    this.datosPJactual.influencia = this.Personajes[this.contador].influencia;
+    this.datosPJactual.observacion = this.Personajes[this.contador].observacion;
+    this.datosPJactual.fuerza = this.Personajes[this.contador].fuerza;
+    this.datosPJactual.voluntad = this.Personajes[this.contador].voluntad;
+    this.datosPJactual.limConcentracion = this.Personajes[this.contador].limConcentracion;
+    this.datosPJactual.efecto1 = this.Personajes[this.contador].efecto1;
+    this.datosPJactual.efecto2 = this.Personajes[this.contador].efecto2;
+    this.datosPJactual.frase = this.Personajes[this.contador].frase;
+    this.datosPJactual.historia = this.Personajes[this.contador].historia;
+    this.datosPJactual.Pertenencia1 = this.Personajes[this.contador].Pertenencia1;
+    this.datosPJactual.Pertenencia2 = this.Personajes[this.contador].Pertenencia2;
+    this.datosPJactual.Pertenencia3 = this.Personajes[this.contador].Pertenencia3;
+    this.datosPJactual.Pertenencia4 = this.Personajes[this.contador].Pertenencia4;
+    this.datosPJactual.arquetipo1 = this.Personajes[this.contador].arquetipo1;
+    this.datosPJactual.arquetipo2 = this.Personajes[this.contador].arquetipo2;
+
+    if (this.contador == 0)      {this.datosPJactual.imgPersonaje = "imgTommy"} 
+    else if (this.contador == 1) {this.datosPJactual.imgPersonaje = "imgMarie"} 
+    else if (this.contador == 2) {this.datosPJactual.imgPersonaje = "imgJenny"} 
+    else if (this.contador == 3) {this.datosPJactual.imgPersonaje = "imgDexter"} 
+    else if (this.contador == 4) {this.datosPJactual.imgPersonaje = "imgWendy"} 
+    else if (this.contador == 5) {this.datosPJactual.imgPersonaje = "imgRex"} 
+    else if (this.contador == 6) {this.datosPJactual.imgPersonaje = "imgCalvin"} 
+    else if (this.contador == 7) {this.datosPJactual.imgPersonaje = "imgAgnes"} 
+    else if (this.contador == 8) {this.datosPJactual.imgPersonaje = "imgMichael"} 
+    else if (this.contador == 9) {this.datosPJactual.imgPersonaje = "imgDaniela"} 
+    else if (this.contador == 10) {this.datosPJactual.imgPersonaje = "imgNorman"} 
+    else if (this.contador == 11) {this.datosPJactual.imgPersonaje = "imgMinh"}
+  },
 
   methods: {
-    cambiaPJ() {
-      if (this.contador == 1) {
-        this.imgPersonaje = "imgTommy";
-        this.nombrePJ = this.Personajes[0].nombrePJ;
-        this.posicion = this.Personajes[0].posicion;
-        this.vida = this.Personajes[0].vida;
-        this.cordura = this.Personajes[0].cordura;
-        this.saber = this.Personajes[0].saber;
-        this.influencia = this.Personajes[0].influencia;
-        this.observacion = this.Personajes[0].observacion;
-        this.fuerza = this.Personajes[0].fuerza;
-        this.voluntad = this.Personajes[0].voluntad;
-
-        this.limConcentracion = this.Personajes[0].limConcentracion;
-        this.efecto1 = this.Personajes[0].efecto1;
-        this.efecto2 = this.Personajes[0].efecto2;
-        this.frase = this.Personajes[0].frase;
-
-        this.Pertenencia1 = this.Personajes[0].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[0].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[0].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[0].Pertenencia4;
-
-        this.arquetipo1 = this.Personajes[0].arquetipo1;
-        this.arquetipo2 = this.Personajes[0].arquetipo2;
-      } else if (this.contador == 2) {
-        this.imgPersonaje = "imgMarie";
-        this.nombrePJ = this.Personajes[1].nombrePJ;
-        this.posicion = this.Personajes[1].posicion;
-        this.vida = this.Personajes[1].vida;
-        this.cordura = this.Personajes[1].cordura;
-        this.saber = this.Personajes[1].saber;
-        this.influencia = this.Personajes[1].influencia;
-        this.observacion = this.Personajes[1].observacion;
-        this.fuerza = this.Personajes[1].fuerza;
-        this.voluntad = this.Personajes[1].voluntad;
-        this.limConcentracion = this.Personajes[1].limConcentracion;
-        this.efecto1 = this.Personajes[1].efecto1;
-        this.efecto2 = this.Personajes[1].efecto2;
-        this.frase = this.Personajes[1].frase;
-        this.historia = this.Personajes[1].historia;
-        this.Pertenencia1 = this.Personajes[1].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[1].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[1].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[1].Pertenencia4;
-        this.arquetipo1 = this.Personajes[1].arquetipo1;
-        this.arquetipo2 = this.Personajes[1].arquetipo2;
-      } else if (this.contador == 3) {
-        this.imgPersonaje = "imgJenny";
-        this.nombrePJ = this.Personajes[2].nombrePJ;
-        this.posicion = this.Personajes[2].posicion;
-        this.vida = this.Personajes[2].vida;
-        this.cordura = this.Personajes[2].cordura;
-        this.saber = this.Personajes[2].saber;
-        this.influencia = this.Personajes[2].influencia;
-        this.observacion = this.Personajes[2].observacion;
-        this.fuerza = this.Personajes[2].fuerza;
-        this.voluntad = this.Personajes[2].voluntad;
-        this.limConcentracion = this.Personajes[2].limConcentracion;
-        this.efecto1 = this.Personajes[2].efecto1;
-        this.efecto2 = this.Personajes[2].efecto2;
-        this.frase = this.Personajes[2].frase;
-        this.historia = this.Personajes[2].historia;
-        this.Pertenencia1 = this.Personajes[2].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[2].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[2].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[2].Pertenencia4;
-        this.arquetipo1 = this.Personajes[2].arquetipo1;
-        this.arquetipo2 = this.Personajes[2].arquetipo2;
-      } else if (this.contador == 4) {
-        this.imgPersonaje = "imgDexter";
-        this.nombrePJ = this.Personajes[3].nombrePJ;
-        this.posicion = this.Personajes[3].posicion;
-        this.vida = this.Personajes[3].vida;
-        this.cordura = this.Personajes[3].cordura;
-        this.saber = this.Personajes[3].saber;
-        this.influencia = this.Personajes[3].influencia;
-        this.observacion = this.Personajes[3].observacion;
-        this.fuerza = this.Personajes[3].fuerza;
-        this.voluntad = this.Personajes[3].voluntad;
-        this.limConcentracion = this.Personajes[3].limConcentracion;
-        this.efecto1 = this.Personajes[3].efecto1;
-        this.efecto2 = this.Personajes[3].efecto2;
-        this.frase = this.Personajes[3].frase;
-        this.historia = this.Personajes[3].historia;
-        this.Pertenencia1 = this.Personajes[3].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[3].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[3].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[3].Pertenencia4;
-        this.arquetipo1 = this.Personajes[3].arquetipo1;
-        this.arquetipo2 = this.Personajes[3].arquetipo2;
-      } else if (this.contador == 5) {
-        this.imgPersonaje = "imgWendy";
-        this.nombrePJ = this.Personajes[4].nombrePJ;
-        this.posicion = this.Personajes[4].posicion;
-        this.vida = this.Personajes[4].vida;
-        this.cordura = this.Personajes[4].cordura;
-        this.saber = this.Personajes[4].saber;
-        this.influencia = this.Personajes[4].influencia;
-        this.observacion = this.Personajes[4].observacion;
-        this.fuerza = this.Personajes[4].fuerza;
-        this.voluntad = this.Personajes[4].voluntad;
-        this.limConcentracion = this.Personajes[4].limConcentracion;
-        this.efecto1 = this.Personajes[4].efecto1;
-        this.efecto2 = this.Personajes[4].efecto2;
-        this.frase = this.Personajes[4].frase;
-        this.historia = this.Personajes[4].historia;
-        this.Pertenencia1 = this.Personajes[4].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[4].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[4].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[4].Pertenencia4;
-        this.arquetipo1 = this.Personajes[4].arquetipo1;
-        this.arquetipo2 = this.Personajes[4].arquetipo2;
-      } else if (this.contador == 6) {
-        this.imgPersonaje = "imgRex";
-        this.nombrePJ = this.Personajes[5].nombrePJ;
-        this.posicion = this.Personajes[5].posicion;
-        this.vida = this.Personajes[5].vida;
-        this.cordura = this.Personajes[5].cordura;
-        this.saber = this.Personajes[5].saber;
-        this.influencia = this.Personajes[5].influencia;
-        this.observacion = this.Personajes[5].observacion;
-        this.fuerza = this.Personajes[5].fuerza;
-        this.voluntad = this.Personajes[5].voluntad;
-        this.limConcentracion = this.Personajes[5].limConcentracion;
-        this.efecto1 = this.Personajes[5].efecto1;
-        this.efecto2 = this.Personajes[5].efecto2;
-        this.frase = this.Personajes[5].frase;
-        this.historia = this.Personajes[5].historia;
-        this.Pertenencia1 = this.Personajes[5].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[5].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[5].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[5].Pertenencia4;
-        this.arquetipo1 = this.Personajes[5].arquetipo1;
-        this.arquetipo2 = this.Personajes[5].arquetipo2;
-      } else if (this.contador == 7) {
-        this.imgPersonaje = "imgCalvin";
-        this.nombrePJ = this.Personajes[6].nombrePJ;
-        this.posicion = this.Personajes[6].posicion;
-        this.vida = this.Personajes[6].vida;
-        this.cordura = this.Personajes[6].cordura;
-        this.saber = this.Personajes[6].saber;
-        this.influencia = this.Personajes[6].influencia;
-        this.observacion = this.Personajes[6].observacion;
-        this.fuerza = this.Personajes[6].fuerza;
-        this.voluntad = this.Personajes[6].voluntad;
-        this.limConcentracion = this.Personajes[6].limConcentracion;
-        this.efecto1 = this.Personajes[6].efecto1;
-        this.efecto2 = this.Personajes[6].efecto2;
-        this.frase = this.Personajes[6].frase;
-        this.historia = this.Personajes[6].historia;
-        this.Pertenencia1 = this.Personajes[6].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[6].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[6].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[6].Pertenencia4;
-        this.arquetipo1 = this.Personajes[6].arquetipo1;
-        this.arquetipo2 = this.Personajes[6].arquetipo2;
-      } else if (this.contador == 8) {
-        this.imgPersonaje = "imgAgnes";
-        this.nombrePJ = this.Personajes[7].nombrePJ;
-        this.posicion = this.Personajes[7].posicion;
-        this.vida = this.Personajes[7].vida;
-        this.cordura = this.Personajes[7].cordura;
-        this.saber = this.Personajes[7].saber;
-        this.influencia = this.Personajes[7].influencia;
-        this.observacion = this.Personajes[7].observacion;
-        this.fuerza = this.Personajes[7].fuerza;
-        this.voluntad = this.Personajes[7].voluntad;
-        this.limConcentracion = this.Personajes[7].limConcentracion;
-        this.efecto1 = this.Personajes[7].efecto1;
-        this.efecto2 = this.Personajes[7].efecto2;
-        this.frase = this.Personajes[7].frase;
-        this.historia = this.Personajes[7].historia;
-        this.Pertenencia1 = this.Personajes[7].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[7].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[7].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[7].Pertenencia4;
-        this.arquetipo1 = this.Personajes[7].arquetipo1;
-        this.arquetipo2 = this.Personajes[7].arquetipo2;
-      } else if (this.contador == 9) {
-        this.imgPersonaje = "imgMichael";
-        this.nombrePJ = this.Personajes[8].nombrePJ;
-        this.posicion = this.Personajes[8].posicion;
-        this.vida = this.Personajes[8].vida;
-        this.cordura = this.Personajes[8].cordura;
-        this.saber = this.Personajes[8].saber;
-        this.influencia = this.Personajes[8].influencia;
-        this.observacion = this.Personajes[8].observacion;
-        this.fuerza = this.Personajes[8].fuerza;
-        this.voluntad = this.Personajes[8].voluntad;
-        this.limConcentracion = this.Personajes[8].limConcentracion;
-        this.efecto1 = this.Personajes[8].efecto1;
-        this.efecto2 = this.Personajes[8].efecto2;
-        this.frase = this.Personajes[8].frase;
-        this.historia = this.Personajes[8].historia;
-        this.Pertenencia1 = this.Personajes[8].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[8].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[8].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[8].Pertenencia4;
-        this.arquetipo1 = this.Personajes[8].arquetipo1;
-        this.arquetipo2 = this.Personajes[8].arquetipo2;
-      } else if (this.contador == 10) {
-        this.imgPersonaje = "imgDaniela";
-        this.nombrePJ = this.Personajes[9].nombrePJ;
-        this.posicion = this.Personajes[9].posicion;
-        this.vida = this.Personajes[9].vida;
-        this.cordura = this.Personajes[9].cordura;
-        this.saber = this.Personajes[9].saber;
-        this.influencia = this.Personajes[9].influencia;
-        this.observacion = this.Personajes[9].observacion;
-        this.fuerza = this.Personajes[9].fuerza;
-        this.voluntad = this.Personajes[9].voluntad;
-        this.limConcentracion = this.Personajes[9].limConcentracion;
-        this.efecto1 = this.Personajes[9].efecto1;
-        this.efecto2 = this.Personajes[9].efecto2;
-        this.frase = this.Personajes[9].frase;
-        this.historia = this.Personajes[9].historia;
-        this.Pertenencia1 = this.Personajes[9].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[9].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[9].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[9].Pertenencia4;
-        this.arquetipo1 = this.Personajes[9].arquetipo1;
-        this.arquetipo2 = this.Personajes[9].arquetipo2;
-      } else if (this.contador == 11) {
-        this.imgPersonaje = "imgNorman";
-        this.nombrePJ = this.Personajes[10].nombrePJ;
-        this.posicion = this.Personajes[10].posicion;
-        this.vida = this.Personajes[10].vida;
-        this.cordura = this.Personajes[10].cordura;
-        this.saber = this.Personajes[10].saber;
-        this.influencia = this.Personajes[10].influencia;
-        this.observacion = this.Personajes[10].observacion;
-        this.fuerza = this.Personajes[10].fuerza;
-        this.voluntad = this.Personajes[10].voluntad;
-        this.limConcentracion = this.Personajes[10].limConcentracion;
-        this.efecto1 = this.Personajes[10].efecto1;
-        this.efecto2 = this.Personajes[10].efecto2;
-        this.frase = this.Personajes[10].frase;
-        this.historia = this.Personajes[10].historia;
-        this.Pertenencia1 = this.Personajes[10].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[10].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[10].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[10].Pertenencia4;
-        this.arquetipo1 = this.Personajes[10].arquetipo1;
-        this.arquetipo2 = this.Personajes[10].arquetipo2;
-      } else if (this.contador == 12) {
-        this.imgPersonaje = "imgMinh";
-        this.nombrePJ = this.Personajes[11].nombrePJ;
-        this.posicion = this.Personajes[11].posicion;
-        this.vida = this.Personajes[11].vida;
-        this.cordura = this.Personajes[11].cordura;
-        this.saber = this.Personajes[11].saber;
-        this.influencia = this.Personajes[11].influencia;
-        this.observacion = this.Personajes[11].observacion;
-        this.fuerza = this.Personajes[11].fuerza;
-        this.voluntad = this.Personajes[11].voluntad;
-        this.limConcentracion = this.Personajes[11].limConcentracion;
-        this.efecto1 = this.Personajes[11].efecto1;
-        this.efecto2 = this.Personajes[11].efecto2;
-        this.frase = this.Personajes[11].frase;
-        this.historia = this.Personajes[11].historia;
-        this.Pertenencia1 = this.Personajes[11].Pertenencia1;
-        this.Pertenencia2 = this.Personajes[11].Pertenencia2;
-        this.Pertenencia3 = this.Personajes[11].Pertenencia3;
-        this.Pertenencia4 = this.Personajes[11].Pertenencia4;
-        this.arquetipo1 = this.Personajes[11].arquetipo1;
-        this.arquetipo2 = this.Personajes[11].arquetipo2;
-      }
-    }, // end cambiaMapa
-    VerDatos(verdato){
-        if (verdato == 'Historia') {
-          this.ModalHistoria = true;
-      } else if (verdato == 'Pertenencias'){
-          this.ModalPertenencias = true;
-      } else if (verdato == 'Arquetipo'){
-          this.ModalArquetipo = true;
-      } else{
-        this.ModalHistoria = false;
-        this.ModalPertenencias = false;
-        this.ModalArquetipo = false;
-      }
-    },
-    comenzar() {
-      this.viewPJ = false;
-      this.viewPlay = true;
-    },
-    volver() {
-      this.viewPJ = true;
-      this.viewPlay = false;
-    },
-    selectAtributo(dato) {
-      this.NDadosAtributo = dato;
-    },
-    // TIRADA DE DADOS
-    async tirarDados(min) {
-      let max = 6; // maximo de lados de dados
-      let totalDados = this.NDadosAtributo + this.NDeDadosExtra;
-      await this.vaciarArray(); // vaciamos el array de resultados
-      for (let i = 0; i < totalDados; i++) {
-        // un bucle normal
-        this.resultado = Math.floor(Math.random() * (min, max)) + min;
-        console.log(this.resultado);
-        this.resultados.push(this.resultado); // en cada vuelta metemos el resultado ene l array
-      }
-    },
-    Bendecido(){
-      this.EstadoBendecido = !this.EstadoBendecido
-      if (this.EstadoBendecido == true) {
-        this.AvAcierto2 = 5;
-        this.AvAcierto3 = 4
+    cambiaPJ(seleccionMenosMas) {
+      if (seleccionMenosMas == 'mas') {
+        this.contador ++
+      } else if(seleccionMenosMas == 'menos'){
+        this.contador --
       } else {
-        this.AvAcierto3 = null
+        alert("Algo ha ido mal..")
       }
-    },
-    Maldito(){
-      this.EstadoMaldito = !this.EstadoMaldito
-      if (this.EstadoMaldito == true) {
-        this.AvAcierto2 = null;
-        this.AvAcierto3 = null
-      }else {
-        this.AvAcierto2 = 5
-      }
-    },
-    tirarPacto(min){
-      let max = 6; // maximo de lados de dados
-      this.ResultadoPacto = Math.floor(Math.random() * (min, max)) + min;
-      console.log(this.ResultadoPacto);
-    },
-    vaciarArray: function () {
-      this.resultados = []; // vaciamos el array de resultado
-      this.sumaResultado = 0;
-    },
-    reseteaTodo(){
-      this.EstadoBendecido = false;
-      this.EstadoMaldito = false;
-      this.AvAcierto2 = 5;
-      this.AvAcierto3 = null;
-      this.PactoSiniestro  = false;
-      this.NDadosAtributo = 0;
-      this.NDeDadosExtra = 0
-    },
-  }, // end methods
-  computed: {
-    SumaDetodo: function () {
-      for (let i = 0; i < this.resultados.length; i++) {
-        this.sumaResultado += this.resultados[i];
-      }
-    },
-  },
-  watch: {}
+    }, // end cambiaPJ
+    cambioVista(ValueCambiarVista){
+      this.viewPJ = ValueCambiarVista
+    } // end cambioVista
 
+  }, // end methods
 };
 </script>
 
 
-<style scoped>
+<style >
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap");
 
 @font-face{
@@ -1130,9 +467,6 @@ export default {
 .inputsAvanzado{
   max-width: 20vh;
 }
-/* #botonesAtributos button {
-  background-color: chartreuse;
-} */
 
 /* HELPERS */
 /* Necesario para las transiciones */
