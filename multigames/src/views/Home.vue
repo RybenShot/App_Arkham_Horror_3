@@ -8,7 +8,7 @@
           <img
             id="imgTitleAH"
             class="column p-0"
-            src="../assets/img/TituloArkhamHorrorEDITADO.png"
+            src="../assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png"
             alt=""
           />
           <p class="column"></p>
@@ -27,7 +27,7 @@
             <div class="columns is-mobile box p-1 m-1 helperCards1234 card1">
               <div class="column p-1 is-one-third">
                 <img
-                  src="../assets/img/Games/ArkhamHorror/cajaAHClasico.png"
+                  src="../assets/img/Games/AHBase/cajaAHClasico.png"
                   alt="Arkham Horror Caja Clasico"
                   class="cajasimg"
                 />
@@ -58,7 +58,7 @@
               </div>
               <div class="column p-1 is-one-third">
                 <img
-                  src="../assets/img/Games/ArkhamHorror/cajaAHMareasTenebrosas.png"
+                  src="../assets/img/Games/AHMareasTenebrosas/cajaAHMareasTenebrosas.png"
                   alt="Arkham Horror Caja Clasico"
                   class="cajasimg"
                 />
@@ -71,7 +71,7 @@
             <div class="columns is-mobile box p-1 m-1 helperCards1234 card3">
               <div class="column p-1 is-one-third">
                 <img
-                  src="../assets/img/Games/ArkhamHorror/cajaAHNocheCerrada.png"
+                  src="../assets/img/Games/AHNocheCerrada/cajaAHNocheCerrada.png"
                   alt="Arkham Horror Caja Clasico"
                   class="cajasimg"
                 />
@@ -102,7 +102,7 @@
               </div>
               <div class="column p-1 is-one-third">
                 <img
-                  src="../assets/img/Games/ArkhamHorror/cajaAHSecretosDeLaOrden.png"
+                  src="../assets/img/Games/AHSecretosDeLaOrden/cajaAHSecretosDeLaOrden.png"
                   alt="Arkham Horror Caja Clasico"
                   class="cajasimg"
                 />
@@ -174,16 +174,16 @@ export default {
   border-radius: 0px;
 }
 .card1 {
-  background-image: url(../assets/img/SeleccionarMapa.jpg);
+  background-image: url(../assets/img/Games/AHBase/SeleccionarMapa.jpg);
 }
 .card2 {
-  background-image: url(../assets/img/SeleccionarMapa4.jpg);
+  background-image: url(../assets/img/Games/AHMareasTenebrosas/SeleccionarMapa4.jpg);
 }
 .card3 {
-  background-image: url(../assets/img/SeleccionarMapa2.jpg);
+  background-image: url(../assets/img/Games/AHNocheCerrada/SeleccionarMapa2.jpg);
 }
 .card4 {
-  background-image: url(../assets/img/SeleccionarMapa3.jpg);
+  background-image: url(../assets/img/Games/AHSecretosDeLaOrden/SeleccionarMapa3.jpg);
 }
 
 #BGAHHome {

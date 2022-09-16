@@ -4,7 +4,7 @@
     <router-link to="/">
       <div class="hero-body columns is-mobile p-4 m-0">
         <p class="f-x2 column is-one-fifth p-0"></p>
-        <img id="imgTitleAH" class="column p-0" src="../assets/img/TituloArkhamHorrorEDITADO.png" alt=""/>
+        <img id="imgTitleAH" class="column p-0" src="../assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png" alt=""/>
         <p class="column is-one-fifth p-0"></p>
       </div>
     </router-link>
@@ -35,8 +35,8 @@
 </template>
 
 <script>
-  import Mapascomponent from "@/components/AHClasico/mapasAHClasico.vue";
-  import Enemigoscomponent from "@/components/AHClasico/enemigosAHClasico.vue";
+  import Mapascomponent from "@/components/AHBase/mapasAHBase.vue";
+  import Enemigoscomponent from "@/components/AHBase/enemigosAHBase.vue";
 
 export default {
   name: "View Mapas AH Clasico",
@@ -114,8 +114,8 @@ export default {
   background-position: center;
   background-size: cover;
 }
-.BGGameGeneralMapa1 {background-image: url(../assets/img/Games/ArkhamHorror/BG1MapaArkham.jpg);}
-.BGGameGeneralMapa2 {background-image: url(../assets/img/Games/ArkhamHorror/BG2MapaArkham.jpg);}
-.BGGameGeneralMapa3 {background-image: url(../assets/img/Games/ArkhamHorror/BG3MapaArkham.jpg);}
-.BGGameGeneralMapa4 {background-image: url(../assets/img/Games/ArkhamHorror/BG4MapaArkham.jpg);}
+.BGGameGeneralMapa1 {background-image: url(../assets/img/Games/AHBase/1imgMapas/BG1MapaArkham.jpg);}
+.BGGameGeneralMapa2 {background-image: url(../assets/img/Games/AHBase/1imgMapas/BG2MapaArkham.jpg);}
+.BGGameGeneralMapa3 {background-image: url(../assets/img/Games/AHBase/1imgMapas/BG3MapaArkham.jpg);}
+.BGGameGeneralMapa4 {background-image: url(../assets/img/Games/AHBase/1imgMapas/BG4MapaArkham.jpg);}
 </style>>

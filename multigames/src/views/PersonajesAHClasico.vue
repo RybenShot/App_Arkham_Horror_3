@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import SeleccionPJcomponent from "@/components/AHClasico/seleccionPJAHClasico.vue";
-import PlayAHcomponent from "@/components/AHClasico/playAHClasico.vue";
+import SeleccionPJcomponent from "@/components/AHBase/seleccionPJAHBase.vue";
+import PlayAHcomponent from "@/components/AHBase/playAHBase.vue";
 
 export default {
   name: "PersonajesAHClasico",
@@ -503,7 +503,7 @@ export default {
 }
 
 .BGGeneralAH {
-  background-image: url(../assets/img/Games/ArkhamHorror/BGGeneralAH.jpg);
+  background-image: url(../assets/img/ZZOtros/BGGeneralAH.jpg);
   min-height: 110vh;
   background-position: center;
   background-size: cover;
@@ -519,18 +519,18 @@ export default {
   background-position: center;
   background-size: cover;
 }
-.imgTommy {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ1.png);}
-.imgMarie {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ2.jpg);}
-.imgJenny {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ3.png);}
-.imgDexter {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ4.png);}
-.imgWendy {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ5.jpg);}
-.imgRex {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ6.jpg);}
-.imgCalvin {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ7.jpg);}
-.imgAgnes {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ8.jpg);}
-.imgMichael {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ9.jpg);}
-.imgDaniela {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ10.jpg);}
-.imgNorman {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ11.jpg);}
-.imgMinh {background-image: url(../assets/img/Games/ArkhamHorror/imgPersonajes/Clasico/PJ12.jpg);}
+.imgTommy {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ1.png);}
+.imgMarie {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ2.jpg);}
+.imgJenny {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ3.png);}
+.imgDexter {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ4.png);}
+.imgWendy {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ5.jpg);}
+.imgRex {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ6.jpg);}
+.imgCalvin {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ7.jpg);}
+.imgAgnes {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ8.jpg);}
+.imgMichael {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ9.jpg);}
+.imgDaniela {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ10.jpg);}
+.imgNorman {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ11.jpg);}
+.imgMinh {background-image: url(../assets/img/Games/AHBase/2imgInvestigadores/PJ12.jpg);}
 
 /* colores para atributos */
 .has-text-purple {

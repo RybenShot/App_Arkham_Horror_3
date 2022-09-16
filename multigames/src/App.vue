@@ -40,7 +40,6 @@ nav a.router-link-exact-active {
 }
 
 .BGJuegos {
-  background-image: url("https://img.freepik.com/free-vector/white-gold-hexagon-pattern-background_53876-115292.jpg?w=2000");
   min-height: 100vh;
   background-position: center;
   background-size: cover;
