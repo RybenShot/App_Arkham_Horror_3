@@ -27,7 +27,7 @@
     <!-- SELECCION DE PERSONAJE -->
     <router-link to="/PersonajesAHClasico">
       <div class="mt-3">
-        <p class="subtitle titleDecoration has-text-right is-5 py-3">Ir a seleccion de personaje <i class="fa-2x fas fa-forward"></i></p>
+        <p class="subtitle has-text-white has-text-right is-5 py-3">Ir a seleccion de personaje <i class="fa-2x fas fa-forward"></i></p>
       </div>
       <!-- end seleccion de personaje  -->
     </router-link>
@@ -91,10 +91,10 @@ export default {
 }
 
 .titleDecoration {
-  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+  -webkit-text-stroke: 0,1px rgb(255, 255, 255)!important;
   color: black;
   font-family: "Roboto Flex", sans-serif;
-  font-weight: 800;
+  font-size: 2rem!important;
   text-align: center;
 }
 

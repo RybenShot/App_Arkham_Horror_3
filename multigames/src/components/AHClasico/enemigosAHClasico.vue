@@ -8,9 +8,9 @@
         <div v-if="this.contador == 1">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa1" :key="item.id">
-              <div style="max-width: 100px" class="mx-1">
+              <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
-                <p class="has-text-white pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-white  titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -19,9 +19,9 @@
         <div v-if="this.contador == 2">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa2" :key="item.id">
-              <div style="max-width: 100px" class="mx-1">
+              <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
-                <p class="has-text-white pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -30,9 +30,9 @@
         <div v-if="this.contador == 3">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa3" :key="item.id">
-              <div style="max-width: 100px" class="mx-1">
+              <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
-                <p class="has-text-white pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -41,9 +41,9 @@
         <div v-if="this.contador == 4">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa4" :key="item.id">
-              <div style="max-width: 100px" class="mx-1">
+              <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
-                <p class="has-text-white pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@
             <div v-for="item in EnemigosExtrasMapa2" :key="item.id">
               <div style="max-width: 100px" class="mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" width="100" />
-                <p class="has-text-white pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@
             <div v-for="item in EnemigosExtrasMapa3" :key="item.id">
               <div style="max-width: 100px" class="mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" width="100" />
-                <p class="has-text-white pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -177,7 +177,21 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+@font-face {
+  font-family: tituloEnemigos;
+  src: url("@/assets/fonts/enemigos/tipografiaEnemigos.ttf");
+}
+
+.titleDecoration2 {
+  -webkit-text-stroke: 0,1px rgb(255, 255, 255)!important;
+  color: black;
+  font-family: "tituloEnemigos", sans-serif;
+  letter-spacing: 1px;
+  line-height: 1rem;
+  font-size: 0.8rem!important;
+  text-align: center;
+}
 
 /* ENEMIGOS */
 #enemisList {

@@ -156,7 +156,7 @@ export default {
   color: black;
   font-family: "tituloSeleccion";
   font-weight: 500;
-  font-size: 10vh;
+  font-size: 10vh!important;
   letter-spacing: 2px;
   text-align: center;
   text-shadow: 0px 0px 20px rgb(30, 255, 0);
