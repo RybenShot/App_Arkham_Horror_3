@@ -1,0 +1,45 @@
+
+@media only screen and (min-width: 1201px){
+  /* PANORAMICOS */
+  #VistaNoValida{
+  
+  }
+  #VistaMovil{
+    display: none
+  }
+
+}
+@media (min-width: 769px) and (max-width: 1200px){
+  /* NORMALES */
+  #VistaNoValida{
+    background-color: rgb(31, 184, 100);
+  }
+  #VistaMovil{
+    display: none
+  }
+}
+
+@media (min-width: 500px) and (max-width: 768px){
+  /* TABLETS */
+  #VistaNoValida{
+    background-color: rgb(121, 2, 2)!important;
+  }
+  #VistaMovil{
+    display: none
+  }
+}
+
+@media only screen and (max-width: 499px){
+  /* MOVIL */
+  #VistaMovil{
+    background-image: url(../assets/img/ZZOtros/banckgroundVDemo.jpg);
+    min-height: 100vh;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    /* background-color: rgb(231, 141, 141)!important; */
+  }
+  #VistaNoValida{
+    display: none;
+  }
+}

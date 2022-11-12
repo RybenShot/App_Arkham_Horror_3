@@ -14,15 +14,17 @@
       <div  class="BGGrisBig mx-3 pt-3 container">
 
         <div class="mb-5 mx-3 p-5 pt-6" id="heroAHClasico">
-          <h2 class="BGGrisSmall title py-4">Arkham Horror Clasico</h2>
+          <h2 class="BGGrisSmall title py-4">Arkham Horror Base</h2>
         </div>
-        
-        <div class="control has-icons-left mx-4 my-4 px-4">
-          <input class="input" type="search" placeholder="Buscar Carta">
-          <span class="icon is-small is-left mx-4">
-            <i class="fas fa-search "></i>
-          </span>
-        </div> 
+         
+        <!-- <router-link to="/enproceso">
+          <div class="control has-icons-left mx-4 my-4 px-4">
+            <input class="input" type="search" placeholder="Buscar Carta">
+            <span class="icon is-small is-left mx-4">
+              <i class="fas fa-search "></i>
+            </span>
+          </div>
+        </router-link> -->
       
         <router-link to="/MapasAHClasico">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonSeleccionarMapa">
@@ -42,6 +44,22 @@
           </div>
         </router-link>
 
+
+<!-- PRUEBAS CON EL STATE -->
+        <!-- <div>
+          <h1 class="has-text-centered has-text-white">Aqui vamos a hacer cositas</h1>
+          <br>
+            <div class="columns is-mobile mx-3">
+              <p class="has-text-white has-text-centered column">{{$store.state.PJ.nombre}}</p>
+              <p class="has-text-white has-text-centered column">{{$store.state.PJ.vida}}</p>
+              <p class="has-text-white has-text-centered column">{{$store.state.PJ.cordura}}</p>
+            </div>
+            <div class="columns is-mobile">
+              <button @click="cambiaVida('resta')" class="column">-</button>
+              <button @click="cambiaVida('suma')" class="column">+</button>
+            </div>
+        </div> -->
+
       </div> <!-- end container  -->
     </div> <!-- end CONTENT -->
   </div><!-- end BGGame  --> 
@@ -50,6 +68,19 @@
 <script>
 export default {
   name: 'View Game Arkham Horror',
+
+  // cosas con pruebas sobre el store
+  methods: {
+    cambiaVida(valor){
+      if (valor == 'suma') {
+        this.$store.state.PJ.vida ++
+      } else if (valor == 'resta') {
+        this.$store.state.PJ.vida --
+      } else{
+        console.log('algo ha apsado')
+      }
+    }
+  }
 }
 </script>
 

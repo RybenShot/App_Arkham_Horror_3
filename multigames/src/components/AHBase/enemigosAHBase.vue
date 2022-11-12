@@ -5,45 +5,72 @@
         <h2 class="title titleDecoration is-4 pt-3 mb-3">Enemigos</h2>
         <hr class="my-1">
 
-        <div v-if="this.contador == 1">
+        <div v-if="this.$store.state.contadorMapa == 0">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa1" :key="item.id">
               <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
                 <p class="has-text-white  titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-success  titleDecoration2 pt-0" 
+                v-if= ' item.nombreEnemigo === "Merodeador encapuchado" ||  
+                        item.nombreEnemigo === "Mago ceremonial"
+                        '> X2</p>
+                <p class="has-text-danger  titleDecoration2 pt-0" v-if= ' item.nombreEnemigo === "Extraños con túnicas"'> X3</p>
+
               </div>
             </div>
           </div>
         </div><!-- end IF MAPA 1  -->
 
-        <div v-if="this.contador == 2">
+        <div v-if="this.$store.state.contadorMapa == 1">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa2" :key="item.id">
               <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
                 <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-success  titleDecoration2 pt-0" 
+                v-if= ' item.nombreEnemigo === "Merodeador encapuchado" ||  
+                        item.nombreEnemigo === "Gloton rabioso" ||
+                        item.nombreEnemigo === "Acolito gul" || 
+                        item.nombreEnemigo === "Devorador de carne"
+                        '> X2</p>
               </div>
             </div>
           </div>
         </div><!-- end IF MAPA 2  -->
 
-        <div v-if="this.contador == 3">
+        <div v-if="this.$store.state.contadorMapa == 2">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa3" :key="item.id">
               <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
                 <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-success  titleDecoration2 pt-0" 
+                v-if= ' item.nombreEnemigo === "Bestia alterada" ||  
+                        item.nombreEnemigo === "Chotacabras" ||
+                        item.nombreEnemigo === "Esclava mounstruosa" || 
+                        item.nombreEnemigo === "Tocado por el vacío" ||
+                        item.nombreEnemigo === "Siervo alterado"
+                  '> X2</p>
               </div>
             </div>
           </div>
         </div><!-- end IF MAPA 3  -->
 
-        <div v-if="this.contador == 4">
+        <div v-if="this.$store.state.contadorMapa == 3">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa4" :key="item.id">
               <div style="max-width: 100px" class="mb-4 mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" />
                 <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-success  titleDecoration2 pt-0" 
+                v-if= ' item.nombreEnemigo === "Mago ceremonial" ||  
+                        item.nombreEnemigo === "Merodeador encapuchado" ||
+                        item.nombreEnemigo === "Vástago del océano" || 
+                        item.nombreEnemigo === "Depredador de bajamar" ||
+                        item.nombreEnemigo === "Matón Híbrido" ||
+                        item.nombreEnemigo === "Endriago de río"
+                  '> X2</p>
               </div>
             </div>
           </div>
@@ -52,11 +79,14 @@
         <h2 class="title titleDecoration is-4 pt-3 mb-3">Enemigos extras</h2>
         <hr class="my-1">
 
-        <div v-if="this.contador == 1">
-          <p class="has-text-white p-2">Sin enemigos extras</p>
+        <div v-if="this.$store.state.contadorMapa == 0">
+          <p class="has-text-white">Sin enemigos extras</p>
+          <!-- <p class="has-text-white">Merodeador Encapuchado x2</p>
+          <p class="has-text-white">Mago Ceremonial x2</p>
+          <p class="has-text-white">Extraños con túnicas x2</p> -->
         </div><!-- end IF MAPA 1  -->
 
-        <div v-if="this.contador == 2">
+        <div v-if="this.$store.state.contadorMapa == 1">
           <p class="has-text-white p-2"> Aparta a un lado los siguientes mounstruos, estos son “los adoradores de Umordhoth”</p>
 
           <div id="enemisList" class="px-1">
@@ -69,19 +99,24 @@
           </div>
         </div><!-- end IF MAPA 2  -->
 
-        <div v-if="this.contador == 3">
+        <div v-if="this.$store.state.contadorMapa == 2">
           <p class="has-text-white p-2">Aparta a un lado los siguientes mounstruos, todos los Logia</p>
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosExtrasMapa3" :key="item.id">
               <div style="max-width: 100px" class="mx-1">
                 <img :src="item.url" :alt="item.nombreEnemigo" width="100" />
                 <p class="has-text-white titleDecoration2 pt-0">{{ item.nombreEnemigo }}</p>
+                <p class="has-text-success  titleDecoration2 pt-0" 
+                v-if= ' item.nombreEnemigo === "Suplicante del Crepúsculo" ||  
+                        item.nombreEnemigo === "Sicario de la Logia" ||
+                        item.nombreEnemigo === "Adepto de la Logia"
+                  '> X2</p>
               </div>
             </div>
           </div>
         </div><!-- end IF MAPA 3  -->
 
-        <div v-if="this.contador == 4">
+        <div v-if="this.$store.state.contadorMapa == 3">
           <p class="has-text-white p-2">Sin enemigos extras</p>
         </div><!-- end IF MAPA 4  -->
 
@@ -100,7 +135,6 @@
 <script>
 export default {
   name: "enemigosAHClasicoComponente",
-  props: ['contador'],
   data(){
     return {
       EnemigosMapa1: [
@@ -118,16 +152,17 @@ export default {
       EnemigosExtrasMapa1: [],
 
       EnemigosMapa2: [
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo7.png"),nombreEnemigo: "Enmascarados",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo6.png"),nombreEnemigo: "Merodeador encapuchado",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo10.png"),nombreEnemigo: "Robacadaveres",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo8.png"),nombreEnemigo: "Siervo abisal",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo9.png"),nombreEnemigo: "Vigia sin ojos",},
+
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo1.png"),nombreEnemigo: "GulFurtivo",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo2.png"),nombreEnemigo: "Gloton rabioso",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo3.png"),nombreEnemigo: "Ser de pesadilla",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo4.png"),nombreEnemigo: "Acolito gul",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo5.png"),nombreEnemigo: "Devorador de carne",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo6.png"),nombreEnemigo: "Merodeador encapuchado",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo7.png"),nombreEnemigo: "Enmascarados",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo8.png"),nombreEnemigo: "Siervo abisal",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo9.png"),nombreEnemigo: "Vigia sin ojos",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo10.png"),nombreEnemigo: "Robacadaveres",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo14.png"),nombreEnemigo: "Sacerdote Gul",},
       ],
       EnemigosExtrasMapa2: [
@@ -140,13 +175,13 @@ export default {
       ],
 
       EnemigosMapa3: [
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo35.png"),nombreEnemigo: "Bestia alterada",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo37.png"),nombreEnemigo: "Chotacabras",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo31.png"),nombreEnemigo: "Esclava mounstruosa",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo32.png"),nombreEnemigo: "Tocado por el vacío",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo33.png"),nombreEnemigo: "Esclavo lobuno",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo34.png"),nombreEnemigo: "Siervo alterado",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo35.png"),nombreEnemigo: "Bestia alterada",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo36.png"),nombreEnemigo: "Esclavo aviar",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo37.png"),nombreEnemigo: "Chotacabras",},
       ],
       EnemigosExtrasMapa3: [
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo27.png"),nombreEnemigo: "Simon Carter",},
@@ -156,9 +191,10 @@ export default {
       ],
 
       EnemigosMapa4: [
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo6.png"),nombreEnemigo: "Merodeador encapuchado",},
-        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo12.png"),nombreEnemigo: "Mago ceremonial",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo19.png"),nombreEnemigo: "Guardián de R`lyeh",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo12.png"),nombreEnemigo: "Mago ceremonial",},
+        {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo6.png"),nombreEnemigo: "Merodeador encapuchado",},
+        
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo20.png"),nombreEnemigo: "Titán de marea",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo21.png"),nombreEnemigo: "Bestia de la ribera",},
         {url: require("@/assets/img/Games/AHBase/4imgEnemigos/enemigo22.png"),nombreEnemigo: "Vástago del océano",},
@@ -198,5 +234,4 @@ export default {
   display: grid;
   grid-template-columns: auto auto auto;
 }
-
 </style>

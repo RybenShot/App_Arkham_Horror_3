@@ -11,15 +11,14 @@
 
     <!-- VIEW DE ENEMIGOS -->
     <Enemigoscomponent v-if="viewMapa == false"
-    :contador="contador"
+    :contador="contadorMapa"
     @valorMenosMasHijo="cambioContador"
     @cambiarVistaHijo ="cambioVista"
     />
 
     <!-- VIEW DE MAPA -->
     <Mapascomponent v-if="viewMapa == true"
-    :contador="contador"
-    @valorMenosMasHijo="cambioContador"
+    @espavila="datoEspavila"
     @cambiarVistaHijo ="cambioVista"
     />
     <!-- 4 el evento que escucha RECIVE EL DATO y se ejecuta un metodo CON EL NOMBRE DEL EVENTO -->
@@ -46,20 +45,19 @@ export default {
   },
   data() {
     return {
-      contador: "1",
       viewMapa: true,
-      BGGeneral: "BGGameGeneralMapa1",
+      BGGeneral: this.$store.state.datosMapa.BGMapa,
     }; // end return
   }, // end data
 
   updated(){
-    if (this.contador == 1) {
+    if (this.$store.state.contadorMapa == 0) {
         this.BGGeneral = "BGGameGeneralMapa1";
-      } else if (this.contador == 2) {
+      } else if (this.$store.state.contadorMapa == 1) {
         this.BGGeneral = "BGGameGeneralMapa2";
-      } else if (this.contador == 3) {
+      } else if (this.$store.state.contadorMapa == 2) {
         this.BGGeneral = "BGGameGeneralMapa3";
-      } else if (this.contador == 4) {
+      } else if (this.$store.state.contadorMapa == 3) {
         this.BGGeneral = "BGGameGeneralMapa4";
       }
   }, // end updated
@@ -68,16 +66,20 @@ export default {
       // 5 finalmente se ejecuta el evento segun el dato que traiga
       console.warn(seleccionMenosMas)
       if (seleccionMenosMas == 'mas') {
-        this.contador ++
+        this.$store.state.contadorMapa ++
       } else if(seleccionMenosMas == 'menos'){
-        this.contador --
+        this.$store.state.contadorMapa --
       } else {
         alert("Algo ha ido mal..")
       }
     }, // end cambioMapa
     cambioVista(ValueCambiarVista){
       this.viewMapa = ValueCambiarVista
-    } // end cambioVista
+    } ,// end cambioVista
+
+    datoEspavila(value){
+      this.datoEspavilaJoder + value
+    }
   }, // end methods
 };
 </script>

@@ -45,7 +45,7 @@
         </section>
 
         <!-- MODAL HISTORIA -->
-        <div v-if="ModalHistoria" class="modal is-active">
+        <div v-if="ModalHistoria" class="modal is-active ">
           <div class="modal-background"></div>
           <div class="mr-6">
             <div class="modal-card">
@@ -55,6 +55,52 @@
               </section>
               <section class="modal-card-body">
                 <p>{{this.datosPJactual.historia}}</p>
+                <br>
+                <!-- VIDEO DE HISTORIAS -->
+                <div v-if="
+                this.datosPJactual.nombrePJ == 'Marie Lambeau' ||
+                this.datosPJactual.nombrePJ == 'Jenny Barnes' ||
+                this.datosPJactual.nombrePJ == 'Dexter Drake' ||
+                this.datosPJactual.nombrePJ == 'Rex Murphy' ||
+                this.datosPJactual.nombrePJ == 'Agnes Baker'
+                ">
+                  <iframe
+                  v-if="this.datosPJactual.nombrePJ == 'Marie Lambeau'"
+                    class="has-ratio px-2"
+                    :src="`https://www.youtube.com/embed/nLVtMyycF2A`"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+                  <iframe
+                  v-if="this.datosPJactual.nombrePJ == 'Jenny Barnes'"
+                    class="has-ratio px-2"
+                    :src="`https://www.youtube.com/embed/A3eG_3SDUTA`"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+                  <iframe
+                  v-if="this.datosPJactual.nombrePJ == 'Dexter Drake'"
+                    class="has-ratio px-2"
+                    :src="`https://www.youtube.com/embed/nCDlFIKAKUw`"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+                  <iframe
+                  v-if="this.datosPJactual.nombrePJ == 'Rex Murphy'"
+                    class="has-ratio px-2"
+                    :src="`https://www.youtube.com/embed/2CNEDE9mJ-0`"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+                  <iframe
+                  v-if="this.datosPJactual.nombrePJ == 'Agnes Baker'"
+                    class="has-ratio px-2"
+                    :src="`https://www.youtube.com/embed/Cx4GNKVIWHQ`"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+
               </section>
             </div>
           </div>
@@ -210,6 +256,8 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style scoped>
+.modal-card{
+  max-width: 380px;
+}
+</style>>

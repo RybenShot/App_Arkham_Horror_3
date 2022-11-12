@@ -28,26 +28,41 @@
       <div class="modal-background"></div>
       <div class="mr-6">
         <div class="modal-card">
-          <section class=" modal-card-body hero is-large has-background-danger-dark py-6" id="modalPactoSiniestro" >
-            <div class="hero-body py-6">
+          <header class="modal-card-head BGPactoSiniestro">
+              <p class="modal-card-title has-text-light">Pacto Siniestro</p>
+          </header>
+
+          <section class="modal-card-body "  >
+            <div class="hero-body py-3">
+
               <div v-if="verResultadoPacto == false">
-                <h1 class=" title is-1 has-text-centered has-text-grey-lighter titlePactosiniestro "> Hora de saldar tu deuda? </h1>
-                <button @click="tirarPacto(1), (verResultadoPacto = true)" class="button is-danger is-medium is-fullwidth"> Tirar </button>
-                <div class="columns is-mobile m-1 ml-0">
-                  <p class="column"></p>
-                  <button @click="(modalPacto = false), (this.ResultadoPacto = null)" class="button column is-3 is-link p-1"> Aun no </button>
-                </div>
+                <p class="has-text-centered">Retribución -- Tira un dado. Si sacas un 1</p>
+                <h1 class=" title has-text-centered titlePactosiniestro ">¿Hora de saldar tu deuda? </h1>
               </div>
 
               <div v-if="verResultadoPacto">
-                <p class=" title is-1 has-text-centered has-text-white mt-2 resultadoPactosiniestro"> {{ ResultadoPacto }} </p>
-                <p v-if="ResultadoPacto == 1" class="subtitle is-3 titlePactosiniestro has-text-white"> Dale la vuelta a la carta y cumple con tu destino! </p>
-                <p v-else class="subtitle is-3 titlePactosiniestro has-text-white"> La proxima vez no tendrás tanta suerte ... </p>
-                <button v-if="ResultadoPacto == 1" @click=" (modalPacto = false), (ResultadoPacto = null), (verResultadoPacto = false), (PactoSiniestro = false)" class="button column is-3 is-link p-1" > Volver y quitar pacto siniestro </button>
-                <button v-else @click=" (modalPacto = false), (ResultadoPacto = null), (verResultadoPacto = false)" class="button column is-3 is-link p-1"> Volver </button>
+                <p class=" title is-1 has-text-centered resultadoPactosiniestro"> {{ ResultadoPacto }} </p>
+                <p v-if="ResultadoPacto == 1" class="subtitle is-3 titlePactosiniestro"> Dale la vuelta a la carta y cumple con tu destino! </p>
+                <p v-else class="subtitle is-3 titlePactosiniestro"> La próxima vez no tendrás tanta suerte ... </p>
               </div>
+
             </div>
           </section>
+
+          <footer class="modal-card-foot">
+
+            <div v-if="verResultadoPacto == false" class="columns is-mobile">
+              <button @click="tirarPacto(1), (verResultadoPacto = true)" class="button is-danger is-fullwidth is-12 column"> Tirar </button>
+              <button @click="(modalPacto = false), (this.ResultadoPacto = null)" class="button is-link is-fullwidth is-12 column"> Aun no </button>
+            </div>
+
+            <div v-if="verResultadoPacto">
+              <div class="columns is-mobile">
+                <button v-if="ResultadoPacto == 1" @click=" (modalPacto = false), (ResultadoPacto = null), (verResultadoPacto = false), (PactoSiniestro = false)" class="button is-fullwidth is-12 is-link column" > Volver y quitar pacto siniestro </button>
+                <button v-else @click=" (modalPacto = false), (ResultadoPacto = null), (verResultadoPacto = false)" class="button is-fullwidth is-12 is-link column"> Volver </button>
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>
@@ -386,6 +401,12 @@ export default {
 </script>
 
 <style scoped>
+.BGPactoSiniestro{
+  background-image: url(@/assets/img/Estados/PactoSiniestro.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
 .allWindow {
   min-height: 100vh;
   background-position: center;

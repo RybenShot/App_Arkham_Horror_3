@@ -1,6 +1,28 @@
 <template>
   <div>
-    <router-view/>
+    <div id="VistaMovil">
+      <router-view/>
+    </div><!-- end Vista Movil -->
+
+    <div id="VistaNoValida">
+      <section class="container is-fullhd has-background-dark hero is-fullheight">
+        <div class="hero-body">
+          <div class="">
+            <p class="title has-text-white has-text-centered">
+              Vista en PC no disponible
+            </p>
+            <p class="subtitle has-text-white has-text-centered">
+               La aplicación está en una fase Beta y ha sido diseñada (en principio) para la vista móvil. Al ser solo 1 persona cuesta mucho llevar un proyecto tan amplio adelante, así que he decidido focalizar todo el esfuerzo en perfeccionar primero en vista móvil, después ya me centraré en el responsive.
+            </p>
+            <img src="@/assets/img/ZZOtros/70242-man-working.gif" alt="" style="height: 400px" id="imgWorking">
+            <p class="title has-text-white is-4 has-text-centered mt-4">
+               Por favor, inicie la aplicación en un móvil o ponga el buscador en modo móvil para poder disfrutarla. Muchas gracias.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div><!-- end Vista No Valida -->
+
   </div>
 </template>
 
@@ -11,6 +33,7 @@ export default {
 </script>
 
 <style>
+@import "./views/CssHome.css";
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap');
  * {
@@ -26,22 +49,8 @@ export default {
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-
-.BGJuegos {
-  min-height: 100vh;
-  background-position: center;
-  background-size: cover;
+#imgWorking{
+  display: block;
+  margin: auto;
 }
 </style>
