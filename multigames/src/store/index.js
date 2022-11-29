@@ -11,15 +11,59 @@ export default createStore({
     },
     contadorPJBase: 0 ,
 
-    // HELPERS - ESTADOS
-    // Pacto Siniestro
-    modalPacto: false,
+                                            // HELPERS - ESTADOS
+          // Maldicion
+    EstadoMaldito: false,
+    modalMaldito: false,
+          // Bencidion
+    EstadoBendicion: false,
+    modalBendicion: false,
+          // Pacto Siniestro
     EstadoPacto: false,
+    modalPacto: false,
     dataPactoSiniestro:{
+      expansion: null,
       title: null,
       narrativa: null,
       descripcion: null
     },
+          // Mancillado
+    EstadoMancillado: false,
+    modalMancillado: false,
+    dataMancillado:{
+      expansion: null,
+      narrativa: null,
+      descripcion: null
+    },
+        // Manco
+    EstadoManco: false,
+    modalManco: false,
+        // Suicidio
+    EstadoSuicidio: false,
+    modalSuicidio: false,
+        // Suicidio
+    EstadoSeñalado: false,
+    modalSeñalado: false,
+        // Enfermo
+    // EstadoEnfermo: false,
+    // modalEnfermo: false,
+
+
+
+
+
+          // DetalleEnemigo
+    verDetalleEnemigo: false,
+    SeleccionarURLEnemigo: null,
+
+          // Aciertos Picias
+    AvAcierto: 6,
+    AvAcierto2: 5,
+    AvAcierto3: null,
+    AvFatal: 1,
+    AvFatal2: null,
+    AvFatal3: null,
+
 
 
     PJ:{
@@ -34,6 +78,7 @@ export default createStore({
   },
 
   mutations: {
+    
   },
   actions: {
   },

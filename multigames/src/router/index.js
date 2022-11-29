@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import EnProceso from '../views/EnProceso.vue'
+import Error404 from '../views/Error404.vue'
 
 import HomeAHClasico from '../views/HomeAHClasico.vue'
 import MapasAHClasico from '../views/MapasEnemigosAHClasico.vue'
@@ -21,6 +22,8 @@ const routes = [
   {path: '/HomeAHMareasTenebrosas', name: 'homeAHMareasTenebrosas', component: HomeAHMareasTenebrosas},
   {path: '/MapasAHMareasTenebrosas', name: 'mapasEnemigosAHMareasTenebrosas', component: MapasEnemigosAHMareasTenebrosas},
   {path: '/PersonajesAHMareasTenebrosas', name: 'personajesAHMareasTenebrosas', component: PersonajesAHMareasTenebrosas},
+
+  {path: "/:pathMatch(.*)*", name:'Error 404', component: Error404}
   
 ]
 

@@ -27,7 +27,7 @@
             <div class="column is-2 p-2">
               <!-- si no cumple la regla, simplemente no hay nada -->
               <!-- boton funcionando!  -->
-              <div v-if="this.contador < 7">
+              <div v-if="this.contador < 9">
                 <button @click="cambiaPJ('mas')" class="p-2">
                   <i class="fa-2x fas fa-angle-double-right"></i>
                 </button>
@@ -44,60 +44,90 @@
           <div class="column is-3 px-0 has-background-light"><p @click="this.VerDatos('Arquetipo')">Arquetipo <i class="fas fa-bolt"></i></p> </div>
         </section>
 
-        <!-- MODAL HISTORIA -->
-        <div v-if="ModalHistoria" class="modal is-active">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-head">
-                <p class="modal-card-title">La historia hasta ahora</p>
-                <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
-              </section>
-              <section class="modal-card-body">
-                <p>{{this.datosPJactual.historia}}</p>
-              </section>
-            </div>
-          </div>
+        <div v-if="this.datosPJactual.expansion">
+          <p class="subtitle is-7 has-background-light has-text-centered is-underlined py-1 mt-1">{{ this.datosPJactual.expansion }}</p>
         </div>
 
-        <!-- MODAL PERTENENCIAS -->
-        <div v-if="ModalPertenencias" class="modal is-active ">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-head">
-                <p class="modal-card-title">Pertenencias iniciales</p>
-                <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
-              </section>
-              <section class="modal-card-body">
-                <p>- {{this.datosPJactual.dinero}}$</p>
-                <p>- {{this.datosPJactual.Pertenencia1}}</p>
-                <p v-if="this.datosPJactual.Pertenencia2 != null">- {{this.datosPJactual.Pertenencia2}}</p>
-                <h1 class="subtitle is-3 mb-0 has-text-centered"> Elige 1 </h1>
-                <hr class="my-1">
-                <p>- {{this.datosPJactual.Pertenencia3}}</p>
-                <p>- {{this.datosPJactual.Pertenencia4}}</p>
-              </section>
+        <!-- MODALS -->
+        <div>
+          <!-- MODAL HISTORIA -->
+          <div v-if="ModalHistoria" class="modal is-active">
+            <div class="modal-background"></div>
+            <div class="mr-6">
+              <div class="modal-card">
+                <section class="modal-card-head">
+                  <p class="modal-card-title">La historia hasta ahora</p>
+                  <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
+                </section>
+                <section class="modal-card-body">
+                  <p>{{this.datosPJactual.historia}}</p>
+                  <div v-if="
+                      this.datosPJactual.nombrePJ == 'Charlie Kane' ||
+                      this.datosPJactual.nombrePJ == 'Padre Mateo' 
+                      ">
+                        <iframe
+                        v-if="this.datosPJactual.nombrePJ == 'Charlie Kane'"
+                          class="has-ratio px-2"
+                          :src="`https://www.youtube.com/embed/EBp8WngxMOA`"
+                          frameborder="0"
+                          allowfullscreen
+                        ></iframe>
+                        <iframe
+                        v-if="this.datosPJactual.nombrePJ == 'Padre Mateo'"
+                          class="has-ratio px-2"
+                          :src="`https://www.youtube.com/embed/FAVr4jT_p-E`"
+                          frameborder="0"
+                          allowfullscreen
+                        ></iframe>
+                      </div>
+                </section>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- MODAL ARQUETIPO -->
-        <div v-if="ModalArquetipo" class="modal is-active">
-          <div class="modal-background"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <section class="modal-card-head">
-                <p class="modal-card-title">Arquetipo principal</p>
-                <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
-              </section>
-              <section class="modal-card-body">
-                <p>{{this.datosPJactual.arquetipo1}}</p>
-                <br>
-                <p>{{this.datosPJactual.arquetipo2}}</p>
-              </section>
+          <!-- MODAL PERTENENCIAS -->
+          <div v-if="ModalPertenencias" class="modal is-active ">
+            <div class="modal-background"></div>
+            <div class="mr-6">
+              <div class="modal-card">
+                <section class="modal-card-head">
+                  <p class="modal-card-title">Pertenencias iniciales</p>
+                  <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
+                </section>
+                <section class="modal-card-body">
+                  <p>- {{this.datosPJactual.dinero}}$</p>
+                  <p>- {{this.datosPJactual.Pertenencia1.nombre}}</p>
+                  <p class="subtitle is-7" >{{this.datosPJactual.Pertenencia1.descripcion}}</p>
+                  <p v-if="this.datosPJactual.Pertenencia2 != null">- {{this.datosPJactual.Pertenencia2}}</p>
+
+                  <h1 class="subtitle is-3 mb-0 has-text-centered"> Elige 1 </h1>
+                  <hr class="my-1">
+                  <p>- {{this.datosPJactual.Pertenencia3.nombre}}</p>
+                  <p class="subtitle is-7">{{this.datosPJactual.Pertenencia3.descripcion}}</p>
+                  <p>- {{this.datosPJactual.Pertenencia4.nombre}}</p>
+                  <p class="subtitle is-7">{{this.datosPJactual.Pertenencia4.descripcion}}</p>
+                </section>
+              </div>
             </div>
           </div>
+
+          <!-- MODAL ARQUETIPO -->
+          <div v-if="ModalArquetipo" class="modal is-active">
+            <div class="modal-background"></div>
+            <div class="mr-6">
+              <div class="modal-card">
+                <section class="modal-card-head">
+                  <p class="modal-card-title">Arquetipo principal</p>
+                  <i @click="this.VerDatos('nada')" class="fa-2x fas fa-times-circle has-text-danger"></i>
+                </section>
+                <section class="modal-card-body">
+                  <p>{{this.datosPJactual.arquetipo1}}</p>
+                  <br>
+                  <p>{{this.datosPJactual.arquetipo2}}</p>
+                </section>
+              </div>
+            </div>
+          </div> 
         </div>
         
         <!-- DatosVida/Cordura-->

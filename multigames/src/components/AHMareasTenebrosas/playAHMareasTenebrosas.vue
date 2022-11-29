@@ -4,8 +4,7 @@
     <!-- IMG -->
     <section class="hero is-small helperImgPjs" :class="[datosPJactual.imgPersonaje]">
       <div class="hero-body columns is-vcentered is-mobile p-0 pt-6 mt-5 pb-0">
-        <div class="column is-2 pl-5 p-0 has-text-grey-lighter" @click="cambiarVista(true)"><i class="fa-2x fas fa-arrow-alt-circle-left"></i>
-        </div>
+        <div class="column is-2 pl-5 p-0 has-text-grey-lighter" @click="cambiarVista(true)"><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div>
 
         <div class="column">
           <h1 class="title titleDecoration is-4 pt-3 mb-0"> {{ this.datosPJactual.nombrePJ }}</h1>
@@ -16,35 +15,59 @@
       </div>
     </section>
 
-    <!-- ESTADOS -->
+    <!-- barra superior ESTADOS -->
     <div class="columns is-mobile mt-0 is-centered">
-      <h2 v-if="this.$store.state.EstadoPacto" @click="this.$store.state.modalPacto = true" class="column is-4 has-background-danger has-text-centered has-text-light p-1">Pacto siniestro</h2>
-      <h2 v-if="EstadoMaldito" @click="modalMaldito = true" class=" column is-4 has-background-warning-dark has-text-centered has-text-light p-1" >Maldito</h2>
-      <h2 v-if="EstadoBendito" @click="modalBendito = true" class=" column is-4 has-background-info has-text-centered has-text-light p-1" > Bendecido </h2>
-      <h2 v-if="EstadoMancillado" @click="modalMancillado = true" class=" column is-4 has-background-success-dark has-text-centered has-text-light p-1" > Mancillado </h2>
+      <!-- Esta sera para el estado de perseguido ams adelante -->
+      <!-- <i class="fas fa-shoe-prints"></i> -->
+
+      <!-- PACTO -->
+      <h2 v-if="this.$store.state.EstadoPacto" @click="this.$store.state.modalPacto = true" 
+      class="column has-background-danger has-text-centered has-text-light p-1"><i class="fa-1x fas fa-skull-crossbones"></i></h2>
+      <!-- MALDITO -->
+      <h2 v-if="this.$store.state.EstadoMaldito" 
+      @click="(this.$store.state.modalMaldito = true)" 
+      class=" column has-background-warning-dark has-text-centered has-text-light p-1"><i class="fa-1x fas fa-skull"></i></h2>
+      <!-- BENDICION -->
+      <h2 v-if="this.$store.state.EstadoBendicion" @click="this.$store.state.modalBendicion = true" 
+      class=" column has-background-info has-text-centered has-text-light p-1"><i class="fa-1x fas fa-bible"></i></h2>
+      <!-- MANCILLADO -->
+      <h2 v-if="this.$store.state.EstadoMancillado" @click="this.$store.state.modalMancillado = true" 
+      class=" column has-background-success-dark has-text-centered has-text-light p-1"><i class="fa-1x fas fa-tint"></i></h2>
+
+
+      <!-- ORIGINALES -->
+      <!-- MANCO -->
+      <h2 v-if="this.$store.state.EstadoManco"  @click="this.$store.state.modalManco = true" 
+      class="column has-background-warning-light has-text-centered has-text-warning-dark p-1"><i class="fa-1x fas fa-user-injured"></i></h2>
+      <!-- ENFERMO -->
+      <!-- <h2 v-if="this.$store.state.EstadoEnfermo" @click="this.$store.state.modalEnfermo = true" 
+      class="column has-background-danger-light has-text-centered has-text-danger-dark p-1"><i class="fa-1x fas fa-capsules"></i></h2> -->
+      <!-- SUICIDIO -->
+      <h2 v-if="this.$store.state.EstadoSuicidio"  @click="this.$store.state.modalSuicidio = true" 
+      class="column has-background-dark has-text-centered has-text-grey-lighter p-1"><i class="fa-1x fas fa-sad-tear"></i></h2>
+      <!-- SEÑALADO -->
+      <h2 v-if="this.$store.state.EstadoSeñalado"  @click="this.$store.state.modalSeñalado = true" 
+      class="column has-background-link has-text-centered has-text-link-light p-1"><i class="fa-1x fas fa-street-view"></i></h2>
     </div>
 
-    <!-- MODAL PACTO SINIESTRO -->
-    <div v-if="this.$store.state.modalPacto">
-      <PactosSiniestros/>
-    </div>
-    
-    <!-- MODAL MALDITO -->
-    <div v-if="modalMaldito">
-      <EstadoMaldicion
-      @cerrarModalHijoMaldicion = "cambioVistaModalMaldicion"/>
-    </div>
+    <!-- MODALS -->
+    <div>
+      <!-- MODAL PACTO SINIESTRO -->
+      <div v-if="this.$store.state.modalPacto"><PactosSiniestros/></div>
+      <!-- MODAL MALDITO -->
+      <div v-if="this.$store.state.modalMaldito"><EstadoMaldicion/></div>
+      <!-- MODAL BENDITO -->
+      <div v-if="this.$store.state.modalBendicion" ><EstadoBendicion/></div>
+      <!-- MODAL MANCILLADO  -->
+      <div v-if="this.$store.state.modalMancillado" ><EstadoMancillado/></div>
 
-    <!-- MODAL BENDITO -->
-    <div v-if="modalBendito" >
-      <EstadoBendicion
-      @cerrarModalHijoBendicion = "cambioVistaModalBendicion"/>
-    </div>
-
-    <!-- MODAL MANCILLADO  -->
-    <div v-if="modalMancillado" >
-      <EstadoMancillado
-      @cerrarModalHijoMancillado = "cambioVistaModalMancillado"/>
+      <!-- ORIGINALES -->
+      <!-- MANCO -->
+      <div v-if="this.$store.state.modalManco" ><EstadoManco/></div>
+      <!-- SUICIDIO -->
+      <div v-if="this.$store.state.modalSuicidio" ><EstadoSuicidio/></div>
+      <!-- SEÑALADO -->
+      <div v-if="this.$store.state.modalSeñalado" ><EstadoSeñalado/></div>
     </div>
 
     <!-- VIDA Y CORDURA -->
@@ -186,24 +209,18 @@
         <h3 class=" has-text-centered has-background-warning has-text-grey-darker mb-2 ">Avanzado</h3>
 
         <button @click="this.$store.state.EstadoPacto = !this.$store.state.EstadoPacto" class="checkbox mr-4 has-text-danger button">Pacto siniestro</button>
-        <button @click="Maldito()" class="checkbox mr-4 has-text-warning-dark button">Maldito</button>
-        <button @click="Bendecido()" class="checkbox has-text-info button">Bendecido</button>
-        <button @click="EstadoMancillado = !EstadoMancillado" class="checkbox mr-4 mt-1 has-text-success-dark button">Mancillado</button>
 
-        <div class="columns is-mobile mt-2">
-          <div class="column">
-            <h4 class="has-text-centered">Fatal</h4>
-            <input class="p-2 input inputsAvanzado" type="number" v-model="AvFatal" placeholder="Fatal"/>
-            <input class="p-2 input inputsAvanzado" type="number" v-model="AvFatal2" placeholder="Fatal"/>
-            <input class="p-2 input inputsAvanzado" type="number" v-model="AvFatal3" placeholder="Fatal"/>
-          </div>
-          <div class="column">
-            <h4>Acierto</h4>
-            <input class="p-2 input inputsAvanzado" type="number" v-model="AvAcierto" placeholder="Acierto"/>
-            <input class="p-2 input inputsAvanzado" type="number" v-model="AvAcierto2" placeholder="Acierto"/>
-            <input class="p-2 input inputsAvanzado" type="number" v-model="AvAcierto3" placeholder="Acierto" />
-          </div>
-        </div>
+        <button @click="this.$store.state.EstadoMaldito = true, 
+        (this.$store.state.AvAcierto2 = null),
+        (this.$store.state.AvAcierto3 = null),
+        (this.$store.state.EstadoBendicion = false)" class="checkbox mr-4 has-text-warning-dark button">Maldito</button>
+
+        <button @click="this.$store.state.EstadoBendicion = true, 
+        (this.$store.state.AvAcierto2 = 5),
+        (this.$store.state.AvAcierto3 = 4),
+        (this.$store.state.EstadoMaldito = false)" class="checkbox has-text-info button">Bendecido</button>
+
+        <button @click="this.$store.state.EstadoMancillado = !this.$store.state.EstadoMancillado" class="checkbox mr-4 mt-1 has-text-success-dark button">Mancillado</button>
 
         <div v-if="masOpciones" class="p-2">
           <h1 class="title"> Suma total: {{ SumaDetodo }}{{ this.sumaResultado }} </h1>
@@ -218,8 +235,8 @@
         <!-- Aqui pintamos todos los resultados, OJO!! ense;amos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
         <div v-for="item in resultados" :key="item">
           <!-- SI OPCIONES AVANZADAS -->
-          <p v-if=" (item == AvAcierto) | (item == AvAcierto2) | (item == AvAcierto3)" class="acierto resultado-css has-text-white has-background-dark" > {{ item }} </p>
-          <p v-else-if=" (item == AvFatal) | (item == AvFatal2) | (item == AvFatal3) " class="fatal resultado-css has-text-white has-background-dark" > {{ item }} </p>
+          <p v-if=" (item == this.$store.state.AvAcierto) | (item == this.$store.state.AvAcierto2) | (item == this.$store.state.AvAcierto3)" class="acierto resultado-css has-text-white has-background-dark" > {{ item }} </p>
+          <p v-else-if=" (item == this.$store.state.AvFatal) | (item == this.$store.state.AvFatal2) | (item == this.$store.state.AvFatal3) " class="fatal resultado-css has-text-white has-background-dark" > {{ item }} </p>
           <p v-else class="resultado-css has-text-white has-background-dark"> {{ item }} </p>
         </div>
       </div>
@@ -234,13 +251,21 @@ import EstadoMaldicion from "@/components/helpers/estados/Maldicion.vue"
 import EstadoBendicion from "@/components/helpers/estados/Bendicion.vue"
 import EstadoMancillado from "@/components/helpers/estados/Mancillado.vue"
 import PactosSiniestros from "@/components/helpers/estados/pactosSiniestros.vue"
+// Estados Originales
+import EstadoManco from "@/components/helpers/estadosOriginales/Manco.vue"
+import EstadoSuicidio from "@/components/helpers/estadosOriginales/Suicidio.vue"
+import EstadoSeñalado from "@/components/helpers/estadosOriginales/Señalado.vue"
 export default {
   name: "Playcomponent",
   components:{
     EstadoMaldicion,
     EstadoBendicion,
     EstadoMancillado,
-    PactosSiniestros
+    PactosSiniestros,
+
+    EstadoManco,
+    EstadoSuicidio,
+    EstadoSeñalado
   },
   props: ["datosPJactual"],
 
@@ -253,26 +278,12 @@ export default {
       sumaResultado: 0,
 
       masOpciones: false,
-      // estados
-      EstadoBendito: false,
-      EstadoMaldito: false,
-      EstadoMancillado: false,
-
-      // Maldito
-      modalMaldito: false,
-      // Bendito
-      modalBendito: false,
-      // Mancillado
-      Mancillado: false,
-      modalMancillado: false,
 
       // aciertos - fatal
       AvAcierto: 6,
       AvAcierto2: 5,
       AvAcierto3: null,
       AvFatal: 1,
-      AvFatal2: null,
-      AvFatal3: null,
 
       BGVida: "",
       BGCordura: "",
@@ -303,7 +314,6 @@ export default {
     } else if (this.datosPJactual.cordura >= 7) {
       this.BGCordura = ""
     } 
-
   },
   methods: {
     // TIRADA DE DADOS
@@ -318,53 +328,21 @@ export default {
         this.resultados.push(this.resultado); // en cada vuelta metemos el resultado ene l array
       }
     },
-    Bendecido() {
-      this.EstadoBendito = !this.EstadoBendito;
-      if (this.EstadoBendito == true) {
-        this.AvAcierto2 = 5;
-        this.AvAcierto3 = 4;
-      } else {
-        this.AvAcierto3 = null;
-      }
-    },
-    Maldito() {
-      this.EstadoMaldito = !this.EstadoMaldito;
-      if (this.EstadoMaldito == true) {
-        this.AvAcierto2 = null;
-        this.AvAcierto3 = null;
-      } else {
-        this.AvAcierto2 = 5;
-      }
-    },
     vaciarArray: function () {
       this.resultados = []; // vaciamos el array de resultado
       this.sumaResultado = 0;
     },
-
 // CAMBIAR VISTAS
     cambiarVista(ValueCambiarVista) {
       this.$emit("cambiarVistaHijo", ValueCambiarVista);
     }, // end cambiaVista
-    cambioVistaModalMaldicion(valueVistaModalMaldicion){
-      this.modalMaldito = valueVistaModalMaldicion
-    },
-    cambioVistaModalBendicion(valueVistaModalBendicion){
-      this.modalBendito = valueVistaModalBendicion
-    },
-    cambioVistaModalMancillado(valueVistaModalMancillado){
-      this.modalMancillado = valueVistaModalMancillado
-    },
   },
-
   computed: {
     SumaDetodo: function () {
       for (let i = 0; i < this.resultados.length; i++) {
         this.sumaResultado += this.resultados[i];
       }
     },
-  },
-  whatch: {
-    vida() {},
   },
 };
 </script>

@@ -27,7 +27,7 @@
                 <h2 class="has-text-centered has-text-white">Espero que disfrutes de esta demo tanto como yo he disfrutado haciéndola.</h2>
                 <p class="has-text-centered has-text-white">Esta app, es una HERRAMIENTA, es necesario el juego físico para poder jugar.</p>
                 <br>
-                <p class="has-text-centered has-text-white">Si encontrais algún error en la app, me lo podéis decir en la cuenta de <a href="https://www.instagram.com/apparkhamhorror">Instagram</a></p>
+                <p class="has-text-centered has-text-white">Si encontrais algún error en la app, me lo podéis decir en la cuenta de <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> o puedes agragarme a whatsapp : 600358809 para formar parte de esta familia infame.</p>
                 <br>
                 <p class="has-text-centered has-text-white">Recuerda: el logo de Arkham Horror, es un botón hacia atrás.</p>
               </section>
@@ -93,7 +93,7 @@
           </router-link>
 
           <!-- MAREAS TENEBROSAS -->
-          <router-link to="/enproceso">
+          <router-link to="/HomeAHMareasTenebrosas">
             <div class="columns is-mobile box p-1 m-1 helperCards1234 card2">
               <div class="column p-1">
                 <h1 class="has-text-right has-text-weight-bold">

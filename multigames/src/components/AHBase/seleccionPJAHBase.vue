@@ -27,7 +27,7 @@
             <div class="column is-2 p-2">
               <!-- si no cumple la regla, simplemente no hay nada -->
               <!-- boton funcionando!  -->
-              <div v-if="this.contador < 11">
+              <div v-if="this.contador < 13">
                 <button @click="cambiaPJ('mas')" class="p-2">
                   <i class="fa-2x fas fa-angle-double-right"></i>
                 </button>
@@ -38,13 +38,19 @@
         </section>
 
         <!-- NAVEGACION -->
-        <section class="section columns is-mobile has-background-dark p-0">
+        <section class="section columns is-mobile has-background-dark p-0  mb-0">
           <div class="column is-4 has-background-light pl-5"><p @click="this.VerDatos('Historia')">Historia <i class="far fa-id-card"></i></p> </div>
           <div class="column has-background-light"><p @click="this.VerDatos('Pertenencias')">Pertenencias <i class="fas fa-briefcase"></i></p> </div>
           <div class="column is-3 px-0 has-background-light"><p @click="this.VerDatos('Arquetipo')">Arquetipo <i class="fas fa-bolt"></i></p> </div>
         </section>
 
-        <!-- MODAL HISTORIA -->
+        <div v-if="this.datosPJactual.expansion">
+          <p class="subtitle is-7 has-background-light has-text-centered is-underlined py-1 mt-1">{{ this.datosPJactual.expansion }}</p>
+        </div>
+
+        <!-- MODALS -->
+        <div>
+          <!-- MODAL HISTORIA -->
         <div v-if="ModalHistoria" class="modal is-active ">
           <div class="modal-background"></div>
           <div class="mr-6">
@@ -62,7 +68,8 @@
                 this.datosPJactual.nombrePJ == 'Jenny Barnes' ||
                 this.datosPJactual.nombrePJ == 'Dexter Drake' ||
                 this.datosPJactual.nombrePJ == 'Rex Murphy' ||
-                this.datosPJactual.nombrePJ == 'Agnes Baker'
+                this.datosPJactual.nombrePJ == 'Agnes Baker' ||
+                this.datosPJactual.nombrePJ == 'Gloria Goldberg'
                 ">
                   <iframe
                   v-if="this.datosPJactual.nombrePJ == 'Marie Lambeau'"
@@ -99,6 +106,13 @@
                     frameborder="0"
                     allowfullscreen
                   ></iframe>
+                  <iframe
+                  v-if="this.datosPJactual.nombrePJ == 'Gloria Goldberg'"
+                    class="has-ratio px-2"
+                    :src="`https://www.youtube.com/embed/k7XDNDEgZhM`"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
                 </div>
 
               </section>
@@ -117,12 +131,16 @@
               </section>
               <section class="modal-card-body">
                 <p>- {{this.datosPJactual.dinero}}$</p>
-                <p>- {{this.datosPJactual.Pertenencia1}}</p>
+                <p>- {{this.datosPJactual.Pertenencia1.nombre}}</p>
+                <p class="subtitle is-7" >{{this.datosPJactual.Pertenencia1.descripcion}}</p>
                 <p v-if="this.datosPJactual.Pertenencia2 != null">- {{this.datosPJactual.Pertenencia2}}</p>
+
                 <h1 class="subtitle is-3 mb-0 has-text-centered"> Elige 1 </h1>
                 <hr class="my-1">
-                <p>- {{this.datosPJactual.Pertenencia3}}</p>
-                <p>- {{this.datosPJactual.Pertenencia4}}</p>
+                <p>- {{this.datosPJactual.Pertenencia3.nombre}}</p>
+                <p class="subtitle is-7">{{this.datosPJactual.Pertenencia3.descripcion}}</p>
+                <p>- {{this.datosPJactual.Pertenencia4.nombre}}</p>
+                <p class="subtitle is-7">{{this.datosPJactual.Pertenencia4.descripcion}}</p>
               </section>
             </div>
           </div>
@@ -145,7 +163,8 @@
             </div>
           </div>
         </div>
-        
+        </div>
+
         <!-- DatosVida/Cordura-->
         <div class="columns is-mobile mt-2">
           <!-- Vida y cordura -->
