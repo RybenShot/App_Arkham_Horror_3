@@ -381,7 +381,7 @@ export default {
           Pertenencia4: {
             urlFoto: "",
             nombre: "Pruebas irrefutables",
-            descripcion:"Haz una tirada de INFLUENCIA , si consigues 2 aciertos, consigues un aliado."
+            descripcion:"Acción: Haz una tirada de INFLUENCIA , si consigues 2 aciertos, consigues un aliado."
           },
           expansion: "Original - SegundaEd."
         },
