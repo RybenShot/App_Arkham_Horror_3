@@ -4,7 +4,7 @@
     <router-link to="/">
       <div class="hero-body columns is-mobile p-1 m-0">
         <p class="column"></p>
-        <img id="imgTitleAH" class="column p-0" src="../assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png" alt="">
+        <img id="imgTitleAH" class="column p-0" src="@/assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png" alt="">
         <p class="column  "></p>
       </div>
     </router-link>
@@ -14,7 +14,8 @@
       <div  class="BGGrisBig mx-3 pt-3 container">
 
         <div class="mb-5 mx-3 p-5 pt-6" id="heroAHClasico">
-          <h2 class="BGGrisSmall title py-4">Arkham Horror Base</h2>
+          <h2 class="BGGrisSmall title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHBase.titulo'"></h2>
+          <h2 class="BGGrisSmall title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHBase.titulo'"></h2>
         </div>
          
         <!-- <router-link to="/enproceso">
@@ -28,19 +29,22 @@
       
         <router-link to="/MapasAHClasico">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonSeleccionarMapa">
-            <h2 class="title py-4">Seleccionar Mapa</h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHBase.opcion1'"></h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHBase.opcion1'"></h2>
           </div>
         </router-link>
 
         <router-link to="/PersonajesAHClasico">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonSeleccionarJugador">
-            <h2 class="title py-4">Seleccionar Investigador</h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHBase.opcion2'"></h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHBase.opcion2'"></h2>
           </div>
         </router-link>
 
         <router-link to="/enproceso">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonCrearInvestigador">
-            <h2 class="title py-4">Crear investigador</h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHBase.opcion3'"></h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHBase.opcion3'"></h2>
           </div>
         </router-link>
 
@@ -77,7 +81,7 @@ export default {
       } else if (valor == 'resta') {
         this.$store.state.PJ.vida --
       } else{
-        console.log('algo ha apsado')
+        console.log('algo ha pasado')
       }
     }
   }
@@ -111,20 +115,20 @@ export default {
 }
 
 .BGGrisBig{
-  background-image: url(../assets/img/ZZOtros/simpleBGTransparente.png);
+  background-image: url(@/assets/img/ZZOtros/simpleBGTransparente.png);
   background-position: center;
   background-size: cover;
   height: 623px;
   border-radius: 10px;
 }
 .BGGrisSmall{
-  background-image: url(../assets/img/ZZOtros/simpleBGTransparente.png);
+  background-image: url(@/assets/img/ZZOtros/simpleBGTransparente.png);
   background-position: center;
   background-size: cover;
   border-radius: 10px;
 }
 #heroAHClasico{
-  background-image: url(../assets/img/Games/AHBase/SeleccionarMapaclear.jpg);
+  background-image: url(@/assets/img/Games/AHBase/SeleccionarMapaclear.jpg);
   background-position: center;
   background-size: cover;
   width: 345px;
@@ -140,12 +144,12 @@ export default {
   border-radius: 10px;
   border: 3px solid rgb(255, 255, 255);
 }
-#botonSeleccionarMapa{background-image: url(../assets/img/Games/AHBase/SeleccionarMapaclear.jpg);}
-#botonSeleccionarJugador{background-image: url(../assets/img/Games/AHBase/Seleccionar_investigador.jpg);}
-#botonCrearInvestigador{background-image: url(../assets/img/ZZOtros/CrearInvestigador.jpg);}
+#botonSeleccionarMapa{background-image: url(@/assets/img/Games/AHBase/SeleccionarMapaclear.jpg);}
+#botonSeleccionarJugador{background-image: url(@/assets/img/Games/AHBase/Seleccionar_investigador.jpg);}
+#botonCrearInvestigador{background-image: url(@/assets/img/ZZOtros/CrearInvestigador.jpg);}
 
 #BGGameGeneral {
-  background-image: url(../assets/img/Games/AHBase/1imgMapas/BG2MapaArkham.jpg);
+  background-image: url(@/assets/img/Games/AHBase/1imgMapas/BG2MapaArkham.jpg);
   min-height: 100vh;
   background-position: center;
   background-size: cover;

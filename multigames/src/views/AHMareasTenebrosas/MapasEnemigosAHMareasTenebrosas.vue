@@ -23,7 +23,12 @@
     <!-- SELECCION DE PERSONAJE -->
     <router-link to="/PersonajesAHMareasTenebrosas">
       <div class="mt-3">
-        <p class="subtitle has-text-white has-text-right is-5 py-3">Ir a seleccion de personaje <i class="fa-2x fas fa-forward"></i></p>
+        <p class="subtitle has-text-right is-5 p-3">
+          <button class="button is-danger">
+            <p v-if="this.$store.state.lenguaje == 'español'">Ir a seleccion de personaje<i class="fa-2x fas fa-forward pl-2"></i></p>
+            <p v-if="this.$store.state.lenguaje == 'ingles'">Go to character selection<i class="fa-2x fas fa-forward pl-2"></i></p>
+          </button>
+        </p>
       </div>
       <!-- end seleccion de personaje  -->
     </router-link>
@@ -113,8 +118,8 @@ export default {
   background-position: center;
   background-size: cover;
 }
-.BGGameGeneralMapa5 {background-image: url(../../assets/img/Games/AHMareasTenebrosas/1imgMapas/BG1MapaAHMareasTenebrosas.jpg);}
-.BGGameGeneralMapa6 {background-image: url(../../assets/img/Games/AHMareasTenebrosas/1imgMapas/BG2MapaAHMareasTenebrosas.jpg);}
-.BGGameGeneralMapa7 {background-image: url(../../assets/img/Games/AHMareasTenebrosas/1imgMapas/BG3MapaAHMareasTenebrosas.jpg);}
-.BGGameGeneralMapa8 {background-image: url(../../assets/img/Games/AHMareasTenebrosas/1imgMapas/BG4MapaAHMareasTenebrosas.jpg);}
+.BGGameGeneralMapa5 {background-image: url(@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG1MapaAHMareasTenebrosas.jpg);}
+.BGGameGeneralMapa6 {background-image: url(@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG2MapaAHMareasTenebrosas.jpg);}
+.BGGameGeneralMapa7 {background-image: url(@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG3MapaAHMareasTenebrosas.jpg);}
+.BGGameGeneralMapa8 {background-image: url(@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG4MapaAHMareasTenebrosas.jpg);}
 </style>>

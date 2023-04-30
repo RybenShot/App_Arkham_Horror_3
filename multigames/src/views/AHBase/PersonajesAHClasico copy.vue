@@ -1,5 +1,26 @@
 <template>
   <div class="BGGeneralAH">
+    
+    <!-- SELECCION DE PJ -->
+    <!-- <div v-if="viewPJ == true">
+      <SeleccionPJcomponent
+        :contador="contador"
+        :datosPJactual ="datosPJactual"
+        @cambioPersonaje ="cambiaPJ"
+        @cambiarVistaHijo ="cambioVista"
+        />
+    </div> -->
+
+
+
+
+
+    <!-- ESTO ES UNA COPIA DE SEGURIDAD TEMPORAL POR SI ALGO SALIERA MAL SIN DARME CUENTA -->
+
+
+
+
+
 
     <div class="has-text-centered">
       <div class="columns is-mobile mb-0">
@@ -11,15 +32,16 @@
       <hr class="m-1 mx-4"> 
       <h2 class="subtitle has-text-white mb-0">Colecciones</h2>
       <div class="columns is-mobile pt-3">
-        <button class="column" @click="this.$store.state.ActivarBase =! this.$store.state.ActivarBase">AH Base</button>
-        <button class="column" @click="this.$store.state.ActivarMareasTenebrosas =! this.$store.state.ActivarMareasTenebrosas">AH Mareas</button>
-        <button class="column" @click="this.$store.state.ActivarOriginal =! this.$store.state.ActivarOriginal">AH Original</button>
+        <button v-if="this.$store.state.ActivarBase == true" class="column" @click="this.$store.state.ActivarBase = false">AH Base</button>
+        <button v-if="this.$store.state.ActivarBase == false" class="column" @click="this.$store.state.ActivarBase = true">AH Base</button>
+        <button class="column">AH Mareas</button>
+        <button class="column">AH Original</button>
       </div>
       <p class="subtitle is-6 has-text-white mb-2">Elige a un investigador para verlo en detalle</p>
     </div>
 
 <!-- EXPANSIONES // PERSONAJES -->
-
+<!-- 
     <div v-if="this.$store.state.ActivarBase">
       <hr class="m-1 mx-4">
       <h1 class="has-text-white title my-2 ml-1 is-4">Arkham Horror Base</h1>
@@ -33,9 +55,10 @@
           </router-link>
         </div>
       </div>
-    </div>
+    </div> -->
+    
 
-    <div v-if="this.$store.state.ActivarMareasTenebrosas">
+    <!-- <div v-if="this.$store.state.ActivarMareasTenebrosas">
       <hr class="m-1 mx-4">
       <h1 class="has-text-white title my-2 ml-1 is-4">Arkham Horror Mareas Tenebrosas</h1>
       <div class="PersonajesList">
@@ -48,10 +71,9 @@
           </router-link>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    
-    <div v-if="this.$store.state.ActivarOriginal">
+    <!-- <div v-if="this.$store.state.ActivarOriginal">
       <hr class="m-1 mx-4">
       <h1 class="has-text-white title my-2 ml-1 is-4">Arkham Horror Original App</h1>
       <div class="PersonajesList">
@@ -64,18 +86,30 @@
           </router-link>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="pb-2"></div>
+
+    <!-- VIEW PLAY!!!!! -->
+    <!-- <div v-if="viewPJ == false">
+      <PlayAHcomponent
+      :datosPJactual ="datosPJactual"
+      @cambiarVistaHijo ="cambioVista" />
+    </div> -->
+    <!-- end VIEW PLAY -->
 
   </div>
 </template>
 
 <script>
+import SeleccionPJcomponent from "@/components/AHBase/seleccionPJAHBase.vue";
+import PlayAHcomponent from "@/components/AHBase/playAHBase.vue";
 
 export default {
-  name: "listaDePersonajes",
-  components:{},
+  name: "PersonajesAHClasico",
+  components:{
+    SeleccionPJcomponent,
+    PlayAHcomponent
+  },
 
   data() {
     return {
@@ -1361,24 +1395,201 @@ export default {
           expansion: "Original - SegundaEd."
         },
       ],
+      
 
+
+      contador: this.$store.state.contadorPJBase,
+      viewPJ: true,
+      // viewPlay: false,
     }; // end return
   }, // end data
-  updated(){},
+  updated(){
+    this.datosPJactual = this.Personajes[this.contador];
+      //this.datosPJactual.nombrePJ = this.Personajes[this.contador].nombrePJ;
+      //this.datosPJactual.posicion = this.Personajes[this.contador].posicion;
+      //this.datosPJactual.vida = this.Personajes[this.contador].vida;
+      //this.datosPJactual.cordura = this.Personajes[this.contador].cordura;
+      //this.datosPJactual.saber = this.Personajes[this.contador].saber;
+      //this.datosPJactual.influencia = this.Personajes[this.contador].influencia;
+      //this.datosPJactual.observacion = this.Personajes[this.contador].observacion;
+      //this.datosPJactual.fuerza = this.Personajes[this.contador].fuerza;
+      //this.datosPJactual.voluntad = this.Personajes[this.contador].voluntad;
+      //this.datosPJactual.limConcentracion = this.Personajes[this.contador].limConcentracion;
+      //this.datosPJactual.efecto1 = this.Personajes[this.contador].efecto1;
+      //this.datosPJactual.efecto2 = this.Personajes[this.contador].efecto2;
+      //this.datosPJactual.frase = this.Personajes[this.contador].frase;
+      //this.datosPJactual.historia = this.Personajes[this.contador].historia;
+      //this.datosPJactual.Pertenencia1 = this.Personajes[this.contador].Pertenencia1;
+      //this.datosPJactual.Pertenencia2 = this.Personajes[this.contador].Pertenencia2;
+      //this.datosPJactual.Pertenencia3 = this.Personajes[this.contador].Pertenencia3;
+      //this.datosPJactual.Pertenencia4 = this.Personajes[this.contador].Pertenencia4;
+      //this.datosPJactual.arquetipo1 = this.Personajes[this.contador].arquetipo1;
+      //this.datosPJactual.arquetipo2 = this.Personajes[this.contador].arquetipo2;
+      //this.datosPJactual.HistoriaYT = this.Personajes[this.contador].HistoriaYT;
+      //this.datosPJactual.expansion = this.Personajes[this.contador].expansion;
 
-  methods: {}, // end methods
+
+    if (this.contador == 0)      {this.datosPJactual.imgPersonaje = "imgTommy"} 
+    else if (this.contador == 1) {this.datosPJactual.imgPersonaje = "imgMarie"} 
+    else if (this.contador == 2) {this.datosPJactual.imgPersonaje = "imgJenny"} 
+    else if (this.contador == 3) {this.datosPJactual.imgPersonaje = "imgDexter"} 
+    else if (this.contador == 4) {this.datosPJactual.imgPersonaje = "imgWendy"} 
+    else if (this.contador == 5) {this.datosPJactual.imgPersonaje = "imgRex"} 
+    else if (this.contador == 6) {this.datosPJactual.imgPersonaje = "imgCalvin"} 
+    else if (this.contador == 7) {this.datosPJactual.imgPersonaje = "imgAgnes"} 
+    else if (this.contador == 8) {this.datosPJactual.imgPersonaje = "imgMichael"} 
+    else if (this.contador == 9) {this.datosPJactual.imgPersonaje = "imgDaniela"} 
+    else if (this.contador == 10) {this.datosPJactual.imgPersonaje = "imgNorman"} 
+    else if (this.contador == 11) {this.datosPJactual.imgPersonaje = "imgMinh"}
+  },
+
+  methods: {
+    cambiaPJ(seleccionMenosMas) {
+      if (seleccionMenosMas == 'mas') {
+        this.contador ++
+      } else if(seleccionMenosMas == 'menos'){
+        this.contador --
+      } else {
+        alert("Algo ha ido mal..")
+      }
+    }, // end cambiaPJ
+    cambioVista(ValueCambiarVista){
+      this.viewPJ = ValueCambiarVista
+    }, // end cambioVista
+
+  }, // end methods
 };
 </script>
 
 
 <style >
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap");
 
-/* Usado */
+@font-face{
+  font-family: NombrePJs;
+  src: url('@/assets/fonts/PJs/NombrePJs.ttf'), url('@/assets/fonts/PJs/NombrePJsItalic.ttf')
+}
+@font-face{
+  font-family: Pacto Siniestro;
+  src: url('@/assets/fonts/Pacto Siniestro/bloodcrow.ttf'), url('@/assets/fonts/Pacto Siniestro/bloodcrowc.ttf'), url('@/assets/fonts/Pacto Siniestro/bloodcrowci.ttf')
+}
+
+.contadorVidaCordura {
+  position: relative;
+  top: -50px;
+  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+  color: black;
+  font-family: "Roboto Flex", sans-serif;
+}
+
+.contadorAtributos {
+  position: relative;
+  top: -30px;
+  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+  color: black;
+  font-family: "Roboto Flex", sans-serif;
+}
+
+#botonesAtributos button:focus {
+  box-shadow: 0px 0px 20px rgb(255, 255, 255);
+}
+.helpermaxheigth{
+  max-height: 7vh;
+}
+.inputsAvanzado{
+  max-width: 20vh;
+}
+
+/* HELPERS */
+/* Necesario para las transiciones */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+#modalPactoSiniestro{
+  min-width: 40vh;
+  min-height: 40vh;
+}
+.titlePactosiniestro{
+  font-family: "Pacto Siniestro";
+  font-weight: 300;
+  text-align: center;
+}
+.resultadoPactosiniestro{
+  font-family: "Pacto Siniestro";
+  font-weight: 300;
+  font-size: 15vh;
+  text-align: center;
+}
+.titleDecoration {
+  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+  color: black;
+  font-family: "NombrePJs";
+  font-weight: 300;
+  text-align: center;
+}
+
 .BGGeneralAH {
   background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
   min-height: 110vh;
   background-position: center;
   background-size: cover;
+}
+
+.allWindow {
+  min-height: 70vh;
+}
+
+
+/* imgPersonajes */
+.helperImgPjs{
+  background-position: center;
+  background-size: cover;
+}
+.imgTommy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ1.png);}
+.imgMarie {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ2.jpg);}
+.imgJenny {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ3.png);}
+.imgDexter {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ4.png);}
+.imgWendy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ5.jpg);}
+.imgRex {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ6.jpg);}
+.imgCalvin {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ7.jpg);}
+.imgAgnes {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ8.jpg);}
+.imgMichael {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ9.jpg);}
+.imgDaniela {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ10.jpg);}
+.imgNorman {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ11.jpg);}
+.imgMinh {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ12.jpg);}
+.imgDarrell {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ21.jpg);}
+.imgGloria {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ22.jpg);}
+
+/* colores para atributos */
+.has-text-purple {
+  color: #9b51e0;
+}
+.has-text-orange {
+  color: #f2994a;
+}
+
+/* RESULTADO DE DADOS */
+.acierto {
+  box-shadow: 0px 0px 20px rgb(30, 255, 0);
+}
+.fatal {
+  box-shadow: 0px 0px 20px rgb(255, 0, 0);
+}
+#resultados-css {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-column-gap: 3vmin;
+}
+.resultado-css {
+  padding: 3px;
+  margin: 10px;
+  text-align: center;
 }
 
 /* Lista de Personajes */
@@ -1401,6 +1612,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0px 0px 5px rgb(0, 47, 255);
 }
+
 .cajaimg{
   object-fit: cover;
   min-height: 80px;

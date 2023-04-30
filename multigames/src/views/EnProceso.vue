@@ -9,7 +9,8 @@
     </div>
   </router-link>
   <div class="hero">
-    <h1 class="title is-2 px-2 has-text-centered has-text-danger">Pagina en proceso</h1>
+    <h1 class="title is-2 px-2 has-text-centered has-text-danger" v-if="this.$store.state.lenguaje == 'español'">Pagina en proceso</h1>
+    <h1 class="title is-2 px-2 has-text-centered has-text-danger" v-if="this.$store.state.lenguaje == 'ingles'">Page in progress</h1>
   </div>
 </div>
 </template>

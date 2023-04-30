@@ -1,0 +1,97 @@
+{"EN": {
+  "pruebas":{
+    "lenguaje": {
+      "ingles": "Hello!!"
+    }
+  },
+  "Home": {
+    "responsive":{
+      "titulo": "View on PC not available",
+      "parrafo_1": "The app is in a Beta phase and has been designed (in principle) for mobile viewing. Being only 1 person it costs a lot to take such a wide project forward, so I decided to focus all the effort on perfecting first in mobile view, then I will focus on the responsive.",
+      "parrafo_2": "Please start the application on a mobile or put the search engine in mobile mode to enjoy it. Thank you very much."
+    },
+    "modals": {
+      "recuerda": {
+        "titulo": "REMEMBER",
+        "parrafo_1": "This app is made by only 1 person, which invests as much time as you can. Currently in development the 4th version, where you can see the progress on Instagram.",
+        "parrafo_2": "Apart from being a tool, it is intended to create a community so that new ideas arise and in short, give more life to this wonderful game.",
+        "parrafo_3": "But I can’t do it alone",
+        "parrafo_4": "That is why your support is of the utmost importance, so that we can devote more time to it and finish the final version as soon as possible.",
+        "final":"Thank you very much for your support.",
+        "btn_Monster": "Buy me a Monster",
+        "btn_Mas-tarde": "Later"
+      },
+      "wellcome":{
+        "titulo": "Welcome home, dear investigator",
+        "parrafo_1": "I hope you enjoy this demo as much as I have enjoyed making it. This app, is a TOOL, you need the physical game to play.",
+        "parrafo_3": "Remember: the Arkham Horror logo is a back button."
+      }
+    },
+    "portal":{
+      "titulo": "Select a expansion box",
+      "btn-mas": "More",
+      "opcion1": {
+        "tituloExpansion": "Arkham Horror Base",
+        "mapas": "4 maps",
+        "investigadores": "12 investigators"
+      },
+      "opcion2": {
+        "tituloExpansion": "Under Dark Waves",
+        "mapas": "4 maps",
+        "investigadores": "8 investigators"
+      },
+      "opcion3": {
+        "tituloExpansion": "Dead of Nigth",
+        "mapas": "2 maps",
+        "investigadores": "4 investigators"
+      },
+      "opcion4": {
+        "tituloExpansion": "Secrets of the order",
+        "mapas": "3 maps",
+        "investigadores": "4 investigators"
+      }
+    }
+  },
+  "HomeAHBase": {
+    "titulo": "Arkham Horror Base",
+    "opcion1": "Select Map",
+    "opcion2": "Select investigator",
+    "opcion3": "Create investigator"
+  },
+  "HomeAHMareasTenebrosas":{
+    "titulo": "Arkham Horror Under Dark Waves",
+    "opcion1": "Select Map",
+    "opcion2": "Select investigator",
+    "opcion3": "Create investigator"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+}

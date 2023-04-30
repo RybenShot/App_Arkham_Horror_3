@@ -14,24 +14,28 @@
       <div  class="BGGrisBig mx-3 pt-3 container">
 
         <div class="mb-5 mx-3 p-5 pt-6" id="heroAHClasico">
-          <h2 class="BGGrisSmall title py-2">Arkham Horror Mareas Tenebrosas</h2>
+          <h2 class="BGGrisSmall title py-2" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHMareasTenebrosas.titulo'"></h2>
+          <h2 class="BGGrisSmall title py-2" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHMareasTenebrosas.titulo'"></h2>
         </div>
       
         <router-link to="/MapasAHMareasTenebrosas">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonSeleccionarMapa">
-            <h2 class="title py-4">Seleccionar Mapa</h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHMareasTenebrosas.opcion1'"></h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHMareasTenebrosas.opcion1'"></h2>
           </div>
         </router-link>
 
         <router-link to="/PersonajesAHMareasTenebrosas">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonSeleccionarJugador">
-            <h2 class="title py-4">Seleccionar Investigador</h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHMareasTenebrosas.opcion2'"></h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHMareasTenebrosas.opcion2'"></h2>
           </div>
         </router-link>
 
         <router-link to="/enproceso">
           <div class="helperBotonesSelectores my-5 mx-4 " id="botonCrearInvestigador">
-            <h2 class="title py-4">Crear investigador</h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'español'" v-t="'ES.HomeAHMareasTenebrosas.opcion3'"></h2>
+            <h2 class="title py-4" v-if="this.$store.state.lenguaje == 'ingles'" v-t="'EN.HomeAHMareasTenebrosas.opcion3'"></h2>
           </div>
         </router-link>
 

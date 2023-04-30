@@ -2,14 +2,14 @@
   <div class="container allWindow" :class="[BGVida]" >
     <div class="allWindow" :class="[BGCordura]">
     <!-- IMG -->
-    <section class="hero is-small helperImgPjs" :class="[datosPJactual.imgPersonaje]">
+    <section class="hero is-small helperImgPjs" :class="[this.$store.state.datosPJactual.fotoUrl]">
       <div class="hero-body columns is-vcentered is-mobile p-0 pt-6 mt-5 pb-0">
-        <div class="column is-2 pl-5 p-0 has-text-grey-lighter" @click="cambiarVista(true)"><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div>
+        <router-link class="" to="/DetallePersonaje"><div class="column is-2 pl-5 p-0 has-text-grey-lighter" ><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div></router-link>
 
         <div class="column">
-          <h1 class="title titleDecoration is-4 pt-3 mb-0" > {{ this.datosPJactual.nombrePJ }}</h1>
-          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'español'">{{ this.datosPJactual.posicion }}</p>
-          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">{{ this.datosPJactual.ENposicion }}</p>
+          <h1 class="title titleDecoration is-4 pt-3 mb-0" > {{ this.$store.state.datosPJactual.nombrePJ }}</h1>
+          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'español'">{{ this.$store.state.datosPJactual.posicion }}</p>
+          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">{{ this.$store.state.datosPJactual.ENposicion }}</p>
         </div>
 
         <router-link class="column is-2 pl-2" to="/"><div class="has-text-grey-lighter"><i class="fa-2x fas fa-home"></i></div></router-link>
@@ -78,7 +78,7 @@
       <div class="column">
         <div>
           <p class="has-text-danger has-text-centered"> <i class="fa-5x fas fa-heartbeat"></i> </p>
-          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.datosPJactual.vida }} </p>
+          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.$store.state.datosPJactual.vida }} </p>
           <!-- botones + - -->
           <div class="columns is-mobile pb-2">
             <div class="column ml-4 pt-0">
@@ -98,7 +98,7 @@
         <div>
           <p class="has-text-info has-text-centered"> <i class="fa-5x fas fa-brain"></i>
           </p>
-          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.datosPJactual.cordura }}
+          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.$store.state.datosPJactual.cordura }}
           </p>
           <!-- botones + - -->
           <div class="columns is-mobile pb-2">
@@ -118,29 +118,29 @@
 
     <!-- ATRIBUTOS -->
     <div class="columns is-mobile" id="botonesAtributos">
-      <button class="column helpermaxheigth p-1 mx-2 ml-4 botonesAtributos" @click="this.NDadosAtributo = this.datosPJactual.saber">
+      <button class="column helpermaxheigth p-1 mx-2 ml-4 botonesAtributos" @click="this.NDadosAtributo = this.$store.state.datosPJactual.saber">
         <p class="has-text-purple"><i class="fa-3x fas fa-book-open"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJactual.saber }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.saber }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.datosPJactual.influencia">
+      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.$store.state.datosPJactual.influencia">
         <p class="has-text-orange"><i class="fa-3x fas fa-handshake"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJactual.influencia }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.influencia }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.datosPJactual.observacion">
+      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.$store.state.datosPJactual.observacion">
         <p class="has-text-primary"><i class="fa-3x fas fa-eye"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJactual.observacion }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.observacion }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.datosPJactual.fuerza">
+      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.$store.state.datosPJactual.fuerza">
         <p class="has-text-danger"><i class="fa-3x fas fa-fist-raised"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJactual.fuerza }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.fuerza }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2 mr-4" @click="this.NDadosAtributo = this.datosPJactual.voluntad">
+      <button class="column helpermaxheigth p-1 mx-2 mr-4" @click="this.NDadosAtributo = this.$store.state.datosPJactual.voluntad">
         <p class="has-text-info"><i class="fa-3x fab fa-hornbill"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJactual.voluntad }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.voluntad }}</p>
       </button>
     </div>
     <!-- end ATRIBUTOS -->
@@ -280,7 +280,7 @@ export default {
   },
 
   updated() {
-    if (this.datosPJactual.vida >= 5 && this.datosPJactual.vida < 7) {
+    if (this.$store.state.datosPJactual.vida >= 5 && this.datosPJactual.vida < 7) {
       this.BGVida = "damageV25";
     } else if (this.datosPJactual.vida >= 3 && this.datosPJactual.vida < 5) {
       this.BGVida = "damageV50";
@@ -337,7 +337,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .BGPactoSiniestro{
   background-image: url(@/assets/img/Estados/PactoSiniestro.jpg);
   background-position: center;
@@ -359,4 +359,4 @@ export default {
 .damageC50 {background-image: url("@/assets/img/EfectoVida&Cordura/cordura/damageCordura50.png");}
 .damageC75 {background-image: url("@/assets/img/EfectoVida&Cordura/cordura/damageCordura75.png");}
 .damageC90 {background-image: url("@/assets/img/EfectoVida&Cordura/cordura/damageCordura90.png");}
-</style>s
+</style>

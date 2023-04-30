@@ -7,8 +7,9 @@
         <div class="column is-2 pl-5 p-0 has-text-grey-lighter" @click="cambiarVista(true)"><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div>
 
         <div class="column">
-          <h1 class="title titleDecoration is-4 pt-3 mb-0"> {{ this.datosPJactual.nombrePJ }}</h1>
-          <p class="has-background-grey-dark has-text-light has-text-centered">{{ this.datosPJactual.posicion }}</p>
+          <h1 class="title titleDecoration is-4 pt-3 mb-0" > {{ this.datosPJactual.nombrePJ }}</h1>
+          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'español'">{{ this.datosPJactual.posicion }}</p>
+          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">{{ this.datosPJactual.ENposicion }}</p>
         </div>
 
         <router-link class="column is-2 pl-2" to="/"><div class="has-text-grey-lighter"><i class="fa-2x fas fa-home"></i></div></router-link>
@@ -170,7 +171,8 @@
 
   <!-- Dados Extras -->
     <div>
-      <p class="has-text-centered has-text-white">Dados extras</p>
+      <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'español'">Dados extras</p>
+      <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">Extra dices</p>
       <div class="columns is-mobile mt-2 px-6">
         <button @click="NDeDadosExtra--" class="column py-2 px-4 mr-3">
           -
@@ -191,10 +193,12 @@
     <!-- Aqui indicamos ya el minimo del resultado que debe salir y el maximo lo indicamos con "NDeLados" -->
     <div class="columns is-mobile mt-3">
       <div class="column is-4">
-        <p class="subtitle has-text-white is-6 is-italic px-2">Total de dados: {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
+        <p class="subtitle has-text-white is-6 is-italic px-2" v-if="this.$store.state.lenguaje == 'español'">Total de dados: {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
+        <p class="subtitle has-text-white is-6 is-italic px-2" v-if="this.$store.state.lenguaje == 'ingles'">Total number of dice: {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
       </div>
       <div class="column">
-        <button @click="tirarDados(1)" class="button is-success is-active">TIRAR!</button>
+        <button @click="tirarDados(1)" class="button is-success is-active" v-if="this.$store.state.lenguaje == 'español'">TIRAR!</button>
+        <button @click="tirarDados(1)" class="button is-success is-active" v-if="this.$store.state.lenguaje == 'ingles'">THROW!</button>
       </div>
       <div class="column mr-3">
         <!-- BOTON DE MAS OPCIONES -->
@@ -206,31 +210,46 @@
     <!-- AVANZADO -->
     <Transition>
       <div v-show="masOpciones" class="has-background-white p-2 mt-2 pt-0">
-        <h3 class=" has-text-centered has-background-warning has-text-grey-darker mb-2 ">Avanzado</h3>
+        <h3 class=" has-text-centered has-background-warning has-text-grey-darker mb-2 " v-if="this.$store.state.lenguaje == 'español'">Avanzado</h3>
+        <h3 class=" has-text-centered has-background-warning has-text-grey-darker mb-2 " v-if="this.$store.state.lenguaje == 'ingles'">Advance</h3>
 
-        <button @click="this.$store.state.EstadoPacto = !this.$store.state.EstadoPacto" class="checkbox mr-4 has-text-danger button">Pacto siniestro</button>
+        <button @click="this.$store.state.EstadoPacto = !this.$store.state.EstadoPacto" class="checkbox mr-4 has-text-danger button" >
+          <p v-if="this.$store.state.lenguaje == 'español'">Pacto siniestro</p>
+          <p v-if="this.$store.state.lenguaje == 'ingles'">Dark Pact</p> 
+        </button>
 
         <button @click="this.$store.state.EstadoMaldito = true, 
         (this.$store.state.AvAcierto2 = null),
         (this.$store.state.AvAcierto3 = null),
-        (this.$store.state.EstadoBendicion = false)" class="checkbox mr-4 has-text-warning-dark button">Maldito</button>
+        (this.$store.state.EstadoBendicion = false)" class="checkbox mr-4 has-text-warning-dark button">
+          <p v-if="this.$store.state.lenguaje == 'español'">Maldito</p> 
+          <p v-if="this.$store.state.lenguaje == 'ingles'">Bloody</p> 
+        </button>
 
         <button @click="this.$store.state.EstadoBendicion = true, 
         (this.$store.state.AvAcierto2 = 5),
         (this.$store.state.AvAcierto3 = 4),
-        (this.$store.state.EstadoMaldito = false)" class="checkbox has-text-info button">Bendecido</button>
+        (this.$store.state.EstadoMaldito = false)" class="checkbox has-text-info button">
+          <p v-if="this.$store.state.lenguaje == 'español'">Bendecido</p>
+          <p v-if="this.$store.state.lenguaje == 'ingles'">Blessed</p>
+        </button>
 
-        <button @click="this.$store.state.EstadoMancillado = !this.$store.state.EstadoMancillado" class="checkbox mr-4 mt-1 has-text-success-dark button">Mancillado</button>
+        <button @click="this.$store.state.EstadoMancillado = !this.$store.state.EstadoMancillado" class="checkbox mr-4 mt-1 has-text-success-dark button">
+          <p v-if="this.$store.state.lenguaje == 'español'">Mancillado</p>
+          <p v-if="this.$store.state.lenguaje == 'ingles'">Defiled</p>
+        </button>
 
         <div v-if="masOpciones" class="p-2">
-          <h1 class="title"> Suma total: {{ SumaDetodo }}{{ this.sumaResultado }} </h1>
+          <h1 class="title" v-if="this.$store.state.lenguaje == 'español'"> Suma total: {{ SumaDetodo }}{{ this.sumaResultado }} </h1>
+          <h1 class="title" v-if="this.$store.state.lenguaje == 'ingles'"> Total sum: {{ SumaDetodo }}{{ this.sumaResultado }} </h1>
         </div>
       </div>
     </Transition>
 
     <!-- RESULTADOS -->
     <div class="resultados mx-2">
-      <h1 class="title has-text-centered has-text-white is-3 mb-2"> RESULTADOS </h1>
+      <h1 class="title has-text-centered has-text-white is-3 mb-2" v-if="this.$store.state.lenguaje == 'español'"> RESULTADOS </h1>
+      <h1 class="title has-text-centered has-text-white is-3 mb-2" v-if="this.$store.state.lenguaje == 'ingles'"> RESULTS </h1>
       <div id="resultados-css" class="container">
         <!-- Aqui pintamos todos los resultados, OJO!! ense;amos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
         <div v-for="item in resultados" :key="item">
