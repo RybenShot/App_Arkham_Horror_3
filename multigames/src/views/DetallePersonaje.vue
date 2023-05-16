@@ -2,23 +2,26 @@
     <div class="allWindow">
 
         <!-- IMG -->
-        <section class="hero is-small helperImgPjs" >
-          <div class="columns is-vcentered is-mobile p-0 pb-3">
+        <section class="hero is-small helperImgPjs" :class="[imgPJDetalle]" >
+          <div class=" hero-body columns is-vcentered is-mobile p-0 pt-6 ">
 
-            <div class="column p-0">
-              <img class="imgDetalle p-0" :src="this.$store.state.datosPJactual.fotoUrl" :alt="this.$store.state.datosPJactual.nombrePJ">
-              <div class="datosDetalle">
+            <router-link class="" to="/PersonajesAHClasico"><div class="column is-2 pl-5 p-0 has-text-grey-lighter" ><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div></router-link>
+
+            <div class="column">
+              <div class="classDatosDetalle">
                 <h1 class="title titleDecoration is-4 pt-3 mb-0">{{this.$store.state.datosPJactual.nombrePJ}}</h1>
                 <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'español'">{{this.$store.state.datosPJactual.posicion}}</p>
                 <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">{{this.$store.state.datosPJactual.ENposicion}}</p>
               </div>
             </div>
 
+            <router-link class="column is-2 pl-2" to="/"><div class="has-text-grey-lighter"><i class="fa-2x fas fa-home"></i></div></router-link>
+
           </div>
         </section>
 
         <!-- NAVEGACION -->
-        <section class="section columns is-mobile has-background-dark p-0  mb-0">
+        <section class="section columns is-mobile has-background-dark p-0 mt-1 mb-0">
           <div class="column is-4 has-background-light pl-5">
             <p @click="this.VerDatos('Historia')" v-if="this.$store.state.lenguaje == 'español'">Historia <i class="far fa-id-card"></i></p>
             <p @click="this.VerDatos('Historia')" v-if="this.$store.state.lenguaje == 'ingles'">History <i class="far fa-id-card"></i></p>
@@ -218,6 +221,8 @@ export default {
 
   data(){
     return{
+      datosDetalle:{},
+      imgPJDetalle: "",
 
     // SELECCION DE PERSONAJE
     ModalHistoria: false,
@@ -226,6 +231,60 @@ export default {
     }
   },
 
+   mounted(){
+    this.datosDetalle= { ...this.$store.state.datosPJactual };
+
+
+    if (this.datosDetalle.idPersonaje == 1) {
+      this.imgPJDetalle = "PlayimgTommy"
+    } else if (this.datosDetalle.idPersonaje == 2) {
+      this.imgPJDetalle = "PlayimgMarie"
+    } else if (this.datosDetalle.idPersonaje == 3) {
+      this.imgPJDetalle = "PlayimgJenny"
+    } else if (this.datosDetalle.idPersonaje == 4) {
+      this.imgPJDetalle = "PlayimgDexter"
+    } else if (this.datosDetalle.idPersonaje == 5) {
+      this.imgPJDetalle = "PlayimgWendy"
+    } else if (this.datosDetalle.idPersonaje == 6) {
+      this.imgPJDetalle = "PlayimgRex"
+    } else if (this.datosDetalle.idPersonaje == 7) {
+      this.imgPJDetalle = "PlayimgCalvin"
+    } else if (this.datosDetalle.idPersonaje == 8) {
+      this.imgPJDetalle = "PlayimgAgnes"
+    } else if (this.datosDetalle.idPersonaje == 9) {
+      this.imgPJDetalle = "PlayimgMichael"
+    } else if (this.datosDetalle.idPersonaje == 10) {
+      this.imgPJDetalle = "PlayimgDaniela"
+    } else if (this.datosDetalle.idPersonaje == 11) {
+      this.imgPJDetalle = "PlayimgNorman"
+    } else if (this.datosDetalle.idPersonaje == 12) {
+      this.imgPJDetalle = "PlayimgMinh"
+    } else if (this.datosDetalle.idPersonaje == 13) {
+      this.imgPJDetalle = "PlayimgSilas"
+    } else if (this.datosDetalle.idPersonaje == 14) {
+      this.imgPJDetalle = "PlayimgCharlie"
+    } else if (this.datosDetalle.idPersonaje == 15) {
+      this.imgPJDetalle = "PlayimgStella"
+    } else if (this.datosDetalle.idPersonaje == 16) {
+      this.imgPJDetalle = "PlayimgZoey"
+    } else if (this.datosDetalle.idPersonaje == 17) {
+      this.imgPJDetalle = "PlayimgPadre"
+    } else if (this.datosDetalle.idPersonaje == 18) {
+      this.imgPJDetalle = "PlayimgPatricie"
+    } else if (this.datosDetalle.idPersonaje == 19) {
+      this.imgPJDetalle = "PlayimgCarson"
+    } else if (this.datosDetalle.idPersonaje == 20) {
+      this.imgPJDetalle = "PlayimgPete"
+    } else if (this.datosDetalle.idPersonaje == 21) {
+      this.imgPJDetalle = "PlayimgDarrell"
+    } else if (this.datosDetalle.idPersonaje == 22) {
+      this.imgPJDetalle = "PlayimgGloria"
+    } else if (this.datosDetalle.idPersonaje == 23) {
+      this.imgPJDetalle = "PlayimgMandy"
+    } else if (this.datosDetalle.idPersonaje == 24) {
+      this.imgPJDetalle = "PlayimgMontarrey"
+    } 
+   },
   methods:{
     VerDatos(verdato){
       if (verdato == 'Historia') {
@@ -244,10 +303,37 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .modal-card{
   max-width: 380px;
 }
+
+.PlayimgTommy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ1.png);}
+.PlayimgMarie {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ2.jpg);}
+.PlayimgJenny {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ3.png);}
+.PlayimgDexter {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ4.png);}
+.PlayimgWendy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ5.jpg);}
+.PlayimgRex {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ6.jpg);}
+.PlayimgCalvin {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ7.jpg);}
+.PlayimgAgnes {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ8.jpg);}
+.PlayimgMichael {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ9.jpg);}
+.PlayimgDaniela {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ10.jpg);}
+.PlayimgNorman {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ11.jpg);}
+.PlayimgMinh {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ12.jpg);}
+
+.PlayimgSilas {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ13.jpg);}
+.PlayimgCharlie {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ14.jpg);}
+.PlayimgStella {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ15.jpg);}
+.PlayimgZoey {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ16.jpg);}
+.PlayimgPadre {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ17.jpg);}
+.PlayimgPatricie {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ18.jpg);}
+.PlayimgCarson {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ19.jpg);}
+.PlayimgPete {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ20.jpg);}
+
+.PlayimgDarrell {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ21.jpg);}
+.PlayimgGloria {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ22.jpg);}
+.PlayimgMandy {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ23.jpg);}
+.PlayimgMontarrey {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ24.jpg);}
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap");
 
@@ -264,12 +350,12 @@ export default {
   position: relative;
   z-index: 1
 }
-.datosDetalle{
+.classDatosDetalle{
   position: absolute;
   z-index: 2;
   top: 90px;
-  left: 1%;
-  right:1%
+  left: 15%;
+  right:15%
 }
 
 .contadorVidaCordura {
@@ -288,16 +374,11 @@ export default {
   font-family: "Roboto Flex", sans-serif;
 }
 
-.titleDecoration {
-  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
-  color: black;
-  font-family: "NombrePJs";
-  font-weight: 300;
-  text-align: center;
-}
-
 .allWindow {
-  min-height: 70vh;
+  background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
 }
 
 
@@ -305,6 +386,7 @@ export default {
 .helperImgPjs{
   background-position: center;
   background-size: cover;
+  height: 20vh;
 }
 
 /* colores para atributos */

@@ -359,4 +359,4 @@ export default {
 .damageC50 {background-image: url("@/assets/img/EfectoVida&Cordura/cordura/damageCordura50.png");}
 .damageC75 {background-image: url("@/assets/img/EfectoVida&Cordura/cordura/damageCordura75.png");}
 .damageC90 {background-image: url("@/assets/img/EfectoVida&Cordura/cordura/damageCordura90.png");}
-</style>s
+</style>

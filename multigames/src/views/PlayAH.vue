@@ -2,7 +2,7 @@
   <div class="container allWindow" :class="[BGVida]" >
     <div class="allWindow" :class="[BGCordura]">
     <!-- IMG -->
-    <section class="hero is-small helperImgPjs" :class="[this.$store.state.datosPJactual.fotoUrl]">
+    <section class="hero is-small helperImgPjs" :class="[imgPJPlay]">
       <div class="hero-body columns is-vcentered is-mobile p-0 pt-6 mt-5 pb-0">
         <router-link class="" to="/DetallePersonaje"><div class="column is-2 pl-5 p-0 has-text-grey-lighter" ><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div></router-link>
 
@@ -78,16 +78,11 @@
       <div class="column">
         <div>
           <p class="has-text-danger has-text-centered"> <i class="fa-5x fas fa-heartbeat"></i> </p>
-          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.$store.state.datosPJactual.vida }} </p>
+          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.datosPJinPlay.vida }} </p>
           <!-- botones + - -->
           <div class="columns is-mobile pb-2">
-            <div class="column ml-4 pt-0">
-              <button class="button is-danger" @click="datosPJactual.vida--"> - </button>
-            </div>
-
-            <div class="column ml-3 pt-0">
-              <button class="button is-success" @click="datosPJactual.vida++"> + </button>
-            </div>
+            <div class="column ml-4 pt-0"><button class="button is-danger" @click="this.datosPJinPlay.vida--"> - </button></div>
+            <div class="column ml-3 pt-0"><button class="button is-success" @click="this.datosPJinPlay.vida++"> + </button></div>
           </div>
         </div>
       </div>
@@ -96,19 +91,12 @@
       <!-- CORDURA -->
       <div class="column">
         <div>
-          <p class="has-text-info has-text-centered"> <i class="fa-5x fas fa-brain"></i>
-          </p>
-          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.$store.state.datosPJactual.cordura }}
-          </p>
+          <p class="has-text-info has-text-centered"> <i class="fa-5x fas fa-brain"></i></p>
+          <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.datosPJinPlay.cordura }}</p>
           <!-- botones + - -->
           <div class="columns is-mobile pb-2">
-            <div class="column ml-4 pt-0">
-              <button class="button is-danger" @click="datosPJactual.cordura--"> - </button>
-            </div>
-
-            <div class="column ml-3 pt-0">
-              <button class="button is-success" @click="datosPJactual.cordura++" > + </button>
-            </div>
+            <div class="column ml-4 pt-0"><button class="button is-danger" @click="this.datosPJinPlay.cordura--"> - </button></div>
+            <div class="column ml-3 pt-0"><button class="button is-success" @click="this.datosPJinPlay.cordura++" > + </button></div>
           </div>
         </div>
       </div>
@@ -118,29 +106,29 @@
 
     <!-- ATRIBUTOS -->
     <div class="columns is-mobile" id="botonesAtributos">
-      <button class="column helpermaxheigth p-1 mx-2 ml-4 botonesAtributos" @click="this.NDadosAtributo = this.$store.state.datosPJactual.saber">
+      <button class="column helpermaxheigth p-1 mx-2 ml-4 botonesAtributos" @click="this.NDadosAtributo = this.datosPJinPlay.saber">
         <p class="has-text-purple"><i class="fa-3x fas fa-book-open"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.saber }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJinPlay.saber }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.$store.state.datosPJactual.influencia">
+      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.datosPJinPlay.influencia">
         <p class="has-text-orange"><i class="fa-3x fas fa-handshake"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.influencia }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJinPlay.influencia }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.$store.state.datosPJactual.observacion">
+      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.datosPJinPlay.observacion">
         <p class="has-text-primary"><i class="fa-3x fas fa-eye"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.observacion }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJinPlay.observacion }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.$store.state.datosPJactual.fuerza">
+      <button class="column helpermaxheigth p-1 mx-2" @click="this.NDadosAtributo = this.datosPJinPlay.fuerza">
         <p class="has-text-danger"><i class="fa-3x fas fa-fist-raised"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.fuerza }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJinPlay.fuerza }}</p>
       </button>
 
-      <button class="column helpermaxheigth p-1 mx-2 mr-4" @click="this.NDadosAtributo = this.$store.state.datosPJactual.voluntad">
+      <button class="column helpermaxheigth p-1 mx-2 mr-4" @click="this.NDadosAtributo = this.datosPJinPlay.voluntad">
         <p class="has-text-info"><i class="fa-3x fab fa-hornbill"></i></p>
-        <p class="contadorAtributos title is-5 mb-0">{{ this.$store.state.datosPJactual.voluntad }}</p>
+        <p class="contadorAtributos title is-5 mb-0">{{ this.datosPJinPlay.voluntad }}</p>
       </button>
     </div>
     <!-- end ATRIBUTOS -->
@@ -219,7 +207,7 @@
       <h1 class="title has-text-centered has-text-white is-3 mb-2" v-if="this.$store.state.lenguaje == 'español'"> RESULTADOS </h1>
       <h1 class="title has-text-centered has-text-white is-3 mb-2" v-if="this.$store.state.lenguaje == 'ingles'"> RESULTS </h1>
       <div id="resultados-css" class="container">
-        <!-- Aqui pintamos todos los resultados, OJO!! ense;amos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
+        <!-- Aqui pintamos todos los resultados, OJO!! enseñamos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
         <div v-for="item in resultados" :key="item">
           <!-- SI OPCIONES AVANZADAS -->
           <p v-if=" (item == this.$store.state.AvAcierto) | (item == this.$store.state.AvAcierto2) | (item == this.$store.state.AvAcierto3)" class="acierto resultado-css has-text-white has-background-dark" > {{ item }} </p>
@@ -254,10 +242,11 @@ export default {
     EstadoSuicidio,
     EstadoSeñalado
   },
-  props: ["datosPJactual"],
 
   data() {
     return {
+      datosPJinPlay:{},
+
       // TIRADA DE DADOS
       NDadosAtributo: 0,
       NDeDadosExtra: 0,
@@ -274,33 +263,89 @@ export default {
       AvFatal2: null,
       AvFatal3: null,
 
-      BGVida: "",
+      BGVida: "damageV25",
       BGCordura: "",
+      imgPJPlay:"",
     };
   },
 
+  mounted(){
+    this.datosPJinPlay= { ...this.$store.state.datosPJactual };
+    console.log("se ha copiado el PJ correctamente")
+
+    if (this.datosPJinPlay.idPersonaje == 1) {
+      this.imgPJPlay = "PlayimgTommy"
+    } else if (this.datosPJinPlay.idPersonaje == 2) {
+      this.imgPJPlay = "PlayimgMarie"
+    } else if (this.datosPJinPlay.idPersonaje == 3) {
+      this.imgPJPlay = "PlayimgJenny"
+    } else if (this.datosPJinPlay.idPersonaje == 4) {
+      this.imgPJPlay = "PlayimgDexter"
+    } else if (this.datosPJinPlay.idPersonaje == 5) {
+      this.imgPJPlay = "PlayimgWendy"
+    } else if (this.datosPJinPlay.idPersonaje == 6) {
+      this.imgPJPlay = "PlayimgRex"
+    } else if (this.datosPJinPlay.idPersonaje == 7) {
+      this.imgPJPlay = "PlayimgCalvin"
+    } else if (this.datosPJinPlay.idPersonaje == 8) {
+      this.imgPJPlay = "PlayimgAgnes"
+    } else if (this.datosPJinPlay.idPersonaje == 9) {
+      this.imgPJPlay = "PlayimgMichael"
+    } else if (this.datosPJinPlay.idPersonaje == 10) {
+      this.imgPJPlay = "PlayimgDaniela"
+    } else if (this.datosPJinPlay.idPersonaje == 11) {
+      this.imgPJPlay = "PlayimgNorman"
+    } else if (this.datosPJinPlay.idPersonaje == 12) {
+      this.imgPJPlay = "PlayimgMinh"
+    } else if (this.datosPJinPlay.idPersonaje == 13) {
+      this.imgPJPlay = "PlayimgSilas"
+    } else if (this.datosPJinPlay.idPersonaje == 14) {
+      this.imgPJPlay = "PlayimgCharlie"
+    } else if (this.datosPJinPlay.idPersonaje == 15) {
+      this.imgPJPlay = "PlayimgStella"
+    } else if (this.datosPJinPlay.idPersonaje == 16) {
+      this.imgPJPlay = "PlayimgZoey"
+    } else if (this.datosPJinPlay.idPersonaje == 17) {
+      this.imgPJPlay = "PlayimgPadre"
+    } else if (this.datosPJinPlay.idPersonaje == 18) {
+      this.imgPJPlay = "PlayimgPatricie"
+    } else if (this.datosPJinPlay.idPersonaje == 19) {
+      this.imgPJPlay = "PlayimgCarson"
+    } else if (this.datosPJinPlay.idPersonaje == 20) {
+      this.imgPJPlay = "PlayimgPete"
+    } else if (this.datosPJinPlay.idPersonaje == 21) {
+      this.imgPJPlay = "PlayimgDarrell"
+    } else if (this.datosPJinPlay.idPersonaje == 22) {
+      this.imgPJPlay = "PlayimgGloria"
+    } else if (this.datosPJinPlay.idPersonaje == 23) {
+      this.imgPJPlay = "PlayimgMandy"
+    } else if (this.datosPJinPlay.idPersonaje == 24) {
+      this.imgPJPlay = "PlayimgMontarrey"
+    } 
+  },
+
   updated() {
-    if (this.$store.state.datosPJactual.vida >= 5 && this.datosPJactual.vida < 7) {
+    if (this.datosPJinPlay.vida >= 5 && this.datosPJinPlay.vida < 7) {
       this.BGVida = "damageV25";
-    } else if (this.datosPJactual.vida >= 3 && this.datosPJactual.vida < 5) {
+    } else if (this.datosPJinPlay.vida >= 3 && this.datosPJinPlay.vida < 5) {
       this.BGVida = "damageV50";
-    } else if (this.datosPJactual.vida >= 2 && this.datosPJactual.vida < 3) {
+    } else if (this.datosPJinPlay.vida >= 2 && this.datosPJinPlay.vida < 3) {
       this.BGVida = "damageV75"
-    } else if (this.datosPJactual.vida < 2) {
+    } else if (this.datosPJinPlay.vida < 2) {
       this.BGVida = "damageV90"
-    } else if (this.datosPJactual.vida >= 7) {
+    } else if (this.datosPJinPlay.vida >= 7) {
       this.BGVida = ""
     } 
     
-    if (this.datosPJactual.cordura >= 5 && this.datosPJactual.cordura < 7) {
+    if (this.datosPJinPlay.cordura >= 5 && this.datosPJinPlay.cordura < 7) {
       this.BGCordura = "damageC25";
-    } else if (this.datosPJactual.cordura >= 3 && this.datosPJactual.cordura < 5) {
+    } else if (this.datosPJinPlay.cordura >= 3 && this.datosPJinPlay.cordura < 5) {
       this.BGCordura = "damageC50";
-    } else if (this.datosPJactual.cordura >= 2 && this.datosPJactual.cordura < 3) {
+    } else if (this.datosPJinPlay.cordura >= 2 && this.datosPJinPlay.cordura < 3) {
       this.BGCordura = "damageC75"
-    } else if (this.datosPJactual.cordura < 2) {
+    } else if (this.datosPJinPlay.cordura < 2) {
       this.BGCordura = "damageC90"
-    } else if (this.datosPJactual.cordura >= 7) {
+    } else if (this.datosPJinPlay.cordura >= 7) {
       this.BGCordura = ""
     } 
 
@@ -349,6 +394,33 @@ export default {
   background-position: center;
   background-size: cover;
 }
+.PlayimgTommy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ1.png);}
+.PlayimgMarie {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ2.jpg);}
+.PlayimgJenny {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ3.png);}
+.PlayimgDexter {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ4.png);}
+.PlayimgWendy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ5.jpg);}
+.PlayimgRex {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ6.jpg);}
+.PlayimgCalvin {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ7.jpg);}
+.PlayimgAgnes {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ8.jpg);}
+.PlayimgMichael {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ9.jpg);}
+.PlayimgDaniela {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ10.jpg);}
+.PlayimgNorman {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ11.jpg);}
+.PlayimgMinh {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ12.jpg);}
+
+.PlayimgSilas {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ13.jpg);}
+.PlayimgCharlie {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ14.jpg);}
+.PlayimgStella {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ15.jpg);}
+.PlayimgZoey {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ16.jpg);}
+.PlayimgPadre {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ17.jpg);}
+.PlayimgPatricie {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ18.jpg);}
+.PlayimgCarson {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ19.jpg);}
+.PlayimgPete {background-image: url(@/assets/img/Games/AHMareasTenebrosas/2imgInvestigadores/PJ20.jpg);}
+
+.PlayimgDarrell {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ21.jpg);}
+.PlayimgGloria {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ22.jpg);}
+.PlayimgMandy {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ23.jpg);}
+.PlayimgMontarrey {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ24.jpg);}
+
 
 .damageV25 {background-image: url("@/assets/img/EfectoVida&Cordura/vida/damageVida25.png");}
 .damageV50 {background-image: url("@/assets/img/EfectoVida&Cordura/vida/damageVida50.png");}
