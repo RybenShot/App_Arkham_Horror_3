@@ -1,122 +1,137 @@
 <template>
   <div class="BGGeneralAH">
-    
-    <!-- SELECCION DE PJ -->
-    <!-- <div v-if="viewPJ == true">
-      <SeleccionPJcomponent
-        :contador="contador"
-        :datosPJactual ="datosPJactual"
-        @cambioPersonaje ="cambiaPJ"
-        @cambiarVistaHijo ="cambioVista"
-        />
-    </div> -->
+    <div class="">
 
-
-
-
-
-    <!-- ESTO ES UNA COPIA DE SEGURIDAD TEMPORAL POR SI ALGO SALIERA MAL SIN DARME CUENTA -->
-
-
-
-
-
-
-    <div class="has-text-centered">
-      <div class="columns is-mobile mb-0">
-        <div class="column is-3 "><router-link class="" to="/"><i class="pl-4 fa-2x fas fa-home" style="padding-top: 15px;"></i></router-link></div>
-        <div class="column "><p class=" title pt-4 has-text-white pb-0 mb-0">Seleccionar Investigador</p></div>
-        <div class="column is-3"></div>
+      <div class="columns is-mobile mb-0 pt-3 centrarHero" >
+        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-undo-alt has-text-white"></i></div>
+        <div class="column " style="margin: 0 auto;"><p class="has-text-centered title has-text-white">Seleccionar Investigador</p></div>
+        <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
       </div>
 
-      <hr class="m-1 mx-4"> 
-      <h2 class="subtitle has-text-white mb-0">Colecciones</h2>
-      <div class="columns is-mobile pt-3">
-        <button v-if="this.$store.state.ActivarBase == true" class="column" @click="this.$store.state.ActivarBase = false">AH Base</button>
-        <button v-if="this.$store.state.ActivarBase == false" class="column" @click="this.$store.state.ActivarBase = true">AH Base</button>
-        <button class="column">AH Mareas</button>
-        <button class="column">AH Original</button>
+      <hr class="m-1 mx-4 linea-separacion"> 
+
+      <h2 class="title is-4 has-text-white has-text-centered">Colecciones</h2>
+      <p class="subtitle is-6 has-text-white has-text-centered mb-2">Haz click para añadir o quitar la expansión que quieras y luego elige un investigador para verlo en detalle.</p>
+      <div class="columns is-mobile pt-3 mx-1">
+
+        <button v-if="this.$store.state.ActivarBase == true" class="column mx-1 button  is-success" @click="this.$store.state.ActivarBase =! this.$store.state.ActivarBase">AH Base</button>
+        <button v-if="this.$store.state.ActivarBase == false" class="column mx-1 desactivado" @click="this.$store.state.ActivarBase =! this.$store.state.ActivarBase">AH Base</button>
+
+
+        <button v-if="this.$store.state.ActivarMareasTenebrosas == true" class="column mx-1 button  is-info" @click="this.$store.state.ActivarMareasTenebrosas =! this.$store.state.ActivarMareasTenebrosas">AH Mareas</button>
+        <button v-if="this.$store.state.ActivarMareasTenebrosas == false" class="column mx-1 desactivado" @click="this.$store.state.ActivarMareasTenebrosas =! this.$store.state.ActivarMareasTenebrosas">AH Mareas</button>
+
+        
+        <button v-if="this.$store.state.ActivarOriginal == true" class="column mx-1 button  is-danger" @click="this.$store.state.ActivarOriginal =! this.$store.state.ActivarOriginal">AH Original</button>
+        <button v-if="this.$store.state.ActivarOriginal == false" class="column mx-1 desactivado" @click="this.$store.state.ActivarOriginal =! this.$store.state.ActivarOriginal">AH Original</button>
+
       </div>
-      <p class="subtitle is-6 has-text-white mb-2">Elige a un investigador para verlo en detalle</p>
     </div>
 
+<br>
+
 <!-- EXPANSIONES // PERSONAJES -->
-<!-- 
+
     <div v-if="this.$store.state.ActivarBase">
-      <hr class="m-1 mx-4">
-      <h1 class="has-text-white title my-2 ml-1 is-4">Arkham Horror Base</h1>
       <div class="PersonajesList">
         <div v-for="personaje in PersonajesBase" :key="personaje">
           <router-link to="/DetallePersonaje">
-            <div @click="this.$store.state.datosPJactual = personaje" class="cajaDePersonajesBase has-background-light m-1" >
-              <img v-if="personaje.fotoUrl" :src="personaje.fotoUrl" :alt="personaje.nombrePJ" class="cajaimg">
-              <p class="has-text-centered subtitle has-text-weight-bold is-7">{{personaje.nombrePJ}}</p>
+            <div @click="this.$store.state.datosPJactual = personaje" class="p-1" >
+
+              <div class="card cajaDePersonajesBase">
+                <div class="card-icon top-left has-text-danger"><i class="fas fa-heartbeat"></i></div>
+                <div class="card-icon top-right has-text-info"><i class="fas fa-brain"></i></div>
+
+                <p class="card-number pl-2 pt-1 top-left">{{personaje.vida}}</p>
+                <p class="card-number pr-2 pt-1 top-right">{{personaje.cordura}}</p>
+
+                <div class="card-image-wrapper">
+                  <img :src="personaje.fotoUrl" :alt="personaje.nombrePJ" class="card-image" />
+                </div>
+                
+                <div class="card-overlay has-text-centered">
+                  <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
+                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+                </div>
+              </div>
+
             </div>
           </router-link>
         </div>
       </div>
-    </div> -->
-    
+    </div>
 
-    <!-- <div v-if="this.$store.state.ActivarMareasTenebrosas">
-      <hr class="m-1 mx-4">
-      <h1 class="has-text-white title my-2 ml-1 is-4">Arkham Horror Mareas Tenebrosas</h1>
+    <div v-if="this.$store.state.ActivarMareasTenebrosas">
       <div class="PersonajesList">
         <div v-for="personaje in PersonajesMareasTenebrosas" :key="personaje">
           <router-link to="/DetallePersonaje">
-            <div @click="(this.$store.state.datosPJactual = personaje)" class="cajaDePersonajesMareasTenebrosas has-background-light m-1" >
-              <img v-if="personaje.fotoUrl" :src="personaje.fotoUrl" :alt="personaje.nombrePJ" class="cajaimg">
-              <p class="has-text-centered subtitle has-text-weight-bold is-7">{{personaje.nombrePJ}}</p>
+            <div @click="this.$store.state.datosPJactual = personaje" class="p-1" >
+
+              <div class="card cajaDePersonajesMareasTenebrosas">
+                <div class="card-icon top-left has-text-danger"><i class="fas fa-heartbeat"></i></div>
+                <div class="card-icon top-right has-text-info"><i class="fas fa-brain"></i></div>
+
+                <p class="card-number pl-2 pt-1 top-left">{{personaje.vida}}</p>
+                <p class="card-number pr-2 pt-1 top-right">{{personaje.cordura}}</p>
+
+                <div class="card-image-wrapper">
+                  <img :src="personaje.fotoUrl" :alt="personaje.nombrePJ" class="card-image" />
+                </div>
+                
+                <div class="card-overlay has-text-centered">
+                  <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
+                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+                </div>
+              </div>
+
             </div>
           </router-link>
         </div>
       </div>
-    </div> -->
+    </div>
 
-    <!-- <div v-if="this.$store.state.ActivarOriginal">
-      <hr class="m-1 mx-4">
-      <h1 class="has-text-white title my-2 ml-1 is-4">Arkham Horror Original App</h1>
+    <div v-if="this.$store.state.ActivarOriginal">
       <div class="PersonajesList">
         <div v-for="personaje in PersonajesOriginal" :key="personaje">
           <router-link to="/DetallePersonaje">
-            <div @click="(this.$store.state.datosPJactual = personaje)" class="cajaDePersonajesOriginal has-background-light m-1" >
-              <img v-if="personaje.fotoUrl" :src="personaje.fotoUrl" :alt="personaje.nombrePJ" class="cajaimg">
-              <p class="has-text-centered subtitle has-text-weight-bold is-7">{{personaje.nombrePJ}}</p>
+            <div @click="this.$store.state.datosPJactual = personaje" class="p-1" >
+
+              <div class="card cajaDePersonajesOriginal">
+                <div class="card-icon top-left has-text-danger"><i class="fas fa-heartbeat"></i></div>
+                <div class="card-icon top-right has-text-info"><i class="fas fa-brain"></i></div>
+
+                <p class="card-number pl-2 pt-1 top-left">{{personaje.vida}}</p>
+                <p class="card-number pr-2 pt-1 top-right">{{personaje.cordura}}</p>
+
+                <div class="card-image-wrapper">
+                  <img :src="personaje.fotoUrl" :alt="personaje.nombrePJ" class="card-image" />
+                </div>
+                
+                <div class="card-overlay has-text-centered">
+                  <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
+                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+                </div>
+              </div>
+
             </div>
           </router-link>
         </div>
       </div>
-    </div> -->
+    </div>
 
-
-    <!-- VIEW PLAY!!!!! -->
-    <!-- <div v-if="viewPJ == false">
-      <PlayAHcomponent
-      :datosPJactual ="datosPJactual"
-      @cambiarVistaHijo ="cambioVista" />
-    </div> -->
-    <!-- end VIEW PLAY -->
+    <div class="pb-2"></div>
 
   </div>
 </template>
 
 <script>
-import SeleccionPJcomponent from "@/components/AHBase/seleccionPJAHBase.vue";
-import PlayAHcomponent from "@/components/AHBase/playAHBase.vue";
 
 export default {
-  name: "PersonajesAHClasico",
-  components:{
-    SeleccionPJcomponent,
-    PlayAHcomponent
-  },
+  name: "listaDePersonajes",
+  components:{},
 
   data() {
     return {
-
-      ActivarBase: true,
-      ActivarMareasTenebrosas: true,
-      ActivarOriginal: true,
 
       datosPJactual:{
         imgPersonaje: "imgTommy",
@@ -216,7 +231,7 @@ export default {
             descripcion:"Objeto - Vehículo. En vez de realizar una acción de movimiento normal, te mueves un máximo de 3 espacios y puedes gastar 1$ para moverte un espacio adicional.",
             ENdescripcion:"Object - Vehicle. Instead of a normal motion action, you move a maximum of 3 spaces and can spend $1 to move an extra space."
           } ,
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ1.png"),
+          fotoUrl: require("@/assets/img/Tommy.jpg"),
           expansion: "Base"
         },
         {nombrePJ: "Marie Lambeau",
@@ -266,7 +281,7 @@ export default {
             descripcion:"Talento - Innato. Acción: Puedes realizar una acción que ya hayas utilizado en esta ronda. Puedes usar tu Voz aterciopelada para permitir que otro investigador realice esta acción. Una vez por ronda, después de que gastes una ficha de Restos, ganas una ficha de Restos.",
             ENdescripcion:"Talent - Innate. Action: You can perform an action that you have already used in this round. You can use your Velvety Voice to allow another researcher to do this. Once per round, after you spend a Remains tab, you win a Remains tab."
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ2.jpg"),
+          fotoUrl: require("@/assets/img/Marie.jpg"),
           HistoriaYT: "nLVtMyycF2A",
           expansion: "Base"
         },
@@ -417,7 +432,7 @@ export default {
             descripcion:"Objeto - Extraordinario. Antes de que uno o varios monstruos vayan a atacarte, puedes descartar esta carta para separarte de todos esos monstruos y agotarlos.",
             ENdescripcion:"Object - Extraordinary. Before one or several monsters attack you, you can discard this card to separate from all those monsters and exhaust them."
           } ,
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ5.jpg"),
+          fotoUrl: require("@/assets/img/Wendy.jpg"),
           expansion: "Base"
         },
         {nombrePJ: "Rex Murphy",
@@ -474,7 +489,7 @@ export default {
             descripcion:"Cuando estés realizando una acción de revelar Pistas, suma uno al resultado de cada dado que tires.",
             ENdescripcion:"When you are performing an action to reveal Hints, add one to the result of each dice you throw."
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ6.jpg"),
+          fotoUrl: require("@/assets/img/Rex.jpg"),
           HistoriaYT: "2CNEDE9mJ-0",
           expansion: "Base"
         },
@@ -525,7 +540,7 @@ export default {
             ENdescripcion:"State - Innate. You can get a Horror point to re-roll any number of dice. (This effect can only be applied once to each roll. You can use it to re-roll your sinister Pact.)"
           }  ,
           Pertenencia4: null,
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ7.jpg"),
+          fotoUrl: require("@/assets/img/_DSC2834.jpg"),
           expansion: "Base"
         },
         {nombrePJ: "Agnes Baker",
@@ -576,7 +591,7 @@ export default {
             descripcion:"Hechizo - Ensalmo. Puedes hacer una prueba de SABER en vez de FUERZA cuando estés realizando una acción de ataque. (El modificador de ataque del Monstruo sigue aplicándose.)",
             ENdescripcion:"Spell - Spell. You can do a SABER test instead of FORCE when you are performing an attack action. (Monster Attack Modifier still applies.)"
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ8.jpg"),
+          fotoUrl: require("@/assets/img/_DSC2838.jpg"),
           HistoriaYT: "Cx4GNKVIWHQ",
           expansion: "Base"
         },
@@ -627,7 +642,7 @@ export default {
             descripcion:"Talento - Empleo. Después de que realices una acción de conseguir fondos, puedes hacer una prueba de FUERZA. Si la superas, ganas 2$.",
             ENdescripcion:"Talento - Empleo. Después de que realices una acción de conseguir fondos, puedes hacer una prueba de FUERZA. Si la superas, ganas 2$."
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ9.jpg"),
+          fotoUrl: require("@/assets/img/_DSC2836.jpg"),
           expansion: "Base"
         },
         {nombrePJ: "Daniela Reyes",
@@ -677,7 +692,7 @@ export default {
             descripcion:"Objeto - Común. Recibes +1 de FUERZA cuando estés realizando una acción de ataque. Si tienes una Mano libre, en vez de eso recibes +3.",
             ENdescripcion:"Item - Common. You receive +1 FORCE when you are performing an attack action. If you have a free Hand, you receive +3 instead."
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ10.jpg"),
+          fotoUrl: require("@/assets/img/_DSC2826.jpg"),
           expansion: "Base"
         },
         {nombrePJ: "Norman Withers",
@@ -727,7 +742,7 @@ export default {
             descripcion:"Objeto - Extraordinario Tomo. Una vez por ronda, cuando estés resolviendo una prueba, puedes volver a tirar tantos dados coo el número de fichas de Perdición que haya en tu espacio (puedes tirar menos si lo prefieres.)",
             ENdescripcion:"Object - Extraordinary Tome. Once per round, when you are solving a test, you can re-roll as many dice as the number of Doom chips in your space (you can shoot less if you prefer.)"
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ11.jpg"),
+          fotoUrl: require("@/assets/img/_DSC2835.jpg"),
           expansion: "Base"
         },
         {nombrePJ: "Minh Thi Phan",
@@ -777,7 +792,7 @@ export default {
             descripcion:"Talento - Innato. Tu límite de concentración aumenta en un punto. Los demás investigadores que estén en tu espacio reciben un +1 para todas las habilidades en las que tú estés concentrada.",
             ENdescripcion:"Talent - Innate. Your concentration limit increases by one point. Other researchers in your space receive a +1 for all skills you are focused on."
           },
-          fotoUrl: require("@/assets/img/Games/AHBase/2imgInvestigadores/PJ12.jpg"),
+          fotoUrl: require("@/assets/img/Minh Thi.jpg"),
           expansion: "Base"
         },
       ],
@@ -1395,145 +1410,29 @@ export default {
           expansion: "Original - SegundaEd."
         },
       ],
-      
 
-
-      contador: this.$store.state.contadorPJBase,
-      viewPJ: true,
-      // viewPlay: false,
     }; // end return
   }, // end data
-  updated(){
-    this.datosPJactual = this.Personajes[this.contador];
-      //this.datosPJactual.nombrePJ = this.Personajes[this.contador].nombrePJ;
-      //this.datosPJactual.posicion = this.Personajes[this.contador].posicion;
-      //this.datosPJactual.vida = this.Personajes[this.contador].vida;
-      //this.datosPJactual.cordura = this.Personajes[this.contador].cordura;
-      //this.datosPJactual.saber = this.Personajes[this.contador].saber;
-      //this.datosPJactual.influencia = this.Personajes[this.contador].influencia;
-      //this.datosPJactual.observacion = this.Personajes[this.contador].observacion;
-      //this.datosPJactual.fuerza = this.Personajes[this.contador].fuerza;
-      //this.datosPJactual.voluntad = this.Personajes[this.contador].voluntad;
-      //this.datosPJactual.limConcentracion = this.Personajes[this.contador].limConcentracion;
-      //this.datosPJactual.efecto1 = this.Personajes[this.contador].efecto1;
-      //this.datosPJactual.efecto2 = this.Personajes[this.contador].efecto2;
-      //this.datosPJactual.frase = this.Personajes[this.contador].frase;
-      //this.datosPJactual.historia = this.Personajes[this.contador].historia;
-      //this.datosPJactual.Pertenencia1 = this.Personajes[this.contador].Pertenencia1;
-      //this.datosPJactual.Pertenencia2 = this.Personajes[this.contador].Pertenencia2;
-      //this.datosPJactual.Pertenencia3 = this.Personajes[this.contador].Pertenencia3;
-      //this.datosPJactual.Pertenencia4 = this.Personajes[this.contador].Pertenencia4;
-      //this.datosPJactual.arquetipo1 = this.Personajes[this.contador].arquetipo1;
-      //this.datosPJactual.arquetipo2 = this.Personajes[this.contador].arquetipo2;
-      //this.datosPJactual.HistoriaYT = this.Personajes[this.contador].HistoriaYT;
-      //this.datosPJactual.expansion = this.Personajes[this.contador].expansion;
-
-
-    if (this.contador == 0)      {this.datosPJactual.imgPersonaje = "imgTommy"} 
-    else if (this.contador == 1) {this.datosPJactual.imgPersonaje = "imgMarie"} 
-    else if (this.contador == 2) {this.datosPJactual.imgPersonaje = "imgJenny"} 
-    else if (this.contador == 3) {this.datosPJactual.imgPersonaje = "imgDexter"} 
-    else if (this.contador == 4) {this.datosPJactual.imgPersonaje = "imgWendy"} 
-    else if (this.contador == 5) {this.datosPJactual.imgPersonaje = "imgRex"} 
-    else if (this.contador == 6) {this.datosPJactual.imgPersonaje = "imgCalvin"} 
-    else if (this.contador == 7) {this.datosPJactual.imgPersonaje = "imgAgnes"} 
-    else if (this.contador == 8) {this.datosPJactual.imgPersonaje = "imgMichael"} 
-    else if (this.contador == 9) {this.datosPJactual.imgPersonaje = "imgDaniela"} 
-    else if (this.contador == 10) {this.datosPJactual.imgPersonaje = "imgNorman"} 
-    else if (this.contador == 11) {this.datosPJactual.imgPersonaje = "imgMinh"}
-  },
+  updated(){},
 
   methods: {
-    cambiaPJ(seleccionMenosMas) {
-      if (seleccionMenosMas == 'mas') {
-        this.contador ++
-      } else if(seleccionMenosMas == 'menos'){
-        this.contador --
-      } else {
-        alert("Algo ha ido mal..")
-      }
-    }, // end cambiaPJ
-    cambioVista(ValueCambiarVista){
-      this.viewPJ = ValueCambiarVista
-    }, // end cambioVista
-
+    goBack() {
+      this.$router.go(-1);
+    }
   }, // end methods
 };
 </script>
 
 
-<style >
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap");
-
-@font-face{
-  font-family: NombrePJs;
-  src: url('@/assets/fonts/PJs/NombrePJs.ttf'), url('@/assets/fonts/PJs/NombrePJsItalic.ttf')
-}
-@font-face{
-  font-family: Pacto Siniestro;
-  src: url('@/assets/fonts/Pacto Siniestro/bloodcrow.ttf'), url('@/assets/fonts/Pacto Siniestro/bloodcrowc.ttf'), url('@/assets/fonts/Pacto Siniestro/bloodcrowci.ttf')
+<style scoped>
+/* Helers */
+.centrarHero{
+  display: flex; 
+  justify-content: center; 
+  align-items: center
 }
 
-.contadorVidaCordura {
-  position: relative;
-  top: -50px;
-  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
-  color: black;
-  font-family: "Roboto Flex", sans-serif;
-}
-
-.contadorAtributos {
-  position: relative;
-  top: -30px;
-  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
-  color: black;
-  font-family: "Roboto Flex", sans-serif;
-}
-
-#botonesAtributos button:focus {
-  box-shadow: 0px 0px 20px rgb(255, 255, 255);
-}
-.helpermaxheigth{
-  max-height: 7vh;
-}
-.inputsAvanzado{
-  max-width: 20vh;
-}
-
-/* HELPERS */
-/* Necesario para las transiciones */
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-
-#modalPactoSiniestro{
-  min-width: 40vh;
-  min-height: 40vh;
-}
-.titlePactosiniestro{
-  font-family: "Pacto Siniestro";
-  font-weight: 300;
-  text-align: center;
-}
-.resultadoPactosiniestro{
-  font-family: "Pacto Siniestro";
-  font-weight: 300;
-  font-size: 15vh;
-  text-align: center;
-}
-.titleDecoration {
-  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
-  color: black;
-  font-family: "NombrePJs";
-  font-weight: 300;
-  text-align: center;
-}
-
+/* Usado */
 .BGGeneralAH {
   background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
   min-height: 110vh;
@@ -1541,80 +1440,102 @@ export default {
   background-size: cover;
 }
 
-.allWindow {
-  min-height: 70vh;
-}
-
-
-/* imgPersonajes */
-.helperImgPjs{
-  background-position: center;
-  background-size: cover;
-}
-.imgTommy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ1.png);}
-.imgMarie {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ2.jpg);}
-.imgJenny {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ3.png);}
-.imgDexter {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ4.png);}
-.imgWendy {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ5.jpg);}
-.imgRex {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ6.jpg);}
-.imgCalvin {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ7.jpg);}
-.imgAgnes {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ8.jpg);}
-.imgMichael {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ9.jpg);}
-.imgDaniela {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ10.jpg);}
-.imgNorman {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ11.jpg);}
-.imgMinh {background-image: url(@/assets/img/Games/AHBase/2imgInvestigadores/PJ12.jpg);}
-.imgDarrell {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ21.jpg);}
-.imgGloria {background-image: url(@/assets/img/Games/AHOriginal/2imgInvestigadores/PJ22.jpg);}
-
-/* colores para atributos */
-.has-text-purple {
-  color: #9b51e0;
-}
-.has-text-orange {
-  color: #f2994a;
-}
-
-/* RESULTADO DE DADOS */
-.acierto {
-  box-shadow: 0px 0px 20px rgb(30, 255, 0);
-}
-.fatal {
-  box-shadow: 0px 0px 20px rgb(255, 0, 0);
-}
-#resultados-css {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  grid-column-gap: 3vmin;
-}
-.resultado-css {
-  padding: 3px;
-  margin: 10px;
-  text-align: center;
+/* Botones */
+/* disabled */
+.desactivado{
+  opacity: 50%;
 }
 
 /* Lista de Personajes */
 .PersonajesList {
   display: grid;
-  grid-template-columns: 33% 33% 33%;
+  grid-template-columns: auto auto auto;
 }
 .cajaDePersonajesBase{
-  border: 2px solid green;
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgb(30, 255, 0);
+  border: 2px solid #48c78e;
+  border-radius: 3px;
 }
 .cajaDePersonajesMareasTenebrosas{
-  border: 2px solid rgb(255, 87, 87);
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgb(255, 0, 34);
+  border: 2px solid #3e8ed0;
+  border-radius: 3px;
 }
 .cajaDePersonajesOriginal{
-  border: 2px solid rgb(87, 87, 255);
+  border: 2px solid #f14668;
   border-radius: 5px;
-  box-shadow: 0px 0px 5px rgb(0, 47, 255);
 }
-
 .cajaimg{
   object-fit: cover;
   min-height: 80px;
 }
+
+.contadorVidaCordura{
+  position: relative;
+  top: -35px;
+  -webkit-text-stroke: 0.5px rgb(255, 255, 255);
+  color: black;
+  font-family: "Roboto Flex", sans-serif;
+}
+
+/* CLASES PARA TARJETAS */
+.card {
+  width: 115px;
+  height: 140px;
+  background: #ffffff00;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0) ;
+}
+
+.card-image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  z-index: 2;
+  
+}
+
+.card-icon {
+  position: absolute;
+  font-size: 25px;
+  color: #ffffff;
+  z-index: 3;
+}
+
+.top-left {
+  top: -3px;
+  left: 3px;
+}
+
+.top-right {
+  top: -3px;
+  right: 3px;
+}
+
+.card-number {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  color: #ffffff;
+  z-index: 3;
+}
+
+.tipografiaElegante{
+  font-family: "Cinzel";
+}
+
 </style>>

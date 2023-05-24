@@ -22,7 +22,7 @@ export default {
 
 <style>
 #BGError404 {
-  background-image: url(../assets/img/ZZOtros/BGError404.2.jpg);
+  background-image: url(@/assets/img/ZZOtros/BGError404.2.jpg);
   min-height: 120vh;
   position: relative;
   background-position: center;

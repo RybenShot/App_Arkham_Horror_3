@@ -3,6 +3,11 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     //Home
+    StoreModalBienvenida:true,
+    StoreModalDonacion:true,
+
+    StoreHomeDefaul:true,
+    StoreHomemas: false,
 
     // PERSONAJES
     contadorPJ: 0 ,

@@ -5,7 +5,7 @@
         <section class="hero is-small helperImgPjs" :class="[imgPJDetalle]" >
           <div class=" hero-body columns is-vcentered is-mobile p-0 pt-6 ">
 
-            <router-link class="" to="/PersonajesAHClasico"><div class="column is-2 pl-5 p-0 has-text-grey-lighter" ><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div></router-link>
+            <router-link class="" to="/ListaPersonajes"><div class="column is-2 pl-5 p-0 has-text-grey-lighter" ><i class="fa-2x fas fa-arrow-alt-circle-left"></i></div></router-link>
 
             <div class="column">
               <div class="classDatosDetalle">
