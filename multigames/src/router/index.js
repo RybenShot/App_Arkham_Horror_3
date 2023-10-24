@@ -8,7 +8,7 @@ import Pagina_De_Pruebas from '../views/ZOtros/ViewDePruebas.vue'
 // PERSONAJES
 import ListaPersonajes from '../views/Personajes/ListaPersonajes.vue'
 import DetallePersonaje from '../views/Personajes/DetallePersonaje.vue'
-import PlayAH from '../views/Personajes/PlayAH.vue'
+import PlayAH from '../views/Personajes/Play.vue'
 // MAPAS
 import ListaMapas from '../views/Mapas/ListaMapas.vue'
 import DetalleMapa from '../views/Mapas/DetalleMapa.vue'

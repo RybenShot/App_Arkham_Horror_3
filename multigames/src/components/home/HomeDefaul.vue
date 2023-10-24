@@ -1,10 +1,10 @@
 <template>
   <div >
     <ul v-if="this.$store.state.lenguaje == 'español'">
-      <router-link to="/ListaMapas"><button class="buttonsHome ">Mapas</button></router-link>
-      <router-link to="/ListaPersonajes"><button class="buttonsHome ">Investigadores</button></router-link>
-      <button class="buttonsHome" @click="(this.$store.state.StoreHomemas = true), (this.$store.state.StoreHomeDefaul = false)">Más</button>
-      <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank"><button class="buttonsHome">Apoyanos</button></a>
+      <router-link to="/ListaMapas" @click="SonidoTecla()"><button class="buttonsHome ">Mapas</button></router-link>
+      <router-link to="/ListaPersonajes" @click="SonidoTecla()"><button class="buttonsHome ">Investigadores</button></router-link>
+      <button class="buttonsHome" @click="(SonidoTecla()), (this.$store.state.StoreHomemas = true), (this.$store.state.StoreHomeDefaul = false)">Más</button>
+      <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()"><button class="buttonsHome">Apoyanos</button></a>
     </ul>
 
     <ul v-if="this.$store.state.lenguaje == 'ingles'">
@@ -17,8 +17,16 @@
 </template>
 
 <script>
+import { Howl } from 'howler';
+
+const sound = new Howl({
+  src: require('@/assets/sound/SonidoTecla.mp3'),
+});
 export default {
 
+  methods: {
+  SonidoTecla() {sound.play();},
+  },
 }
 </script>
 

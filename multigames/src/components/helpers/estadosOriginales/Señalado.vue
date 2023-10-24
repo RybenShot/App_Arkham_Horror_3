@@ -1,6 +1,6 @@
 <template>
   <div class="modal is-active">
-        <div class="modal-background"></div>
+        <div class="modal-background" @click="this.$store.state.modalSeñalado = false"></div>
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGSeñalado">

@@ -11,7 +11,7 @@
           <ModalDetalleEnemigo/>
         </div> <!-- end ModalDetalleEnemigo -->
 
-        <div v-if="this.$store.state.contadorMapa == 0">
+        <div v-if="this.$store.state.datosMapa.idMapa == 0">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa1" :key="item.id">
               <div
@@ -33,7 +33,7 @@
           </div>
         </div><!-- end IF MAPA 1  -->
 
-        <div v-if="this.$store.state.contadorMapa == 1">
+        <div v-if="this.$store.state.datosMapa.idMapa == 1">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa2" :key="item.id">
               <div
@@ -54,7 +54,7 @@
           </div>
         </div><!-- end IF MAPA 2  -->
 
-        <div v-if="this.$store.state.contadorMapa == 2">
+        <div v-if="this.$store.state.datosMapa.idMapa == 2">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa3" :key="item.id">
               <div
@@ -76,7 +76,7 @@
           </div>
         </div><!-- end IF MAPA 3  -->
 
-        <div v-if="this.$store.state.contadorMapa == 3">
+        <div v-if="this.$store.state.datosMapa.idMapa == 3">
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosMapa4" :key="item.id">
               <div
@@ -103,7 +103,7 @@
         <h2 class="title titleDecoration is-4 pt-3 mb-3" v-if="this.$store.state.lenguaje == 'ingles'">Extra enemies</h2>
         <hr class="my-1">
 
-        <div v-if="this.$store.state.contadorMapa == 0">
+        <div v-if="this.$store.state.datosMapa.idMapa == 0">
           <p class="has-text-white" v-if="this.$store.state.lenguaje == 'español'">Sin enemigos extras</p>
           <p class="has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">No extra enemies</p>
           <!-- <p class="has-text-white">Merodeador Encapuchado x2</p>
@@ -111,7 +111,7 @@
           <p class="has-text-white">Extraños con túnicas x2</p> -->
         </div><!-- end IF MAPA 1  -->
 
-        <div v-if="this.$store.state.contadorMapa == 1">
+        <div v-if="this.$store.state.datosMapa.idMapa == 1">
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'español'"> Aparta a un lado los siguientes mounstruos, estos son “los adoradores de Umordhoth”</p>
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'"> Set aside the following monsters, these are "the worshippers of Umordhoth"</p>
 
@@ -129,7 +129,7 @@
           </div>
         </div><!-- end IF MAPA 2  -->
 
-        <div v-if="this.$store.state.contadorMapa == 2">
+        <div v-if="this.$store.state.datosMapa.idMapa == 2">
           <p class="has-text-white p-2">Aparta a un lado los siguientes mounstruos, todos los Logia</p>
           <div id="enemisList" class="px-1">
             <div v-for="item in EnemigosExtrasMapa3" :key="item.id">
@@ -150,7 +150,7 @@
           </div>
         </div><!-- end IF MAPA 3  -->
 
-        <div v-if="this.$store.state.contadorMapa == 3">
+        <div v-if="this.$store.state.datosMapa.idMapa == 3">
 
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'español'">Sin enemigos extras</p>
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'">No extra enemies</p>
@@ -160,8 +160,8 @@
         <div class="columns is-mobile  mt-4">
           <p class="column"></p>
           <div class="column">
-            <button @click="this.$store.state.viewMapa = true" class="button is-success has-text-black p-5" v-if="this.$store.state.lenguaje == 'español'">Volver a Mapas</button>
-            <button @click="this.$store.state.viewMapa = true" class="button is-success has-text-black p-5" v-if="this.$store.state.lenguaje == 'ingles'">Back to maps</button>
+            <button @click="this.$store.state.viewDetalleMapa = true" class="button is-success has-text-black p-5" v-if="this.$store.state.lenguaje == 'español'">Volver a Mapas</button>
+            <button @click="this.$store.state.viewDetalleMapa = true" class="button is-success has-text-black p-5" v-if="this.$store.state.lenguaje == 'ingles'">Back to maps</button>
           </div>
           <p class="column"></p>
         </div>

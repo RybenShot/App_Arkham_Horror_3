@@ -1,6 +1,6 @@
 <template>
   <div class="modal is-active">
-        <div class="modal-background"></div>
+        <div class="modal-background" @click="this.$store.state.modalMaldito = false"></div>
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGMaldicion">
@@ -27,8 +27,10 @@
                 </p>
 
                 <p class="control column is-half">
-                  <button @click="this.$store.state.modalMaldito = false" class="button is-link is-fullwidth" v-if="this.$store.state.lenguaje == 'español'">Volver</button>
-                  <button @click="this.$store.state.modalMaldito = false" class="button is-link is-fullwidth" v-if="this.$store.state.lenguaje == 'ingles'">Go Back</button>
+                  <button @click="(this.$store.state.EstadoMaldito = true), (this.$store.state.AvAcierto3 = null), (this.$store.state.AvAcierto2 = null), (this.$store.state.modalMaldito = false), (this.$store.state.EstadoBendicion = false)" class="button is-link is-fullwidth" v-if="this.$store.state.lenguaje == 'español'">
+                    <p v-if="this.$store.state.lenguaje == 'español'">Añadir</p>
+                    <p v-if="this.$store.state.lenguaje == 'ingles'">Añadir</p>
+                  </button>
                 </p>
               </div>
             </footer>
