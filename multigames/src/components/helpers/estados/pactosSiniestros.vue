@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal is-active">
-      <div class="modal-background"></div>
+      <div class="modal-background" @click="this.$store.state.modalPacto = false"></div>
       <div class="mr-6">
         <div class="modal-card">
           <header class="modal-card-head BGPactoSiniestro">
@@ -62,9 +62,9 @@
               </p>
 
               <p class="control column is-half">
-                <button @click=" (this.$store.state.modalPacto = false), (this.ResultadoPacto = null)" class="button is-link is-fullwidth">
-                  <p v-if="this.$store.state.lenguaje == 'español'">Aun no</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">Not now</p>
+                <button @click=" (this.$store.state.EstadoPacto = true), (this.$store.state.modalPacto = false)" class="button is-link is-fullwidth">
+                  <p v-if="this.$store.state.lenguaje == 'español'">Añadir</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'">Añadir</p>
                 </button>
               </p>
             </div>

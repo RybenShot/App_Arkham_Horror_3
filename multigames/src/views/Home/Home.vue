@@ -25,13 +25,13 @@
     <footer>
       <div class="columns is-movile has-text-centered">
         <p class="column">
-          <button @click="this.$store.state.lenguaje = 'español'">
+          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'español')">
             <img v-if="this.$store.state.lenguaje == 'español'" class="buttonsBanderas" src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
             <img v-if="this.$store.state.lenguaje == 'ingles'" class="buttonsBanderas buttonsBanderasDesactivado" src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
           </button>
           
 
-          <button @click="this.$store.state.lenguaje = 'ingles'">
+          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'ingles')">
             <img v-if="this.$store.state.lenguaje == 'ingles'" class="buttonsBanderas" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
             <img v-if="this.$store.state.lenguaje == 'español'" class="buttonsBanderas buttonsBanderasDesactivado" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
           </button>
@@ -43,9 +43,15 @@
 </template>
 
 <script>
+import { Howl } from 'howler';
+
+const sound = new Howl({
+  src: require('@/assets/sound/SonidoTecla.mp3'),
+});
+
 import DetalleModalAHBase from '@/components/helpers/GeneralHomeModals/DetalleAHBase.vue';
-import ModalBienvenida from '@/components/helpers/GeneralHomeModals/modalBienvenida.vue';
-import ModalDonacion from '@/components/helpers/GeneralHomeModals/modalDonacion.vue';
+import ModalBienvenida from '@/components/home/modalBienvenida.vue';
+import ModalDonacion from '@/components/home/modalDonacion.vue';
 
 import HomeDefaul from '@/components/home/HomeDefaul.vue';
 import HomeMas from '@/components/home/HomeMas.vue';
@@ -61,7 +67,7 @@ export default {
     HomeDefaul,
     HomeMas
 
-  },
+    },
   data() {
     return {
       modalDonacion: true,
@@ -75,7 +81,9 @@ export default {
     this.resultadoAnuncio = Math.floor(Math.random() * (1, 3)) + 1;
     console.log(this.resultadoAnuncio)
   },
-  methods: {},
+  methods: {
+  SonidoTecla() {sound.play();},
+  },
 };
 </script>
 

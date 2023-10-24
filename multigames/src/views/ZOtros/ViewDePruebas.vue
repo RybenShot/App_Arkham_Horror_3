@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="card">
     <div class="card-icon top-left">    <i class="fa fa-heart"></i></div>
     <div class="card-icon top-right">   <i class="fa fa-circle"></i></div>
@@ -12,18 +13,88 @@
       <div class="card-title">Título</div>
     </div>
   </div>
+
+  <hr>
+
+    <button @click="reproducirSonido"> Reproducir sonido</button>
+
+  <hr>
+
+  <div>
+    <button @click="mostrarNotificacion">Mostrar notificación</button>
+
+    <transition name="fade">
+      <div v-if="mostrarNotif" class="notificacion">
+        <span>{{ mensaje }}</span>
+      </div>
+    </transition>
+  </div>
+
+  <br> <br>
+
+  <div>
+    <button :class="{ 'button': true, 'active': activeButton === 1 }" @click="setActiveButton(1)">Botón 1</button>
+    <button :class="{ 'button': true, 'active': activeButton === 2 }" @click="setActiveButton(2)">Botón 2</button>
+    <button :class="{ 'button': true, 'active': activeButton === 3 }" @click="setActiveButton(3)">Botón 3</button>
+  </div>
+
+</div>  
 </template>
 <script>
+import { Howl } from 'howler';
+
+const sound = new Howl({
+  src: require('@/assets/sound/EfectoSonido1.mp3'),
+});
+
 export default {
   name: "Pagina_De_Pruebas",
   data() {
     return {
-      
+      mostrarNotif: false,
+      mensaje: "¡Esto es una notificación!",
+
+      activeButton: null
     }; // end return
   }, // end data
+  methods: {
+    mostrarNotificacion() {
+      this.mostrarNotif = true;
+      sound.play();
+      setTimeout(() => {
+        this.mostrarNotif = false;
+      }, 2000);
+    },
+
+    setActiveButton(button) {
+      this.activeButton = button;
+    },
+
+    reproducirSonido() {
+    sound.play();
+  },
+  },
 }
 </script>
 <style scoped>
+
+.button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.active {
+   box-shadow: 0 0 20px #1eff00;
+}
+/* Carta */
 .card {
   width: 150px;
   height: 200px;
@@ -76,4 +147,27 @@ export default {
   margin-top: 5px;
 }
 
+
+/* Notificacion */
+.notificacion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+  z-index: 3;
+  opacity: 1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

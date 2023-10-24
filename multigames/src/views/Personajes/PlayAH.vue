@@ -81,8 +81,8 @@
           <p class="contadorVidaCordura has-text-centered title is-3 mb-0"> {{ this.datosPJinPlay.vida }} </p>
           <!-- botones + - -->
           <div class="columns is-mobile pb-2">
-            <div class="column ml-4 pt-0"><button class="button is-danger" @click="this.datosPJinPlay.vida--"> - </button></div>
-            <div class="column ml-3 pt-0"><button class="button is-success" @click="this.datosPJinPlay.vida++"> + </button></div>
+            <div class="column ml-4 pt-0"><button class="button is-danger" @click="(this.SonidoDaño()),(this.datosPJinPlay.vida--)"> - </button></div>
+            <div class="column ml-3 pt-0"><button class="button is-success" @click="(this.SonidoSana()),(this.datosPJinPlay.vida++)"> + </button></div>
           </div>
         </div>
       </div>
@@ -222,6 +222,8 @@
 </template>
 
 <script>
+import { Howl } from 'howler';
+
 import EstadoMaldicion from "@/components/helpers/estados/Maldicion.vue"
 import EstadoBendicion from "@/components/helpers/estados/Bendicion.vue"
 import EstadoMancillado from "@/components/helpers/estados/Mancillado.vue"
@@ -245,6 +247,23 @@ export default {
 
   data() {
     return {
+      //AUDIO
+      PistasAudio:{
+        AudioDaño:[
+          {src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Daño/Daño_Fisico.mp3')},
+          {src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Daño/Daño_Fisico2.mp3')},
+          {src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Daño/Daño_Fisico3.mp3')},
+          {src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Daño/Daño_Fisico4.mp3')},
+        ],
+        AudioSana:[
+          {src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Sana/Sana_Fisico.mp3')}
+        ],
+        AudioRespiración: [
+          {src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Respiracion_Agitada_Mujer.mp3')}
+          ]
+      },
+        
+
       datosPJinPlay:{},
 
       // TIRADA DE DADOS
@@ -331,6 +350,7 @@ export default {
       this.BGVida = "damageV50";
     } else if (this.datosPJinPlay.vida >= 2 && this.datosPJinPlay.vida < 3) {
       this.BGVida = "damageV75"
+      this.SonidoRespiracion()
     } else if (this.datosPJinPlay.vida < 2) {
       this.BGVida = "damageV90"
     } else if (this.datosPJinPlay.vida >= 7) {
@@ -371,7 +391,24 @@ export default {
     cambiarVista(ValueCambiarVista) {
       this.$emit("cambiarVistaHijo", ValueCambiarVista);
     }, // end cambiaVista   
+
+    //SONIDO
+    SonidoDaño() {
+      const sound = new Howl({src: this.PistasAudio.AudioDaño[Math.floor(Math.random() * (1, 4))].src});
+      sound.play();
+    },
+    SonidoSana() {
+      const sound = new Howl({src: this.PistasAudio.AudioSana[0].src});
+      sound.play();
+    },
+    SonidoRespiracion(){
+      const sound = new Howl({src: this.PistasAudio.AudioRespiración[0].src});
+      sound.play();
+    }
   },
+  //NOTAS!! CUANDO LE QUEDE AL INVESTIGADOR 3 DE VIDA EMPEZARÁ A SONAR EL CORAZON
+  //                                        2 DE VIDA AGILIZARÁ EL CORAZON Y SE ESCUCHARFAN GEMIDOS
+  //                                        1 DE VIDA SONIDO AGONIZANTE Y CORAZON LATIENDO ARRIDMICAMENTE
   computed: {
     SumaDetodo: function () {
       for (let i = 0; i < this.resultados.length; i++) {

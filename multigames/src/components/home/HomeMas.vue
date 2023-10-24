@@ -1,24 +1,32 @@
 <template>
     <div >
       <ul v-if="this.$store.state.lenguaje == 'español'">
-        <button class="buttonsHome" @click="(this.$store.state.StoreHomemas = false), (this.$store.state.StoreHomeDefaul = true)">Volver</button>
-        <button class="buttonsHome ">Mi colección</button>
-        <button class="buttonsHome ">Opciones</button>
-        <button class="buttonsHome ">Creditos</button>
+        <button class="buttonsHome" @click="(SonidoTecla()), (this.$store.state.StoreHomemas = false), (this.$store.state.StoreHomeDefaul = true)">Volver</button>
+        <button class="buttonsHome" @click="SonidoTecla()">Mi colección</button>
+        <button class="buttonsHome" @click="SonidoTecla()">Opciones</button>
+        <button class="buttonsHome" @click="SonidoTecla()">Creditos</button>
       </ul>
 
       <ul v-if="this.$store.state.lenguaje == 'ingles'">
-        <button class="buttonsHome" @click="(this.$store.state.StoreHomemas = false), (this.$store.state.StoreHomeDefaul = true)">Go back</button>
-        <router-link to="/PersonajesAHClasico"><button class="buttonsHome ">My colection</button></router-link>
-        <button class="buttonsHome ">Settings</button>
-        <button class="buttonsHome ">Credits</button>
+        <button class="buttonsHome" @click="(SonidoTecla()), (this.$store.state.StoreHomemas = false), (this.$store.state.StoreHomeDefaul = true)">Go back</button>
+        <router-link to="/PersonajesAHClasico" @click="SonidoTecla()"><button class="buttonsHome ">My colection</button></router-link>
+        <button class="buttonsHome " @click="SonidoTecla()">Settings</button>
+        <button class="buttonsHome " @click="SonidoTecla()">Credits</button>
       </ul>
     </div>
 </template>
 
 <script>
+import { Howl } from 'howler';
+
+const sound = new Howl({
+  src: require('@/assets/sound/SonidoTecla.mp3'),
+});
 export default {
 
+  methods: {
+  SonidoTecla() {sound.play();},
+  },
 }
 </script>
 
