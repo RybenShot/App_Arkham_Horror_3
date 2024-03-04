@@ -11,8 +11,8 @@
                 <h2 class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'español'">Espero que disfrutes de esta demo tanto como yo he disfrutado haciéndola. Esta app, es una HERRAMIENTA, es necesario el juego físico para poder jugar.</h2>
                 <h2 class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">I hope you enjoy this demo as much as I have enjoyed making it. This app, is a TOOL, you need the physical game to play.</h2>
                 <br>
-                <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'español'">Si encontrais algún error en la app, me lo podéis decir en la cuenta de <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> o puedes agragarme a whatsapp : 600358809 para formar parte de esta familia infame.</p>
-                <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">If you find any errors in the app, you can tell me in the account <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> or you can thank whatsapp : 600358809 to be part of this infamous family.</p>
+                <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'español'">Si encontrais algún error en la app, me lo podéis decir en la cuenta de <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> y siguenos para formar parte de esta familia infame.</p>
+                <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">If you find any errors in the app, you can tell me in the account <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> and follow us to be part of this infamous family.</p>
 
                 <br>
                 <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'español'">Recuerda: el logo de Arkham Horror, es un botón hacia atrás.</p>

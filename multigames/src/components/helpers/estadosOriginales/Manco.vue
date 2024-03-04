@@ -1,11 +1,15 @@
 <template>
   <div class="modal is-active">
-        <div class="modal-background" @click="
-                  (this.$store.state.modalManco = false)"></div>
+        <div class="modal-background" @click="(this.$store.state.modalManco = false)"></div>
+        <div v-if="this.$store.state.EstadoManco == false">
+          <div class="notification is-danger is-light my-5 mx-5">
+            <strong>ATENCION!</strong><p>No tienes activado este estado!</p>
+          </div>
+        </div>
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGManco">
-              <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'español'">Estado: Manco</p>
+              <p class="modal-card-title has-text-white has-text-weight-bold" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/> Manco</p>
               <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">State: One-armed</p>
             </header>
 

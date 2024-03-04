@@ -9,6 +9,15 @@
     <div v-if="this.$store.state.modalBendicion" ><EstadoBendicion/></div>
     <!-- MODAL MANCILLADO  -->
     <div v-if="this.$store.state.modalMancillado" ><EstadoMancillado/></div>
+    <!-- MODAL DETERMINADO  -->
+    <div v-if="this.$store.state.modalDeterminado" ><EstadoDeterminado/></div>
+    <!-- MODAL FATIGADO  -->
+    <div v-if="this.$store.state.modalFatigado" ><EstadoFatigado/></div>
+    <!-- MODAL PERSEGUIDO -->
+    <div v-if="this.$store.state.modalPerseguido" ><EstadoPerseguido/></div>
+    <!-- MODAL PERSEGUIDO-AGITADO -->
+    <div v-if="this.$store.state.modalPerseguido_Agitado"><EstadoPerseguidoAgitado/></div>
+
 
     <!-- ORIGINALES -->
       <!-- MANCO -->
@@ -26,6 +35,10 @@ import EstadoMaldicion from "@/components/helpers/estados/Maldicion.vue"
 import EstadoBendicion from "@/components/helpers/estados/Bendicion.vue"
 import EstadoMancillado from "@/components/helpers/estados/Mancillado.vue"
 import PactosSiniestros from "@/components/helpers/estados/pactosSiniestros.vue"
+import EstadoDeterminado from "@/components/helpers/estados/Determinado.vue"
+import EstadoFatigado from "@/components/helpers/estados/Fatigado.vue"
+import EstadoPerseguido from "@/components/helpers/estados/Perseguido.vue"
+import EstadoPerseguidoAgitado from "@/components/helpers/estados/Perseguido_Agitado.vue"
 // Estados Originales
 import EstadoManco from "@/components/helpers/estadosOriginales/Manco.vue"
 import EstadoSuicidio from "@/components/helpers/estadosOriginales/Suicidio.vue"
@@ -38,6 +51,10 @@ name: "Modals de Estados",
     EstadoBendicion,
     EstadoMancillado,
     PactosSiniestros,
+    EstadoDeterminado,
+    EstadoFatigado,
+    EstadoPerseguido,
+    EstadoPerseguidoAgitado,
 
     EstadoManco,
     EstadoSuicidio,

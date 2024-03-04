@@ -6,11 +6,12 @@ export default createStore({
     StoreModalBienvenida:true,
     StoreModalDonacion:true,
 
-    StoreHomeDefaul:true,
-    StoreHomemas: false,
+    //modalCreditos: false, ahora mismo en desuso, pero proximamente se usara
 
     //Detalle Personaje
     modalPertenenciasDetalle: false,
+      verDetallePertenencia: false,
+      SeleccionarURLPertenencia: null,
     modalHistoriaDetalle: false,
     modalArquetipoDetalle: false,
 
@@ -44,6 +45,7 @@ export default createStore({
         ENefecto1: "Protector: If a Monster is going to face another researcher in your space, you can face that Monster instead.",
         efecto2: null,
         frase: '“Vamos allá, Tommy. Es hora de hacerse el héroe.”',
+        locucionURL: null,
         ENfrase: '“Come on, Tommy. It’s time to become a hero.”',
         historia: "Los Muldoon habían servido en el cuerpo de policía durante generaciones, y Tommy no iba a ser menos. Fue el orgullo de su familia cuando se graduó en la academia de Boston. Por eso no hizo mucha gracia que lo trasladasen a la comisaría de Arkham; después de todo ¿qué podía ocurrir en aquel pueblucho comparado con los crímenes que habría sido capaz de resolver en Boston? Al final resultó que el trabajo policial en Arkham no estaba exento de interés, después de todo. Había muchos sucesos inexplicables, y la policía local parecía más interesada en aparentar normalidad que en buscar una solución. Así que Tommy echó mano a Becky, el rifle de su abuelo, y se dispuso a buscar soluciones por su cuenta ...",
         ENhistoria: "The Muldoons had served in the police force for generations, and Tommy was no less. He was the pride of his family when he graduated from the Boston Academy. That’s why it wasn’t very funny to be transferred to the Arkham police station; after all, what could happen in that small town compared to the crimes I would have been able to solve in Boston? It turned out that police work in Arkham was not without interest after all. There were many unexplained events, and the local police seemed more interested in appearing normal than in finding a solution. So Tommy reached for Becky, his grandfather’s rifle, and set out to find solutions on his own ...",
@@ -85,6 +87,7 @@ export default createStore({
         fotoUrl: require("@/assets/img/1-Personajes/1-Tommy.jpg"),
         expansion: "Base"
     },
+
     //PLAY
     StoreTiradorDados: true,
     StoreEstadosPlay: false,
@@ -107,30 +110,41 @@ export default createStore({
           ],
         MusicaHambiental:false,
       },
+      // Ajustes
+      ModalConfirmacion: false,
+        Terminarpartida: null, //false = cambio de personaje  true = terminar partida
 
     // MAPAS
     contadorMapa: 0,
     viewDetalleMapa: true , //cambia de vista de seleccion de mapas a enemigos
 
     datosMapa:{
+      idMapa: 0,
       title: "La llegada de Azathoth",
       ENtitle: "The arrival of Azathoth",
       description: "En el corazón del infinito mora el aletargado Azathoth, arrullado por las incesantes notas de funestas flautas. Pero hay mortales que desean invocar el poder y la calamidad inconmensurables del Dios Ciego e Idiota, aunque ello suponga condenar a la humanidad ...",
       ENdescription: "In the heart of infinity dwells the lethargic Azathoth, lulled by the incessant notes of ominous flutes. But there are mortals who wish to invoke the immeasurable power and calamity of the Blind and Idiot God, even if it means condemning humanity ...",
-      BGMapaURL: "BGGameGeneralMapa1" //intento fallido de cambiar el bg del mapa desde el hijo y el Store
+      dificultadMapa: 3,
+      expansionMapa: "AHBase",
+      ducacionMapa: 130,
+      votosUsuariosMapa: 3 ,
+      imgMapa: null,
+      BGMapa: null
     },
+    modalVerLosetaMapa: false,
+    modalVerEnemigos: false,
 
     seleccionDePersonaje: true,
     detallePersonaje: false,
 
                                             // HELPERS - ESTADOS
-          // Maldicion
+    // Maldicion
     EstadoMaldito: false,
     modalMaldito: false,
-          // Bencidion
+    // Bencidion
     EstadoBendicion: false,
     modalBendicion: false,
-          // Pacto Siniestro
+    // Pacto Siniestro
     EstadoPacto: false,
     modalPacto: false,
     dataPactoSiniestro:{
@@ -138,13 +152,12 @@ export default createStore({
       title: null,
       narrativa: null,
       descripcion: null,
-
       ENexpansion: null,
       ENtitle: null,
       ENnarrativa: null,
       ENdescripcion: null
     },
-          // Mancillado
+    // Mancillado
     EstadoMancillado: false,
     modalMancillado: false,
     dataMancillado:{
@@ -155,16 +168,40 @@ export default createStore({
       ENnarrativa: null,
       ENdescripcion: null
     },
-        // Manco
+    // Determinado
+    EstadoDeterminado: false,
+    modalDeterminado: false,
+    // Fatigado
+    EstadoFatigado: false,
+    modalFatigado: false,
+    // Perseguido
+    EstadoPerseguido: false,
+    modalPerseguido: false,
+    dataPerseguido:{
+      id: null,
+      expansion: "Secretos",
+      title: "",
+      narrativa: "",
+      descripcion: ""
+    },
+      estadoPerseguido_Agitado: false,
+      modalPerseguido_Agitado: false,
+      ElegirAtributo: false,
+      AtributoElegido : null,
+      enemigoExtra : false,
+      modalEnemigoExtra: false,
+
+    // ESTADOS ORIGINALES
+    // Manco
     EstadoManco: false,
     modalManco: false,
-        // Suicidio
+    // Suicidio
     EstadoSuicidio: false,
     modalSuicidio: false,
-        // Señalado
+    // Señalado
     EstadoSeñalado: false,
     modalSeñalado: false,
-        // Enfermo
+    // Enfermo
     // EstadoEnfermo: false,
     // modalEnfermo: false,
 

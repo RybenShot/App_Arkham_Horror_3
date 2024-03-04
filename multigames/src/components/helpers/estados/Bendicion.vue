@@ -11,6 +11,9 @@
             <section class="modal-card-body hero is-large py-2">
               <h2 v-if="this.$store.state.lenguaje == 'español'">Cuando estés resolviendo una prueba, obtienes Éxitos sacando 4, 5 y 6. Después de que falles una prueba, descarta esta carta. Si tienes que adquirir el Estado Maldición, en vez de eso descarta esta carta.</h2>
               <h2 v-if="this.$store.state.lenguaje == 'ingles'">When you are solving a test, you get Hits by pulling 4, 5 and 6. After you fail a test, discard this card. If you have to acquire the Curse State, discard this card instead.</h2>
+
+              <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'español'">Expansion: Base</p>
+              <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'ingles'">Expansion: Base</p>
             </section>
 
             <footer class="">

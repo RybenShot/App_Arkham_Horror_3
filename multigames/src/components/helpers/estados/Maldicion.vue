@@ -4,13 +4,16 @@
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGMaldicion">
-              <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'español'">Estado: MALDICIÓN</p>
+              <p class="modal-card-title has-text-light has-text-weight-bold" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/>MALDICIÓN</p>
               <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'ingles'">State: Bloody</p>
             </header>
 
             <section class="modal-card-body hero is-large py-2">
               <h2 v-if="this.$store.state.lenguaje == 'español'">Cuando estés resolviendo una prueba, sólo obtienes Éxitos sacando 6. Después de que superes una prueba, descarta esta carta. Si tienes que adquirir el Estado Bendición, en vez de eso descarta esta carta. </h2>
               <h2 v-if="this.$store.state.lenguaje == 'ingles'">When you are solving a test, you only get Hits by pulling 6. After you pass a test, discard this card. If you have to acquire the Blessing State, discard this letter instead. </h2>
+
+              <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'español'">Expansion: Base</p>
+              <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'ingles'">Expansion: Base</p>
             </section>
 
             <footer class="">

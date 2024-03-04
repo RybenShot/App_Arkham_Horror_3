@@ -15,8 +15,8 @@ import DetalleMapa from '../views/Mapas/DetalleMapa.vue'
 
 
 // LEGACY
-import MapasAHClasico from '../views/AHBase/MapasEnemigosAHClasico.vue'
-import MapasEnemigosAHMareasTenebrosas from '../views/AHMareasTenebrosas/MapasEnemigosAHMareasTenebrosas.vue'
+/*import MapasAHClasico from '../views/AHBase/MapasEnemigosAHClasico.vue'
+import MapasEnemigosAHMareasTenebrosas from '../views/AHMareasTenebrosas/MapasEnemigosAHMareasTenebrosas.vue'*/
 
 const routes = [
   // HOME
@@ -33,8 +33,8 @@ const routes = [
 
 
   // LEGACY
-  {path: '/MapasAHClasico', name: 'mapasAHclasico', component: MapasAHClasico},
-  {path: '/MapasAHMareasTenebrosas', name: 'mapasEnemigosAHMareasTenebrosas', component: MapasEnemigosAHMareasTenebrosas},
+  /*{path: '/MapasAHClasico', name: 'mapasAHclasico', component: MapasAHClasico},
+  {path: '/MapasAHMareasTenebrosas', name: 'mapasEnemigosAHMareasTenebrosas', component: MapasEnemigosAHMareasTenebrosas},*/
 
   // OTROS
   {path: '/enproceso', name: 'enProceso', component: EnProceso},

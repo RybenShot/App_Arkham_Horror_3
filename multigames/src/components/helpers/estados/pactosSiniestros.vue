@@ -5,8 +5,8 @@
       <div class="mr-6">
         <div class="modal-card">
           <header class="modal-card-head BGPactoSiniestro">
-            <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'español'">Pacto Siniestro</p>
-            <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'ingles'">Dark Pact</p>
+            <p class="modal-card-title has-text-light has-text-weight-bold" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/>PACTO SINIESTRO</p>
+            <p class="modal-card-title has-text-light has-text-weight-bold" v-if="this.$store.state.lenguaje == 'ingles'">Dark Pact</p>
           </header>
 
           <!-- BOOOOOOOOOODYYYYYYYY -->
@@ -17,6 +17,9 @@
                 <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">Retribution -- Roll a dice. If you roll a 1</p>
                 <h1 class="title has-text-centered titlePactosiniestro" v-if="this.$store.state.lenguaje == 'español'">¿Hora de saldar tu deuda?</h1>
                 <h1 class="title has-text-centered titlePactosiniestro" v-if="this.$store.state.lenguaje == 'ingles'">Time to settle your debt?</h1>
+
+                <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'español'">Expansion: Base</p>
+              <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'ingles'">Expansion: Base</p>
               </div>
 
               <div v-if="verResultadoPacto">
@@ -46,6 +49,7 @@
                 <p class="subtitle is-7 has-text-right" v-if="this.$store.state.lenguaje == 'ingles'">Expansion: {{ this.$store.state.dataPactoSiniestro.ENexpansion }}</p>
               </div>
             </div>
+            
           </section>
           <!-- BOOOOOOOOOODYYYYYYYY -->
 
@@ -122,6 +126,7 @@
 
 <script>
 export default {
+  name: "modal Pacto Suniestro",
   data() {
     return {
       verCartaPacto: true,
@@ -290,10 +295,14 @@ export default {
     },
     seleccionarPacto() {
       function nuevopacto(NumPacto) {
+        // aqui saca un numero aleatorio (que sea el N del pacto que vamos a leer) ...
         return NumPacto.id == Math.floor(Math.random() * (0, 11)) + 1;
       }
+      // aqui buscamos una coincidencia, el numero aleatorio que acabamos de sacar entre las .id de la base de datos de los pactos que tenemos ...
       let dartosEncontrados = this.pactosSiniestros.find(nuevopacto);
+      // aqui miramos si coincide la id con algunos de los pactos concretos-especiales ...
       this.activarEstados(dartosEncontrados)
+      // y por ultimo copiamos los datos del pacto encontrado a las variables temporales , para luego usarlas
       this.$store.state.dataPactoSiniestro.expansion = dartosEncontrados.expansion;
       this.$store.state.dataPactoSiniestro.title = dartosEncontrados.title;
       this.$store.state.dataPactoSiniestro.narrativa = dartosEncontrados.narrativa;

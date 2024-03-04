@@ -23,26 +23,25 @@
 </template>
 
 <script>
+// datos
 import DatosBasicosDetalle from "@/components/personajes/datosBasicosDetalle.vue";
 import AtributosDetalle from "@/components/personajes/atributosDetalle.vue";
 import HabilidadesDetalle from "@/components/personajes/habilidadesDetalle.vue";
 
-//modals
+// modals
 import Pertenencias from "@/components/personajes/ModalsDetallePersonaje/ModalPertenenciaDetalle.vue";
 import Historia from "@/components/personajes/ModalsDetallePersonaje/ModalHistoriaDetalle.vue";
 import Arquetipo from "@/components/personajes/ModalsDetallePersonaje/ModalArquetipoDetalle.vue";
 
-
-
-
 export default {
-  name:"",
+  name:"Detalle de Personajes",
   components:{
+    // datos
     DatosBasicosDetalle,
     AtributosDetalle,
     HabilidadesDetalle,
     
-    //modals
+    // modals
     Pertenencias,
     Historia,
     Arquetipo
