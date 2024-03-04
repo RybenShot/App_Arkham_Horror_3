@@ -1,11 +1,16 @@
 <template>
   <div class="modal is-active">
         <div class="modal-background" @click="this.$store.state.modalSeñalado = false"></div>
+        <div v-if="this.$store.state.EstadoSeñalado == false">
+          <div class="notification is-danger is-light my-5 mx-5">
+            <strong>ATENCION!</strong><p>No tienes activado este estado!</p>
+          </div>
+        </div>
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGSeñalado">
-              <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'español'">Estado: Señalado</p>
-              <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">State: Pointed</p>
+              <p class="modal-card-title has-text-white has-text-weight-bold" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/> Señalado</p>
+              <p class="modal-card-title has-text-white has-text-weight-bold" v-if="this.$store.state.lenguaje == 'ingles'">State: <br/> Pointed</p>
             </header>
 
             <section class="modal-card-body hero is-large py-2">

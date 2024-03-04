@@ -1,21 +1,23 @@
 <template>
   <div>
+    <!-- Navegacion -->
     <nav class="columns is-mobile mb-0 pt-5 centrarHero">
       <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-undo-alt has-text-white"></i></div>
       <div class="column " style="margin: 0 auto;"><p class="has-text-centered title is-4 has-text-white">Detalle Mapa</p></div>
       <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
     </nav>
 
-    <div>
-      <RolloHistoriaMapa/>
-    </div>
+    <!-- Ver Loseta Mapa -->
+    <div v-if="this.$store.state.modalVerLosetaMapa == true"><ModalLosetaMapa/></div>
 
-    <div>
-      <EspecificacionesMapas/>
-    </div>
+    <!-- Switcher Enemigos -->
+    <div v-if="this.$store.state.modalVerEnemigos == true"><ModalEnemigos/></div>
 
-    <div>
-      <LosetasYBotones/>
+    <!-- Detalle de Mapa -->
+    <div v-if="this.$store.state.viewDetalleMapa == true" >
+      <div><RolloHistoriaMapa/></div>
+      <div><EspecificacionesMapas/></div>
+      <div><LosetasYBotones/></div>
     </div>
 
   </div>
@@ -26,12 +28,18 @@ import RolloHistoriaMapa from "@/components/mapas/RolloHistoriaMapa.vue";
 import EspecificacionesMapas from "@/components/mapas/EspecificacionesMapa.vue";
 import LosetasYBotones from "@/components/mapas/LosetasYBotones.vue";
 
+import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
+import ModalLosetaMapa from "@/components/helpers/DetalleLosetaMapa.vue"
+
 export default {
 name:"DetalleMapa",
 components:{
     RolloHistoriaMapa,
     EspecificacionesMapas,
-    LosetasYBotones
+    LosetasYBotones,
+
+    ModalEnemigos,
+    ModalLosetaMapa
   },
 methods:{
   goBack() {

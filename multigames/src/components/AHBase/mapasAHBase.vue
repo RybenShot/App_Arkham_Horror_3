@@ -104,7 +104,7 @@ export default {
   }, // end methods
 
 };
-</script>
+</script>+
 
 <style>
 /* MAPAS */
@@ -112,8 +112,8 @@ export default {
   width: 181px;
   height: 263px;
 }
-.imgMapa1 {background-image: url(@/assets/img/Games/AHBase/1imgMapas/mapa1.png);}
-.imgMapa2 {background-image: url(@/assets/img/Games/AHBase/1imgMapas/mapa2.png);}
-.imgMapa3 {background-image: url(@/assets/img/Games/AHBase/1imgMapas/mapa3.png);}
-.imgMapa4 {background-image: url(@/assets/img/Games/AHBase/1imgMapas/mapa4.png);}
+.imgMapa1 {background-image: url(@/assets/img/3-Mapas/losetas/LosetasMapa0.png);}
+.imgMapa2 {background-image: url(@/assets/img/3-Mapas/losetas/LosetasMapa1.png);}
+.imgMapa3 {background-image: url(@/assets/img/3-Mapas/losetas/LosetasMapa2.png);}
+.imgMapa4 {background-image: url(@/assets/img/3-Mapas/losetas/LosetasMapa3.png);}
 </style>

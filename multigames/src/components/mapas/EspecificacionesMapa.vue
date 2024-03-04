@@ -4,22 +4,22 @@
       <div class="columns is-mobile">
         <div class="column p-0 py-1" id="barraDerechaAbajo" >
           <p>Votos de Usuarios</p>
-          <p>3/5</p>
+          <p>{{ this.$store.state.datosMapa.votosUsuariosMapa }} de 5</p>
         </div>
         <div class="column p-0 py-1" >
           <p>Duracion</p>
-          <p>90-120m</p>
+          <p>{{ this.$store.state.datosMapa.ducacionMapa }} min</p>
         </div>
       </div>
 
       <div class="columns is-mobile" >
         <div class="column p-0 py-1">
           <p>Caja necesaria</p>
-          <p>Caja basica</p>
+          <p>{{ this.$store.state.datosMapa.expansionMapa }}</p>
         </div>
         <div class="column p-0 py-1" id="barraIzquierdaArriba">
           <p>Dificultad</p>
-          <p><i class="fas fa-money-bill-wave"></i></p>
+          <p>{{ this.$store.state.datosMapa.dificultadMapa }} de 5</p>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
 
 <script>
 export default {
-
+  name: "Especificaciones de mapas"
 }
 </script>
 

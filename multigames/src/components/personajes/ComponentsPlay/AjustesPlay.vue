@@ -23,8 +23,14 @@
     
 
     <footer>
-      <router-link to="/ListaPersonajes"><button class="button is-fullwidth is-dark mb-2"><i class="fas fa-users mx-3"></i>Volver a selección de personaje</button></router-link>
-      <router-link to="/"><button class="button is-fullwidth  is-black"><i class="fas fa-power-off mx-3"></i>Terminar partida</button></router-link>
+      <!-- <router-link to="/ListaPersonajes"> -->
+      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = false)"
+      class="button is-fullwidth is-dark mb-2"><i class="fas fa-users mx-3"></i>Volver a selección de personaje</button>
+      <!-- </router-link> -->
+      <!-- <router-link to="/"> -->
+      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = true)"
+      class="button is-fullwidth  is-black"><i class="fas fa-power-off mx-3"></i>Terminar partida</button>
+      <!-- </router-link> -->
     </footer>
   </div>
 </template>

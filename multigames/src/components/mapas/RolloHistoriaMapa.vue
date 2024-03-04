@@ -5,9 +5,12 @@
       <div class="column mx-6 mt-3 has-background-light">
         <div class="columns is-mobile m-0">
           <p class="column title is-size-5  is-underlined mb-0">{{ this.$store.state.datosMapa.title }}</p>
-          <p class="column is-2"><i class="fa-2x fas fa-volume-up has-text-dark"></i></p>
+          <div class="column is-2">
+            <p v-if="reproduciendo == false" @click="(reproducirAudio()), (reproduciendo = true)"><i class="fas fa-2x fa-volume-up"></i></p>
+            <p v-if="reproduciendo == true" @click="(detenerAudio()), (reproduciendo = false)" ><i class="fas fa-2x fa-pause-circle"></i></p>
+          </div>
         </div>
-        <p class="subtitle is-size-7">{{ this.$store.state.datosMapa.descripcion }}</p>
+        <p class="subtitle is-size-7">{{ this.$store.state.datosMapa.description }}</p>
       </div>
     </div>
     <div class="mx-3 has-background-grey-light py-1"></div>
@@ -15,8 +18,34 @@
 </template>
 
 <script>
+import { Howl } from 'howler';
+const sounds = {
+  0: new Howl({ src: require('@/assets/sound/Locucion/mapas/1-Azathoth.mp3') }),
+  1: new Howl({ src: require('@/assets/sound/Locucion/mapas/2-Festin.mp3') }),
+  2: new Howl({ src: require('@/assets/sound/Locucion/mapas/3-ElVelo.mp3') }),
+  3: new Howl({ src: require('@/assets/sound/Locucion/mapas/4-Ecos.mp3') }),
+};
+
 export default {
-  name: 'Detalle-Mapa'
+  name: 'Rollo de historia',
+  data(){
+    return {
+      reproduciendo : false
+    }
+  },
+  methods: {
+    reproducirAudio() {
+      const idMapasound = this.$store.state.datosMapa.idMapa;
+      const sound = sounds[idMapasound];
+      sound.play()
+      },
+
+    detenerAudio() {
+      const idMapasound = this.$store.state.datosMapa.idMapa;
+      const sound = sounds[idMapasound];
+      sound.stop()
+    }
+  }
 }
 </script>
 

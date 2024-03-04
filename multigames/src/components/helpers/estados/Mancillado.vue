@@ -4,7 +4,7 @@
     <div class="mr-6">
       <div class="modal-card">
         <header class="modal-card-head BGMancillado">
-          <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'español'">Estado: MANCILLADO</p>
+          <p class="modal-card-title has-text-weight-bold has-text-light" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/>MANCILLADO</p>
           <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'ingles'">State: Defiled</p>
         </header>
 
@@ -18,6 +18,10 @@
 
             <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'español'">No mires el reverso de la carta hasta que se te indique</p>
              <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">Don’t look at the back of the card until instructed</p>
+
+             
+          <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'español'">Expansion: Mareas Tenebrosas</p>
+          <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'ingles'">ExpansionUnder Dark Waves</p>
           </div>
 
           <div v-if="verMancillado == true">
@@ -29,7 +33,7 @@
             <p class="subtitle is-7 has-text-right" v-if="this.$store.state.lenguaje == 'español'">Expansion: {{ this.$store.state.dataMancillado.expansion }}</p>
             <p class="subtitle is-7 has-text-right" v-if="this.$store.state.lenguaje == 'ingles'">Expansion: {{ this.$store.state.dataMancillado.ENexpansion }}</p>
           </div>
-          
+
         </section>
 
         <footer class="">

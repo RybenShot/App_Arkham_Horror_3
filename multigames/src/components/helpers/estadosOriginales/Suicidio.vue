@@ -1,10 +1,15 @@
 <template>
   <div class="modal is-active">
         <div class="modal-background" @click="this.$store.state.modalSuicidio = false"></div>
+        <div v-if="this.$store.state.EstadoSuicidio == false">
+          <div class="notification is-danger is-light my-5 mx-5">
+            <strong>ATENCION!</strong><p>No tienes activado este estado!</p>
+          </div>
+        </div>
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGSuicidio">
-              <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'español'">Estado: Al filo de la navaja</p>
+              <p class="modal-card-title has-text-white has-text-weight-bold" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/> Al filo de la navaja</p>
               <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">State: On the edge of the knife</p>
             </header>
 

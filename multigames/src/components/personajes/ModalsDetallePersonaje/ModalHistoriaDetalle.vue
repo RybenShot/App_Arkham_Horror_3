@@ -8,7 +8,11 @@
                 <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'español'">La historia <br> hasta ahora...</p>
                 <p class="modal-card-title" v-if="this.$store.state.lenguaje == 'ingles'">The story <br> until now</p>
               </div>
-              <p class="column has-text-right has-text-white"><i class="fas fa-2x fa-volume-up"></i></p>
+              <div class="column has-text-right has-text-white">
+                <p v-if="reproduciendo == false" @click="(reproducirAudio()), (reproduciendo = true)"><i class="fas fa-2x fa-volume-up"></i></p>
+                <p v-if="reproduciendo == true" @click="(detenerAudio()), (reproduciendo = false)" ><i class="fas fa-2x fa-pause-circle"></i></p>
+              </div>
+              
             </header>
 
             <section class="modal-card-body hero is-large py-2">
@@ -43,7 +47,7 @@
 
             <footer>
               <div class="field has-addons columns is-mobile is-gapless">
-                  <button @click="this.$store.state.modalHistoriaDetalle = false" class="button is-link is-fullwidth">
+                  <button @click="(this.$store.state.modalHistoriaDetalle = false), (reproduciendo = false), (detenerAudio())" class="button is-link is-fullwidth">
                     <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
                     <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p>
                   </button>
@@ -55,8 +59,38 @@
 </template>
 
 <script>
-export default {
+import { Howl } from 'howler';
+const sounds = {
+  1: new Howl({ src: require('@/assets/sound/Locucion/personajes/1-Tommy.mp3') }),
+  2: new Howl({ src: require('@/assets/sound/Locucion/personajes/2-Marie.mp3') }),
+  3: new Howl({ src: require('@/assets/sound/Locucion/personajes/3-Jenny.mp3') }),
+  4: new Howl({ src: require('@/assets/sound/Locucion/personajes/4-Dexter.mp3') }),
+  6: new Howl({ src: require('@/assets/sound/Locucion/personajes/6-Rex.mp3') }),
+  8: new Howl({ src: require('@/assets/sound/Locucion/personajes/8-Agnes.mp3') }),
+  9: new Howl({ src: require('@/assets/sound/Locucion/personajes/9-Michael.mp3') })
+};
 
+export default {
+  name: "modal_Historia_Personaje",
+  data(){
+    return {
+      reproduciendo : false
+    }
+  },
+  methods: {
+
+    reproducirAudio() {
+      const idPersonaje = this.$store.state.datosPJactual.idPersonaje;
+      const sound = sounds[idPersonaje];
+      sound.play()
+      },
+
+    detenerAudio() {
+      const idPersonaje = this.$store.state.datosPJactual.idPersonaje;
+      const sound = sounds[idPersonaje];
+      sound.stop()
+    }
+  }
 }
 </script>
 

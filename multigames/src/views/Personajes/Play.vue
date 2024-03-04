@@ -1,5 +1,7 @@
 <template>
   <div class="p-2">
+
+    <div v-if="$store.state.ModalConfirmacion"><ModalConfirmacion/></div>
     <div><ModalsEstadosPlay/></div>
 
     <DatosBasicosPlay/>
@@ -22,6 +24,7 @@ import EstadosPlay from "@/components/personajes/ComponentsPlay/EstadosPlay.vue"
 import HabilidadesPlay from "@/components/personajes/ComponentsPlay/HabilidadesPlay.vue";
 import AjustesPlay from "@/components/personajes/ComponentsPlay/AjustesPlay.vue";
 
+import ModalConfirmacion from "@/components/personajes/ComponentsPlay/ModalConfirmacion.vue";
 import ModalsEstadosPlay from "@/components/personajes/ComponentsPlay/ModalsEstadosPlay.vue";
 
 
@@ -35,6 +38,7 @@ export default {
     HabilidadesPlay,
     AjustesPlay,
 
+    ModalConfirmacion,
     ModalsEstadosPlay
   }
 
