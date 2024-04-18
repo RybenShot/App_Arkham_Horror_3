@@ -5,7 +5,6 @@
     </div><!-- end Vista Movil -->
 
     <!-- Primeras pruebas entre ingles y Español -->
-
     <div id="VistaNoValida">
       <section class="container is-fullhd has-background-dark hero is-fullheight">
         <div class="hero-body">
