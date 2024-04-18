@@ -30,7 +30,7 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 
 # Funionalidades
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-around;">
   <div style="flex: 1">
     <h1>Lista de personajes</h1>
     <ul>
@@ -40,7 +40,7 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     </ul>
   </div>
 
-  <div style="flex: 1; display: flex; justify-content: flex-end"><img style="max-width: 100%; max-height: 700px" src="/README_FILES/1.JPG"></div>
+  <div style="flex: 1; display: flex; justify-content: flex-end"><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-1.JPG"></div>
 </div>
 
 <div style="display: flex; justify-content: space-between;">
@@ -60,23 +60,14 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     </ul>
   </div>
 
-  <div style="flex: 1; display: flex; justify-content: flex-end"><img style="max-width: 100%; max-height: 700px" src=https://w.forfun.com/fetch/4e/4e8b61705aea3fe461bdab75e62e0c8f.jpeg></div>
+  <div style="flex: 1; display: flex; justify-content: flex-end"><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-2.JPG"></div>
 </div>
 
-<div style="display: flex; justify-content: space-evenly;">
-  <div><img style="max-width: 100%; max-height: 700px" src=https://w.forfun.com/fetch/4e/4e8b61705aea3fe461bdab75e62e0c8f.jpeg></div>
-  <div><img style="max-width: 100%; max-height: 700px" src=https://w.forfun.com/fetch/4e/4e8b61705aea3fe461bdab75e62e0c8f.jpeg></div>
-  <div><img style="max-width: 100%; max-height: 700px" src=https://w.forfun.com/fetch/4e/4e8b61705aea3fe461bdab75e62e0c8f.jpeg></div>
+<div style="display: flex; justify-content: space-around;">
+  <div><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-3.JPG"></div>
+  <div><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-4.JPG"></div>
+  <div><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-5.JPG"></div>
 </div>
-
-- Selecciona el personaje que quieras de cualquier expansion.
-
-<div align="center"><img style="width: 400px" src="/README_FILES/1.JPG"></div>
-
-- Aqui tiene varios conceptos del personaje.
-
-
-### Mapas
 
 ## Enlace a la app
 
