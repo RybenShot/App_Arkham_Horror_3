@@ -41,6 +41,6 @@ Si estan en PC puedes hacer lo siguiente:
 
 - Ajustamos la anchura de la pantalla. Recomendacion propia, poner las dimensiones de Iphone 12 Pro.
 
-<div align="center" style="width: 400px"><img src="/README_FILES/2.JPG"></div>
+<div align="center" style="width: 400px"><img src="/README_FILES/3.JPG"></div>
 
 Pruebala! -> [Click aqui](https://arkhamhorror-39297.web.app/#/) <-
