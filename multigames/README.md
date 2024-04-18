@@ -32,7 +32,7 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 
 <table align="center">
     <td>
-      <h1>Lista de personajes</h1>
+      <h2>Lista de personajes</h2>
       <ul>
         <li>1- Activar o desactivar las expansiones. El borde de color de cada investigador indica de qué expansión proviene.</li>
         <li>2- Vida y cordura de cada personaje.</li>
@@ -62,7 +62,7 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
       </ul>
     </td>
     <td>
-      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes">
+      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
     </td>
   </tr>
 </table>
