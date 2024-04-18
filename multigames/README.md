@@ -44,10 +44,11 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     </td>
 </table>
 
-<div style="display: flex; justify-content: space-between;">
-  <div style="flex: 1; max-width: 50%;">
-    <h2>Detalle de personaje</h2>
-    <ul>
+<table>
+  <tr>
+    <td style="max-width: 684px">
+      <h2>Detalle de personaje.</h2>
+      <ul>
         <li>1- Nombre y posición social del personaje.</li>
         <li>2- Pertenencias iniciales del personaje. Al hacer tap revela una ventana con las pertenencias, cada carta si se le hace tap se ve en grande para facilitar su lectura.</li>
         <li>3- Historia hasta ahora del investigador. Al hacer tap en el megáfono se reproducirá un audio narrando la historia del personaje. Por supuesto, está la propia historia del personaje. Algunos investigadores tienen una historia más detallada en un video de YouTube.</li>
@@ -59,11 +60,12 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
         <li>9- Límite de concentración. La concentración se usa para aumentar 1 punto temporalmente uno de los atributos del investigador para ayudar a que la tirada pueda ser más favorable.</li>
         <li>10- Lista - Comenzar. Si haces tap en "Lista" vuelves a la lista de investigadores. Si haces tap en "Comenzar" entrarás en juego con el personaje que estabas viendo en detalle.</li>
       </ul>
-  </div>
-  <div style="flex: 1; max-width: 50%;">
-    <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes" style="max-width: 100%; height: auto;">
-  </div>
-</div>
+    </td>
+    <td>
+      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes">
+    </td>
+  </tr>
+</table>
 
 <table align="center">
     <td><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-3.JPG"></td>
