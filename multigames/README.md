@@ -62,7 +62,7 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
       </ul>
     </td>
     <td>
-      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes" style="width: 300px; max-height: 700px;">
+      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes" width="300">
     </td>
   </tr>
 </table>
