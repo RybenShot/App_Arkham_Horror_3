@@ -45,6 +45,10 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 </table>
 
 <table>
+  <colgroup>
+    <col style="max-width: 60%;">
+    <col style="max-width: 40%;">
+  </colgroup>
   <tr>
     <td>
       <h2>Detalle de personaje</h2>
