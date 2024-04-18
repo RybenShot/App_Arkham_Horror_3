@@ -73,6 +73,10 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     <td><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-5.JPG"></td>
 </table>
 
+<table align="center">
+  <h1>In play. ((Documentacion en proceso ...))</h1>
+</table>
+
 ## Enlace a la app
 
 Pruebala! -> [Click aqui](https://arkhamhorror-39297.web.app/#/) <-
