@@ -30,44 +30,48 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 
 # Funionalidades
 
-<div style="display: flex; justify-content: space-around;">
-  <div style="flex: 1">
-    <h1>Lista de personajes</h1>
-    <ul>
-      <li>1- Activar o desactivar las expansiones. El borde de color de cada investigador indica de que expansion proviene.</li>
-      <li>2- Vida y cordura de cada personaje.</li>
-      <li>3- Hacer tap para ver en detalle al investigador seleccionado.</li>
-    </ul>
-  </div>
+<table align="center">
+    <td>
+      <h1>Lista de personajes</h1>
+      <ul>
+        <li>1- Activar o desactivar las expansiones. El borde de color de cada investigador indica de qué expansión proviene.</li>
+        <li>2- Vida y cordura de cada personaje.</li>
+        <li>3- Hacer tap para ver en detalle al investigador seleccionado.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/personajes/Personajes-1.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
 
-  <div style="flex: 1; display: flex; justify-content: flex-end"><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-1.JPG"></div>
-</div>
+<table>
+  <tr>
+    <td>
+      <h2>Detalle de personaje</h2>
+      <ul>
+        <li>1- Nombre y posición social del personaje.</li>
+        <li>2- Pertenencias iniciales del personaje. Al hacer tap revela una ventana con las pertenencias, cada carta si se le hace tap se ve en grande para facilitar su lectura.</li>
+        <li>3- Historia hasta ahora del investigador. Al hacer tap en el megáfono se reproducirá un audio narrando la historia del personaje. Por supuesto, está la propia historia del personaje. Algunos investigadores tienen una historia más detallada en un video de YouTube.</li>
+        <li>4- Arquetipo de personaje. Aquí se puede ver para lo que es mejor el personaje.</li>
+        <li>5- Salud. Cada personaje tiene 2 vidas, la salud física y salud mental, si en cualquier momento alguna de las 2 llega a 0 el investigador muere o cae preso a la locura.</li>
+        <li>6- Atributos. Cada uno de los 5 atributos se usan durante la partida. Por ejemplo: "Quieres convencer al inspector de policía para que te acompañe, tira de INFLUENCIA" en el caso de Marie Lambeau debería tirar 4 dados de 6 caras (+ los bonificadores que pueda tener).</li>
+        <li>7- Habilidades únicas. Cada personaje empieza con habilidades únicas que te dan bonificaciones para la partida, cada personaje es un mundo y no solo puede tener 1, algunos tienen hasta 2. Algunas veces en este apartado también aparecen condiciones del personaje como es el caso de Rex Murphy y su estado de "Maldición familiar" que solo podrá acertar las tiradas con 5 y 6.</li>
+        <li>8- Frase del personaje.</li>
+        <li>9- Límite de concentración. La concentración se usa para aumentar 1 punto temporalmente uno de los atributos del investigador para ayudar a que la tirada pueda ser más favorable.</li>
+        <li>10- Lista - Comenzar. Si haces tap en "Lista" vuelves a la lista de investigadores. Si haces tap en "Comenzar" entrarás en juego con el personaje que estabas viendo en detalle.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes">
+    </td>
+  </tr>
+</table>
 
-<div style="display: flex; justify-content: space-between;">
-  <div style="flex: 1">
-    <h2>Detalle de personaje</h2>
-    <ul>
-      <li>1- Nombre y posicion social del personaje.</li>
-      <li>2- Pertenencias iniciales del personaje. La hacer tap revela una ventana con las pertenencias, cada carta si se le hace tap se ve en grande para facilitar su lectura.</li>
-      <li>3- Historia hasta ahora del investigador. > Al hacer tap en el megafono se reproducira un audio narrando la historia del personaje. > Por supuesto esta propia historia del personaje. > Algunos investigadores tienen una historia mas detallada en un video de youtube.</li>
-      <li>4- Arquetipo de personaje. Aqui se puede ver para lo que es mejor el personaje.</li>
-      <li>5- Salud. Cada personaje tiene 2 vidas, la salud fisica y salud mental, si en cualquier momento alguna de las 2 llega a 0 el investigador muere o cae preso a la locura.</li>
-      <li>6- Atributos. Cada uno de los 5 atributos se usaran durante la partida. Por ejemplo: "Quieres convender al inspector de policia para que te acompañe, tira de INFLUENCIA" en el caso de Marie Lambeau deberia tirar 4 dados de 6 caras (+ los bonificadores que pueda tener).</li>
-      <li>7- Habilidades unicas. Cada personaje empieza con habilidades unicas que te dan bonificades para la partida, cada personaje es un mundo y no solo puede tener 1, algunos tienen hasta 2. > Algunas veces en este apartado tambien aparecen condiciones del personaje como es el caso de Rex Murphy y su estado de "Maldicion familiar" que solo podra acertar las tiradas con 5 y 6</li>
-      <li>8- Frase del personaje.</li>
-      <li>9- Limite de concentracion. la concentracion se usa para aumentar 1 punto temporalmente  uno de los atributos del investigador para ayudar a que la tirada pueda ser mas favorable.</li>
-      <li>10- Lista - Comenzar. Si haces tap a la "lista" vuelves a la lista de investigadores. > Si haces tap a "Comenzar" entraras en juego con el personaje que estabas viendo en detalle.</li>
-    </ul>
-  </div>
-
-  <div style="flex: 1; display: flex; justify-content: flex-end"><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-2.JPG"></div>
-</div>
-
-<div style="display: flex; justify-content: space-around;">
-  <div><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-3.JPG"></div>
-  <div><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-4.JPG"></div>
-  <div><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-5.JPG"></div>
-</div>
+<table align="center">
+    <td><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-3.JPG"></td>
+    <td><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-4.JPG"></td>
+    <td><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-5.JPG"></td>
+</table>
 
 ## Enlace a la app
 
