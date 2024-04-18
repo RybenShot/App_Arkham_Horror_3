@@ -1,8 +1,7 @@
 <p align = "center">
-  <a href= "#que-hace?">Que hace?</a> |
+  <a href= "#que-hace">Que hace?</a> |
   <a href= "#funcionalidades">Funcionalidades</a> |
-  <a href= "#enlace-a-la-app">Enlace a la app</a> |
-  <a href= "#pistas">LICENCIA</a> |
+  <a href= "#enlace-a-la-app">Enlace a la app</a> 
 </p>
 
 <div align="center">
