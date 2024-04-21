@@ -1,6 +1,7 @@
 <p align = "center">
   <a href= "#que-hace">Que hace?</a> |
   <a href= "#funcionalidades">Funcionalidades</a> |
+  <a href= "#guia-de-usuario">Guia de usuario</a> |
   <a href= "#especificaciones-tecnicas">Especificaciones tecnicas</a> |
   <a href= "#enlace-a-la-app">Enlace a la app</a> 
 </p>
