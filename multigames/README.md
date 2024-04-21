@@ -43,7 +43,7 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     </td>
 </table>
 
-<table>
+<table align="center">
   <tr>
     <td style="max-width: 684px">
       <h2>Detalle de personaje.</h2>
@@ -73,7 +73,65 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 </table>
 
 <table align="center">
-  <h1>In play. ((Documentacion en proceso ...))</h1>
+    <td style="max-width: 684px">
+      <h2>In play - Tirador de dados</h2>
+      <p>Las tiradas pueden verse afectadas por ajentes externos, por ejemplo: Si el investigador tiene el estado <br> "bendecido" los aciertos pasaran de ser de 5 y 6 a 4, 5 y 6</p>
+      <ul>
+        <li>1- Salud. Estos son contadores de vida (SAlud y cordura), si en algun momento alguno de los 2 llega a 0 el investigador habra muerto.</li>
+        <li>2- Navegacion. El primero es la ventana de tirada de dados, > la segunda es la ventana de estados, > la tercera es la ventana de habilidades unicas y > la ultima es para salir/terminar la partida.</li>
+        <li>3- Atributos. al hacer tap en alguno de los atributos, seleccionas de que quieres tirar, justo abajo a la izquierda aparecera el N de dados que se va a lanzar y a la derecha puedes sumar N de dados. <br> Por ejemplo: tienes un arma que te da +3 de fuerza, y este personaje tiene ya de por si 2 de Fuerza, pues para hacer una tirada de fuerza harias tap al atributo de fuerza y pondrias en dados extras 3, asi se lanzaria 5 dados.</li>
+        <li>4- Tirardor. Simple, un submit para tirar el N de dados que pone arriba a la izquierda.</li>
+        <li>5- Resultados. Aqui apareceran los dados lanzados, se pondran en verde los que sean aciertos, en rojo los que sean pifia (que en este juego no tienen gran importancia, pero que bien) y sin borde que no son aciertos. Por defecto los aciertos suelen ser si se saca 5 o 6, pero si el personaje esta bendecido tambien contara el 4, en cambio si esta Maldito, solo contara el 6.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/inplay/play.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
+
+<table align="center">
+    <td style="max-width: 684px">
+      <h2>In play - Estados</h2>
+      <p>Todos los estados tienen su propio modal. Como hay muchos con muchas variantes solo hare un pequeño resumen. Todos se consiguen por razones de la partida asi que omitire esa parte.</p>
+      <ul>
+        <li>1- Activos - Todos. En la ventana "Activos" solo aparecen los que el investigador tiene activo, en la de Todos, pues aparecen todos los estados posibles y se pondran en verde (a modo orientativo) los estados que esten activos.</li>
+        <li>2- Pacto siniestro. Cuando tengas este estado, en cierto momento de la partida aparecera una ficha llamada retribucion, en ese momento debes abrir este estado y tirar 1 dado, si sale 1, se debera cumplir con el pacto (se revelara 1 de las 15 cartas que hay guardadas). <br> > Una vez adquirido el estado de pacto, este no desaparecera hasta haberlo cumplido.</li>
+        <li>3- Mancillado. funciona mas o menos como el pacto siniestro, pero cuando salga fichas blancas, se tendra que hacer una cosa y cuando salga la retribucion (sin tirar ningun dado a diferencia de pacto siniestro) se debera cumplir con lo que diga la carta (normalmente algo malo). El castigo de esta carta suele ser mas flojo.</li>
+        <li>4- Maldicion - Bendicion. Con la bencicion los aciertos seran 4, 5 y 6. Con la maldicion sera solo 6. No se pueden tener las 2 cartas a la vez, si una esta activa y quieres activar la otra, la que tenias activa se desactivara automaticamente.</li>
+        <li>5- Fatigado - Determinado - Perseguido. Estados que te dan bonificaciones varias </li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/inplay/play_1.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
+
+<table align="center">
+    <td style="max-width: 684px">
+      <h2>In play - Habilidades</h2>
+      <ul>
+        <li>1- Habilidades unicas. Aqui aparece a modo de recordatorio las habilidades unicas del investigador.</li>
+        <li>2- Limite de concetracion. Aqui aparece hasta cuanto se puede concentrar en sus habilidades.</li>
+        <li>3- Moneda. 2 contadores, uno de dinero y el otro de restos que dejan las criaturas que se pueden usar como moenda de cambio durante la aprtida.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/inplay/play_2.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
+
+<table align="center">
+    <td style="max-width: 684px">
+      <h2>In play - Ajustes</h2>
+      <ul>
+        <li>1- Botones preview. Estos dos botones actualmente no son funcional pero son un preview de lo que hara y se vera.</li>
+        <li>2- Volver a la lista de personajes.</li>
+        <li>3- Termina la partida y vuelve al home.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/inplay/play_3.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
 </table>
 
 ## Enlace a la app
