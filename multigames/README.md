@@ -174,15 +174,38 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 
 # Guia de usuario
 
-Elegir un mapa. Esta funcion es meramente de apollo , aqui podras todo lo que necesitas para el juego
+## Elegir un mapa. 
+Esta funcion es meramente de apollo , aqui tienes todo lo que necesitas para el juego
 <ul>
   <li>Datos basicos como, titulo descripcion YYYYY (solo en algunos mapas) Locucion de la descripcion del mapa.</li>
   <li>Datos extras sobre el mapa, actualmente es una estimacion, proximamente sera reactivo segun la media de las votaciones de los usuarios.</li>
   <li>Losetas de mapas. para no solo saber la colocacion del mapa sino que tambien saber que cartas de que barrio se teienen que coger para la partida.</li>
-  <li>Lista de enemigos, reactiva segun el mapa seleccionado.</li>
-  <li>Losetas de mapas.</li>
-  <li>Losetas de mapas.</li>
-<ul/>
+  <li><strong>Lista de enemigos, reactiva segun el mapa seleccionado. Lo buenisimo de esta parte (es una de las razones por la que quise hacer esta app) al tener tantos enemigos distintos (aun mas si tienes todas las expansiones), en el juego de mesa solo te dicen el nombre de que criaturas que hay que meter y al final pasas muchisimo rato buscandolas, gracias a esta parte, gracias a ver la imagen es infinitamente mas rapido encontrarlos.</strong></li>
+  <li>Inv. Rec esta en proceso, esta pensada para segun el mapa que hayas elegido, hay algunos investigadores que son mas convenientes elegirlos que otros. </li>
+  <li>La comunidad te redirecciona a la pagina de Arkham Horror 3 edicion de BGG.</li>
+</ul>
+
+## Elegir un Investigador para jugar. 
+Importante! Esta app es una herramienta para el juego de mesa, es decir, es NECESARIO el juego de mesa para jugar.
+
+Aqui podras ver en detalle a los distintos investigadores y seguir una partida enteramente usando como ficha de personaje el mismo movil con el investigador seleccionado.
+Para llegar a jugar con un investigador es simple, entra en al lista de personajes > selecciona el investigador que mas te guste > click en "comenzar"
+
+Dentro puedes hacer:
+<ul>
+  <li>Tirar los dados para hacer las pruebas durante la partida.</li>
+  <li>Añadirte estados a los personajes, .</li>
+  <ul>
+    <li>Activos - Todos. En la ventana "Activos" solo aparecen los que el investigador tiene activo, en la de Todos, pues aparecen todos los estados posibles y se pondran en verde (a modo orientativo) los estados que esten activos.</li>
+    <li>Pacto siniestro. Si tienes esta carta (por circusntancias de la partida) y sale la ficha de RETRIBUCION debes entrar en el estado y tirar  1 dado, si ese dado sale 1, deberas cumplir con lo que diga la carta.</li>
+    <li>Mancillado. Teniendo esta carta, cuando salga una ficha de Mitos vacia o una aparicion de pista, coloca una ficha de Perdicion en tu espacio. Cuando salga la RETRIBUCION de tiene que ver que te ha tocado.</li>
+    <li>Maldicion - Bendicion. Con la bencicion los aciertos seran 4, 5 y 6. Con la maldicion sera solo 6. No se pueden tener las 2 cartas a la vez, si una esta activa y quieres activar la otra, la que tenias activa se desactivara automaticamente.</li>
+    <li>Fatigado - Determinado - Perseguido. Estados que te dan bonificaciones varias.</li>
+    <li>Agitado, Manco, Al filo, Señalado. Son estados que dependen de lo que pueda ocurrir en otros estados como pacto siciestro o mancillado.</li>
+  </ul>
+  <li>Ventana con recuerdo de las habilidades unicas de cada investigador.</li>
+  <li>Contador de vida, cordura, dinero y destos.</li>
+</ul>
 
 # Especificaciones tecnicas
 
