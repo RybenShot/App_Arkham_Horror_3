@@ -29,6 +29,8 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
 
 # Funcionalidades
 
+<div align="center"><h2>Investigadores</h2></div>
+
 <table align="center">
     <td>
       <h2>Lista de personajes</h2>
@@ -131,6 +133,41 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     </td>
     <td>
       <img src="/README_FILES/inplay/play_3.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
+
+<div align="center"><h2>Mapas</h2></div>
+
+<table align="center">
+    <td style="max-width: 684px">
+      <h2>Lista de mapas</h2>
+      <ul>
+        <li>1- Activar o desactivar las expansiones. El borde de color de cada mapa indica de qué expansión proviene.</li>
+        <li>2- Mapa. Al hacer tap, va a la pagina de detalle de ese mapa.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/mapas/mapas_1.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
+
+<table align="center">
+    <td style="max-width: 684px">
+      <h2>Detalle de mapas</h2>
+      <p>Actualmente los datos que estan en la parte de Especificaciones (Votos de usuario, dificultad, duracion.), son datos estiumados por jugada propia, proximamente habra sistema de vocacion e interaccion con el usuario para que se haga una media entre todos los usuarios.</p>
+      <ul>
+        <li>1- Datos basicos. Aqui tenemos titulo, descripcion y en algunos mapas, una locucion(si haces tap en el icono del megafono se acivara la locucion, si esta disponible en este mapa).</li>
+        <li>2- Especificaciones. Sin mas, son datos extras para cada mapa, actualmente son estimaciones, proximamente los datos saldran de hacer una media por los mismos usuarios.</li>
+        <li>3- Mapa de losetas. Ayuda para la colocacion de las losetas, al hacer tap se ampliara para verse mejor.</li>
+        <li>4- Enemigos. aqui abre la lista de enmigos de esta historia, porque segun cual haya elegido cambian los enemigos que aparecen. En la lista puedes hacer tap a algun enemigo para verlo mas en detalle.</li>
+        <li>5- Inv. Rec. y Comunidad. La parte de inv. rec. esta aun en proceso, esta pensada para segun el mapa que hayas elegido, hay algunos investigadores que son mas convenientes elegirlos que otros. La comunidad te redirecciona a la pagina de Arkham Horror 3 edicion de BGG.</li>
+        <li>6- Lista. Vuelve al apartado de lista de mapas.</li>
+        <li>7- Contador. Para que el usuario se haga una idea de cuantos mapa hay en total y cual ha selecionado.</li>
+        <li>8- Seleccionar inv. Para saltar directamente a la lista de investigadores.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/mapas/mapas_2.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
     </td>
 </table>
 
