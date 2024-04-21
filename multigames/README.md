@@ -1,6 +1,7 @@
 <p align = "center">
   <a href= "#que-hace">Que hace?</a> |
   <a href= "#funcionalidades">Funcionalidades</a> |
+  <a href= "#especificaciones-tecnicas">Especificaciones tecnicas</a> |
   <a href= "#enlace-a-la-app">Enlace a la app</a> 
 </p>
 
@@ -9,11 +10,11 @@
   <h1>Arkham Horror 3 Edicion - Juego de mesa</h1>
 </div>
 
-## Introduccion
+# Introduccion
 Bienvenido a la documentación de App Arkhma Horror. 
 Esta app es una herramienta diseñada para facilitar la gestión y el seguimiento de partidas del juego de mesa de Arkham Horror Tercera edicion, proporcionando una experiencia fluida y enriquecedora para los jugadores.
 
-## Que hace?
+# Que hace?
 
 Es una herramienta para el juego de mesa "Arkham horror 3ª edicion". 
 Hay un pequeño problema en este juego y es su gran complejidad, pero no seria lo mismo sin esto mismo. Muchas cartas de eventos, cartas de enemigos, cartas de efectos personales de cada personaje, fichas de dinero/restos/daño/terror/cordura, cartas de hechizos, cartas especiales de objetos ... y mucho mucho mas.
@@ -22,7 +23,7 @@ Y por eso nació este proyecto, para solventar ese problema Y AUMENTAR LA EXPERI
 
 Con esta aplicacion no solo podras gestionar todo lo anteriomente dicho en un solo movil, sino que encima, abre la posibilidad de ampliar su juego con nuevas cartas, nuevos personajes, nuevos mapas, nuevos enemigos, INCLUIR UNA NARRATIVA EN VOZ EN OFF, efectos especiales para cuando el personaje pierda vida/cordura, añadir valoraciones de otros usuarios para elegir mapa o personaje, estrategias compartidas por otros usuarios, y mucho MUCHISIMO MAS.
 
-## ¿Por donde vamos?
+# ¿Por donde vamos?
 Ahoramismo el proyecto sigue en fase de desarrollo, estamos en la 4ª version, actualmente ya es completamente funcional con TODAS LAS EXPANSIONES, con nuevas cartas incluidas y efectos visuales para los personajes, ayuda a la creacion de losetas de mapa, ayuda para crear el mazo de enemigos para el mapa, voz en off que lee la descripciones de mapas e historia de los personajes.
 
 Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dudes en contactarme por mi [LinkedIn](https://linkedin.com/in/sebastian-jimenez-roman)
@@ -171,7 +172,43 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     </td>
 </table>
 
-## Enlace a la app
+# Guia de usuario
+
+Elegir un mapa. Esta funcion es meramente de apollo , aqui podras todo lo que necesitas para el juego
+<ul>
+  <li>Datos basicos como, titulo descripcion YYYYY (solo en algunos mapas) Locucion de la descripcion del mapa.</li>
+  <li>Datos extras sobre el mapa, actualmente es una estimacion, proximamente sera reactivo segun la media de las votaciones de los usuarios.</li>
+  <li>Losetas de mapas. para no solo saber la colocacion del mapa sino que tambien saber que cartas de que barrio se teienen que coger para la partida.</li>
+  <li>Lista de enemigos, reactiva segun el mapa seleccionado.</li>
+  <li>Losetas de mapas.</li>
+  <li>Losetas de mapas.</li>
+<ul/>
+
+# Especificaciones tecnicas
+
+### Tecnologias usadas
+- **Lenguaje de programación:**: JavaScript HTML CSS
+- **Framewoks y bibliotecas**: Vue, vue-router, vuex, howler
+- **Herramientas de desarrollo**: Bulma
+- **Deploy**: Firebase
+
+### Características Principales
+- Herramienta para el Juego de mesa Arkham Horror 3rd Edition.
+- Interfaz gráfica intuitiva y fácil de usar.
+- Integración de audio para una inmersión total en el mundo de Arkham Horror.
+
+### Caracteristicas internas
+- La gestion de variables. en la mayoria de los casos, se hace a traves del Store, todo se escribe ahi y todo se saca de ahi.
+- Como aun no hay backend, todo esta echo en frontend.
+- Las bases de datos (Todos los datos de los personajes, mapas, enemigos, objetos, etc), estan dispersado en varios sitios:
+  <ul>
+    <li>Datos de los investigadores: src > views > Personajes > ListadePersonajes.vue</li>
+    <li>Datos de los mapas: src > views > Mapas > ListaMapas.vue</li>
+    <li>Datos de los enemigos: ya que hay muchos enemigos, decidi dividirlo en 4 (las 4 expansiones) <br> src > components > mapas > ExpansionesEnemigos > {aqui estan los 4 .vue con sus respectivas lista de enemigos}</li>
+  </ul>
+
+
+# Enlace a la app
 
 Pruebala! -> [Click aqui](https://arkhamhorror-39297.web.app/#/) <-
 
