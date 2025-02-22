@@ -7,29 +7,31 @@
     <div class="column has-text-white">
       <div>
         <p class="title is-2 has-text-weight-bold has-text-white mb-4">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
-        <p class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.posicion }}</p>
+
+        <p v-if="this.$store.state.lenguaje == 'español'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.posicion }}</p>
+        <p v-if="this.$store.state.lenguaje == 'ingles'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.ENposicion }}</p>
       </div>
 
       <div class="has-text-centered mt-4 mr-2">
         <div class="columns is-mobile">
           <div class="column p-0 py-1" id="barraDerechaAbajo" @click="this.$store.state.modalPertenenciasDetalle = true">
             <i class="fas fa-suitcase"></i>
-            <p>Pertenencias</p>
+            <p>{{ textoInterfaz.pertenencias }}</p>
           </div>
           <div class="column p-0 py-1" @click="this.$store.state.modalHistoriaDetalle = true">
             <i class="fas fa-id-card"></i>
-            <p>Historia</p>
+            <p>{{ textoInterfaz.historia }}</p>
           </div>
         </div>
 
         <div class="columns is-mobile" @click="this.$store.state.modalArquetipoDetalle = true">
           <div class="column p-0 py-1">
             <i class="fas fa-bolt"></i>
-            <p>Arquetipo</p>
+            <p>{{ textoInterfaz.arquetipo }}</p>
           </div>
           <div class="column p-0 py-1" id="barraIzquierdaArriba">
             <i class="fas fa-money-bill-wave"></i>
-            <p>2</p>
+            <p>{{ this.$store.state.datosPJactual.dinero }}</p>
           </div>
         </div>
 
@@ -41,7 +43,32 @@
 
 <script>
 export default {
-
+  name: "Datos Basicos Detalle",
+  data(){
+    return{
+      textoInterfaz: {
+        pertenencias: "",
+        historia: "",
+        arquetipo: ""
+      }
+    }
+  },
+  methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.pertenencias = "Pertenencias";
+        this.textoInterfaz.historia = "Historia";
+        this.textoInterfaz.arquetipo = "Arquetipo";
+      }else if (this.$store.state.lenguaje == "ingles"){
+        this.textoInterfaz.pertenencias = "Belongings";
+        this.textoInterfaz.historia = "History";
+        this.textoInterfaz.arquetipo = "Archetype";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

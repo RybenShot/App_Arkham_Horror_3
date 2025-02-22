@@ -1,15 +1,19 @@
 <template>
   <section>
-    <p class="title has-text-centered has-text-white">Habilidades</p>
+    <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <div class="container mx-3 has-text-white">
-      <p>{{ this.$store.state.datosPJactual.efecto1 }}</p>
-      <p v-if="this.$store.state.datosPJactual.efecto2">{{ this.$store.state.datosPJactual.efecto2 }}</p>
-      <p class="has-text-weight-semibold is-underlined pt-3">Limite de concentración: {{ this.$store.state.datosPJactual.limConcentracion }}</p>
+      <p v-if="this.$store.state.lenguaje == 'español'">{{ this.$store.state.datosPJactual.efecto1 }}</p>
+      <p v-if="this.$store.state.lenguaje == 'ingles'">{{ this.$store.state.datosPJactual.ENefecto1 }}</p>
+
+      <p v-if="(this.$store.state.datosPJactual.efecto2) && (this.$store.state.lenguaje == 'español')">{{ this.$store.state.datosPJactual.efecto2 }}</p>
+      <p v-if="(this.$store.state.datosPJactual.efecto2) && (this.$store.state.lenguaje == 'ingles')">{{ this.$store.state.datosPJactual.ENefecto2 }}</p>
+
+      <p class="has-text-weight-semibold is-underlined pt-3">{{ textoInterfaz.limConcentracion }} {{ this.$store.state.datosPJactual.limConcentracion }}</p>
     </div>
 
     <hr>
 
-    <p class="title has-text-centered has-text-white">Dinero y Restos</p>
+    <p class="title has-text-centered has-text-white">{{ textoInterfaz.tituloSeg }}</p>
     <div class="columns is-mobile has-text-centered pt-2">
       <div class="column pb-1">
         <i class="fa-4x fas fa-money-bill-wave has-text-primary"></i>
@@ -35,10 +39,32 @@
 
 <script>
 export default {
+  name: "HabilidadesPlay",
+  data(){
+    return{
+      textoInterfaz:{
+        titulo: "",
+        tituloSeg:"",
+        limConcentracion: "",
+      },
+    }
+  },
+  methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = "Habilidades";
+        this.textoInterfaz.tituloSeg = "Dinero y Restos";
+        this.textoInterfaz.limConcentracion = "Limite de concentración :";
 
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.titulo = "Skills";
+        this.textoInterfaz.tituloSeg = "Money and Rests";
+        this.textoInterfaz.limConcentracion = "Concentration limit :";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
-
-<style>
-
-</style>

@@ -5,34 +5,22 @@
       <div class="mr-6">
         <div class="modal-card">
           <header class="modal-card-head BGPactoSiniestro">
-            <p class="modal-card-title has-text-light has-text-weight-bold" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/>PACTO SINIESTRO</p>
-            <p class="modal-card-title has-text-light has-text-weight-bold" v-if="this.$store.state.lenguaje == 'ingles'">Dark Pact</p>
+            <p class="modal-card-title has-text-light has-text-weight-bold">{{ textoInterfaz.titulo }}</p>
           </header>
 
           <!-- BOOOOOOOOOODYYYYYYYY -->
           <section class="modal-card-body px-2">
             <div class="hero-body px-1 py-3">
               <div v-if="verCartaPacto">
-                <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'español'">Retribución -- Tira un dado. Si sacas un 1</p>
-                <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">Retribution -- Roll a dice. If you roll a 1</p>
-                <h1 class="title has-text-centered titlePactosiniestro" v-if="this.$store.state.lenguaje == 'español'">¿Hora de saldar tu deuda?</h1>
-                <h1 class="title has-text-centered titlePactosiniestro" v-if="this.$store.state.lenguaje == 'ingles'">Time to settle your debt?</h1>
-
-                <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'español'">Expansion: Base</p>
-              <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'ingles'">Expansion: Base</p>
+                <p class="has-text-centered">{{ textoInterfaz.descripcion }}</p>
+                <h1 class="title has-text-centered titlePactosiniestro">{{ textoInterfaz.pregunta }}</h1>
+                <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
               </div>
 
               <div v-if="verResultadoPacto">
                 <p class="title is-1 has-text-centered resultadoPactosiniestro">{{ ResultadoPacto }}</p>
-                <div v-if="ResultadoPacto == 1">
-                  <p class="subtitle is-3 titlePactosiniestro" v-if="this.$store.state.lenguaje == 'español'"> Dale la vuelta a la carta y cumple con tu destino!</p>
-                  <p class="subtitle is-3 titlePactosiniestro" v-if="this.$store.state.lenguaje == 'ingles'">Turn the letter around and fulfill your destiny!</p>
-                </div>
-                <div v-else>
-                  <p class="subtitle is-3 titlePactosiniestro" v-if="this.$store.state.lenguaje == 'español'">La próxima vez no tendrás tanta suerte ...</p>
-                  <p class="subtitle is-3 titlePactosiniestro" v-if="this.$store.state.lenguaje == 'ingles'">Next time you won’t be so lucky...</p>
-                </div>
-                
+                <div v-if="ResultadoPacto == 1"> <p class="subtitle is-3 titlePactosiniestro">{{ textoInterfaz.descripcionDestino }}</p> </div>
+                <div v-else> <p class="subtitle is-3 titlePactosiniestro">{{ textoInterfaz.descripcionSuerte }}</p> </div>
               </div>
 
               <div v-if="verPactoSiniestro">
@@ -54,57 +42,44 @@
           <!-- BOOOOOOOOOODYYYYYYYY -->
 
           <!-- FOOOOOOOOOTERRRRRRRRR -->
-          <footer class="">
+          <footer>
             
             <!-- FASE 1 -->
             <div v-if="verCartaPacto" class="field has-addons columns is-mobile is-gapless" >
               <p class="control column is-half">
-                <button @click=" tirarPacto(1), (verResultadoPacto = true), (verCartaPacto = false)" class="button is-danger is-fullwidth" >
-                  <p v-if="this.$store.state.lenguaje == 'español'">Tirar</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">Throw</p> 
-                </button>
+                <button @click=" tirarPacto(1), (verResultadoPacto = true), (verCartaPacto = false)" class="button is-danger is-fullwidth" >{{ textoInterfaz.botones.tirar }}</button>
               </p>
 
               <p class="control column is-half">
-                <button @click=" (this.$store.state.EstadoPacto = true), (this.$store.state.modalPacto = false)" class="button is-link is-fullwidth">
-                  <p v-if="this.$store.state.lenguaje == 'español'">Añadir</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">Añadir</p>
-                </button>
+                <button @click=" (this.$store.state.EstadoPacto = true), (this.$store.state.modalPacto = false)" class="button is-link is-fullwidth">{{ textoInterfaz.botones.añadir }}</button>
               </p>
             </div>
 
             <!-- FASE 2 -->
             <div v-if="verResultadoPacto">
-              <div >
+              <button v-if="ResultadoPacto != 1"
+                @click="
+                  (this.$store.state.modalPacto = false),
+                  (ResultadoPacto = null),
+                  (verResultadoPacto = false),
+                  (verCartaPacto = true)"
+                class="button is-fullwidth is-12 is-link column">
+                <p>{{ textoInterfaz.botones.volver }}</p>
+              </button>
 
-                <button v-if="ResultadoPacto != 1"
-                  @click="
-                    (this.$store.state.modalPacto = false),
-                    (ResultadoPacto = null),
-                    (verResultadoPacto = false),
-                    (verCartaPacto = true)"
-                  class="button is-fullwidth is-12 is-link column">
-                  <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p> 
-                </button>
-
-                <button
-                  v-if="ResultadoPacto == 1"
-                  @click="
-                    this.seleccionarPacto(),
-                    (verResultadoPacto = false),
-                    (verPactoSiniestro = true)"
-                  class="button is-fullwidth is-12 is-link column">
-                  <p v-if="this.$store.state.lenguaje == 'español'">Ver Pacto Siniestro</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">See Dark Pact</p> 
-                </button>
-              </div>
+              <button v-if="ResultadoPacto == 1"
+                @click="
+                  this.seleccionarPacto(),
+                  (verResultadoPacto = false),
+                  (verPactoSiniestro = true)"
+                class="button is-fullwidth is-12 is-link column">
+                <p>{{ textoInterfaz.botones.verPacto }}</p>
+              </button>
             </div>
 
             <!-- FASE 3 -->
             <div>
-              <button
-                v-if="verPactoSiniestro == true"
+              <button v-if="verPactoSiniestro == true"
                 @click="
                   (this.$store.state.EstadoPacto = false),
                   (verPactoSiniestro = false),
@@ -112,8 +87,7 @@
                   (ResultadoPacto = null),
                   (verCartaPacto = true)"
                 class="button is-fullwidth is-12 is-link column">
-                <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
-                <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p>
+                <p>{{ textoInterfaz.botones.volver }}</p>
               </button>
             </div>
           </footer> <!-- End Footer -->
@@ -133,6 +107,21 @@ export default {
       verResultadoPacto: false,
       ResultadoPacto: null,
       verPactoSiniestro: false,
+
+      textoInterfaz:{
+        titulo: "",
+        descripcion: "",
+        pregunta: "",
+        expansion: "",
+        descripcionDestino: "",
+        descripcionSuerte: "",
+        botones: {
+          tirar: "",
+          añadir: "",
+          volver: "",
+          verPacto: "" 
+        },
+      },
       DatosPactoSiniestro: {
         expansion: null,
         ENexpansion:"",
@@ -173,7 +162,7 @@ export default {
           ENtitle:"Vortice into the chaos",
           narrativa:"Tu mirada se nubla, tu mente se dispersa, tus sentidos se relajan. Metes la mano en el bolsillo y sacas una llave de plata, no sabes exactamente qué hacía ahí, pero simplemente la coges y sigues tu camino. MUEVE EL INVESTIGADOR 2 ESPACIOS. SIGUE LEYENDO DESPUÉS DE MOVER AL INVESTIGADOR. Sin saber exactamente qué estás haciendo, extiendes la mano que sujeta la llave y sientes como encaja en una cerradura, en mitad de la calle. Abres una puerta rosa, de madera, quebrada y mugrienta hasta la última esquina.",
           ENnarrativa:"Your gaze clouds, your mind disperses, your senses relax. You put your hand in your pocket and you pull out a silver key, you don’t know exactly what it was doing there, but you just take it and you go your way. Move the researcher 2 spaces. Continue reading after moving the researcher. Without knowing exactly what you’re doing, you reach out the hand that holds the key and feel it fit into a lock, in the middle of the street. You open a pink, wooden door, broken and filthy to the last corner.",
-          descripcion:"Aparece donde el investigador 3 criaturas y se enfrentan directamente al el.",
+          descripcion:"Aparece donde el investigador 3 criaturas y se enfrentan directamente a el.",
           ENdescripcion:"It appears where the researcher 3 creatures and face directly to the.",
         },
         {id: 4,
@@ -276,6 +265,34 @@ export default {
   }, // end Data
 
   methods: {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = "Estado: Pacto Siniestro";
+        this.textoInterfaz.descripcion = "Retribución -- Tira un dado. Si sacas un 1";
+        this.textoInterfaz.pregunta = "¿Hora de saldar tu deuda?";
+        this.textoInterfaz.expansion = "Expansion: Base";
+        this.textoInterfaz.descripcionDestino = "Dale la vuelta a la carta y cumple con tu destino!";
+        this.textoInterfaz.descripcionSuerte = "La próxima vez no tendrás tanta suerte ...";
+
+        this.textoInterfaz.botones.tirar = "Tirar";
+        this.textoInterfaz.botones.añadir = "Añadir";
+        this.textoInterfaz.botones.volver = "Volver";
+        this.textoInterfaz.botones.verPacto = "Ver Pacto Siniestro";
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.titulo = "State: Dark Pact";
+        this.textoInterfaz.descripcion = "Retribution -- Roll a dice. If you roll a 1";
+        this.textoInterfaz.pregunta = "Time to settle your debt?";
+        this.textoInterfaz.expansion = "Expansion: Base";
+        this.textoInterfaz.descripcionDestino = "Turn the letter around and fulfill your destiny!";
+        this.textoInterfaz.descripcionSuerte = "Next time you won’t be so lucky...";
+
+
+        this.textoInterfaz.botones.tirar = "Throw";
+        this.textoInterfaz.botones.añadir = "Add";
+        this.textoInterfaz.botones.volver = "Go back";
+        this.textoInterfaz.botones.verPacto = "See Dark Pact";
+      }
+    },
     tirarPacto(min) {
       let max = 6; // maximo de lados de dados
       this.ResultadoPacto = Math.floor(Math.random() * (min, max)) + min;
@@ -314,6 +331,9 @@ export default {
       this.$store.state.dataPactoSiniestro.ENdescripcion = dartosEncontrados.ENdescripcion;
     }, // end seleccionarPacto
   },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 };
 </script>
 

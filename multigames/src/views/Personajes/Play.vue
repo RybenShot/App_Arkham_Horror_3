@@ -1,9 +1,11 @@
 <template>
   <div class="p-2">
 
+    <!-- Confirmacion al intentar salir de terminar partida -->
     <div v-if="$store.state.ModalConfirmacion"><ModalConfirmacion/></div>
+    <!-- Modals de los estados para verlos -->
     <div><ModalsEstadosPlay/></div>
-
+    <!-- Parte superior, datos del personaje, nombre, vida y eso -->
     <DatosBasicosPlay/>
 
     <hr class="my-2">
@@ -44,7 +46,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

@@ -10,18 +10,18 @@
       <div class="column has-text-centered is-6">
         <!-- Enemigos -->
         <div id="BG-boton-enemigos" class="helperbotones mb-5 pt-2 pb-6">
-          <p class="has-text-white subtitle is-6" @click="(this.$store.state.viewDetalleMapa = false), (this.$store.state.modalVerEnemigos = true) ">Enemigos</p>
+          <p class="has-text-white subtitle is-6" @click="(this.$store.state.viewDetalleMapa = false), (this.$store.state.modalVerEnemigos = true) ">{{ textoBotones.enemigos }}</p>
         </div>
         <!-- "Inv Recomendados" -->
         <router-link to="/enproceso">
           <div id="BG-boton-inv-rec" class="helperbotones py-2 my-2 pl-2">
-            <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">Investigadores Recomendados</p>
+            <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">{{ textoBotones.invRec }}</p>
           </div>
         </router-link>
         <!-- Comunidad -->
         <a href="https://boardgamegeek.com/boardgame/257499/arkham-horror-third-edition/forums/0?pageid=1&sort=recent" target="_blank">
           <div id="BG-boton-comunidad" class="helperbotones py-4 my-2 pl-2">
-            <p class="has-text-white subtitle is-7 has-text-left">Comunidad</p>
+            <p class="has-text-white subtitle is-7 has-text-left">{{ textoBotones.comunidad }}</p>
           </div>
         </a>
       </div>
@@ -31,14 +31,14 @@
     <div class="columns is-mobile mt-5 mx-2 has-text-centered has-text-white">
       <div class="column" @click="goBack">
         <p><i class="fa-2x fas fa-bars "></i></p>
-        <p>Lista</p>
+        <p>{{ textoBotones.lista }}</p>
       </div>
       <div class="column">
         <p class=" title is-4 has-text-white py-3">{{this.$store.state.datosMapa.idMapa + 1}}/13</p>
       </div>
       <div id="BG-boton-Selec-inv" class="helperbotones column my-2 py-4">
         <router-link to="/ListaPersonajes">
-          <p class="has-text-white has-text-left subtitle is-7">Seleccionar investigador</p>
+          <p class="has-text-white has-text-left subtitle is-7">{{ textoBotones.selecInv }}</p>
         </router-link>
       </div>
     </div>
@@ -47,13 +47,41 @@
 
 <script>
 export default {
-name: "Losetas y botones",
-data(){
+  name: "Losetas y botones",
+  data(){
     return{
       imgMapa: null,
+      textoBotones: {
+        enemigos: "",
+        invRec: "",
+        comunidad: "",
+        selecInv: "",
+        lista: ""
+      }
+    }
+  },
+  methods:{
+    goBack() {
+      this.$router.go(-1);
+    },
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoBotones.enemigos = "Enemigos";
+        this.textoBotones.invRec = "Investigadores Recomendados";
+        this.textoBotones.comunidad = "Comunidad";
+        this.textoBotones.selecInv = "Seleccionar investigador";
+        this.textoBotones.lista = "Lista";
+      }else{
+        this.textoBotones.enemigos = "Enemies";
+        this.textoBotones.invRec = "Recommended Investigators";
+        this.textoBotones.comunidad = "Community";
+        this.textoBotones.selecInv = "Select Investigator";
+        this.textoBotones.lista = "List";
+      }
     }
   },
   mounted(){
+    this.rellenarTextoSegunIdioma()
     // Esta parte se tiene que dejar para que en la primera carga aparezca ya las LOSETAS del mapa cargado.
     if (this.$store.state.datosMapa.idMapa == 0) {this.imgMapa = "imgMapa0"}
     else if (this.$store.state.datosMapa.idMapa == 1) {this.imgMapa = "imgMapa1"}
@@ -73,11 +101,6 @@ data(){
     else if (this.$store.state.datosMapa.idMapa == 12) {this.imgMapa = "imgMapa12"}
     else {this.imgMapa = "imgMapa1"}
   },
-  methods:{
-  goBack() {
-      this.$router.go(-1);
-    },
-}
 }
 </script>
 

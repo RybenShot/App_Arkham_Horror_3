@@ -5,17 +5,17 @@
           <div class="modal-card m-0">
             <header class="modal-card-head BGHistoria mb-0 columns is-mobile">
               <div class="column has-text-left">
-                <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'español'">La historia <br> hasta ahora...</p>
-                <p class="modal-card-title" v-if="this.$store.state.lenguaje == 'ingles'">The story <br> until now</p>
+                <p class="modal-card-title has-text-white">{{ textoInterfaz.titulo }}</p>
               </div>
               <div class="column has-text-right has-text-white">
                 <p v-if="reproduciendo == false" @click="(reproducirAudio()), (reproduciendo = true)"><i class="fas fa-2x fa-volume-up"></i></p>
                 <p v-if="reproduciendo == true" @click="(detenerAudio()), (reproduciendo = false)" ><i class="fas fa-2x fa-pause-circle"></i></p>
               </div>
-              
             </header>
-
+            
             <section class="modal-card-body hero is-large py-2">
+
+              <!-- Nombre Personaje -->
               <p class="has-text-centered title is-italic mb-0">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
               <div class="lineaSeparatoria mx-6">
                 <div class="columns is-mobile" style="position: relative; top: 4px">
@@ -25,7 +25,8 @@
               </div>
               <br>
 
-              <p class="subtitle is-7 has-text-centered">{{ this.$store.state.datosPJactual.historia }}</p>
+              <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7 has-text-centered">{{ this.$store.state.datosPJactual.historia }}</p>
+              <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7 has-text-centered">{{ this.$store.state.datosPJactual.ENhistoria }}</p>
               <br>
 
               <div v-if="
@@ -48,8 +49,7 @@
             <footer>
               <div class="field has-addons columns is-mobile is-gapless">
                   <button @click="(this.$store.state.modalHistoriaDetalle = false), (reproduciendo = false), (detenerAudio())" class="button is-link is-fullwidth">
-                    <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
-                    <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p>
+                    <p>{{ textoInterfaz.volver }}</p>
                   </button>
               </div>
             </footer>
@@ -74,22 +74,36 @@ export default {
   name: "modal_Historia_Personaje",
   data(){
     return {
-      reproduciendo : false
+      reproduciendo : false,
+      textoInterfaz: {
+        titulo: "",
+        volver: ""
+      }
     }
   },
   methods: {
-
     reproducirAudio() {
       const idPersonaje = this.$store.state.datosPJactual.idPersonaje;
       const sound = sounds[idPersonaje];
       sound.play()
-      },
-
+    },
     detenerAudio() {
       const idPersonaje = this.$store.state.datosPJactual.idPersonaje;
       const sound = sounds[idPersonaje];
       sound.stop()
+    },
+    rellenaTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.titulo = "La historia hasta ahora...";
+        this.textoInterfaz.volver = "Volver";
+      }else if(this.$store.state.lenguaje == "ingles"){
+        this.textoInterfaz.titulo = "The story until now";
+        this.textoInterfaz.volver = "Go back";
+      }
     }
+  },
+  mounted(){
+    this.rellenaTextoSegunIdioma();
   }
 }
 </script>

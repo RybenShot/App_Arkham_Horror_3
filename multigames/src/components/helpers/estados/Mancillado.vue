@@ -4,24 +4,15 @@
     <div class="mr-6">
       <div class="modal-card">
         <header class="modal-card-head BGMancillado">
-          <p class="modal-card-title has-text-weight-bold has-text-light" v-if="this.$store.state.lenguaje == 'español'">Estado: <br/>MANCILLADO</p>
-          <p class="modal-card-title has-text-light" v-if="this.$store.state.lenguaje == 'ingles'">State: Defiled</p>
+          <p class="modal-card-title has-text-weight-bold has-text-light">{{ textoInterfaz.titulo }}</p>
         </header>
 
         <section class="modal-card-body hero is-large py-2">
           <div v-if="verCartaMancillado == true">
-            <h2 class="has-text-centered" v-if="this.$store.state.lenguaje == 'español'">Después de que robes una ficha de Mitos vacía o con una aparición de Pista, coloca una ficha de Perdición en tu espacio.</h2>
-            <h2 class="has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">After you steal an empty Myths tab or with a Clue appearance, place a Doom tab in your space.</h2>
-
-            <h2 class="has-text-danger has-text-centered" v-if="this.$store.state.lenguaje == 'español'">RETRIBUCIÓN - Dale la vuelta a la carta.</h2>
-            <h2 class="has-text-danger has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">RETRIBUTION - Turn the letter around.</h2>
-
-            <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'español'">No mires el reverso de la carta hasta que se te indique</p>
-             <p class="has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">Don’t look at the back of the card until instructed</p>
-
-             
-          <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'español'">Expansion: Mareas Tenebrosas</p>
-          <p class="subtitle is-7 has-text-right mt-2" v-if="this.$store.state.lenguaje == 'ingles'">ExpansionUnder Dark Waves</p>
+            <h2 class="has-text-centered">{{ textoInterfaz.descripcion1 }}</h2>
+            <h2 class="has-text-danger has-text-centered">{{ textoInterfaz.descripcion2 }}</h2>
+            <p class="has-text-centered">{{ textoInterfaz.descripcion3 }}</p>
+            <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
           </div>
 
           <div v-if="verMancillado == true">
@@ -36,25 +27,21 @@
 
         </section>
 
-        <footer class="">
+        <footer>
           <div v-if="verCartaMancillado == true" class="field has-addons columns is-mobile is-gapless">
             <p class="control column is-half">
-              <button @click=" seleccionarMancillado(1), (verMancillado = true), (verCartaMancillado = false)" class="button is-danger is-fullwidth" v-if="this.$store.state.lenguaje == 'español'">Darle la vuelta a la carta</button>
-              <button @click=" seleccionarMancillado(1), (verMancillado = true), (verCartaMancillado = false)" class="button is-danger is-fullwidth" v-if="this.$store.state.lenguaje == 'ingles'">Turn around the card</button>
+              <button @click=" seleccionarMancillado(1), (verMancillado = true), (verCartaMancillado = false)" class="button is-danger is-fullwidth">{{ textoInterfaz.botones.girar }}</button>
             </p>
+
             <p class="control column is-half">
-              <button @click="(this.$store.state.EstadoMancillado = true), (this.$store.state.modalMancillado = false)" class="button is-link is-fullwidth" >
-                <p v-if="this.$store.state.lenguaje == 'español'">Añadir</p>
-                <p v-if="this.$store.state.lenguaje == 'ingles'">Añadir</p>
-              </button>
+              <button @click="(this.$store.state.EstadoMancillado = true), (this.$store.state.modalMancillado = false)" class="button is-link is-fullwidth">{{ textoInterfaz.botones.añadir }}</button>
             </p>
           </div>
 
           <div v-if="verMancillado == true" class="field has-addons columns is-mobile is-gapless">
             <p class="control column">
               <button @click="(this.$store.state.modalMancillado = false), (verMancillado = false), (verCartaMancillado = true), (this.$store.state.EstadoMancillado = false)" class="button is-link is-fullwidth" >
-                <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
-                <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p>
+                <p>{{ textoInterfaz.botones.volver }}</p>
               </button>
             </p>
           </div>
@@ -72,6 +59,20 @@ export default {
       return{
         verCartaMancillado:true,
         verMancillado:false,
+
+        textoInterfaz:{
+          titulo: "",
+          descripcion1: "",
+          descripcion2: "",
+          descripcion3: "",
+          expansion: "",
+          botones: {
+            quitar: "",
+            añadir: "",
+            volver: ""
+          },
+        },
+
         Mancillados:[
           {id: 1,
                expansion: "mareas tenebrosas",
@@ -93,7 +94,7 @@ export default {
                narrativa: "Tu sangre mancillada atrae a los seres que se ocultan en las tinieblas con un reclamo que notas desde lo más profundo de tu ser. Esta noche, algo responde a la llamada.",
                ENnarrativa: "Your stained blood attracts the beings that hide in the darkness with a claim that you notice from the depths of your being. Tonight, something answers the call.",
                descripcion: "Haz una tirada de VOLUNTAD y resuelve el efecto correspondiente al resultado: \n0: aparece un Monstruo en tu espacio. Si se enfrenta a un investigador, el Monstruo ataca. \n1: Aparece un Monstruo en tu espacio. \n2+: No hay efecto. Luego descarta esta carta.",
-               descripcion: "Make a WILL spin and solve the effect corresponding to the result:  \n0: a Monster appears in your space. If you face a researcher, the Monster attacks.   \n1: A Monster appears in your space.   \n2+: No effect. Then discard this card."},
+               ENdescripcion: "Make a WILL spin and solve the effect corresponding to the result:  \n0: a Monster appears in your space. If you face a researcher, the Monster attacks.   \n1: A Monster appears in your space.   \n2+: No effect. Then discard this card."},
           {id: 4,
                expansion: "mareas tenebrosas",
                ENexpansion: "under dark waves",
@@ -128,11 +129,13 @@ export default {
     },
   methods:{
     seleccionarMancillado(){
-      function nuevoMancillado(NumMancillado) {
-        return NumMancillado.id == Math.floor(Math.random() * (0, 8)) + 1;
+      function nuevoMancillado() {
+        let numero = Math.floor(Math.random() * (0, 7));
+        console.log(`Numero: ${numero}`);
+        return numero;
       }
      
-      let dartosEncontrados = this.Mancillados.find(nuevoMancillado);
+      let dartosEncontrados = this.Mancillados[nuevoMancillado()];
       console.log(`Seleccionamos el mancillado ${dartosEncontrados.id}`)
       // asignarNuevoEstado();
       this.$store.state.dataMancillado.expansion = dartosEncontrados.expansion;
@@ -143,9 +146,31 @@ export default {
       this.$store.state.dataMancillado.ENdescripcion = dartosEncontrados.ENdescripcion;
 
     },
-    // asignarNuevoEstado(){
-
-    // }
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = "Estado: Mancillado";
+        this.textoInterfaz.descripcion1 = "Después de que robes una ficha de Mitos vacía o con una aparición de Pista, coloca una ficha de Perdición en tu espacio.";
+        this.textoInterfaz.descripcion2 = "RETRIBUCIÓN - Dale la vuelta a la carta.";
+        this.textoInterfaz.descripcion3 = "No mires el reverso de la carta hasta que se te indique";
+        this.textoInterfaz.expansion = "Expansion: Mareas Tenebrosas";
+        this.textoInterfaz.botones.girar = "Darle la vuelta a la carta";
+        this.textoInterfaz.botones.añadir = "Añadir";
+        this.textoInterfaz.botones.volver = "Volver";
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.titulo = "State: Defiled";
+        this.textoInterfaz.descripcion1 = "After you steal an empty Myths tab or with a Clue appearance, place a Doom tab in your space.";
+        this.textoInterfaz.descripcion2 = "RETRIBUTION - Turn the letter around.";
+        this.textoInterfaz.descripcion3 = "Don’t look at the back of the card until instructed";
+        this.textoInterfaz.expansion = "Expansion: Under Dark Waves";
+        this.textoInterfaz.botones.girar = "Turn around the card";
+        this.textoInterfaz.botones.añadir = "Add";
+        this.textoInterfaz.botones.volver = "Go back";
+      }
+    }
+    // asignarNuevoEstado(){...}
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
   }
 };
 </script>

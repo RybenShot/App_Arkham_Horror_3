@@ -62,7 +62,3 @@ name: "Modals de Estados",
   },
 }
 </script>
-
-<style>
-
-</style>

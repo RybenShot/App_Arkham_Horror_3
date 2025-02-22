@@ -4,8 +4,7 @@
         <div class="mr-6">
           <div class="modal-card">
             <header class="modal-card-head BGArquetipos">
-              <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'español'">Arquetipos <br> principales</p>
-              <p class="modal-card-title has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">State: Blessed</p>
+              <p class="modal-card-title has-text-white">{{ textoInterfaz.titulo }}</p>
             </header>
 
             <section class="modal-card-body hero is-large py-2">
@@ -20,7 +19,10 @@
 
               <div class="containerArquetipos mx-3">
                 <div class="columns is-mobile mb-0">
-                  <p class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.tituloArquetipo1}}</p>
+
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.tituloArquetipo1}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.ENtituloArquetipo1}}</p>
+
                   <div class="column has-text-right is-2">
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo1 == 'Defensor'"><i class="fas fa-2x fa-shield-alt"></i></p>
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo1 == 'Superviviente'"><i class="fas fa-2x fa-user-ninja"></i></p>
@@ -29,7 +31,8 @@
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo1 == 'Buscador'"><i class="fas fa-2x fa-user-secret"></i></p>
                   </div>
                 </div>
-                <p class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.descripcionArquetipo1}}</p>
+                <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.descripcionArquetipo1}}</p>
+                <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.ENdescripcionArquetipo1}}</p>
               </div>
 
              
@@ -37,7 +40,10 @@
               <div v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 != null" class="containerArquetipos mx-3">
                 <hr>
                 <div class="columns is-mobile mb-0">
-                  <p class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.tituloArquetipo2}}</p>
+
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.tituloArquetipo2}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.ENtituloArquetipo2}}</p>
+                  
                   <div class="column has-text-right is-2">
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 == 'Defensor'"><i class="fas fa-2x fa-shield-alt"></i></p>
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 == 'Superviviente'"><i class="fas fa-2x fa-user-ninja"></i></p>
@@ -46,7 +52,8 @@
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 == 'Buscador'"><i class="fas fa-2x fa-user-secret"></i></p>
                   </div>
                 </div>
-                <p class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.descripcionArquetipo2}}</p>
+                <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.descripcionArquetipo2}}</p>
+                <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.ENdescripcionArquetipo2}}</p>
               </div>
               <br>
             </section>
@@ -54,8 +61,7 @@
             <footer>
               <div class="field has-addons columns is-mobile is-gapless">
                   <button @click="this.$store.state.modalArquetipoDetalle = false" class="button is-link is-fullwidth">
-                    <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
-                    <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p>
+                    <p>{{ textoInterfaz.volver }}</p>
                   </button>
               </div>
             </footer>
@@ -66,7 +72,29 @@
 
 <script>
 export default {
-
+  name: "modal Arquetipo Personaje",
+  data(){
+    return{
+      textoInterfaz: {
+        titulo: "",
+        volver: ""
+      }
+    }
+  },
+  methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.titulo = "Arquetipos principales";
+        this.textoInterfaz.volver = "Volver";
+      }else{
+        this.textoInterfaz.titulo = "Main Archetypes";
+        this.textoInterfaz.volver = "Go back";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

@@ -5,8 +5,7 @@
           <div class="modal-card">
             <!-- TITULO -->
             <header class="modal-card-head BGPertenencias">
-              <p class="modal-card-title has-text-white title is-6" v-if="this.$store.state.lenguaje == 'español'">Pertenencias <br/> Iniciales</p>
-              <p class="modal-card-title has-text-white title is-6" v-if="this.$store.state.lenguaje == 'ingles'">State: Blessed</p>
+              <p class="modal-card-title has-text-white title is-6">{{ textoInterfaz.pertenencias }}</p>
             </header>
 
             <!-- ModalDetalle -->
@@ -36,7 +35,8 @@
               </div>
               <br>
 
-              <p class="has-text-centered title mb-0">Elige 1</p>
+              <p class="has-text-centered title mb-0">{{ textoInterfaz.elije }}</p>
+
               <div class="lineaSeparatoria mx-6">
                 <div class="columns is-mobile" style="position: relative; top: 4px">
                   <i class=" has-text-left fas fa-dot-circle column p-0"></i>
@@ -55,6 +55,7 @@
 
                 <!-- Condiciones especiales de personajes -->
                 <div v-if="this.$store.state.datosPJactual.Pertenencia4 == null" class="column">
+                   <!-- Esta partye hayq ue corregirla, para que aparezca tambien en ingles -->
                   <p v-if="this.$store.state.datosPJactual.nombrePJ == 'Calvin Wrigth'">Si coges este objeto, debes añadirte un "Pacto Siniestro"</p>
                 </div>
               </div>
@@ -63,8 +64,7 @@
             <footer>
               <div class="field has-addons columns is-mobile is-gapless">
                   <button @click="this.$store.state.modalPertenenciasDetalle = false" class="button is-link is-fullwidth">
-                    <p v-if="this.$store.state.lenguaje == 'español'">Volver</p>
-                    <p v-if="this.$store.state.lenguaje == 'ingles'">Go back</p>
+                    <p >{{ textoInterfaz.volver }}</p>
                   </button>
 
               </div>
@@ -78,10 +78,35 @@
 <script>
 import  ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePersonaje/ModalVerDetallePertenencia.vue";
 export default {
-name: "Lista Pertenencias",
-components:{
-  ModalVerDetallePertenencia
-},
+  name: "Lista Pertenencias",
+  data(){
+    return{
+      textoInterfaz: {
+        pertenencias:"",
+        elije: "",
+        volver: ""
+      }
+    }
+  },
+  components:{
+    ModalVerDetallePertenencia
+  },
+  methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.pertenencias = "Pertenencias Iniciales";
+        this.textoInterfaz.elije = "Elige 1";
+        this.textoInterfaz.volver = "Volver";
+      }else if(this.$store.state.lenguaje == "ingles"){
+        this.textoInterfaz.pertenencias = "Belongings Initial";
+        this.textoInterfaz.elije = "Choose 1";
+        this.textoInterfaz.volver = "Go back";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

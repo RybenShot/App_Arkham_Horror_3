@@ -2,13 +2,12 @@
    <div >
       <div class="mx-2 container allWindow  has-background-dark">
         <!-- TITULO-->
-        <header class="modal-card-head BGEnemigos mb-3">
-          <h2 class="title titleDecoration is-4 pt-3 mb-3 has-text-light" v-if="this.$store.state.lenguaje == 'español'">Enemigos</h2>
-          <h2 class="title titleDecoration is-4 pt-3 mb-3 has-text-light" v-if="this.$store.state.lenguaje == 'ingles'">Enemies</h2>
+        <header class="modal-card-head BGEnemigos mb-3"> 
+          <h2 class="title titleDecoration is-4 pt-3 mb-3 has-text-light">{{ textoInterfaz.titulo }}</h2> 
         </header>
 
         <!-- ModalDetalle -->
-        <div v-if="this.$store.state.verDetalleEnemigo == true"><ModalDetalleEnemigo/></div>
+        <div v-if="this.$store.state.verDetalleEnemigo == true"> <ModalDetalleEnemigo/> </div>
 
         <div v-if="this.$store.state.datosMapa.idMapa == 0">
           <div id="enemisList" class="px-1">
@@ -97,8 +96,7 @@
           </div>
         </div><!-- end IF MAPA 3  -->
 
-        <h2 class="title titleDecoration has-text-white has-text-centered is-4 pt-3 mb-3" v-if="this.$store.state.lenguaje == 'español'">Enemigos extras</h2>
-        <h2 class="title titleDecoration has-text-white has-text-centered is-4 pt-3 mb-3" v-if="this.$store.state.lenguaje == 'ingles'">Extra enemies</h2>
+        <h2 class="title titleDecoration has-text-white has-text-centered is-4 pt-3 mb-3">{{ textoInterfaz.enemigosExtras }}</h2>
         <hr class="my-1">
 
         <div v-if="this.$store.state.datosMapa.idMapa == 0">
@@ -156,8 +154,7 @@
         <div class="columns is-mobile  mt-4">
           <p class="column"></p>
           <div class="column">
-            <button @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false)" class="button is-success has-text-black p-5" v-if="this.$store.state.lenguaje == 'español'">Volver a Mapas</button>
-            <button @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false)" class="button is-success has-text-black p-5" v-if="this.$store.state.lenguaje == 'ingles'">Back to maps</button>
+            <button @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false)" class="button is-success has-text-black p-5">{{ textoInterfaz.volver }}</button>
           </div>
           <p class="column"></p>
         </div>
@@ -176,6 +173,13 @@ export default {
   },
   data(){
     return {
+      textoInterfaz: {
+        titulo: "",
+        enemigos: "",
+        enemigosExtras: "",
+        volver: ""
+      },
+
       EnemigosMapa1Base: [
         {url: require("@/assets/img/4-Enemigos/1-Base/enemigo6.jpg"),ENnombreEnemigo: "Hooded marauder", ESnombreEnemigo: "Merodeador encapuchado"},
         {url: require("@/assets/img/4-Enemigos/1-Base/enemigo8.jpg"),ENnombreEnemigo: "Abyssal servant", ESnombreEnemigo: "Siervo abisal"},
@@ -242,7 +246,22 @@ export default {
       ],
     }
   }, // end data
-  methods:{}
+  methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.titulo = "Enemigos";
+        this.textoInterfaz.enemigosExtras = "Enemigos extras";
+        this.textoInterfaz.volver = "Volver a Mapas";
+      }else{
+        this.textoInterfaz.titulo = "Enemies";
+        this.textoInterfaz.enemigosExtras = "Extra enemies";
+        this.textoInterfaz.volver = "Back to maps";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

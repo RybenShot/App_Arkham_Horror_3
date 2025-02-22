@@ -13,11 +13,6 @@ import PlayAH from '../views/Personajes/Play.vue'
 import ListaMapas from '../views/Mapas/ListaMapas.vue'
 import DetalleMapa from '../views/Mapas/DetalleMapa.vue'
 
-
-// LEGACY
-/*import MapasAHClasico from '../views/AHBase/MapasEnemigosAHClasico.vue'
-import MapasEnemigosAHMareasTenebrosas from '../views/AHMareasTenebrosas/MapasEnemigosAHMareasTenebrosas.vue'*/
-
 const routes = [
   // HOME
  {path: '/', name: 'home', component: Home},
@@ -30,11 +25,6 @@ const routes = [
   // MAPAS
   {path: '/ListaMapas', name: 'lista_Mapas', component: ListaMapas},
   {path: '/DetalleMapa', name: 'detalle_Mapa', component: DetalleMapa},
-
-
-  // LEGACY
-  /*{path: '/MapasAHClasico', name: 'mapasAHclasico', component: MapasAHClasico},
-  {path: '/MapasAHMareasTenebrosas', name: 'mapasEnemigosAHMareasTenebrosas', component: MapasEnemigosAHMareasTenebrosas},*/
 
   // OTROS
   {path: '/enproceso', name: 'enProceso', component: EnProceso},

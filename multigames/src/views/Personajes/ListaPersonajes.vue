@@ -15,32 +15,32 @@
     <div>
       <!-- Seleccionar Investigador -->
       <div class="columns is-mobile mb-0 pt-3 centrarHero" >
-        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-undo-alt has-text-white"></i></div>
-        <div class="column " style="margin: 0 auto;"><p class="has-text-centered title has-text-white">Seleccionar Investigador</p></div>
-        <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
+        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"> <i class="fa-2x fas fa-undo-alt has-text-white"></i> </div>
+        <div class="column " style="margin: 0 auto;"> <p class="has-text-centered title has-text-white">{{ textoInterfaz.titulo }}</p> </div>
+        <div class="column is-3 p-0" style="text-align: center;"> <router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link> </div>
       </div>
 
       <hr class="m-1 mx-4 linea-separacion"> 
 
       <!-- Colecciones y botones -->
-      <h2 class="title is-4 has-text-white has-text-centered">Colecciones</h2>
-      <p class="subtitle is-6 has-text-white has-text-centered mb-2">Haz click para añadir o quitar la expansión que quieras y luego elige un investigador para verlo en detalle.</p>
+      <h2 class="title is-4 has-text-white has-text-centered">{{ textoInterfaz.subtitulo }}</h2>
+      <p class="subtitle is-6 has-text-white has-text-centered mb-2">{{ textoInterfaz.descripcion }}</p>
       <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
 
-        <button v-if="this.$store.state.ActivarBase == true" class=" button  is-success" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarBase = false)">AH Base</button>
-        <button v-if="this.$store.state.ActivarBase == false" class="button is-success is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarBase = true)">AH Base</button>
+        <button v-if="this.$store.state.ActivarBase == true" class=" button  is-success" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarBase = false)">{{ textoInterfaz.botones.base }}</button>
+        <button v-if="this.$store.state.ActivarBase == false" class="button is-success is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarBase = true)">{{ textoInterfaz.botones.base }}</button>
 
-        <button v-if="this.$store.state.ActivarMareasTenebrosas == true" class="button  is-info" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarMareasTenebrosas = false)">AH Mareas</button>
-        <button v-if="this.$store.state.ActivarMareasTenebrosas == false" class="button is-info is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarMareasTenebrosas = true)">AH Mareas</button>
+        <button v-if="this.$store.state.ActivarMareasTenebrosas == true" class="button  is-info" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarMareasTenebrosas = false)">{{ textoInterfaz.botones.mareas }}</button>
+        <button v-if="this.$store.state.ActivarMareasTenebrosas == false" class="button is-info is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarMareasTenebrosas = true)">{{ textoInterfaz.botones.mareas }}</button>
 
-        <button v-if="this.$store.state.ActivarNocheCerrada == true" class="button  is-warning" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNocheCerrada = false)">AH Noche</button>
-        <button v-if="this.$store.state.ActivarNocheCerrada == false" class="button is-warning is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNocheCerrada = true)">AH Noche</button>
+        <button v-if="this.$store.state.ActivarNocheCerrada == true" class="button  is-warning" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNocheCerrada = false)">{{ textoInterfaz.botones.noche }}</button>
+        <button v-if="this.$store.state.ActivarNocheCerrada == false" class="button is-warning is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNocheCerrada = true)">{{ textoInterfaz.botones.noche }}</button>
 
-        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == true" class="button  is-link" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNSecretosDeLaOrden = false)">AH Secretos</button>
-        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == false" class="button is-link is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNSecretosDeLaOrden = true)">AH Secretos</button>
+        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == true" class="button  is-link" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNSecretosDeLaOrden = false)">{{ textoInterfaz.botones.secretos }}</button>
+        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == false" class="button is-link is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNSecretosDeLaOrden = true)">{{ textoInterfaz.botones.secretos }}</button>
         
-        <button v-if="this.$store.state.ActivarOriginal == true" class="button  is-danger" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarOriginal = false)">AH Original</button>
-        <button v-if="this.$store.state.ActivarOriginal == false" class="button is-danger is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarOriginal = true)">AH Original</button>
+        <button v-if="this.$store.state.ActivarOriginal == true" class="button  is-danger" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarOriginal = false)">{{ textoInterfaz.botones.original }}</button>
+        <button v-if="this.$store.state.ActivarOriginal == false" class="button is-danger is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarOriginal = true)">{{ textoInterfaz.botones.original }}</button>
 
       </div>
     </div>
@@ -67,7 +67,9 @@
                 
                 <div class="card-overlay has-text-centered">
                   <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
-                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7">{{personaje.posicion}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7">{{personaje.ENposicion}}</p>
                 </div>
               </div>
 
@@ -96,7 +98,9 @@
                 
                 <div class="card-overlay has-text-centered">
                   <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
-                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7">{{personaje.posicion}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7">{{personaje.ENposicion}}</p>
                 </div>
               </div>
 
@@ -125,7 +129,9 @@
                 
                 <div class="card-overlay has-text-centered">
                   <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
-                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7">{{personaje.posicion}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7">{{personaje.ENposicion}}</p>
                 </div>
               </div>
 
@@ -154,7 +160,9 @@
                 
                 <div class="card-overlay has-text-centered">
                   <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
-                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+                  
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7">{{personaje.posicion}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7">{{personaje.ENposicion}}</p>
                 </div>
               </div>
 
@@ -183,7 +191,9 @@
                 
                 <div class="card-overlay has-text-centered">
                   <p class="title is-7 tipografiaElegante">{{personaje.nombrePJ}}</p>
-                  <p class="subtitle is-7">{{personaje.posicion}}</p>
+                  
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7">{{personaje.posicion}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7">{{personaje.ENposicion}}</p>
                 </div>
               </div>
 
@@ -196,8 +206,8 @@
     <div v-if="(this.$store.state.ActivarBase == false) && (this.$store.state.ActivarMareasTenebrosas == false) && (this.$store.state.ActivarOriginal == false) && (this.$store.state.ActivarNocheCerrada == false) && (this.$store.state.ActivarNSecretosDeLaOrden == false)">
       <section class="hero is-halfheigh is-danger">
         <div class="hero-body">
-          <p class="title has-text-centered">Sin expansión</p>
-          <p class="subtitle has-text-centered">Por favor selecciona alguna expansion para ver los personajes.</p>
+          <p class="title has-text-centered">{{textoInterfaz.sinExpansion}}</p>
+          <p class="subtitle has-text-centered">{{ textoInterfaz.seleccionaExpansion }}</p>
         </div>
       </section>
     </div>
@@ -223,7 +233,22 @@ export default {
       mensajeDesactivado: "Expansión desactivada!",
       mostrarNotifActivar: false,
       mensajeActivado: "Expansión Activada!",
-      
+
+      textoInterfaz:{
+        titulo: "",
+        subtitulo: "",
+        descripcion: "",
+        sinExpansion: "",
+        seleccionaExpansion: "",
+        botones: {
+          base: "",
+          mareas: "",
+          noche: "",
+          secretos: "",
+          original:""
+        },
+      },
+
       PersonajesBase: [
         {nombrePJ: "Tommy Muldoon",
           idPersonaje: 1,
@@ -400,7 +425,7 @@ export default {
             urlFoto: "",
             nombre: "De punta en blanco",
             ENnombre: "To the nines",
-            descripcion:"Cuando gastes una ficha de Concentración para volver a tirar un dado, en vez de eso puedes volver a tirar cualquier cantidad de dados. Tu fondo fiduciario te proporciona 2$ adicionales.",
+            descripcion:"Talento - Cuando gastes una ficha de Concentración para volver a tirar un dado, en vez de eso puedes volver a tirar cualquier cantidad de dados. Tu fondo fiduciario te proporciona 2$ adicionales.",
             ENdescripcion:"When you spend a Concentration tab to re-roll a dice, you can instead re-roll any number of dice. Your trust fund provides you with an additional $2.",
             fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerJenny3.jpg")
           },
@@ -906,7 +931,7 @@ export default {
         {nombrePJ: "Minh Thi Phan",
           idPersonaje: 12,
           posicion: "Secretaria",
-          ENposicion: "Secretaria",
+          ENposicion: "Secretary",
           vida: 6,
           cordura: 6,
           saber: 3,
@@ -1089,7 +1114,7 @@ export default {
         {nombrePJ: "Stella Clark",
         idPersonaje: 15,
         posicion: "Cartera",
-        ENosicion: "Portfolio",
+        ENposicion: "Portfolio",
         vida: 5,
         cordura: 7,
         saber: 3,
@@ -1478,21 +1503,21 @@ export default {
           limConcentracion: 2,
           ENlimConcentracion: 2 ,
           efecto1:"Lucha por la verdad - Como parte de una acción de ataque, puedes sumar uno al resultado de tantos dados como Pistas haya en tu Barrio.",
-          ENefecto1: "",
+          ENefecto1: "Fight for the Truth – As part of an attack action, you may add 1 to the result of as many dice as there are Clues in your Neighborhood.",
           efecto2: null,
           frase: "“Yo tampoco quería creer.”",
-          ENfrase: '“”',
+          ENfrase: '“"I didn’t want to believe either."”',
           historia:"Roland siempre había hallado consuelo en las normas, pautas y procedimientos reglamentarios; por muy complejo que fuese un caso, el manual de la agencia siempre le brindaba un contexto familiar y predecible. Todo encajaba. Aquello debería haber sido una investigación rutinaria: una chica había desaparecido, y Roland dedujo que la habría secuestrado algún criado descontento. Su adiestramiento le permitía identificar facilmente el móvil, el medio y la oportunidad. Blanco y en botella. Pero ni toda su formacíon preparó a Ronald para el ritual que interrumpió cuando encontró a la chica, y no había nada en el reglamento sobre la criatura que acechaba al otro lado de aquel refulgente umbral. Alguien tendría que redactar un manual nuevo.",
-          ENhistoria: "",
+          ENhistoria: "Roland had always found comfort in rules, guidelines, and standard procedures; no matter how complex a case was, the agency's manual always provided a familiar and predictable context. Everything fit together. This should have been a routine investigation: a girl had gone missing, and Roland deduced that some disgruntled servant had likely kidnapped her. His training allowed him to easily identify motive, means, and opportunity. Clear as day. But all his training hadn’t prepared him for the ritual he interrupted when he found the girl, nor was there anything in the manual about the creature lurking beyond that shimmering threshold. Someone would have to write a new manual.",
           arquetipos: {
             tituloArquetipo1:"Defensor",
             ENtituloArquetipo1:"Defender",
             descripcionArquetipo1: "Tu responsabilidad consiste en proteger a tus compañeros investigadores. Eso podría significar ayudarles a recuperarse de daños físicos y mentales, o bien despachar Monstruos antes de que se conviertan en una amenaza.",
-            ENdescripcionArquetipo1: "", 
+            ENdescripcionArquetipo1: "Your responsibility is to protect your fellow investigators. This could mean helping them recover from physical and mental damage, or dealing with Monsters before they become a threat.", 
             tituloArquetipo2: "Buscador",
-            ENtituloArquetipo2: "",
+            ENtituloArquetipo2: "Seeker",
             descripcionArquetipo2: "Eres un intrepido sabueso. Deberías concentrarte en la obtención de Pistas y en descubrir su significado oculto. Tu labor es esencial para frustrar los malvados designos de los Primigenios.",
-            ENdescripcionArquetipo2: "",
+            ENdescripcionArquetipo2: "You are a fearless hound. You should focus on gathering Clues and uncovering their hidden meaning. Your work is essential to thwarting the evil schemes of the Great Old Ones.",
           },
           Pertenencia1: {
             fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerRoland1.jpg"),
@@ -1522,7 +1547,7 @@ export default {
         {nombrePJ: "Kate Winthrop",
           idPersonaje: 26,
           posicion: "Cientifica",
-          ENposicion: "",
+          ENposicion: "Scientific",
           vida: 5,
           cordura: 7,
           saber: 3,
@@ -1534,17 +1559,17 @@ export default {
           limConcentracion: 3,
           ENlimConcentracion: 3,
           efecto1:"Visión de conjunto - Después de que realices una acción de revelar Pistas, puedes concentrarte en tantas habilidades de tu elección como el resultado de tu prueba.",
-          ENefecto1: "",
+          ENefecto1: "Overview – After you perform a Clue reveal action, you may focus on as many skills of your choice as the result of your test.",
           efecto2: null,
           frase: "“No hacemos preguntas porque nos gusten las respuestas. Las hacemos porque la ignorancia es letal.”",
-          ENfrase: '“”',
+          ENfrase: '“"We don’t ask questions because we like the answers. We ask them because ignorance is lethal."”',
           historia:"Kate y su mentor, el profesor Young,eran pioneros en investigaciones dimensionales hasta que se produjo una avería en un emisor de ondas experimental que abrió una brecha en el tejido del espacio, un portal a otro mundo. La criatura que lo atravesó hizo pedazos a sus amigos ante la mirada impotente de Kate. Atormentada por el sangriento recuerdo, y armada con lo que quedaba de la investigación de Young, Kate ha realizado descubrimientos increiblesy ha contemplado la espantosa realidad que acecha en los margenes de nuestra propia dimensión.Aunque sus colegas de la Universidad Miskatonik sigen sin recordar su nombre, Kate ha consagrado su formidable intelecto a evitar futuras tragedias.",
-          ENhistoria: "",
+          ENhistoria: "Kate and her mentor, Professor Young, were pioneers in dimensional research until a malfunction in an experimental wave emitter opened a rift in the fabric of space, a portal to another world. The creature that passed through tore her friends apart before Kate’s helpless gaze. Tormented by the bloody memory, and armed with what remained of Young’s research, Kate has made incredible discoveries and witnessed the horrifying reality lurking at the edges of our own dimension. Although her colleagues at Miskatonic University still fail to remember her name, Kate has dedicated her formidable intellect to preventing future tragedies.",
           arquetipos: {
             tituloArquetipo1: "Buscador",
-            ENtituloArquetipo1: "",
+            ENtituloArquetipo1: "Seeker",
             descripcionArquetipo1: "Eres un intrepida sabuesa. Deberías concentrarte en la obtención de Pistas y en descubrir su significado oculto. Tu labor es esencial para frustrar los malvados designos de los Primigenios.",
-            ENdescripcionArquetipo1: "",
+            ENdescripcionArquetipo1: "You are a fearless hound. You should focus on gathering Clues and uncovering their hidden meaning. Your work is essential to thwarting the evil schemes of the Great Old Ones.",
             tituloArquetipo2: null,
             ENtituloArquetipo2: null,
             descripcionArquetipo2: null,
@@ -1578,7 +1603,7 @@ export default {
         {nombrePJ: "Diana Stanley",
           idPersonaje: 27,
           posicion: "Sectaria redimida",
-          ENposicion: "",
+          ENposicion: "Redeemed Cultist",
           vida: 7,
           cordura: 5,
           saber: 4,
@@ -1590,21 +1615,21 @@ export default {
           limConcentracion: 2,
           ENlimConcentracion: 2,
           efecto1:"Prácticas prohibidas - Cuando vayas a sufrir Horror (incluido Horror directo), puedes colocar hasta dos fichas de Perdición en tu espacio para anular la misma cantidad de ese Horror.",
-          ENefecto1: "",
+          ENefecto1: "Forbidden Practices – When you are about to suffer Horror (including direct Horror), you may place up to two Doom tokens in your space to cancel the same amount of that Horror.",
           efecto2: null,
           frase: "“Tanto si confían en mí como si no, necesitarán mi ayuda. Yo sé bien de lo que son capaces.”",
-          ENfrase: '“”',
+          ENfrase: '“"Whether they trust me or not, they will need my help. I know well what they are capable of."”',
           historia:"Tarde o temprano, las pesadillas siempre acaban por volver. Diana había entrado en la Orden del Crepusculo de Plata motivada por lo que ella consideraba simple y llena ambición, la necesidad desesperada de sentirse aceptada por la élite de los cuidadanos más augustos de Arkham. Pero ya no podía echacarlo a una inofensiva ingenuidad; no después de haber presenciado los rituales celebrados en las camaras de la Logia. No despues de haber visto comulgar con lo que acechaba al otro lado del tenebroso umbral. No después de haber sido testigo de las sanguinarias atrocidades perpetradas en el santuario interior de la Orden. La visión del rostro desencajado del pobre Walter Evans no le permitía ignorar, como al parecer sí hacían los demás, la maldad que crecía y se enconaba en Arkham. Diana ya no podía seguir siendo cómplice de aquello.",
-          ENhistoria: "",
+          ENhistoria: "Sooner or later, nightmares always come back. Diana had joined the Order of the Silver Twilight driven by what she considered simple and full ambition, the desperate need to feel accepted by the elite of Arkham's most august citizens. But she could no longer chalk it up to harmless naivety; not after witnessing the rituals held in the chambers of the Lodge. Not after seeing communion with what lurked beyond the dark threshold. Not after bearing witness to the bloody atrocities committed in the inner sanctuary of the Order. The vision of poor Walter Evans' contorted face wouldn't allow her to ignore, as others seemingly did, the evil that was growing and festering in Arkham. Diana could no longer remain complicit in it.",
           arquetipos: {
             tituloArquetipo1: "Mistico",
-            ENtituloArquetipo1: "",
+            ENtituloArquetipo1: "Mystic",
             descripcionArquetipo1: "Destacas erigiendo salvaguardas arcanas contra el mal. Tu principal ocupación debería ser eliminar fichas de Perdición del tablero. Constituyes la mejor opción defensiva contra los Primigenios.",
-            ENdescripcionArquetipo1: "",
+            ENdescripcionArquetipo1: "You stand out by erecting arcane safeguards against evil. Your main task should be to remove Doom tokens from the board. You are the best defensive option against the Great Old Ones.",
             tituloArquetipo2: "Defensor",
             ENtituloArquetipo2: "Defender",
             descripcionArquetipo2: "Tu responsabilidad consiste en proteger a tus compañeros investigadores. Eso podría significar ayudarles a recuperarse de daños físicos y mentales, o bien despachar Monstruos antes de que se conviertan en una amenaza.",
-            ENdescripcionArquetipo2: "",
+            ENdescripcionArquetipo2: "Your responsibility is to protect your fellow investigators. This could mean helping them recover from physical and mental damage, or dealing with Monsters before they become a threat.",
           },
           Pertenencia1: {
             fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerDiana1.jpg"),
@@ -1634,7 +1659,7 @@ export default {
         {nombrePJ: "“Malasombra” O'Toole",
           idPersonaje: 28,
           posicion: "Ex presidiario",
-          ENposicion: "",
+          ENposicion: "Ex-Convict",
           vida: 6,
           cordura: 6,
           saber: 2,
@@ -1646,21 +1671,21 @@ export default {
           limConcentracion: 0,
           ENlimConcentracion: 0,
           efecto1:"No pienso volver - Una vez por ronda, después de uan prueba en la que hayas sacado un 1, puedes concentrarte en una habilidad de tu elección, incluso aunque al hacerlo sobrepases tu límite de Concentración.",
-          ENefecto1: "",
+          ENefecto1: "I Won't Go Back – Once per round, after a test in which you rolled a 1, you may focus on a skill of your choice, even if doing so exceeds your Concentration limit.",
           efecto2: null,
           frase: "“En mi situación uno ve toda clase de cosas, detective. ¿Cuánto vale eso para usted?”",
-          ENfrase: '“”',
+          ENfrase: '“"In my situation, you see all kinds of things, detective. How much is that worth to you?"”',
           historia:"Malasombra siempre procuró tomar decisiones que hicieran que su madre se sintiese orgullosa de él, pero la suerte le duraba bastante poco. Siempre salía algo mal, y cada nueva decisión que tomaba parecía limitar aun más sus opciónes. Y entonces su madre enfermó, y sus “pocas opciones” se convirtieron rapidamente en “ninguna opción”. Tras dar con sus huesos en la cárcel por atracar un banco para pagar las facturas del hospital acumuladas, Malasombra no tardó en comprobar que las cosas podían torcerse aun más: su compañero de celda, que no paraba de desvariar por unos “Primigenios”, garabateo docenas de mensajes enigmáticos en las paredes justo antes de estallar en llamas. Cuando por fin salió de la trena, Malasombra halló otro modo de hacer que su madre se sintiese orgullosa. Tras arodillarse para depositar un ramo de flores en su tumba, juró hacer cuanto estuviese en su mano para protejer el mundo de aquellos horrores ancestrales.",
-          ENhistoria: "",
+          ENhistoria: "Malasombra always tried to make decisions that would make his mother proud of him, but his luck never lasted long. Something always went wrong, and each new decision he made seemed to limit his options even more. Then his mother fell ill, and his “few options” quickly turned into “no options.” After landing in jail for robbing a bank to pay the accumulated hospital bills, Malasombra soon realized things could get even worse: his cellmate, who wouldn’t stop rambling about some “Great Old Ones,” scribbled dozens of cryptic messages on the walls just before bursting into flames. When he finally got out of prison, Malasombra found another way to make his mother proud. After kneeling to lay a bouquet on her grave, he swore to do whatever it took to protect the world from those ancient horrors.",
           arquetipos: {
             tituloArquetipo1: "Experto",
             ENtituloArquetipo1: "Expert",
             descripcionArquetipo1: "Posees un conjunto exclusivo de habilidades que te permite especializarte en una tarea concreta. “Malasombra” tiene por costumbre sacar partido de situaciones ariesgadas; aprovecha esta capacidad para realizar pruebas complicadas que en otras circunstancias supongan malgastar una acción.",
-            ENdescripcionArquetipo1: "",
+            ENdescripcionArquetipo1: 'You possess a unique set of skills that allows you to specialize in a specific task. "Malasombra" is accustomed to making the most of risky situations; use this ability to perform complicated tests that, under other circumstances, would waste an action.',
             tituloArquetipo2: "Superviviente",
             ENtituloArquetipo2: "Survivor",
             descripcionArquetipo2: "Tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducirá a la victoria.",
-            ENdescripcionArquetipo2: "",
+            ENdescripcionArquetipo2: "Your strength lies in surviving the relentless assault of the Mythos and helping your fellow investigators do the same. Teamwork will lead you to victory.",
           },
           Pertenencia1: {
             fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerMalasombra1.jpg"),
@@ -1692,7 +1717,7 @@ export default {
         {nombrePJ: "Mark Harrigan",
           idPersonaje: 29,
           posicion: "El soldado",
-          ENposicion: "",
+          ENposicion: "The Soldier",
           vida: 8,
           cordura: 4,
           saber: 1,
@@ -1704,17 +1729,18 @@ export default {
           limConcentracion: 1,
           ENlimConcentracion: 1,
           efecto1:"Tenaz - Al comienzo de tu turno, si estás rezagado, puedes concentrarte en una habilidad de tu elección o recuperar un punto de Cordura.",
-          ENefecto1: "",
+          ENefecto1: "Tenacious – At the start of your turn, if you are behind, you may focus on a skill of your choice or recover one point of Sanity.",
           efecto2: "Inquebrantable - Puedes realizar la acción de ataque cualquier cantidad de veces por ronda.",
+          ENefecto2: "Unyielding – You may perform the attack action any number of times per round.",
           frase: "“Todos tenemos cicatrices. Las mías me recuerdan que siga luchando.”",
-          ENfrase: '“”',
+          ENfrase: '“We all have scars. Mine remind me to keep fighting.”',
           historia:"Nadie volvió de la Gran Guerra siendo la misma persona que al ir, pero los cuerpos destrozados y los alaridos de agonía de sus camaradas no fueron los únicos horrores que vio Mark Harrigan en las trincheras. En tierra de nadie acechaban otras cosas, cosas que Mark no podía explicar. Sólo Sophie, su brillante lucro, creía sus relatos de bestias al acecho y sombras monstruosas, y fue su fe en él lo que lo mantuvo firme entre las bombas y el gas. Volvería a verla. Oiría su risa y vería sus ojos resplandecer al sol. Pero cuando por fin volvio a casa, a ella, no era la misma. Había algo en su interior que la devoraba desde dentro, y él no pudo hacer nada más que asistir al desvanecimiento de la luz en sus ojos. Ahora, Mark no descansará hata que todos esos horrores paguen por lo que le han arrebatado.",
-          ENhistoria: "",
+          ENhistoria: "No one returned from the Great War as the same person who went, but the shattered bodies and the screams of agony from his comrades were not the only horrors Mark Harrigan witnessed in the trenches. In no man's land, other things lurked—things Mark could not explain. Only Sophie, his brilliant love, believed his tales of lurking beasts and monstrous shadows, and it was her faith in him that kept him steady amidst the bombs and gas. He would see her again. He would hear her laughter and see her eyes shine in the sun. But when he finally returned home to her, she was not the same. There was something inside her that devoured her from within, and he could do nothing but watch the light fade from her eyes. Now, Mark will not rest until all those horrors pay for what they have stolen from him.",
           arquetipos: {
             tituloArquetipo1: "Defensor",
             ENtituloArquetipo1: "Defender",
             descripcionArquetipo1: "Tu responsabilidad consiste en proteger a tus compañeros investigadores. Esto podría significar ayudarles a recuperarse de daños físicos y mentales, o bien despachar Monstruos antes de que se conviertan en una amenaza.",
-            ENdescripcionArquetipo1: "",
+            ENdescripcionArquetipo1: "Your responsibility is to protect your fellow investigators. This could mean helping them recover from physical and mental damage, or dealing with Monsters before they become a threat.",
             tituloArquetipo2: null,
             ENtituloArquetipo2: null,
             descripcionArquetipo2: null,
@@ -1748,7 +1774,7 @@ export default {
         {nombrePJ: "Preston Fairmont",
           idPersonaje: 30,
           posicion: "El millonario",
-          ENposicion: "",
+          ENposicion: "The Millionaire",
           vida: 7,
           cordura: 5,
           saber: 2,
@@ -1760,21 +1786,21 @@ export default {
           limConcentracion: 3,
           ENlimConcentracion: 2,
           efecto1:"Comodidades materiales - Al comienzo de tu turno, puedes gastar 1$ para recuperar un punto de Vida o un punto de Cordura.",
-          ENefecto1: "",
+          ENefecto1: "Material Comforts – At the start of your turn, you may spend $1 to recover one point of Health or one point of Sanity.",
           efecto2: null,
           frase: "“Claro, la nobleza obliga a salvar al mundo de pesadillas vivientes, ¿no es así?”",
-          ENfrase: '“”',
+          ENfrase: '“"Sure, nobility obliges one to save the world from living nightmares, doesn’t it?"”',
           historia:"Preston Fairmont nació rodeado de lujos y nunca tuvo que preguntarse mucho cuál sería el origen de la riqueza y los privilegios de su familia. Era muy sencillo: tenía dinero y lo disfrutaba. Su padre gestionaba los asuntosy el legado del negocio familiar, mientras Preston ignoraba casi por completo las frecuentes visitas de hombres de rostro abusto y trajes oscuros. Tras la reciente muerte de su padre, toda la responsabilidad ha caído sobre los hambros de Preston, y éste ha empezado a cuestionarse su lugar en la vida por primera vez. ¿Qué hizo su abuelo para ganar todo ese dinero? ¿Por qué se interesan tanto por su familia Carl Sanford y la Orden del Crepúsculo de Plata? ¿Fue realmente un accidente la muerte de su padre? Tal vez sea el momento de emplear su riqueza, venga de donde venga, para marcar una difereccia.",
-          ENhistoria: "",
+          ENhistoria: "Preston Fairmont was born surrounded by luxury and never had to question much about the origin of his family’s wealth and privileges. It was simple: he had money and he enjoyed it. His father managed the affairs and legacy of the family business, while Preston was almost completely oblivious to the frequent visits of grim-faced men in dark suits. After the recent death of his father, all responsibility has fallen on Preston’s shoulders, and for the first time, he has begun to question his place in life. What did his grandfather do to amass all that wealth? Why are Carl Sanford and the Order of the Silver Twilight so interested in his family? Was his father’s death really an accident? Perhaps it’s time to use his wealth, no matter where it came from, to make a difference.",
           arquetipos: {
             tituloArquetipo1: "Experto",
             ENtituloArquetipo1: "Expert",
             descripcionArquetipo1: "Posees un conjunto exclusivo de habilidades que te permite especializarte en una tarea concreta. Preston tiene un suministro de dinero casi ilimitado. Emplea tus capacidades para preparar una racha de turnos potentes.",
-            ENdescripcionArquetipo1: "",
+            ENdescripcionArquetipo1: "You possess a unique set of skills that allows you to specialize in a specific task. Preston has an almost unlimited supply of money. Use your abilities to set up a powerful streak of turns.",
             tituloArquetipo2: "Superviviente",
             ENtituloArquetipo2: "Survivor",
             descripcionArquetipo2: "Tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducirá a la victoria.",
-            ENdescripcionArquetipo2: "",
+            ENdescripcionArquetipo2: "Your strength lies in surviving the relentless assault of the Mythos and helping your fellow investigators do the same. Teamwork will lead you to victory.",
           },
           Pertenencia1: {
             fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerPreston1.jpg"),
@@ -1804,7 +1830,7 @@ export default {
         {nombrePJ: "Agatha Crane",
           idPersonaje: 31,
           posicion: "La parapsicóloga",
-          ENposicion: "",
+          ENposicion: "The Parapsychologist",
           vida: 5,
           cordura: 7,
           saber: 4,
@@ -1816,21 +1842,21 @@ export default {
           limConcentracion: 2,
           ENlimConcentracion: 2,
           efecto1:"Un nuevo campo de estudio - Después de que sufras uno o más puntos de Horror, puedes concentrarte en una habilidad de tu elección y ganar una ficha de Restos.",
-          ENefecto1: "",
+          ENefecto1: "A New Field of Study – After you suffer one or more points of Horror, you may focus on a skill of your choice and gain a Remnant token.",
           efecto2: null,
           frase: "“Las cosas no encajan en categorías sencillas de forma tan ordenada como nos cuentan.”",
-          ENfrase: '“”',
+          ENfrase: '“"Things don’t fit into simple categories in such an orderly way as they tell us."”',
           historia:"Agatha Crane es licenciada en Matemáticas y Psicología y siempre les ha dodo un gran valor al pensamiento lógico y a la ciencia fundamentada en las pruebas. En su juventud, tenía poco aprecio por las supersticiones y las historias de fantasmas, pero la acumulación de pruebas ha llevado a Agatha a concluir que existe un poso de verdad inconfundible en los relatos sobre monstruos, espiritus y magia que impregnan la historia de Arkham. Si esas cosas son reales. entonces deben seguir unas reglas consistentes, igual que las ciencias físicas. Como le gusta explicar a cualquiera que la escuche el tiempo suficiente, y como su marido Wilbur ha oído muchas veces, este nuevo campo de estudio se llama “parapsicología”. Agatha quiere emplear métodos científicos de eficacia demostrada para salvar la distancia entre lo místico y lo racional, entre el ocultismo y la ciencia.",
-          ENhistoria: "",
+          ENhistoria: "Agatha Crane holds degrees in Mathematics and Psychology, and has always placed great value on logical thinking and science based on evidence. In her youth, she had little regard for superstitions and ghost stories, but the accumulation of proof has led Agatha to conclude that there is an unmistakable kernel of truth in the tales of monsters, spirits, and magic that permeate the history of Arkham. If these things are real, then they must follow consistent rules, just like the physical sciences. As she likes to explain to anyone who will listen long enough, and as her husband Wilbur has heard many times, this new field of study is called “parapsychology.” Agatha aims to use scientifically proven methods to bridge the gap between the mystical and the rational, between occultism and science.",
           arquetipos: {
             tituloArquetipo1: "Buscador",
-            ENtituloArquetipo1: "",
+            ENtituloArquetipo1: "Seeker",
             descripcionArquetipo1: "Eres un intrépida sabuesa. Deberías concentrarte en la obtención de Pistas y en descubrir su significado oculto. Tu labor es esencial para frustrar los malvado designios de los Primigenios.",
-            ENdescripcionArquetipo1: "",
+            ENdescripcionArquetipo1: "You are a fearless hound. You should focus on gathering Clues and uncovering their hidden meanings. Your work is essential in thwarting the evil schemes of the Ancient Ones.",
             tituloArquetipo2: "Mistico",
             ENtituloArquetipo2: "Mystic",
             descripcionArquetipo2: "Destacas erigiendo salvaguardas arcanas contra el mal. Tunprincipal ocupación debería ser eliminar fichas de Perdición del tablero. Constituyes la mejor opción defensiva contra los Primigenios.",
-            ENdescripcionArquetipo2: "",
+            ENdescripcionArquetipo2: "You excel at erecting arcane safeguards against evil. Your primary occupation should be removing Doom tokens from the board. You are the best defensive option against the Ancient Ones.",
           },
           ENarquetipo2: "",
           Pertenencia1: {
@@ -1867,7 +1893,7 @@ export default {
         {nombrePJ: "Winifred Habbamock",
           idPersonaje: 32,
           posicion: "La aviadora",
-          ENposicion: "",
+          ENposicion: "The Aviator",
           vida: 6,
           cordura: 6,
           saber: 1,
@@ -1879,12 +1905,12 @@ export default {
           limConcentracion: 3,
           ENlimConcentracion: 3,
           efecto1:"Así de buena - Una vez por ronda, cuando fuese a fallar en una prueba, puedes gastar una ficha de Concentración para tirar un dado adicional. Si aun así fallas esa prueba, elige una habilidad en la que no te hayas concentrado; concéntrate dos veces en esa habilidad.",
-          ENefecto1: "",
+          ENefecto1: "So Good – Once per round, when you are about to fail a test, you can spend a Focus token to roll an additional die. If you still fail the test, choose a skill in which you haven’t focused; focus on that skill twice.",
           efecto2: null,
           frase: "“Mientras salgas con vida, da igual.”",
-          ENfrase: '“”',
+          ENfrase: '“As long as you come out alive, it doesnt matter.”',
           historia:"Winifred Habbamock, a quienes sus padres llaman por su nombre wampanoag, Weethao, siempre fue demasiado lista para su prorio bien. Descubrió su casual indiferencia frente a la autoridad cuando los profesores del colegio de su reserva empezaron a tener problemas para estar a su altura, y desarolló una despreocupada temeridad cuando salía mayormente indemne incluso de sus andanzas más impetuosas. Cuando le robó un viejo biplano a un piloto veterano de la Gran Guerra, el propietario quedó impresionado por su talentonatural y le enseñó a pilotar. Cuando empleó ese avión para realizar acrobacias en exhibiciones aéreas por la Costa Este, se ganó una marecida reputación como “la mujer sin miedo”. Cuando estrelló ese avión tras un encuentro con una bestia similar a un murciélago que tenía un enorme ojo purulento, encontró un nuevo reto que afrontar.",
-          ENhistoria: "",
+          ENhistoria: 'Winifred Habbamock, whom her parents call by her Wampanoag name, Weethao, was always too clever for her own good. She discovered her casual indifference toward authority when the teachers at her reservation school began struggling to keep up with her, and developed a carefree recklessness when she emerged mostly unscathed from her most impulsive escapades. When she stole an old biplane from a World War I veteran, the owner was impressed by her natural talent and taught her to fly. When she used that plane to perform aerobatics at airshows along the East Coast, she earned a well-deserved reputation as "the fearless woman." When she crashed that plane after an encounter with a bat-like creature with a massive, festering eye, she found a new challenge to face.',
           arquetipos: {
             tituloArquetipo1: "Experto",
             ENtituloArquetipo1: "Expert",
@@ -2184,7 +2210,39 @@ export default {
       }, 2000);
     },
     SonidoTecla() {sonidoTecla.play();},
+
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = "Seleccionar Investigador";
+        this.textoInterfaz.subtitulo = "Colecciones";
+        this.textoInterfaz.descripcion = "Haz click para añadir o quitar la expansión que quieras y luego elige un investigador para verlo en detalle.";
+        this.textoInterfaz.sinExpansion = "Sin expansiones seleccionadas";
+        this.textoInterfaz.seleccionaExpansion = "Por favor selecciona alguna expansion para ver los personajes.";
+
+        this.textoInterfaz.botones.base = "AH Base";
+        this.textoInterfaz.botones.mareas = "AH Mareas";
+        this.textoInterfaz.botones.noche = "AH Noche";
+        this.textoInterfaz.botones.secretos = "AH Secretos";
+        this.textoInterfaz.botones.original = "AH Original";
+
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.titulo = "Select Investigator";
+        this.textoInterfaz.subtitulo = "Collections";
+        this.textoInterfaz.descripcion = "Click to add or remove the expansion you want and then choose a investigator to view it in detail.";
+        this.textoInterfaz.sinExpansion = "No expansions selected";
+        this.textoInterfaz.seleccionaExpansion = "Please select an expansion to view the characters."
+
+        this.textoInterfaz.botones.base = "AH Base";
+        this.textoInterfaz.botones.mareas = "AH Waves";
+        this.textoInterfaz.botones.noche = "AH Nigth";
+        this.textoInterfaz.botones.secretos = "AH Secrets";
+        this.textoInterfaz.botones.original = "AH Original";
+      }
+    }
   }, // end methods
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  },
 };
 </script>
 

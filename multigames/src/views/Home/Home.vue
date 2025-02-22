@@ -19,34 +19,28 @@
       <!-- MENU LIST -->
       <section class="mt-4">
         <div >
-          <ul v-if="this.$store.state.lenguaje == 'español'">
-            <router-link to="/ListaMapas" @click="SonidoTecla()"><button class="buttonsHome ">Mapas</button></router-link>
-            <router-link to="/ListaPersonajes" @click="SonidoTecla()"><button class="buttonsHome ">Investigadores</button></router-link>
-            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()"><button class="buttonsHome">Apoyanos</button></a>
-            <button class="buttonsHome" @click="SonidoTecla()">Creditos</button>
-          </ul>
-
-          <ul v-if="this.$store.state.lenguaje == 'ingles'">
-            <router-link to="/ListaMapas"><button class="buttonsHome ">Maps</button></router-link>
-            <router-link to="/ListaPersonajes"><button class="buttonsHome ">Investigators</button></router-link>
-            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank"><button class="buttonsHome">Support</button></a>
-            <button class="buttonsHome " @click="SonidoTecla()">Credits</button>
+          <ul>
+            <router-link to="/ListaMapas" @click="SonidoTecla()"><button class="buttonsHome ">{{ textBotonMapa }}</button></router-link>
+            <router-link to="/ListaPersonajes" @click="SonidoTecla()"><button class="buttonsHome ">{{ textBotonInvestigador }}</button></router-link>
+            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()"><button class="buttonsHome">{{ textBotonSupport }}</button></a>
+            <button class="buttonsHome" @click="SonidoTecla()">{{ textBotonCreditos }}</button>
           </ul>
         </div>
       </section>
 
     </div>
 
+    <!-- BOTONES PARA CAMBIAR LENGUAJE -->
     <footer>
       <div class="columns is-movile has-text-centered">
         <p class="column">
-          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'español')">
+          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'español'), (this.rellenarTextosegunIdioma())">
             <img v-if="this.$store.state.lenguaje == 'español'" class="buttonsBanderas" src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
             <img v-if="this.$store.state.lenguaje == 'ingles'" class="buttonsBanderas buttonsBanderasDesactivado" src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
           </button>
           
 
-          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'ingles')">
+          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'ingles') , (this.rellenarTextosegunIdioma())">
             <img v-if="this.$store.state.lenguaje == 'ingles'" class="buttonsBanderas" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
             <img v-if="this.$store.state.lenguaje == 'español'" class="buttonsBanderas buttonsBanderasDesactivado" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
           </button>
@@ -74,17 +68,38 @@ export default {
     },
   data() {
     return {
-      resultadoAnuncio: 0
+      resultadoAnuncio: 0,
+      textBotonMapa: "",
+      textBotonInvestigador: "",
+      textBotonSupport: "",
+      textBotonCreditos:""
     };
+  },
+  methods: {
+    SonidoTecla() {sound.play();},
+    rellenarTextosegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textBotonMapa = "Mapas";
+        this.textBotonInvestigador = "Investigadores";
+        this.textBotonSupport = "Apoyanos";
+        this.textBotonCreditos = "Creditos";
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textBotonMapa = "Maps";
+        this.textBotonInvestigador = "Investigators";
+        this.textBotonSupport = "Support";
+        this.textBotonCreditos = "Credits";
+      }
+    },
   },
   mounted(){
     //Esta función tonta es una manera de que salga o no el anuncion al principio
     this.resultadoAnuncio = Math.floor(Math.random() * (1, 3)) + 1;
     console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
+    this.rellenarTextosegunIdioma();
   },
-  methods: {
-  SonidoTecla() {sound.play();},
-  },
+  updated(){
+    this.rellenarTextosegunIdioma();
+  }
 };
 </script>
 

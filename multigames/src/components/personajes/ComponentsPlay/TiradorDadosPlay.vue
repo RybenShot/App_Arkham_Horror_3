@@ -1,44 +1,44 @@
 <template>
   <section>
-    <p class="title has-text-centered has-text-white">Dados de Atributos</p>
+    <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <!-- Atributos -->
     <div class="columns is-mobile has-text-centered"> 
       <div class="column p-1 mx-2 ml-4 boton" :class="{'active has-text-white': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.saber) && (setActiveButton(1))">
-        <p class=""><i class="fa-2x fas fa-book-open"></i></p>
+        <p><i class="fa-2x fas fa-book-open"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.saber }}</p>
-        <p class="">Saber</p>
+        <p>{{ textoInterfaz.atributos.saber }}</p>
       </div>
 
       <div class="column p-1 mx-2" :class="{'active has-text-white': activeButton === 2 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.influencia, setActiveButton(2))">
-        <p class=""><i class="fa-2x fas fa-handshake"></i></p>
+        <p><i class="fa-2x fas fa-handshake"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.influencia }}</p>
-        <p class="">Infl.</p>
+        <p>{{ textoInterfaz.atributos.influencia }}</p>
       </div>
 
       <div class="column p-1 mx-2" :class="{'active has-text-white': activeButton === 3 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.observacion), setActiveButton(3)">
-        <p class=""><i class="fa-2x fas fa-eye"></i></p>
+        <p><i class="fa-2x fas fa-eye"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.observacion }}</p>
-        <p class="">Observ.</p>
+        <p>{{ textoInterfaz.atributos.observacion }}</p>
       </div>
 
       <div class="column p-1 mx-2" :class="{'active has-text-white': activeButton === 4 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.fuerza), setActiveButton(4)">
-        <p class=""><i class="fa-2x fas fa-fist-raised"></i></p>
+        <p><i class="fa-2x fas fa-fist-raised"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.fuerza }}</p>
-        <p class="">Fuerza</p>
+        <p>{{ textoInterfaz.atributos.fuerza }}</p>
       </div>
 
       <div class="column p-1 mx-2 mr-4" :class="{'active has-text-white': (activeButton === 5) }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.voluntad), setActiveButton(5)">
-        <p class=""><i class="fa-2x fab fa-hornbill"></i></p>
+        <p><i class="fa-2x fab fa-hornbill"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.voluntad }}</p>
-        <p class="">Vol.</p>
+        <p>{{ textoInterfaz.atributos.voluntad }}</p>
       </div>
     </div>
 
     <!-- Dados extras -->
     <div class="columns is-mobile has-text-white px-2">
-      <p class="column has-text-centered mt-5">Total de dados: {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
+      <p class="column has-text-centered mt-5">{{ textoInterfaz.totalDados }} : {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
       <div class="column">
-        <p class="has-text-centered mb-3">Dados Extras</p>
+        <p class="has-text-centered mb-3">{{ textoInterfaz.dadosExtras }}</p>
         <div class="columns is-mobile">
           <button class="column p-0 ml-5 my-2" @click="NDeDadosExtra--">-</button>
           <input class="column p-0 py-2 mx-2 has-text-centered" type="text" size="7" v-model="NDeDadosExtra">
@@ -49,16 +49,14 @@
 
     <!-- Lanzador -->
     <div class="has-text-centered">
-      <button @click="tirarDados(1)" class="button is-success is-active" v-if="this.$store.state.lenguaje == 'español'">TIRAR!</button>
-      <button @click="tirarDados(1)" class="button is-success is-active" v-if="this.$store.state.lenguaje == 'ingles'">THROW!</button>
+      <button @click="tirarDados(1)" class="button is-success is-active">{{ textoInterfaz.botonTirar }}</button>
     </div>
 
     <br>
     
     <!-- Resultados -->
     <div class="resultados mx-2">
-      <h1 class="title has-text-centered has-text-white is-3 mb-2" v-if="this.$store.state.lenguaje == 'español'"> RESULTADOS </h1>
-      <h1 class="title has-text-centered has-text-white is-3 mb-2" v-if="this.$store.state.lenguaje == 'ingles'"> RESULTS </h1>
+      <h1 class="title has-text-centered has-text-white is-3 mb-2"> {{ textoInterfaz.resultados }} </h1>
       <div id="resultados-css" class="container">
         <!-- Aqui pintamos todos los resultados, OJO!! enseñamos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
         <div v-for="item in resultados" :key="item">
@@ -85,6 +83,22 @@ data(){
     NDeDadosExtra: 0,
     resultados: [1, 6, 5, 4],
     sumaResultado: 0,
+
+    textoInterfaz: {
+      titulo: "",
+      totalDados: "",
+      dadosExtras: "",
+      botonTirar: "",
+      resultados: "",
+      atributos: {
+        saber: "",
+        influencia: "",
+        observacion: "",
+        fuerza: "",
+        voluntad: ""
+      }
+      
+    }
   }
 },
 methods:{
@@ -108,7 +122,38 @@ methods:{
       this.resultados = []; // vaciamos el array de resultado
       this.sumaResultado = 0;
     },
-},
+
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.titulo = "Dados de Atributos";
+        this.textoInterfaz.totalDados = "Total de dados";
+        this.textoInterfaz.dadosExtras = "Dados Extras";
+        this.textoInterfaz.botonTirar = "TIRAR!";
+        this.textoInterfaz.resultados = "RESULTADOS";
+
+        this.textoInterfaz.atributos.saber = "Saber";
+        this.textoInterfaz.atributos.influencia = "Infl.";
+        this.textoInterfaz.atributos.observacion = "Observ.";
+        this.textoInterfaz.atributos.fuerza = "Fuer.";
+        this.textoInterfaz.atributos.voluntad = "Voluntad";
+      }else if (this.$store.state.lenguaje == "ingles"){
+        this.textoInterfaz.titulo = "Attribute Dice";
+        this.textoInterfaz.totalDados = "Total dice";
+        this.textoInterfaz.dadosExtras = "Extra dice";
+        this.textoInterfaz.botonTirar = "THROW!";
+        this.textoInterfaz.resultados = "RESULTS";
+
+        this.textoInterfaz.atributos.saber = "Know.";
+        this.textoInterfaz.atributos.influencia = "Infl.";
+        this.textoInterfaz.atributos.observacion = "Obser.";
+        this.textoInterfaz.atributos.fuerza = "Stre.";
+        this.textoInterfaz.atributos.voluntad = "Will";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

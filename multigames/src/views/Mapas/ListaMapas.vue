@@ -16,28 +16,28 @@
       <!-- Seleccionar Mapa -->
       <div class="columns is-mobile mb-0 pt-3 centrarHero" >
         <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-undo-alt has-text-white"></i></div>
-        <div class="column " style="margin: 0 auto;"><p class="has-text-centered title has-text-white">Seleccionar Mapa</p></div>
+        <div class="column " style="margin: 0 auto;"><p class="has-text-centered title has-text-white"> {{ textoInterfaz.titulo }}</p></div>
         <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
       </div>
 
       <hr class="m-1 mx-4 linea-separacion"> 
 
       <!-- Colecciones y botones -->
-      <h2 class="title is-4 has-text-white has-text-centered">Colecciones</h2>
-      <p class="subtitle is-6 has-text-white has-text-centered mb-2">Haz click para añadir o quitar la expansión que quieras y luego elige un mapa para verlo en detalle.</p>
+      <h2 class="title is-4 has-text-white has-text-centered">{{ textoInterfaz.subtitulo }}</h2>
+      <p class="subtitle is-6 has-text-white has-text-centered mb-2"> {{ textoInterfaz.descripcion }}</p>
       <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
 
-        <button v-if="this.$store.state.ActivarBase == true" class=" button  is-success" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarBase = false)">AH Base</button>
-        <button v-if="this.$store.state.ActivarBase == false" class="button is-success is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarBase = true)">AH Base</button>
+        <button v-if="this.$store.state.ActivarBase == true" class=" button  is-success" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarBase = false)">{{ textoInterfaz.botones.base }}</button>
+        <button v-if="this.$store.state.ActivarBase == false" class="button is-success is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarBase = true)">{{ textoInterfaz.botones.base }}</button>
 
-        <button v-if="this.$store.state.ActivarMareasTenebrosas == true" class="button  is-info" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarMareasTenebrosas = false)">AH Mareas</button>
-        <button v-if="this.$store.state.ActivarMareasTenebrosas == false" class="button is-info is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarMareasTenebrosas = true)">AH Mareas</button>
+        <button v-if="this.$store.state.ActivarMareasTenebrosas == true" class="button  is-info" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarMareasTenebrosas = false)">{{ textoInterfaz.botones.mareas }}</button>
+        <button v-if="this.$store.state.ActivarMareasTenebrosas == false" class="button is-info is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarMareasTenebrosas = true)">{{ textoInterfaz.botones.mareas }}</button>
 
-        <button v-if="this.$store.state.ActivarNocheCerrada == true" class="button  is-warning" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNocheCerrada = false)">AH Noche</button>
-        <button v-if="this.$store.state.ActivarNocheCerrada == false" class="button is-warning is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNocheCerrada = true)">AH Noche</button>
+        <button v-if="this.$store.state.ActivarNocheCerrada == true" class="button  is-warning" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNocheCerrada = false)">{{ textoInterfaz.botones.noche }}</button>
+        <button v-if="this.$store.state.ActivarNocheCerrada == false" class="button is-warning is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNocheCerrada = true)">{{ textoInterfaz.botones.noche }}</button>
 
-        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == true" class="button  is-link" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNSecretosDeLaOrden = false)">AH Secretos</button>
-        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == false" class="button is-link is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNSecretosDeLaOrden = true)">AH Secretos</button>
+        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == true" class="button  is-link" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNSecretosDeLaOrden = false)">{{ textoInterfaz.botones.secretos }}</button>
+        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == false" class="button is-link is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNSecretosDeLaOrden = true)">{{ textoInterfaz.botones.secretos }}</button>
 
       </div>
     </div>
@@ -56,7 +56,9 @@
                   <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
                 </div>
                 <div class="card-overlay has-text-centered">
-                  <p class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
                 </div>
               </div>
             </div>
@@ -76,7 +78,8 @@
                   <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
                 </div>
                 <div class="card-overlay has-text-centered">
-                  <p class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
                 </div>
               </div>
             </div>
@@ -96,7 +99,8 @@
                   <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
                 </div>
                 <div class="card-overlay has-text-centered">
-                  <p class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
                 </div>
               </div>
             </div>
@@ -116,7 +120,8 @@
                   <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
                 </div>
                 <div class="card-overlay has-text-centered">
-                  <p class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
                 </div>
               </div>
             </div>
@@ -142,6 +147,20 @@ export default {
       mensajeDesactivado: "Expansión desactivada!",
       mostrarNotifActivar: false,
       mensajeActivado: "Expansión Activada!",
+
+      textoInterfaz:{
+        titulo: "",
+        subtitulo: "",
+        descripcion: "",
+        botones: {
+          base: "",
+          mareas: "",
+          noche: "",
+          secretos: "",
+        },
+      },
+
+      tituloMapa: "",
       
       MapasBase:[
         { idMapa: 0,
@@ -246,9 +265,9 @@ export default {
       MapasNocheCerrada:[
         {idMapa: 8,
           title: "El silencio de Tsathoggua",
-          ENtitle:"",
+          ENtitle:"The Silence of Tsathoggua",
           description: "La bestia de Voormithabreth dormita mientras los adeptos que abandonó en la lejana Yuggoth preparan sus ofrendas devocionales para colmarsu voraz apetito. Si el Durmiente de N'Kai llegase a despertar, estaríamos todos condenados.",
-          ENdescription: "",
+          ENdescription: "The beast of Voormithabreth slumbers while the adepts it abandoned in distant Yuggoth prepare their devotional offerings to sate its voracious appetite. If the Sleeper of N'Kai were to awaken, we would all be doomed.",
           dificultadMapa: 4,
           expansionMapa: "AH Noche Cerrada",
           ducacionMapa: 240,
@@ -258,9 +277,9 @@ export default {
         },
         {idMapa: 9,
           title: "Disparos en la oscuridad",
-          ENtitle:"",
+          ENtitle:"Shots in the Dark",
           description: "Las mafias de Arkham tienen una larga historia, y la tregua entre los O'Bannion y los Sheldon ha sido, en el mejor de los casos, frájil. Durante en caluroso verano de 1926, una sombra tenebrosa los empuja a una cruenta guerra de bandas.",
-          ENdescription: "",
+          ENdescription: "The mafias of Arkham have a long history, and the truce between the O'Bannions and the Sheldons has been, at best, fragile. During the sweltering summer of 1926, a sinister shadow drives them into a brutal gang war.",
           dificultadMapa: 3,
           expansionMapa: "AH Noche Cerrada",
           ducacionMapa: 230,
@@ -272,9 +291,9 @@ export default {
       MapasSecretosDeLaOrden:[
         {idMapa: 10,
           title: "La LLave y la Puerta",
-          ENtitle:"",
+          ENtitle:"The Key and the Gate",
           description: "Durante eones, Yog-Sothoth ha observado el universo desde más allá del tiempo y del espacio. El que Acecha en l Umbral se agita, pues ya no se conforma con limitarse a observar y esperar. Innumerables siervos se afan por abrir la puerta que encierra al Primigenio fuera de nuestro universo.",
-          ENdescription: "",
+          ENdescription: "For eons, Yog-Sothoth has watched the universe from beyond time and space. The Lurker at the Threshold stirs, no longer content to merely watch and wait. Countless servants toil to open the gate that keeps the Ancient One sealed outside our universe.",
           dificultadMapa: 2,
           expansionMapa: "AH Secretos",
           ducacionMapa: 330,
@@ -284,9 +303,9 @@ export default {
         },
         {idMapa: 11,
           title: "Obligados a servir",
-          ENtitle:"",
+          ENtitle:"Forced to Serve",
           description: "Una plaga de espíritus inquietos invade Arkham, creando una perturbación psíquica que no se puede ignorar. Estas almas perdidas están estan atrapadas por un antiguo pacto y es necesario liberarlas del mal que las ata por toda la enernidad.",
-          ENdescription: "",
+          ENdescription: "A plague of restless spirits invades Arkham, creating a psychic disturbance that cannot be ignored. These lost souls are trapped by an ancient pact, and it is necessary to free them from the evil that binds them for all eternity.",
           dificultadMapa: 2,
           expansionMapa: "AH Secretos",
           ducacionMapa: 130,
@@ -296,9 +315,9 @@ export default {
         },
         {idMapa: 12,
           title: "Los muertos gritan",
-          ENtitle:"",
+          ENtitle:"The Dead Scream",
           description: "Una antigua magia ha rasgado el velo que protege Arkham de los mundos que hay más allá. Terribles criaturas surgen del Mundo subterraneo para amenazar todo lo que te importa.",
-          ENdescription: "",
+          ENdescription: "An ancient magic has torn the veil that protects Arkham from the worlds beyond. Terrible creatures emerge from the Underdark to threaten everything you hold dear.",
           dificultadMapa: 3,
           expansionMapa: "AH Secretos",
           ducacionMapa: 140,
@@ -328,7 +347,31 @@ export default {
       }, 2000);
     },
     SonidoTecla() {sound.play();},
+
+    rellenarTextosegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = "Seleccionar Mapa";
+        this.textoInterfaz.subtitulo = "Colecciones";
+        this.textoInterfaz.descripcion = "Haz click para añadir o quitar la expansión que quieras y luego elige un mapa para verlo en detalle.";
+        this.textoInterfaz.botones.base = "AH Base";
+        this.textoInterfaz.botones.mareas = "AH Mareas";
+        this.textoInterfaz.botones.noche = "AH Noche";
+        this.textoInterfaz.botones.secretos = "AH Secretos";
+
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.titulo = "Select Map";
+        this.textoInterfaz.subtitulo = "Collections";
+        this.textoInterfaz.descripcion = "Click to add or remove the expansion you want and then choose a map to view it in detail.";
+        this.textoInterfaz.botones.base = "AH Base";
+        this.textoInterfaz.botones.mareas = "AH Waves";
+        this.textoInterfaz.botones.noche = "AH Nigth";
+        this.textoInterfaz.botones.secretos = "AH Secrets";
+      }
+    }
   }, // end methods
+  mounted(){
+    this.rellenarTextosegunIdioma();
+  },
 };
 </script>
 

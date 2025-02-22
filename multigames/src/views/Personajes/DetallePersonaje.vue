@@ -13,10 +13,10 @@
 
     <footer class="columns is-mobile has-text-centered has-text-white">
       <div @click="goBack" class="column">
-        <i class="title is-4 has-text-white fas fa-bars"> <p>Lista</p></i>
+        <i class="title is-4 has-text-white fas fa-bars"> <p>{{ textoInterfaz.lista }}</p></i>
       </div>
       <div class="column">
-        <router-link to="/PlayAH"><button class="button is-success my-2">Comenzar</button></router-link>
+        <router-link to="/PlayAH"><button class="button is-success my-2">{{ textoInterfaz.comenzar }}</button></router-link>
       </div>
     </footer>
   </div>
@@ -46,12 +46,31 @@ export default {
     Historia,
     Arquetipo
   },
-
+  data(){
+    return{
+      textoInterfaz: {
+        lista: "",
+        comenzar: ""
+      }
+    }
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
     },
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.lista = "Lista";
+        this.textoInterfaz.comenzar = "Comenzar";
+      }else{
+        this.textoInterfaz.lista = "List";
+        this.textoInterfaz.comenzar = "Start";
+      }
+    }
   },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

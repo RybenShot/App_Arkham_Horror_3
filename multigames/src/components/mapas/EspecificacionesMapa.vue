@@ -3,22 +3,22 @@
     <div class="has-text-centered has-text-white">
       <div class="columns is-mobile">
         <div class="column p-0 py-1" id="barraDerechaAbajo" >
-          <p>Votos de Usuarios</p>
+          <p>{{ textoInterfaz.votosUsuarios }}</p>
           <p>{{ this.$store.state.datosMapa.votosUsuariosMapa }} de 5</p>
         </div>
         <div class="column p-0 py-1" >
-          <p>Duracion</p>
+          <p>{{ textoInterfaz.duracion }}</p>
           <p>{{ this.$store.state.datosMapa.ducacionMapa }} min</p>
         </div>
       </div>
 
       <div class="columns is-mobile" >
         <div class="column p-0 py-1">
-          <p>Caja necesaria</p>
+          <p>{{ textoInterfaz.cajaNecesaria }}</p>
           <p>{{ this.$store.state.datosMapa.expansionMapa }}</p>
         </div>
         <div class="column p-0 py-1" id="barraIzquierdaArriba">
-          <p>Dificultad</p>
+          <p>{{ textoInterfaz.dificultad }}</p>
           <p>{{ this.$store.state.datosMapa.dificultadMapa }} de 5</p>
         </div>
       </div>
@@ -28,7 +28,35 @@
 
 <script>
 export default {
-  name: "Especificaciones de mapas"
+  name: "Especificaciones de mapas",
+  data(){
+    return{
+      textoInterfaz: {
+        votosUsuarios: "",
+        duracion: "",
+        cajaNecesaria: "",
+        dificultad: ""
+      }
+    }
+  },
+  methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.votosUsuarios = "Votos de Usuarios";
+        this.textoInterfaz.duracion = "Duracion";
+        this.textoInterfaz.cajaNecesaria = "Caja necesaria";
+        this.textoInterfaz.dificultad = "Dificultad";
+      }else{
+        this.textoInterfaz.votosUsuarios = "User Votes";
+        this.textoInterfaz.duracion = "Duration";
+        this.textoInterfaz.cajaNecesaria = "Required Box";
+        this.textoInterfaz.dificultad = "Difficulty";
+      }
+    }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

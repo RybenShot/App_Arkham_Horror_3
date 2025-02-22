@@ -9,7 +9,9 @@
       <div class="column has-text-white">
         <div>
           <p class="title is-2 has-text-weight-bold has-text-white mb-4">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
-          <p class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.posicion }}</p>
+
+          <p v-if="this.$store.state.lenguaje == 'español'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.posicion }}</p>
+          <p v-if="this.$store.state.lenguaje == 'ingles'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.ENposicion }}</p>
         </div>
 
         <!-- Vida - Cordura -->
@@ -38,40 +40,22 @@
     <!-- Navegacion -->
     <div class="columns is-mobile has-text-centered has-text-white">
       <!-- Dados -->
-      <div @click="(this.$store.state.StoreTiradorDados = true), 
-      (this.$store.state.StoreEstadosPlay = false), 
-      (this.$store.state.StoreHabilidades = false),
-      (this.$store.state.StoreAjustesPlay = false) " 
-      class="column pt-0">
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreTiradorDados = true)" class="column pt-0">
         <i v-if="this.$store.state.StoreTiradorDados == true" class="has-text-success fa-2x fas fa-dice"></i>
         <i v-if="this.$store.state.StoreTiradorDados == false" class="desactivado fa-2x fas fa-dice"></i>
       </div>
-
       <!-- Estados -->
-      <div @click="(this.$store.state.StoreTiradorDados = false), 
-      (this.$store.state.StoreEstadosPlay = true), 
-      (this.$store.state.StoreHabilidades = false),
-      (this.$store.state.StoreAjustesPlay = false) "
-      class="column pt-0">
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreEstadosPlay = true)" class="column pt-0">
         <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-hamsa"></i>
         <i v-if="this.$store.state.StoreEstadosPlay == false" class="desactivado fa-2x fas fa-hamsa"></i>
       </div>
-
-      <div @click="(this.$store.state.StoreTiradorDados = false), 
-      (this.$store.state.StoreEstadosPlay = false), 
-      (this.$store.state.StoreHabilidades = true), 
-      (this.$store.state.StoreAjustesPlay = false) "
-      class="column pt-0">
+      <!-- Habilidades -->
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreHabilidades = true) " class="column pt-0">
         <i v-if="this.$store.state.StoreHabilidades == true" class="has-text-success fa-2x fas fa-user-ninja"></i>
         <i v-if="this.$store.state.StoreHabilidades == false" class="desactivado fa-2x fas fa-user-ninja"></i>
       </div>
-
       <!-- Ajustes -->
-      <div @click="(this.$store.state.StoreTiradorDados = false), 
-      (this.$store.state.StoreEstadosPlay = false), 
-      (this.$store.state.StoreHabilidades = false),
-      (this.$store.state.StoreAjustesPlay = true) "
-      class="column pt-0">
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreAjustesPlay = true) " class="column pt-0">
         <i v-if="this.$store.state.StoreAjustesPlay == true" class="has-text-success fa-2x fas fa-cogs"></i>
         <i v-if="this.$store.state.StoreAjustesPlay == false" class="desactivado fa-2x fas fa-cogs"></i>
       </div>
@@ -81,7 +65,16 @@
 
 <script>
 export default {
-
+  name: "DatosBasicosPlay",
+  
+  methods: {
+    resetearNavegacion(){
+      this.$store.state.StoreTiradorDados = false;
+      this.$store.state.StoreEstadosPlay = false;
+      this.$store.state.StoreHabilidades = false;
+      this.$store.state.StoreAjustesPlay = false;
+    }
+  }
 }
 </script>
 
