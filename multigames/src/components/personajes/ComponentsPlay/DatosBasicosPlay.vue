@@ -9,9 +9,7 @@
       <div class="column has-text-white">
         <div>
           <p class="title is-2 has-text-weight-bold has-text-white mb-4">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
-
-          <p v-if="this.$store.state.lenguaje == 'español'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.posicion }}</p>
-          <p v-if="this.$store.state.lenguaje == 'ingles'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.ENposicion }}</p>
+          <p class="has-background-dark subtitle is-6 has-text-white pl-2">{{ textoInterfaz.posicion }}</p>
         </div>
 
         <!-- Vida - Cordura -->
@@ -20,16 +18,16 @@
             <i class="fa-4x fas fa-heartbeat has-text-danger"></i>
             <p class="contadorVidaCordura title has-text-white">{{ this.$store.state.datosPJactual.vida }}</p>
             <div class="columns is-mobile">
-              <button @click="this.$store.state.datosPJactual.vida --" class="column mx-2 button is-small p-0 is-danger">-</button>
-              <button @click="this.$store.state.datosPJactual.vida ++" class="column mx-2 button is-small p-0 is-primary">+</button>
+              <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-2 button is-small p-0 is-danger">-</button>
+              <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-2 button is-small p-0 is-primary">+</button>
             </div>
           </div>
           <div class="column pb-0">
             <i class="has-text-info fa-4x fas fa-brain"></i>
             <p class="contadorVidaCordura title has-text-white">{{ this.$store.state.datosPJactual.cordura }}</p>
             <div class="columns is-mobile">
-              <button @click="this.$store.state.datosPJactual.cordura --" class="column mx-2 button is-small p-0 is-danger">-</button>
-              <button @click="this.$store.state.datosPJactual.cordura ++" class="column mx-2 button is-small p-0 is-primary">+</button>
+              <button @click="sumarRestarPropiedad('-', 'cordura')" class="column mx-2 button is-small p-0 is-danger">-</button>
+              <button @click="sumarRestarPropiedad('+', 'cordura')" class="column mx-2 button is-small p-0 is-primary">+</button>
             </div>
           </div>
 
@@ -66,14 +64,51 @@
 <script>
 export default {
   name: "DatosBasicosPlay",
+  data(){
+    return{
+      maxVida: this.$store.state.datosPJactual.vida,
+      maxCordura: this.$store.state.datosPJactual.cordura,
+
+      textoInterfaz: {
+        posicion: "",
+      }
+    }
+  },
   
   methods: {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.posicion;
+
+      }else if (this.$store.state.lenguaje == "ingles"){
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.ENposicion;
+      }
+    },
     resetearNavegacion(){
       this.$store.state.StoreTiradorDados = false;
       this.$store.state.StoreEstadosPlay = false;
       this.$store.state.StoreHabilidades = false;
       this.$store.state.StoreAjustesPlay = false;
+    },
+    sumarRestarVidaCordura(signo, propiedad){
+      if(signo == "+" && this.$store.state.datosPJactual[propiedad] < maxVida){
+        this.$store.state.datosPJactual[propiedad] ++;
+      }else if(signo == "-"){
+        this.$store.state.datosPJactual[propiedad] --;
+      }
+    },
+    sumarRestarPropiedad(signo, propiedad){
+      if(propiedad == "vida" || propiedad == "cordura"){
+        sumarRestarVidaCordura(signo, propiedad)
+      }else if(signo == "-"){
+        this.$store.state.datosPJactual[propiedad] --;
+      }
     }
+  },
+  mounted(){
+    this.resetearNavegacion();
+    this.$store.state.StoreTiradorDados = true;
+    this.rellenarTextoSegunIdioma();
   }
 }
 </script>

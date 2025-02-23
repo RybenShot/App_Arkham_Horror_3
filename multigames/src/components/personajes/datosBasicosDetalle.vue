@@ -8,8 +8,7 @@
       <div>
         <p class="title is-2 has-text-weight-bold has-text-white mb-4">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
 
-        <p v-if="this.$store.state.lenguaje == 'español'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.posicion }}</p>
-        <p v-if="this.$store.state.lenguaje == 'ingles'" class="has-background-dark subtitle is-6 has-text-white pl-2">{{ this.$store.state.datosPJactual.ENposicion }}</p>
+        <p class="has-background-dark subtitle is-6 has-text-white pl-2">{{ textoInterfaz.posicion }}</p>
       </div>
 
       <div class="has-text-centered mt-4 mr-2">
@@ -49,7 +48,8 @@ export default {
       textoInterfaz: {
         pertenencias: "",
         historia: "",
-        arquetipo: ""
+        arquetipo: "",
+        posicion: "",
       }
     }
   },
@@ -59,10 +59,13 @@ export default {
         this.textoInterfaz.pertenencias = "Pertenencias";
         this.textoInterfaz.historia = "Historia";
         this.textoInterfaz.arquetipo = "Arquetipo";
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.posicion;
+
       }else if (this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.pertenencias = "Belongings";
         this.textoInterfaz.historia = "History";
         this.textoInterfaz.arquetipo = "Archetype";
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.ENposicion;
       }
     }
   },

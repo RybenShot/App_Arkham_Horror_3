@@ -3,7 +3,9 @@
         <div class="modal-background" @click="(this.$store.state.modalPerseguido_Agitado = false)"></div>
 
         <div v-if="this.$store.state.estadoPerseguido_Agitado == false">
-          <div class="notification is-danger is-light my-5 mx-5"><strong>ATENCION!</strong><p>{{ textoInterfaz.atencion }}</p></div>
+          <div class="notification is-danger is-light my-5 mx-5">
+            <strong>ATENCION!</strong><p>{{ textoInterfaz.atencion }}</p>
+          </div>
         </div>
 
         <div class="mr-6">

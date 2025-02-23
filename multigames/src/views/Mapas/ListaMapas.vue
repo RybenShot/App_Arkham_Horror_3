@@ -43,7 +43,7 @@
     </div>
 <br>
 
-<!-- EXPANSIONES // Mapas -->
+<!-- Expansiones // Mapas -->
 
     <div v-if="this.$store.state.ActivarBase">
       <div class="PersonajesList">
@@ -452,4 +452,4 @@ export default {
 .tipografiaElegante{
   font-family: "Cinzel";
 }
-</style>>
+</style>

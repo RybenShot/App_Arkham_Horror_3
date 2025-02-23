@@ -4,8 +4,7 @@
     <div class="columns is-mobile mb-0">
       <div class="column mx-6 mt-3 has-background-light">
         <div class="columns is-mobile m-0">
-          <p v-if="this.$store.state.lenguaje == 'español'" class="column title is-size-5  is-underlined mb-0">{{ this.$store.state.datosMapa.title }}</p>
-          <p v-if="this.$store.state.lenguaje == 'ingles'" class="column title is-size-5  is-underlined mb-0">{{ this.$store.state.datosMapa.ENtitle }}</p>
+          <p class="column title is-size-5  is-underlined mb-0">{{ textoInterfaz.titulo }}</p>
 
           <!-- Voz en Off -->
           <div class="column is-2">
@@ -13,8 +12,7 @@
             <p v-if="reproduciendo == true" @click="(detenerAudio()), (reproduciendo = false)" ><i class="fas fa-2x fa-pause-circle"></i></p>
           </div>
         </div>
-        <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-size-7">{{ this.$store.state.datosMapa.description }}</p>
-        <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-size-7">{{ this.$store.state.datosMapa.ENdescription }}</p>
+        <p class="subtitle is-size-7">{{ textoInterfaz.descripcion }}</p>
       </div>
     </div>
     <div class="mx-3 has-background-grey-light py-1"></div>
@@ -34,21 +32,36 @@ export default {
   name: 'Rollo de historia',
   data(){
     return {
-      reproduciendo : false
+      reproduciendo : false,
+      textoInterfaz:{
+        titulo: "",
+        descripcion: ""
+      },
     }
   },
   methods: {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = this.$store.state.datosMapa.title;
+        this.textoInterfaz.descripcion = this.$store.state.datosMapa.description;
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.titulo = this.$store.state.datosMapa.ENtitle;
+        this.textoInterfaz.descripcion = this.$store.state.datosMapa.ENdescription;
+      }
+    },
     reproducirAudio() {
       const idMapasound = this.$store.state.datosMapa.idMapa;
       const sound = sounds[idMapasound];
       sound.play()
-      },
-
+    },
     detenerAudio() {
       const idMapasound = this.$store.state.datosMapa.idMapa;
       const sound = sounds[idMapasound];
       sound.stop()
     }
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
   }
 }
 </script>

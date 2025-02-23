@@ -8,8 +8,7 @@
 
         <div class="column">
           <h1 class="title titleDecoration is-4 pt-3 mb-0" > {{ this.$store.state.datosPJactual.nombrePJ }}</h1>
-          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'español'">{{ this.$store.state.datosPJactual.posicion }}</p>
-          <p class="has-background-grey-dark has-text-light has-text-centered" v-if="this.$store.state.lenguaje == 'ingles'">{{ this.$store.state.datosPJactual.ENposicion }}</p>
+          <p class="has-background-grey-dark has-text-light has-text-centered" >{{ textoInterfaz.posicion }}</p>
         </div>
 
         <router-link class="column is-2 pl-2" to="/"><div class="has-text-grey-lighter"><i class="fa-2x fas fa-home"></i></div></router-link>
@@ -263,6 +262,9 @@ export default {
           ]
       },
         
+      textoInterfaz: {
+        posicion: "",
+      },
 
       datosPJinPlay:{},
 
@@ -291,6 +293,8 @@ export default {
   mounted(){
     this.datosPJinPlay= { ...this.$store.state.datosPJactual };
     console.log("se ha copiado el PJ correctamente")
+
+    rellenarTextoSegunIdioma()
 
     if (this.datosPJinPlay.idPersonaje == 1) {
       this.imgPJPlay = "PlayimgTommy"
@@ -371,7 +375,14 @@ export default {
 
   },
   methods: {
-    // TIRADA DE DADOS
+    rellenarTextoSegunIdioma(){
+      if (this.$store.state.lenguaje == "español") {
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.posicion;
+      } else if (this.$store.state.lenguaje == "ingles") {
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.ENposicion;
+      }
+    },
+    // tirador de dados
     async tirarDados(min) {
       let max = 6; // maximo de lados de dados
       let totalDados = this.NDadosAtributo + this.NDeDadosExtra;
@@ -387,12 +398,12 @@ export default {
       this.resultados = []; // vaciamos el array de resultado
       this.sumaResultado = 0;
     },
-// CAMBIAR VISTAS
+    // cambiar vistas
     cambiarVista(ValueCambiarVista) {
       this.$emit("cambiarVistaHijo", ValueCambiarVista);
     }, // end cambiaVista   
 
-    //SONIDO
+    // sonido
     SonidoDaño() {
       const sound = new Howl({src: this.PistasAudio.AudioDaño[Math.floor(Math.random() * (1, 4))].src});
       sound.play();

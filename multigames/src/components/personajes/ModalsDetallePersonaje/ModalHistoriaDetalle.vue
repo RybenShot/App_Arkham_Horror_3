@@ -25,10 +25,10 @@
               </div>
               <br>
 
-              <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-7 has-text-centered">{{ this.$store.state.datosPJactual.historia }}</p>
-              <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-7 has-text-centered">{{ this.$store.state.datosPJactual.ENhistoria }}</p>
+              <p class="subtitle is-7 has-text-centered">{{ textoInterfaz.historia }}</p>
               <br>
 
+              <!-- TODO corregir esta atrocidad -->
               <div v-if="
                 this.$store.state.datosPJactual.nombrePJ == 'Marie Lambeau' ||
                 this.$store.state.datosPJactual.nombrePJ == 'Jenny Barnes' ||
@@ -77,8 +77,10 @@ export default {
       reproduciendo : false,
       textoInterfaz: {
         titulo: "",
-        volver: ""
-      }
+        volver: "",
+        historia: ""
+      },
+      enlaceVideo: ""
     }
   },
   methods: {
@@ -96,9 +98,12 @@ export default {
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.titulo = "La historia hasta ahora...";
         this.textoInterfaz.volver = "Volver";
+        this.textoInterfaz.historia = this.$store.state.datosPJactual.historia;
+
       }else if(this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.titulo = "The story until now";
         this.textoInterfaz.volver = "Go back";
+        this.textoInterfaz.historia = this.$store.state.datosPJactual.ENhistoria;
       }
     }
   },

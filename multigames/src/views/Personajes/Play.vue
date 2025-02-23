@@ -1,6 +1,5 @@
 <template>
   <div class="p-2">
-
     <!-- Confirmacion al intentar salir de terminar partida -->
     <div v-if="$store.state.ModalConfirmacion"><ModalConfirmacion/></div>
     <!-- Modals de los estados para verlos -->

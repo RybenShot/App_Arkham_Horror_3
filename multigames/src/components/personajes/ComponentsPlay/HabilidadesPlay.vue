@@ -2,12 +2,8 @@
   <section>
     <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <div class="container mx-3 has-text-white">
-      <p v-if="this.$store.state.lenguaje == 'español'">{{ this.$store.state.datosPJactual.efecto1 }}</p>
-      <p v-if="this.$store.state.lenguaje == 'ingles'">{{ this.$store.state.datosPJactual.ENefecto1 }}</p>
-
-      <p v-if="(this.$store.state.datosPJactual.efecto2) && (this.$store.state.lenguaje == 'español')">{{ this.$store.state.datosPJactual.efecto2 }}</p>
-      <p v-if="(this.$store.state.datosPJactual.efecto2) && (this.$store.state.lenguaje == 'ingles')">{{ this.$store.state.datosPJactual.ENefecto2 }}</p>
-
+      <p>{{ textoInterfaz.efecto1 }}</p>
+      <p v-if="this.$store.state.datosPJactual.efecto2">{{ textoInterfaz.efecto2 }}</p>
       <p class="has-text-weight-semibold is-underlined pt-3">{{ textoInterfaz.limConcentracion }} {{ this.$store.state.datosPJactual.limConcentracion }}</p>
     </div>
 
@@ -46,6 +42,9 @@ export default {
         titulo: "",
         tituloSeg:"",
         limConcentracion: "",
+
+        efecto1: "",
+        efecto2: "",
       },
     }
   },
@@ -55,11 +54,15 @@ export default {
         this.textoInterfaz.titulo = "Habilidades";
         this.textoInterfaz.tituloSeg = "Dinero y Restos";
         this.textoInterfaz.limConcentracion = "Limite de concentración :";
+        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.efecto1;
+        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.efecto2;
 
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "Skills";
         this.textoInterfaz.tituloSeg = "Money and Rests";
         this.textoInterfaz.limConcentracion = "Concentration limit :";
+        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.ENefecto1;
+        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.ENefecto2;
       }
     }
   },

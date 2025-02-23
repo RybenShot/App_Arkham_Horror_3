@@ -20,9 +20,7 @@
               <div class="containerArquetipos mx-3">
                 <div class="columns is-mobile mb-0">
 
-                  <p v-if="this.$store.state.lenguaje == 'español'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.tituloArquetipo1}}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.ENtituloArquetipo1}}</p>
-
+                  <p class="column has-text-left title mb-0 pb-0">{{ textoInterfaz.tituloArquetipo1}}</p>
                   <div class="column has-text-right is-2">
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo1 == 'Defensor'"><i class="fas fa-2x fa-shield-alt"></i></p>
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo1 == 'Superviviente'"><i class="fas fa-2x fa-user-ninja"></i></p>
@@ -31,8 +29,7 @@
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo1 == 'Buscador'"><i class="fas fa-2x fa-user-secret"></i></p>
                   </div>
                 </div>
-                <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.descripcionArquetipo1}}</p>
-                <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.ENdescripcionArquetipo1}}</p>
+                <p class="subtitle is-6">{{ textoInterfaz.descripcionArquetipo1}}</p>
               </div>
 
              
@@ -41,9 +38,7 @@
                 <hr>
                 <div class="columns is-mobile mb-0">
 
-                  <p v-if="this.$store.state.lenguaje == 'español'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.tituloArquetipo2}}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="column has-text-left title mb-0 pb-0">{{ this.$store.state.datosPJactual.arquetipos.ENtituloArquetipo2}}</p>
-                  
+                  <p class="column has-text-left title mb-0 pb-0">{{ textoInterfaz.tituloArquetipo2}}</p>                  
                   <div class="column has-text-right is-2">
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 == 'Defensor'"><i class="fas fa-2x fa-shield-alt"></i></p>
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 == 'Superviviente'"><i class="fas fa-2x fa-user-ninja"></i></p>
@@ -52,8 +47,7 @@
                     <p v-if="this.$store.state.datosPJactual.arquetipos.tituloArquetipo2 == 'Buscador'"><i class="fas fa-2x fa-user-secret"></i></p>
                   </div>
                 </div>
-                <p v-if="this.$store.state.lenguaje == 'español'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.descripcionArquetipo2}}</p>
-                <p v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle is-6">{{ this.$store.state.datosPJactual.arquetipos.ENdescripcionArquetipo2}}</p>
+                <p class="subtitle is-6">{{ textoInterfaz.descripcionArquetipo2}}</p>
               </div>
               <br>
             </section>
@@ -77,7 +71,12 @@ export default {
     return{
       textoInterfaz: {
         titulo: "",
-        volver: ""
+        volver: "",
+
+        tituloArquetipo1: "",
+        descripcionArquetipo1: "",
+        tituloArquetipo2: "",
+        descripcionArquetipo2: "",
       }
     }
   },
@@ -86,9 +85,17 @@ export default {
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.titulo = "Arquetipos principales";
         this.textoInterfaz.volver = "Volver";
-      }else{
+        this.textoInterfaz.tituloArquetipo1 = this.$store.state.datosPJactual.arquetipos.tituloArquetipo1;
+        this.textoInterfaz.descripcionArquetipo1 = this.$store.state.datosPJactual.arquetipos.descripcionArquetipo1;
+        this.textoInterfaz.tituloArquetipo2 = this.$store.state.datosPJactual.arquetipos.tituloArquetipo2;
+        this.textoInterfaz.descripcionArquetipo2 = this.$store.state.datosPJactual.arquetipos.descripcionArquetipo2;
+      }else if(this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.titulo = "Main Archetypes";
         this.textoInterfaz.volver = "Go back";
+        this.textoInterfaz.tituloArquetipo1 = this.$store.state.datosPJactual.arquetipos.ENtituloArquetipo1;
+        this.textoInterfaz.descripcionArquetipo1 = this.$store.state.datosPJactual.arquetipos.ENdescripcionArquetipo1;
+        this.textoInterfaz.tituloArquetipo2 = this.$store.state.datosPJactual.arquetipos.ENtituloArquetipo2;
+        this.textoInterfaz.descripcionArquetipo2 = this.$store.state.datosPJactual.arquetipos.ENdescripcionArquetipo2;
       }
     }
   },

@@ -23,10 +23,12 @@
     
 
     <footer>
-      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = false)"
-      class="button is-fullwidth is-dark mb-2"><i class="fas fa-users mx-3"></i>{{ textoInterfaz.botones.seleccionPersonaje }}</button>
-      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = true)"
-      class="button is-fullwidth  is-black"><i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.terminarPartida }}</button>
+      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = false)" class="button is-fullwidth is-dark mb-2">
+        <i class="fas fa-users mx-3"></i>{{ textoInterfaz.botones.seleccionPersonaje }}
+      </button>
+      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = true)" class="button is-fullwidth  is-black">
+        <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.terminarPartida }}
+      </button>
     </footer>
   </div>
 </template>
@@ -42,7 +44,7 @@ export default {
         efectoInmersion: "",
         botones: {
           seleccionPersonaje: "",
-          terminarPartida: "",
+          terminarPartida: ""
         }
       },
     }
@@ -68,6 +70,7 @@ export default {
   mounted(){
     this.rellenarTextoSegunIdioma();
   }
+  //TODO : Añadir metodos para cambiar el estado de la musica y efectos
 }
 </script>
 

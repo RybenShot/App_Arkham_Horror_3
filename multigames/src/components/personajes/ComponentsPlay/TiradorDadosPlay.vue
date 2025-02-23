@@ -73,35 +73,35 @@
 
 <script>
 export default {
-name: "TiraDados",
-data(){
-  return{
-    //Atributo activado
-    activeButton: null,
-  // TIRADA DE DADOS
-    NDadosAtributo: 0,
-    NDeDadosExtra: 0,
-    resultados: [1, 6, 5, 4],
-    sumaResultado: 0,
+  name: "TiraDados",
+  data(){
+    return{
+      //Atributo activado
+      activeButton: null,
+    // TIRADA DE DADOS
+      NDadosAtributo: 0,
+      NDeDadosExtra: 0,
+      resultados: [1, 6, 5, 4],
+      sumaResultado: 0,
 
-    textoInterfaz: {
-      titulo: "",
-      totalDados: "",
-      dadosExtras: "",
-      botonTirar: "",
-      resultados: "",
-      atributos: {
-        saber: "",
-        influencia: "",
-        observacion: "",
-        fuerza: "",
-        voluntad: ""
+      textoInterfaz: {
+        titulo: "",
+        totalDados: "",
+        dadosExtras: "",
+        botonTirar: "",
+        resultados: "",
+        atributos: {
+          saber: "",
+          influencia: "",
+          observacion: "",
+          fuerza: "",
+          voluntad: ""
+        }
+        
       }
-      
     }
-  }
-},
-methods:{
+  },
+  methods:{
   //Atributo activo
   setActiveButton(button) {
       this.activeButton = button;

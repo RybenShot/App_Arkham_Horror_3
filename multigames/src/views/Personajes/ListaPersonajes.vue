@@ -2388,4 +2388,4 @@ export default {
   font-family: "Cinzel";
 }
 
-</style>>
+</style>

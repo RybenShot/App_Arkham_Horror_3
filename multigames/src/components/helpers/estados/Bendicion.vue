@@ -9,7 +9,6 @@
 
             <section class="modal-card-body hero is-large py-2">
               <h2>{{ textoInterfaz.descripcion }}</h2>
-
               <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
             </section>
 

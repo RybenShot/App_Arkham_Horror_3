@@ -1,22 +1,23 @@
 <template>
   <div class="BGAHHome container">
     <div id="contenido">
+      <!-- Modals de inicio -->
       <div v-if="this.resultadoAnuncio >= 2 ">
-        <!-- MODAL BIENVENIDA -->
+        <!-- modal bienvenida -->
         <div v-if="this.$store.state.StoreModalBienvenida"><ModalBienvenida/></div>
-        <!-- MODAL DONACION -->
+        <!-- modal donacion -->
         <div v-if="this.$store.state.StoreModalDonacion"><ModalDonacion/></div>
         
       </div>
       
-      <!-- HERO -->
+      <!-- hero -->
       <div class="hero pt-6 pb-2">
         <div class=" columns is-mobile mx-6">
           <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png" alt="Logo de Arkham Horror"/>
         </div>
       </div>
 
-      <!-- MENU LIST -->
+      <!-- menu list -->
       <section class="mt-4">
         <div >
           <ul>
@@ -30,7 +31,7 @@
 
     </div>
 
-    <!-- BOTONES PARA CAMBIAR LENGUAJE -->
+    <!-- botones para cambiar de lenguaje -->
     <footer>
       <div class="columns is-movile has-text-centered">
         <p class="column">

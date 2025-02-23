@@ -60,7 +60,7 @@
           </div>
 
           <div class="column LadoDerecho" >
-            <p :class="{'activado': this.$store.state.EstadoManco == true }" class="backgrounds title is-6 has-text-white p-4 py-5 mx-2" id="Manco" @click="this.$store.state.modalManco = true">{{ textoInterfaz.estados.mancillado }}</p>
+            <p :class="{'activado': this.$store.state.EstadoManco == true }" class="backgrounds title is-6 has-text-white p-4 py-5 mx-2" id="Manco" @click="this.$store.state.modalManco = true">{{ textoInterfaz.estados.manco }}</p>
             <p :class="{'activado': this.$store.state.EstadoSeñalado == true }" class="backgrounds title is-6 has-text-white p-4 py-5 mx-2" id="Señalado" @click="this.$store.state.modalSeñalado = true">{{ textoInterfaz.estados.señalado }}</p>
           </div>
         </div >

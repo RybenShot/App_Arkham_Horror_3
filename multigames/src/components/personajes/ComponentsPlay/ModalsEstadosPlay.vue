@@ -23,7 +23,7 @@
       <!-- MANCO -->
       <div v-if="this.$store.state.modalManco" ><EstadoManco/></div>
       <!-- SUICIDIO -->
-      <div v-if="this.$store.state.modalSuicidio" ><EstadoSuicidio/></div>
+      <div v-if="this.$store.state.modalSuicidio" ><EstadoAlFilo/></div>
       <!-- SEÑALADO -->
       <div v-if="this.$store.state.modalSeñalado" ><EstadoSeñalado/></div>
     </div>
@@ -41,7 +41,7 @@ import EstadoPerseguido from "@/components/helpers/estados/Perseguido.vue"
 import EstadoPerseguidoAgitado from "@/components/helpers/estados/Perseguido_Agitado.vue"
 // Estados Originales
 import EstadoManco from "@/components/helpers/estadosOriginales/Manco.vue"
-import EstadoSuicidio from "@/components/helpers/estadosOriginales/Suicidio.vue"
+import EstadoAlFilo from "@/components/helpers/estadosOriginales/AlFilo.vue"
 import EstadoSeñalado from "@/components/helpers/estadosOriginales/Señalado.vue"
 
 export default {
@@ -57,7 +57,7 @@ name: "Modals de Estados",
     EstadoPerseguidoAgitado,
 
     EstadoManco,
-    EstadoSuicidio,
+    EstadoAlFilo,
     EstadoSeñalado
   },
 }
