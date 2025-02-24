@@ -9,11 +9,10 @@
     </div>
   </router-link>
   <div class="hero">
-    <h1 class="title is-2 px-2 has-text-centered has-text-danger" v-if="this.$store.state.lenguaje == 'español'">Pagina en proceso</h1>
-    <h1 class="title is-2 px-2 has-text-centered has-text-danger" v-if="this.$store.state.lenguaje == 'ingles'">Page in progress</h1>
+    <h1 class="title is-2 px-2 has-text-centered has-text-danger">{{ textoInterfaz.paginaEnProceso }}</h1>
     <section class="hero is-halfheight ">
       <div class="hero-body">
-        <button @click="goBack" class="button is-fullwidth">Huir despavorido</button>
+        <button @click="goBack" class="button is-fullwidth">textoInterfaz.botonHuir</button>
       </div>
     </section>
   </div>
@@ -23,11 +22,31 @@
 <script>
 export default {
   name: 'Pagina en proceso',
+  data(){
+    return{
+      textoInterfaz: {
+        paginaEnProceso: "",
+        botonHuir: "",
+      }
+    }
+  },
 
   methods:{
-  goBack() {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.paginaEnProceso = "Pagina en proceso";
+        this.textoInterfaz.botonHuir = "Huir despavorido";
+      }else{
+        this.textoInterfaz.paginaEnProceso = "Page in progress";
+        this.textoInterfaz.botonHuir = "Flee in terror";
+      }
+    },
+    goBack() {
       this.$router.go(-1);
     },
+  },
+  mounted(){
+    this.rellenarTextoSegunIdioma();
   }
 }
 

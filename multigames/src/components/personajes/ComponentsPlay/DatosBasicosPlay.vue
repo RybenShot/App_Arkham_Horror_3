@@ -1,5 +1,11 @@
 <template>
   <section>
+    <transition name="fade">
+      <div v-if="notificacionMaxVida" class="notificacion has-text-light has-background-danger">
+        <span>{{ mensajeVidaCorduraMax }}</span>
+      </div>
+    </transition>
+
     <!-- Parte datos -->
     <div class="columns is-mobile">
       <div class="column image">
@@ -16,7 +22,7 @@
         <div class="columns is-mobile has-text-centered pt-2">
           <div class="column pb-1">
             <i class="fa-4x fas fa-heartbeat has-text-danger"></i>
-            <p class="contadorVidaCordura title has-text-white">{{ this.$store.state.datosPJactual.vida }}</p>
+            <p class="contadorVidaCordura title has-text-white">{{ this.vida }}</p>
             <div class="columns is-mobile">
               <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-2 button is-small p-0 is-danger">-</button>
               <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-2 button is-small p-0 is-primary">+</button>
@@ -24,7 +30,7 @@
           </div>
           <div class="column pb-0">
             <i class="has-text-info fa-4x fas fa-brain"></i>
-            <p class="contadorVidaCordura title has-text-white">{{ this.$store.state.datosPJactual.cordura }}</p>
+            <p class="contadorVidaCordura title has-text-white">{{ this.cordura }}</p>
             <div class="columns is-mobile">
               <button @click="sumarRestarPropiedad('-', 'cordura')" class="column mx-2 button is-small p-0 is-danger">-</button>
               <button @click="sumarRestarPropiedad('+', 'cordura')" class="column mx-2 button is-small p-0 is-primary">+</button>
@@ -66,8 +72,14 @@ export default {
   name: "DatosBasicosPlay",
   data(){
     return{
-      maxVida: this.$store.state.datosPJactual.vida,
-      maxCordura: this.$store.state.datosPJactual.cordura,
+      vida: this.$store.state.datosPJactual.vida,
+      cordura: this.$store.state.datosPJactual.cordura,
+
+      maxVida :this.$store.state.datosPJactual.vida,
+      maxCordura :this.$store.state.datosPJactual.cordura,
+
+      notificacionMaxVida: false,
+      mensajeVidaCorduraMax: "",
 
       textoInterfaz: {
         posicion: "",
@@ -76,12 +88,20 @@ export default {
   },
   
   methods: {
+    mostrarNotificacionDesactivar() {
+      this.notificacionMaxVida = true;
+      setTimeout(() => {
+        this.notificacionMaxVida = false;
+      }, 2000);
+    },
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.posicion = this.$store.state.datosPJactual.posicion;
+        this.mensajeVidaCorduraMax = "Vida Maxima alcanzada";
 
       }else if (this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.posicion = this.$store.state.datosPJactual.ENposicion;
+        this.mensajeVidaCorduraMax = "Max life reached";
       }
     },
     resetearNavegacion(){
@@ -91,17 +111,23 @@ export default {
       this.$store.state.StoreAjustesPlay = false;
     },
     sumarRestarVidaCordura(signo, propiedad){
-      if(signo == "+" && this.$store.state.datosPJactual[propiedad] < maxVida){
-        this.$store.state.datosPJactual[propiedad] ++;
-      }else if(signo == "-"){
-        this.$store.state.datosPJactual[propiedad] --;
+      if(signo == "+" && propiedad == "vida" && this.vida < this.maxVida){
+        this.vida ++;
+      }else if(signo == "+" && propiedad == "cordura" && this.cordura < this.maxCordura){
+        this.cordura ++;
+      }else if(signo == "-" && propiedad == "vida" && this.vida > 0){
+        this.vida --;
+      }else if(signo == "-" && propiedad == "cordura" && this.cordura > 0){
+        this.cordura --;
+      } else {
+        console.error("No se puede sumar más vida o cordura");
+        this.mostrarNotificacionDesactivar();
+
       }
     },
     sumarRestarPropiedad(signo, propiedad){
       if(propiedad == "vida" || propiedad == "cordura"){
-        sumarRestarVidaCordura(signo, propiedad)
-      }else if(signo == "-"){
-        this.$store.state.datosPJactual[propiedad] --;
+        this.sumarRestarVidaCordura(signo, propiedad)
       }
     }
   },
@@ -114,6 +140,25 @@ export default {
 </script>
 
 <style>
+/* Notificacion de expansion activa*/
+.notificacion {
+  position: fixed;
+  top: 10vh;
+  left: 15vh;
+  width: 40%;
+  background-color: #f1f1f1;
+  box-shadow: 0px 0px 50px 50px rgb(255, 255, 255);
+  border-style: inset;
+  padding: 10px;
+  z-index: 20;
+  opacity: 1;
+  text-align: center;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
 .bordeImagen{
   border: thick double #F2C94C;
 }

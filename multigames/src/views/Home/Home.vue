@@ -27,6 +27,11 @@
             <button class="buttonsHome" @click="SonidoTecla()">{{ textBotonCreditos }}</button>
           </ul>
         </div>
+        <!-- Apartado para la versión de la aplicación -->
+        <div class="app-version">Version: {{ versionApp }}</div>
+        <div class="app-version">
+          <p>{{ultimaActualizacion}} {{ fechaUltimaActualizacion }}</p>
+        </div>
       </section>
 
     </div>
@@ -73,7 +78,10 @@ export default {
       textBotonMapa: "",
       textBotonInvestigador: "",
       textBotonSupport: "",
-      textBotonCreditos:""
+      textBotonCreditos:"",
+      versionApp: "Beta", // Define aquí la versión de tu aplicación
+      ultimaActualizacion: "",
+      fechaUltimaActualizacion: "24/02/2025",
     };
   },
   methods: {
@@ -84,11 +92,13 @@ export default {
         this.textBotonInvestigador = "Investigadores";
         this.textBotonSupport = "Apoyanos";
         this.textBotonCreditos = "Creditos";
+        this.ultimaActualizacion = "Ultima actualización:";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textBotonMapa = "Maps";
         this.textBotonInvestigador = "Investigators";
         this.textBotonSupport = "Support";
         this.textBotonCreditos = "Credits";
+        this.ultimaActualizacion = "Last update:";
       }
     },
   },
@@ -117,6 +127,21 @@ export default {
   opacity: 30%;
 }
 
+.app-version {
+  margin-left: 20px ;
+  margin-right: 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1em;
+  font-family: 'Cinzel', serif;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+
 #BGAHHome {
   background-image: url(@/assets/img/ZZOtros/BG-App-AH-Home.jpg);
   min-height: 120vh;
@@ -128,7 +153,7 @@ export default {
 #contenido{
   position: relative;
   z-index: 2;
-  padding-bottom: 30vh;
+  padding-bottom: 25vh;
 }
 
 button{
