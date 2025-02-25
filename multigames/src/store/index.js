@@ -39,6 +39,7 @@ export default createStore({
         voluntad: 3,
         dinero: 2,
         restos: 0,
+        pistas: 0,
         limConcentracion: 2,
         ENlimConcentracion: 2,
         efecto1: "Protector: Si un Monstruo va a enfrentarse a otro investigador en tu espacio, puedes enfrentarte tú a ese Monstruo en su lugar.",

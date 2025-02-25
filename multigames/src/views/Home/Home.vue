@@ -21,17 +21,40 @@
       <section class="mt-4">
         <div >
           <ul>
-            <router-link to="/ListaMapas" @click="SonidoTecla()"><button class="buttonsHome ">{{ textBotonMapa }}</button></router-link>
-            <router-link to="/ListaPersonajes" @click="SonidoTecla()"><button class="buttonsHome ">{{ textBotonInvestigador }}</button></router-link>
-            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()"><button class="buttonsHome">{{ textBotonSupport }}</button></a>
-            <button class="buttonsHome" @click="SonidoTecla()">{{ textBotonCreditos }}</button>
+            <router-link to="/ListaMapas" @click="SonidoTecla()"><button class="buttonsHome ">{{ textoInterfaz.botones.textBotonMapa }}</button></router-link>
+            <router-link to="/ListaPersonajes" @click="SonidoTecla()"><button class="buttonsHome ">{{ textoInterfaz.botones.textBotonInvestigador }}</button></router-link>
+            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()"><button class="buttonsHome">{{ textoInterfaz.botones.textBotonSupport }}</button></a>
+            <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button>
           </ul>
         </div>
         <!-- Apartado para la versión de la aplicación -->
-        <div class="app-version">Version: {{ versionApp }}</div>
-        <div class="app-version">
-          <p>{{ultimaActualizacion}} {{ fechaUltimaActualizacion }}</p>
+        <div class="app-version">Version: {{ textoInterfaz.versionApp }}</div>
+        
+        <!-- Noticias (Menu desplegable) -->
+        <div class="app-version" id="ultimasNoticias">
+          <div class="noticias-header" @click="toggleNoticias">
+            <p>{{ textoInterfaz.ultimaActualizacion }} {{ textoInterfaz.fechaUltimaActualizacion }}</p>
+            <i :class="{'fas fa-chevron-down': !noticias.isNoticiasOpen, 'fas fa-chevron-up': noticias.isNoticiasOpen}"></i>
+          </div>
+          <div v-if="noticias.isNoticiasOpen" class="noticias-list">
+            <div class="box">
+              <ul>
+                <li v-for="(articulo, index) in noticias.articulos" :key="index" class="noticia-item">
+                  <p v-if="this.$store.state.lenguaje == 'español'"><strong>Actualización N° {{ articulo.numeroActualizacion }}</strong></p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'"><strong>Update N° {{ articulo.numeroActualizacion }}</strong></p>
+
+                  <h4 v-if="this.$store.state.lenguaje == 'español'">{{ articulo.titulo }}</h4>
+                  <h4 v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.ENtitulo }}</h4>
+
+                  <p v-if="this.$store.state.lenguaje == 'español'">{{ articulo.descripcion }}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.ENdescripcion }}</p>
+                  <hr class="my-2">
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+
       </section>
 
     </div>
@@ -74,32 +97,66 @@ export default {
     },
   data() {
     return {
+      textoInterfaz: {
+        versionApp: "Beta 1.1.1",
+        ultimaActualizacion: "",
+        fechaUltimaActualizacion: "24/02/2025",
+        botones: {
+          textBotonMapa: "",
+          textBotonInvestigador: "",
+          textBotonSupport: "",
+          textBotonCreditos: "",
+        },
+      },
+      noticias:{
+        isNoticiasOpen: false,
+        articulos: [
+          {id: 3,
+            numeroActualizacion: "1.1.1",
+            titulo: "Reajuste de interfaz de zona de juego de Investigador.",
+            ENtitulo: "Readjustment of Investigator's game area interface.",
+            descripcion: 'Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero, restos y añadir el contador de pistas. Además, se ha añadido la sección "Mapas", que por ahora solo incluye el tirador de fichas de Mitos, con la previsión de añadir próximamente los encuentros.',
+            ENdescripcion: 'The interface of the character page has been readjusted to improve the visibility of the life, sanity, money, remains counters and add the clues counter. In addition, the "Maps" section has been added, which for now only includes the Mythos token shooter, with the forecast of adding the encounters soon.',
+          },
+          {id: 2,
+            numeroActualizacion: "1.1.0",
+            titulo: "Correccion de algunas traducciones",
+            ENtitulo: "Correction of some translations",
+            descripcion: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas.",
+            ENdescripcion: "The translations into English of all elements have been completed, including state cards, interface, investigators and maps.",
+          },
+          {id: 1,
+            numeroActualizacion: "1.0.0",
+            titulo: "Primera subida de la aplicación",
+            ENtitulo: "First upload of the app",
+            descripcion: "Se ha implementado la gestión de las fichas de los investigadores, incluyendo vida, cordura y dinero, y la administración de los estados de los personajes, con algunos estados adicionales. En cuanto a los mapas, se ha completado la preparación, añadiendo las imágenes y el número de enemigos para cada mapa, además de configurar las locuciones para los mapas de la caja base.",
+            ENdescripcion: "The management of the investigator's sheets has been implemented, including life, sanity and money, and the management of the characters' states, with some additional states. As for the maps, the preparation has been completed, adding the images and the number of enemies for each map, in addition to configuring the voiceovers for the base box maps.",
+          },
+          
+        ],
+      },
       resultadoAnuncio: 0,
-      textBotonMapa: "",
-      textBotonInvestigador: "",
-      textBotonSupport: "",
-      textBotonCreditos:"",
-      versionApp: "Beta", // Define aquí la versión de tu aplicación
-      ultimaActualizacion: "",
-      fechaUltimaActualizacion: "24/02/2025",
     };
   },
   methods: {
     SonidoTecla() {sound.play();},
     rellenarTextosegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
-        this.textBotonMapa = "Mapas";
-        this.textBotonInvestigador = "Investigadores";
-        this.textBotonSupport = "Apoyanos";
-        this.textBotonCreditos = "Creditos";
-        this.ultimaActualizacion = "Ultima actualización:";
+        this.textoInterfaz.botones.textBotonMapa = "Mapas";
+        this.textoInterfaz.botones.textBotonInvestigador = "Investigadores";
+        this.textoInterfaz.botones.textBotonSupport = "Apoyanos";
+        this.textoInterfaz.botones.textBotonCreditos = "Creditos";
+        this.textoInterfaz.ultimaActualizacion = "Ultima actualización:";
       }else if(this.$store.state.lenguaje == 'ingles'){
-        this.textBotonMapa = "Maps";
-        this.textBotonInvestigador = "Investigators";
-        this.textBotonSupport = "Support";
-        this.textBotonCreditos = "Credits";
-        this.ultimaActualizacion = "Last update:";
+        this.textoInterfaz.botones.textBotonMapa = "Maps";
+        this.textoInterfaz.botones.textBotonInvestigador = "Investigators";
+        this.textoInterfaz.botones.textBotonSupport = "Support";
+        this.textoInterfaz.botones.textBotonCreditos = "Credits";
+        this.textoInterfaz.ultimaActualizacion = "Last update:";
       }
+    },
+    toggleNoticias() {
+      this.noticias.isNoticiasOpen = !this.noticias.isNoticiasOpen;
     },
   },
   mounted(){
@@ -137,8 +194,38 @@ export default {
   border-radius: 4px;
   color: #fff;
   font-size: 1em;
-  font-family: 'Cinzel', serif;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Noticias */
+/* Estilos para las noticias */
+.noticias-list {
+  max-height: 30vh;          /* Máximo 20% de la altura de la ventana */
+  overflow-y: auto;          /* Habilita el scroll si hay muchas noticias */
+}
+
+.noticias-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.noticias-header i {
+  font-size: 20px;           /* Tamaño de la flecha */
+}
+
+.noticia-item h4 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.noticia-item p {
+  font-size: 14px;
+}
+
+.box {
+  margin-top: 10px;
+  padding: 15px;
 }
 
 
@@ -153,7 +240,6 @@ export default {
 #contenido{
   position: relative;
   z-index: 2;
-  padding-bottom: 25vh;
 }
 
 button{
