@@ -23,12 +23,12 @@
 
         <!-- Vida - Cordura -->
         <div class="columns is-mobile has-text-centered pt-2">
-          <div class="column pb-1">
+          <div @click="(resetearSelectorAtributos()), (this.atributos.marcado.vida = true)" class="column pb-1">
             <i class="fa-4x fas fa-heartbeat has-text-danger"></i>
             <p class="contadorVidaCordura title has-text-white">{{ this.atributos.vida }}</p>
 
           </div>
-          <div class="column pb-0">
+          <div @click="(resetearSelectorAtributos()), (this.atributos.marcado.cordura = true)" class="column pb-0">
             <i class="has-text-info fa-4x fas fa-brain"></i>
             <p class="contadorVidaCordura title has-text-white">{{ this.atributos.cordura }}</p>
           </div>
@@ -36,16 +36,17 @@
 
         <!-- dinero, pistas y restos -->
         <div class="columns is-mobile has-text-centered pt-2">
-          <div class="column p-0">
+          <div  @click="(resetearSelectorAtributos()), (this.atributos.marcado.dinero = true)" class="column p-0">
             <i class="fa-3x fas fa-money-bill-wave has-text-warning"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ this.atributos.dinero }}</p>
-
           </div>
-          <div class="column p-0">
+
+          <div  @click="(resetearSelectorAtributos()), (this.atributos.marcado.pistas = true)" class="column p-0">
             <i class="has-text-info fa-3x fas fa-search has-text-success"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ this.atributos.pistas }}</p>
           </div>
-          <div class="column p-0">
+
+          <div  @click="(resetearSelectorAtributos()), (this.atributos.marcado.restos = true)" class="column p-0">
             <i class="has-text-info fa-3x fas fa-poop" id="restos"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ this.atributos.restos }}</p>
           </div>
@@ -103,6 +104,13 @@ export default {
         dinero: this.$store.state.datosPJactual.dinero,
         pistas: this.$store.state.datosPJactual.pistas,
         restos: this.$store.state.datosPJactual.restos,
+        marcado: {
+          vida: false,
+          cordura: false,
+          dinero: false,
+          pistas: false,
+          restos: false
+        }
       },
 
       textoInterfaz: {
@@ -113,7 +121,12 @@ export default {
   },
   
   methods: {
-    mostrarNotificacionDesactivar() {
+    mostrarNotificacionDesactivar(textoAMostrar, ENTextoAMostrar) {
+      if(this.$store.state.lenguaje == "español"){
+        this.mensajeVidaCorduraMax = textoAMostrar;
+      } else if(this.$store.state.lenguaje == "ingles"){
+        this.mensajeVidaCorduraMax = ENTextoAMostrar;
+      }
       this.notificacionMaxVida = true;
       setTimeout(() => {
         this.notificacionMaxVida = false;
@@ -122,12 +135,10 @@ export default {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.posicion = this.$store.state.datosPJactual.posicion;
-        this.mensajeVidaCorduraMax = "Vida Maxima alcanzada";
         this.textoInterfaz.textoVariables = "Selecciona 1 para modificar";
 
       }else if (this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.posicion = this.$store.state.datosPJactual.ENposicion;
-        this.mensajeVidaCorduraMax = "Max life reached";
         this.textoInterfaz.textoVariables = "Select 1 to modify";
       }
     },
@@ -136,6 +147,11 @@ export default {
       this.$store.state.StoreEstadosPlay = false;
       this.$store.state.StoreHabilidades = false;
       this.$store.state.StoreAjustesPlay = false;
+    },
+    resetearSelectorAtributos(){
+      for (const key in this.atributos.marcado) {
+        this.atributos.marcado[key] = false;
+      }
     },
     sumarRestarVidaCordura(signo, propiedad){
       if(signo == "+" && propiedad == "vida" && this.atributos.vida < this.atributos.maxVida){
@@ -148,14 +164,41 @@ export default {
         this.atributos.cordura --;
       } else {
         console.error("No se puede sumar más vida o cordura");
-        this.mostrarNotificacionDesactivar();
+        this.mostrarNotificacionDesactivar("Vida Maxima alcanzada", "Max life reached");
 
       }
     },
-    sumarRestarPropiedad(signo, propiedad){
-      if(propiedad == "vida" || propiedad == "cordura"){
-        this.sumarRestarVidaCordura(signo, propiedad)
+    buscarPropiedadActiva(){
+      for (const key in this.atributos.marcado) {
+        if (this.atributos.marcado[key] == true) {
+          return key;
+        }
       }
+      console.log("No se ha seleccionado ninguna propiedad");
+      return null
+    },
+    sumarRestarPropiedad(signo){
+      let propiedad = this.buscarPropiedadActiva();
+      if (propiedad == null){ 
+        this.mostrarNotificacionDesactivar("No se ha seleccionado ninguna propiedad", "No property selected");
+        return
+      }
+      
+      if(signo == '+'){
+        if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
+          console.log("Vamos a sumar a la propiedad " + propiedad)
+          this.atributos[propiedad]++;
+          return
+        }
+        this.sumarRestarVidaCordura(signo, propiedad);
+      } else if(signo == '-'){
+        if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
+          console.log("Vamos a restar a la propiedad " + propiedad)
+          this.atributos[propiedad]--;
+          return
+        }
+        this.sumarRestarVidaCordura(signo, propiedad);
+      } 
     }
   },
   mounted(){
