@@ -15,7 +15,7 @@
     <div>
       <!-- Seleccionar Mapa -->
       <div class="columns is-mobile mb-0 pt-3 centrarHero" >
-        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-undo-alt has-text-white"></i></div>
+        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-arrow-left has-text-white"></i></div>
         <div class="column " style="margin: 0 auto;"><p class="has-text-centered title has-text-white"> {{ textoInterfaz.titulo }}</p></div>
         <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
       </div>
@@ -171,7 +171,20 @@ export default {
           dificultadMapa: 1,
           expansionMapa: "AHBase",
           ducacionMapa: 130,
-          votosUsuariosMapa: 4 ,
+          votosUsuariosMapa: 4,
+          espacioDeInicio:"Estación de trenes" ,
+          ENespacioDeInicio:"Train Station" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Por cada Monstruo Sectario, coloca una ficha de Perdición en su espacio. (Si está en un espacio de calle, la ficha de perdición se coloca en un espacio de Barrio adyacente.)",
+          ENretribucion: "For each Cultist Monster, place a Doom token in its space. (If it is in a street space, the Doom token is placed in an adjacent Neighborhood space.)",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa0.png"),
           BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG1MapaArkham.jpg")
         },
@@ -183,7 +196,20 @@ export default {
           dificultadMapa: 1,
           expansionMapa: "AHBase",
           ducacionMapa: 150,
-          votosUsuariosMapa: 3 ,
+          votosUsuariosMapa: 3,
+          espacioDeInicio:"Colmado" ,
+          ENespacioDeInicio:"Grocery store" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Coloca una ficha de Perdición sobre la hoja de escenario.",
+          ENretribucion: "Place a Doom token on the scenario sheet.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa1.png"),
           BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG2MapaArkham.jpg")
         },
@@ -195,7 +221,20 @@ export default {
           dificultadMapa: 2,
           expansionMapa: "AHBase",
           ducacionMapa: 90,
-          votosUsuariosMapa: 2 ,
+          votosUsuariosMapa: 2,
+          espacioDeInicio:"Pensión de Má" ,
+          ENespacioDeInicio:"Ma’s Guesthouse" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Coloca una ficha de Perdición en cada espacio que contenga una herida abierta.",
+          ENretribucion: "Place a Doom token in each space that contains an open wound.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa2.png"),
           BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG3MapaArkham.jpg")
         },
@@ -207,7 +246,20 @@ export default {
           dificultadMapa: 3,
           expansionMapa: "AHBase",
           ducacionMapa: 240,
-          votosUsuariosMapa: 5 ,
+          votosUsuariosMapa: 5,
+          espacioDeInicio:"Observatorio" ,
+          ENespacioDeInicio:"Observatory" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Cada investigador sufre tanto Horror como el número de fichas que haya en su espacio.",
+          ENretribucion: "Each investigator suffers Horror equal to the number of tokens in their space.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa3.png"),
           BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG4MapaArkham.jpg")
         },

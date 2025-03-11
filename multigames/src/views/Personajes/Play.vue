@@ -10,6 +10,7 @@
     <hr class="my-2">
 
     <div v-if="this.$store.state.StoreTiradorDados == true"><TiradorDados/></div>
+    <div v-if="this.$store.state.StoreReservaDeMitos == true"><ReservaDeMitos/></div>
     <div v-if="this.$store.state.StoreEstadosPlay == true"><EstadosPlay/></div>
     <div v-if="this.$store.state.StoreHabilidades == true"><HabilidadesPlay/></div>
     <div v-if="this.$store.state.StoreAjustesPlay == true"><AjustesPlay/></div>
@@ -21,6 +22,7 @@
 import DatosBasicosPlay from "@/components/personajes/ComponentsPlay/DatosBasicosPlay.vue";
 
 import TiradorDados from "@/components/personajes/ComponentsPlay/TiradorDadosPlay.vue";
+import ReservaDeMitos from "@/components/personajes/ComponentsPlay/ReservaDeMitosPlay.vue";
 import EstadosPlay from "@/components/personajes/ComponentsPlay/EstadosPlay.vue";
 import HabilidadesPlay from "@/components/personajes/ComponentsPlay/HabilidadesPlay.vue";
 import AjustesPlay from "@/components/personajes/ComponentsPlay/AjustesPlay.vue";
@@ -35,6 +37,7 @@ export default {
     DatosBasicosPlay,
 
     TiradorDados,
+    ReservaDeMitos,
     EstadosPlay,
     HabilidadesPlay,
     AjustesPlay,

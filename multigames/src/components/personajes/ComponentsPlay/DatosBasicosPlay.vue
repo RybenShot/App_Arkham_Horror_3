@@ -68,15 +68,20 @@
         <i v-if="this.$store.state.StoreTiradorDados == true" class="has-text-success fa-2x fas fa-dice"></i>
         <i v-if="this.$store.state.StoreTiradorDados == false" class="desactivado fa-2x fas fa-dice"></i>
       </div>
+      <!-- Fichas de Mitos -->
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreReservaDeMitos = true)" class="column pt-0">
+        <i v-if="this.$store.state.StoreReservaDeMitos == true" class="has-text-success fa-2x fas fa-skull"></i>
+        <i v-if="this.$store.state.StoreReservaDeMitos == false" class="desactivado fa-2x fas fa-skull"></i>
+      </div>
       <!-- Estados -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreEstadosPlay = true)" class="column pt-0">
-        <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-hamsa"></i>
-        <i v-if="this.$store.state.StoreEstadosPlay == false" class="desactivado fa-2x fas fa-hamsa"></i>
+        <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-user-injured"></i>
+        <i v-if="this.$store.state.StoreEstadosPlay == false" class="desactivado fa-2x fas fa-user-injured"></i>
       </div>
       <!-- Habilidades -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreHabilidades = true) " class="column pt-0">
-        <i v-if="this.$store.state.StoreHabilidades == true" class="has-text-success fa-2x fas fa-user-ninja"></i>
-        <i v-if="this.$store.state.StoreHabilidades == false" class="desactivado fa-2x fas fa-user-ninja"></i>
+        <i v-if="this.$store.state.StoreHabilidades == true" class="has-text-success fa-2x fas fa-address-card"></i>
+        <i v-if="this.$store.state.StoreHabilidades == false" class="desactivado fa-2x fas fa-address-card"></i>
       </div>
       <!-- Ajustes -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreAjustesPlay = true) " class="column pt-0">
@@ -153,6 +158,7 @@ export default {
     },
     resetearNavegacion(){
       this.$store.state.StoreTiradorDados = false;
+      this.$store.state.StoreReservaDeMitos = false;
       this.$store.state.StoreEstadosPlay = false;
       this.$store.state.StoreHabilidades = false;
       this.$store.state.StoreAjustesPlay = false;

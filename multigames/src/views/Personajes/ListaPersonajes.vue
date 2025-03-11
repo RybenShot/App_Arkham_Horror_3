@@ -15,7 +15,7 @@
     <div>
       <!-- Seleccionar Investigador -->
       <div class="columns is-mobile mb-0 pt-3 centrarHero" >
-        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"> <i class="fa-2x fas fa-undo-alt has-text-white"></i> </div>
+        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"> <i class="fa-2x fas fa-arrow-left has-text-white"></i> </div>
         <div class="column " style="margin: 0 auto;"> <p class="has-text-centered title has-text-white">{{ textoInterfaz.titulo }}</p> </div>
         <div class="column is-3 p-0" style="text-align: center;"> <router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link> </div>
       </div>

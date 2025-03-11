@@ -27,6 +27,11 @@
       </div>
     </div>
 
+    <div class="mx-4">
+      <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined is-fullwidth"><strong>Seleccionar mapa</strong></button>
+      <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-fullwidth"><strong>Mapa Seleccionado</strong></button>
+    </div>
+
     <!-- Footer -->
     <div class="columns is-mobile mt-5 mx-2 has-text-centered has-text-white">
       <div class="column" @click="goBack">
