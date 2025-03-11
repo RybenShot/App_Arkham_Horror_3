@@ -1,173 +1,109 @@
 <template>
-<div>
-  <div class="card">
-    <div class="card-icon top-left">    <i class="fa fa-heart"></i></div>
-    <div class="card-icon top-right">   <i class="fa fa-circle"></i></div>
-    
-    <div class="card-number top-left has-text-black">1</div>
-    <div class="card-number top-right has-text-black">2</div>
-
-    <img src="@/assets/img/Games/AHBase/2imgInvestigadores/PJ1.png" alt="Imagen" class="card-image" />
-
-    <div class="card-overlay">
-      <div class="card-title">Título</div>
+  <div class="container">
+    <div class="selector" @click="toggleActive" :class="{ active: isActive }">
+      <span>Seleccionar</span>
+      <canvas ref="fogCanvas" class="fog-canvas"></canvas>
     </div>
   </div>
-
-  <hr>
-
-    <button @click="reproducirSonido"> Reproducir sonido</button>
-
-  <hr>
-
-  <div>
-    <button @click="mostrarNotificacion">Mostrar notificación</button>
-
-    <transition name="fade">
-      <div v-if="mostrarNotif" class="notificacion">
-        <span>{{ mensaje }}</span>
-      </div>
-    </transition>
-  </div>
-
-  <br> <br>
-
-  <div>
-    <button :class="{ 'button': true, 'active': activeButton === 1 }" @click="setActiveButton(1)">Botón 1</button>
-    <button :class="{ 'button': true, 'active': activeButton === 2 }" @click="setActiveButton(2)">Botón 2</button>
-    <button :class="{ 'button': true, 'active': activeButton === 3 }" @click="setActiveButton(3)">Botón 3</button>
-  </div>
-
-</div>  
 </template>
-<script>
-import { Howl } from 'howler';
 
-const sound = new Howl({
-  src: require('@/assets/sound/EfectoSonido1.mp3'),
-});
+<script>
+import { ref, onMounted, watch } from "vue";
+import gsap from "gsap";
 
 export default {
-  name: "Pagina_De_Pruebas",
-  data() {
-    return {
-      mostrarNotif: false,
-      mensaje: "¡Esto es una notificación!",
+  setup() {
+    const isActive = ref(false);
+    const fogCanvas = ref(null);
+    let ctx, particles = [];
 
-      activeButton: null
-    }; // end return
-  }, // end data
-  methods: {
-    mostrarNotificacion() {
-      this.mostrarNotif = true;
-      sound.play();
-      setTimeout(() => {
-        this.mostrarNotif = false;
-      }, 2000);
-    },
+    const toggleActive = () => {
+      isActive.value = !isActive.value;
+    };
 
-    setActiveButton(button) {
-      this.activeButton = button;
-    },
+    const initCanvas = () => {
+      if (!fogCanvas.value) return;
+      const canvas = fogCanvas.value;
+      ctx = canvas.getContext("2d");
+      canvas.width = 300;
+      canvas.height = 150;
 
-    reproducirSonido() {
-    sound.play();
-  },
-  },
-}
+      for (let i = 0; i < 50; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 30 + 20,
+          opacity: Math.random() * 0.5 + 0.2,
+          speed: Math.random() * 2 + 0.5
+        });
+      }
+
+      animateFog();
+    };
+
+    const animateFog = () => {
+      gsap.ticker.add(() => {
+        ctx.clearRect(0, 0, fogCanvas.value.width, fogCanvas.value.height);
+
+        particles.forEach(p => {
+          ctx.fillStyle = `rgba(150, 150, 150, ${p.opacity})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          p.x += p.speed * 0.5;
+          if (p.x > fogCanvas.value.width) p.x = -p.size;
+        });
+      });
+    };
+
+    onMounted(() => {
+      initCanvas();
+    });
+
+    watch(isActive, (newVal) => {
+      if (newVal) animateFog();
+    });
+
+    return { isActive, fogCanvas, toggleActive };
+  }
+};
 </script>
+
 <style scoped>
-
-.button {
-  background-color: transparent;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #222;
 }
 
-.active {
-   box-shadow: 0 0 20px #1eff00;
-}
-/* Carta */
-.card {
+.selector {
+  position: relative;
   width: 150px;
-  height: 200px;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
-
-.card-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  z-index: 2;
-}
-
-.card-icon {
-  position: absolute;
-  font-size: 20px;
-  color: #ffffff;
-  z-index: 3;
-}
-
-.top-left {
-  top: 5px;
-  left: 5px;
-}
-
-.top-right {
-  top: 5px;
-  right: 5px;
-}
-
-.card-number {
-  position: absolute;
-  font-weight: bold;
-  font-size: 20px;
-  color: #ffffff;
-  z-index: 3;
-}
-
-.card-title {
-  font-size: 9px;
-  margin-top: 5px;
-}
-
-
-/* Notificacion */
-.notificacion {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #f1f1f1;
-  padding: 10px;
+  height: 60px;
+  background-color: #444;
+  color: white;
   text-align: center;
-  z-index: 3;
-  opacity: 1;
+  line-height: 60px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  overflow: hidden;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.selector.active {
+  background-color: #666;
 }
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.fog-canvas {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 150px;
+  pointer-events: none;
 }
 </style>

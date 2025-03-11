@@ -23,32 +23,32 @@
 
         <!-- Vida - Cordura -->
         <div class="columns is-mobile has-text-centered pt-2">
-          <div @click="(resetearSelectorAtributos()), (this.atributos.marcado.vida = true)" class="column pb-1">
-            <i class="fa-4x fas fa-heartbeat has-text-danger"></i>
-            <p class="contadorVidaCordura title has-text-white">{{ this.atributos.vida }}</p>
-
+          <div @click="selectProperty('vida')" class="column pb-1 selector-item">
+            <i class="fa-4x fas fa-heartbeat has-text-danger" :class="{ seleccionado: atributos.marcado.vida } "></i>
+            <p class="contadorVidaCordura title has-text-white">{{ atributos.vida }}</p>
           </div>
-          <div @click="(resetearSelectorAtributos()), (this.atributos.marcado.cordura = true)" class="column pb-0">
-            <i class="has-text-info fa-4x fas fa-brain"></i>
-            <p class="contadorVidaCordura title has-text-white">{{ this.atributos.cordura }}</p>
+
+          <div @click="selectProperty('cordura')" class="column pb-0 selector-item">
+            <i class="fa-4x fas fa-brain has-text-info" :class="{ seleccionado: atributos.marcado.cordura }"></i>
+            <p class="contadorVidaCordura title has-text-white">{{ atributos.cordura }}</p>
           </div>
         </div>
 
         <!-- dinero, pistas y restos -->
         <div class="columns is-mobile has-text-centered pt-2">
-          <div  @click="(resetearSelectorAtributos()), (this.atributos.marcado.dinero = true)" class="column p-0">
-            <i class="fa-3x fas fa-money-bill-wave has-text-warning"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ this.atributos.dinero }}</p>
+          <div @click="selectProperty('dinero')" class="column p-0 selector-item" >
+            <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ seleccionado: atributos.marcado.dinero }"></i>
+            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.dinero }}</p>
           </div>
 
-          <div  @click="(resetearSelectorAtributos()), (this.atributos.marcado.pistas = true)" class="column p-0">
-            <i class="has-text-info fa-3x fas fa-search has-text-success"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ this.atributos.pistas }}</p>
+          <div @click="selectProperty('pistas')" class="column p-0 selector-item" >
+            <i class="has-text-success fa-3x fas fa-search" :class="{ seleccionado: atributos.marcado.pistas }"></i>
+            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.pistas }}</p>
           </div>
 
-          <div  @click="(resetearSelectorAtributos()), (this.atributos.marcado.restos = true)" class="column p-0">
-            <i class="has-text-info fa-3x fas fa-poop" id="restos"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ this.atributos.restos }}</p>
+          <div @click="selectProperty('restos')" class="column p-0 selector-item" >
+            <i class="has-text-info fa-3x fas fa-poop" id="restos" :class="{ seleccionado: atributos.marcado.restos }"></i>
+            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.restos }}</p>
           </div>
         </div>
 
@@ -121,6 +121,15 @@ export default {
   },
   
   methods: {
+    // selector de variables
+    selectProperty(prop) {
+      // Reiniciamos todos y activamos solo el seleccionado
+      Object.keys(this.atributos.marcado).forEach(key => {
+        this.atributos.marcado[key] = false;
+      });
+      this.atributos.marcado[prop] = true;
+    },
+
     mostrarNotificacionDesactivar(textoAMostrar, ENTextoAMostrar) {
       if(this.$store.state.lenguaje == "español"){
         this.mensajeVidaCorduraMax = textoAMostrar;
@@ -210,6 +219,21 @@ export default {
 </script>
 
 <style>
+/* selector de variables */
+.selector-item {
+  cursor: pointer;
+  padding: 10px;
+  transition: box-shadow 0.2s ease-in-out;
+  border-radius: 10px;
+}
+
+/* Resaltar el selector activo */
+.seleccionado {
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.5) 5%, rgba(0, 255, 0, 0.2) 50%);
+  /*background: radial-gradient(circle, #39ff14, #f00); /* Verde fosforito */
+  border-radius: 80%;
+  box-shadow: 0px 0px 10px 2px #39ff14; /* Verde fosforito */
+}
 /* Notificacion de expansion activa*/
 .notificacion {
   position: fixed;
@@ -220,7 +244,7 @@ export default {
   box-shadow: 0px 0px 50px 50px rgb(255, 255, 255);
   border-style: inset;
   padding: 10px;
-  z-index: 20;
+  z-index: 20; 
   opacity: 1;
   text-align: center;
 }

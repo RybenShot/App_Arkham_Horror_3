@@ -35,21 +35,22 @@
     </div>
 
     <!-- Dados extras -->
-    <div class="columns is-mobile has-text-white px-2">
-      <p class="column has-text-centered mt-5">{{ textoInterfaz.totalDados }} : {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
-      <div class="column">
+    <div class="columns is-mobile is-vcentered">
+      <div class="column has-text-white px-2">
         <p class="has-text-centered mb-3">{{ textoInterfaz.dadosExtras }}</p>
-        <div class="columns is-mobile">
-          <button class="column p-0 ml-5 my-2" @click="NDeDadosExtra--">-</button>
-          <input class="column p-0 py-2 mx-2 has-text-centered" type="text" size="7" v-model="NDeDadosExtra">
-          <button class="column p-0 mr-5 my-2" @click="NDeDadosExtra++">+</button>
+        <div class="columns is-mobile mb-0">
+          <button class="column p-1 ml-5 my-2 is-size-4" @click="NDeDadosExtra--"><strong>-</strong></button>
+          <input class="column p-0 mx-2 has-text-centered" type="text" size="7" v-model="NDeDadosExtra">
+          <button class="column p-1 mr-5 my-2 is-size-4" @click="NDeDadosExtra++"><strong>+</strong></button>
         </div>
+        <p class="has-text-centered">{{ textoInterfaz.totalDados }} : {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
       </div>
-    </div>
 
-    <!-- Lanzador -->
-    <div class="has-text-centered">
-      <button @click="tirarDados(1)" class="button is-success is-active">{{ textoInterfaz.botonTirar }}</button>
+      <!-- Lanzador -->
+      <div class="column has-text-centered">
+        <button @click="tirarDados(1)" class="button is-success is-active is-fullwidth mr-6"><strong>{{ textoInterfaz.botonTirar }}</strong></button>
+      </div>
+    
     </div>
 
     <br>
