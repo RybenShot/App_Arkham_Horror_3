@@ -147,6 +147,7 @@ export default createStore({
       imgMapa: null,
       BGMapa: null
     },
+    reservaVisible: [],
     modalVerLosetaMapa: false,
     modalVerEnemigos: false,
 

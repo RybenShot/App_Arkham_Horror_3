@@ -6,31 +6,23 @@
 
     <div class="columns is-mobile is-centered botones-accion">
       <div class="column is-narrow">
-        <button @click="restablecerReserva" class="button is-warning mt-3">
-          <i class="fas fa-undo"></i>
-        </button>
+        <button @click="restablecerReserva" class="button is-warning mt-3"><i class="fas fa-undo"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalAgregar" class="button is-primary mt-3">
-          <i class="fas fa-plus"></i>
-        </button>
+        <button @click="abrirModalAgregar" class="button is-primary mt-3"><i class="fas fa-plus"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalEliminar" class="button is-danger mt-3">
-          <i class="fas fa-trash-alt"></i>
-        </button>
+        <button @click="abrirModalEliminar" class="button is-danger mt-3"><i class="fas fa-trash-alt"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalDevolver" class="button is-info mt-3">
-          <i class="fas fa-recycle"></i>
-        </button>
+        <button @click="abrirModalDevolver" class="button is-info mt-3"><i class="fas fa-recycle"></i></button>
       </div>
     </div>
     
 
     <p class="has-text-white">Reserva de Mitos</p>
     <div class="mb-2">
-      <span v-for="(ficha, index) in reservaVisible" :key="index">
+      <span v-for="(ficha, index) in this.$store.state.reservaVisible" :key="index">
         <i :class="['fa-1x', ficha.icon, ficha.color, 'px-1', { 'tachado': ficha.revelada }]"></i>
       </span>
     </div>
@@ -45,66 +37,51 @@
       <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
     </div>
 
-    <div v-if="modalAgregarAbierto" class="modal is-active">
+    <div v-if="modalAgregarAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalAgregar"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
+      <div class="modal-card ">
+        <header class="modal-card-head BGReservaMitos">
           <p class="modal-card-title">Añadir Ficha</p>
-          <button class="delete" @click="cerrarModalAgregar"></button>
+          <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalAgregar"></i>
         </header>
         <section class="modal-card-body">
-          <div class="buttons">
-            <button 
-              v-for="tipo in tiposFicha" 
-              :key="tipo.tipo" 
-              @click="agregarFicha(tipo)"
-              :class="['button', tipo.color]"
-            >
-              <i :class="tipo.icon"></i> {{ tipo.tipo }}
+          <div class="buttons is-centered">
+            <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click="agregarFicha(tipo)" :class="['button', tipo.color]">
+              <i :class="tipo.icon" class="px-1"></i> {{ tipo.tipo }} <i :class="tipo.icon" class="px-1"></i> 
             </button>
           </div>
         </section>
       </div>
     </div>
 
-    <div v-if="modalEliminarAbierto" class="modal is-active">
+    <div v-if="modalEliminarAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalEliminar"></div>
       <div class="modal-card">
-        <header class="modal-card-head">
+        <header class="modal-card-head BGReservaMitos">
           <p class="modal-card-title">Eliminar Ficha</p>
-          <button class="delete" @click="cerrarModalEliminar"></button>
+          <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalEliminar"></i>
         </header>
         <section class="modal-card-body">
-          <div class="buttons">
-            <button 
-              v-for="tipo in tiposFicha" 
-              :key="tipo.tipo" 
-              @click="eliminarFicha(tipo)"
-              :class="['button', tipo.color]"
-            >
-              <i :class="tipo.icon"></i> {{ tipo.tipo }}
+          <div class="buttons is-centered">
+            <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click="eliminarFicha(tipo)" :class="['button', tipo.color]">
+              <i :class="tipo.icon" class="px-1"></i> {{ tipo.tipo }} <i :class="tipo.icon" class="px-1"></i> 
             </button>
           </div>
         </section>
       </div>
     </div>
 
-    <div v-if="modalDevolverAbierto" class="modal is-active">
+    <div v-if="modalDevolverAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalDevolver"></div>
       <div class="modal-card">
-        <header class="modal-card-head">
+        <header class="modal-card-head BGReservaMitos">
           <p class="modal-card-title">Devolver Ficha</p>
-          <button class="delete" @click="cerrarModalDevolver"></button>
+          <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalDevolver"></i>
         </header>
         <section class="modal-card-body">
-          <div class="buttons">
-            <button 
-              v-for="(ficha, index) in reservaVisible.filter(f => f.revelada)" 
-              :key="index" 
-              @click="devolverFicha(ficha)"
-              :class="['button', ficha.color]"
-            >
-              <i :class="ficha.icon"></i> {{ ficha.tipo }}
+          <div class="buttons is-centered">
+            <button v-for="(ficha, index) in this.$store.state.reservaVisible.filter(f => f.revelada)" :key="index" @click="devolverFicha(ficha)" :class="['button', ficha.color]">
+              <i :class="ficha.icon" class="px-1"></i> {{ ficha.tipo }} <i :class="ficha.icon" class="px-1"></i>
             </button>
           </div>
         </section>
@@ -118,7 +95,7 @@ export default {
   name: "ReservaDeMitos",
   data() {
     return {
-      reservaVisible: [],
+      reservaMitosLength : this.$store.state.reservaVisible.length,
       modalAgregarAbierto: false,
       modalEliminarAbierto: false,
       modalDevolverAbierto: false,
@@ -131,55 +108,102 @@ export default {
         { tipo: 'periodico', icon: 'fas fa-scroll', color: 'has-text-warning' },
         { tipo: 'explosion', icon: 'fab fa-sith', color: 'has-text-link' },
         { tipo: 'retribucion', icon: 'fab fa-hubspot', color: 'has-text-danger' },
-        { tipo: 'vacias', icon: 'fas fa-circle', color: 'has-text-grey' }
+        { tipo: 'vacias', icon: 'fas fa-circle', color: 'has-text-light' }
       ]
     };
   },
   mounted() {
-    this.inicializarReserva();
+    if ( this.reservaMitosLength == 0) {
+      this.inicializarReserva();
+    } else {
+      console.error("ya existe una reserva de mitos")
+    }
   },
   methods: {
+    /**
+     * Inicializa la reserva de fichas tomando los datos del store.
+     * Por cada tipo de ficha, crea un array con la cantidad de fichas indicadas
+     * y establece la propiedad 'revelada' en false.
+     */
     inicializarReserva() {
+      // Obtenemos la reserva de mitos desde Vuex
       const reserva = this.$store.state.datosMapa.reservaDeMitos;
-      this.reservaVisible = this.tiposFicha.flatMap(tipo => 
+      // Generamos el array de fichas visibles a partir de los tipos y la cantidad indicada
+      this.$store.state.reservaVisible = this.tiposFicha.flatMap(tipo => 
         Array.from({ length: reserva[tipo.tipo] || 0 }, () => ({ ...tipo, revelada: false }))
       );
+      //console.error(this.$store.state.reservaVisible)
     },
+
+    /**
+     * Selecciona una ficha al azar de las que no han sido reveladas,
+     * la marca como revelada y la asigna a 'fichaMostrada' para mostrarla en grande.
+     */
     revelarFicha() {
-      const fichasNoReveladas = this.reservaVisible.filter(f => !f.revelada);
+      // Filtramos las fichas que no han sido reveladas
+      const fichasNoReveladas = this.$store.state.reservaVisible.filter(f => !f.revelada);
+      // Si ya se han revelado todas, mostramos una alerta
       if (fichasNoReveladas.length === 0) {
         alert("Todas las fichas han sido reveladas. Reinicia la reserva.");
         return;
       }
+      // Seleccionamos una ficha aleatoria del grupo de las que aún no se han revelado
       const indiceAleatorio = Math.floor(Math.random() * fichasNoReveladas.length);
-      const fichaRevelada = fichasNoReveladas[indiceAleatorio];
-      fichaRevelada.revelada = true;
-      // Asignamos la ficha revelada a la propiedad para mostrarla en grande
-      this.fichaMostrada = fichaRevelada;
-      console.log(`Has revelado una ficha de ${fichaRevelada.tipo}`);
+      const fichaSeleccionada = fichasNoReveladas[indiceAleatorio];
+      // Marcamos la ficha como revelada
+      fichaSeleccionada.revelada = true;
+      // Asignamos la ficha revelada a la propiedad "fichaMostrada" para mostrarla en grande
+      this.fichaMostrada = fichaSeleccionada;
+      console.log(`Has revelado una ficha de ${fichaSeleccionada.tipo}`);
     },
+
+    /**
+     * Reinicia la reserva de fichas:
+     * - Marca todas las fichas como no reveladas.
+     * - Limpia la ficha que se muestra en grande.
+     */
     restablecerReserva() {
-      this.reservaVisible.forEach(ficha => (ficha.revelada = false));
-      // Limpiamos la ficha mostrada
+      this.$store.state.reservaVisible.forEach(ficha => (ficha.revelada = false));
       this.fichaMostrada = null;
     },
+
     abrirModalAgregar() { this.modalAgregarAbierto = true; },
     cerrarModalAgregar() { this.modalAgregarAbierto = false; },
+    /**
+     * Agrega una nueva ficha a la reserva.
+     * @param {Object} tipo - Objeto que contiene el tipo de ficha y sus propiedades.
+     */
     agregarFicha(tipo) {
-      this.reservaVisible.push({ ...tipo, revelada: false });
+       // Añadimos la ficha al array de fichas visibles, marcada como no revelada
+       this.$store.state.reservaVisible.push({ ...tipo, revelada: false });
       this.cerrarModalAgregar();
     },
+
     abrirModalEliminar() { this.modalEliminarAbierto = true; },
     cerrarModalEliminar() { this.modalEliminarAbierto = false; },
+    /**
+     * Elimina la primera ficha encontrada del tipo especificado.
+     * @param {Object} tipo - Objeto que contiene el tipo de ficha a eliminar.
+     */
     eliminarFicha(tipo) {
-      const index = this.reservaVisible.findIndex(f => f.tipo === tipo.tipo);
+      // Busca la posición de la ficha del tipo indicado
+      const index = this.$store.state.reservaVisible.findIndex(f => f.tipo === tipo.tipo);
       if (index !== -1) {
-        this.reservaVisible.splice(index, 1);
+        // Elimina la ficha del array
+        this.$store.state.reservaVisible.splice(index, 1);
+      } else {
+        alert("No quedan mas fichas de este tipo en la reserva")
       }
       this.cerrarModalEliminar();
     },
+
+
     abrirModalDevolver() { this.modalDevolverAbierto = true; },
     cerrarModalDevolver() { this.modalDevolverAbierto = false; },
+    /**
+     * Devuelve una ficha: la marca como no revelada y cierra el modal.
+     * @param {Object} ficha - La ficha a devolver.
+     */
     devolverFicha(ficha) {
       ficha.revelada = false;
       this.cerrarModalDevolver();
