@@ -1,9 +1,11 @@
 <template>
-   <div >
+   <div>
+    <div class="modal-background"></div>
       <div class="mx-2 container allWindow  has-background-dark">
         <!-- TITULO-->
-        <header class="modal-card-head BGEnemigos mb-3"> 
+        <header class="modal-card-head BGEnemigos mb-3 px-5"> 
           <h2 class="title titleDecoration is-4 pt-3 mb-3 has-text-light">{{ textoInterfaz.titulo }}</h2> 
+          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false) "></i>
         </header>
 
         <!-- ModalDetalle -->
@@ -266,6 +268,10 @@ export default {
 </script>
 
 <style>
+.cruzeta {
+  justify-content: space-between !important;
+}
+
 @font-face {
   font-family: tituloEnemigos;
   src: url("@/assets/fonts/enemigos/tipografiaEnemigos.ttf");

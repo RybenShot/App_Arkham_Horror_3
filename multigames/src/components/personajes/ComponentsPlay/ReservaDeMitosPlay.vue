@@ -1,7 +1,10 @@
 <template>
-  <section>
-    <p class="subtitle is-6 has-text-white has-text-centered mb-4">Mitos</p>
-    <h1 class="title has-text-white has-text-centered mb-1">{{ this.$store.state.datosMapa.title }}</h1>
+    <div v-if="!this.$store.state.datosMapa.title" class="mt-6">
+      <h1 class="title has-text-centered has-text-white">{{ textoInterfaz.error }}</h1>
+    </div>
+  <section v-if="this.$store.state.datosMapa.title">
+    <p class="subtitle is-6 has-text-white has-text-centered mb-4">{{ textoInterfaz.mitos }}</p>
+    <h1 class="title has-text-white has-text-centered mb-1">{{ textoInterfaz.tituloMapa }}</h1>
     <hr class="my-3">
 
     <div class="columns is-mobile is-centered botones-accion">
@@ -20,7 +23,7 @@
     </div>
     
 
-    <p class="has-text-white">Reserva de Mitos</p>
+    <p class="has-text-white">{{ textoInterfaz.reservaDeMitos }}</p>
     <div class="mb-2">
       <span v-for="(ficha, index) in this.$store.state.reservaVisible" :key="index">
         <i :class="['fa-1x', ficha.icon, ficha.color, 'px-1', { 'tachado': ficha.revelada }]"></i>
@@ -28,7 +31,7 @@
     </div>
 
     <div class="px-4">
-      <button @click="revelarFicha" class="button is-success is-fullwidth">Sacar 1 ficha</button>
+      <button @click="revelarFicha" class="button is-success is-fullwidth">{{ textoInterfaz.botones.sacaFicha }}</button>
     </div>
 
      <!-- Ficha mostrada en grande debajo del botón -->
@@ -37,45 +40,48 @@
       <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
     </div>
 
+    <!-- MODALS -->
     <div v-if="modalAgregarAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalAgregar"></div>
       <div class="modal-card ">
         <header class="modal-card-head BGReservaMitos">
-          <p class="modal-card-title">Añadir Ficha</p>
+          <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.añadir }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalAgregar"></i>
         </header>
-        <section class="modal-card-body">
+        <section class="modal-card-body ">
           <div class="buttons is-centered">
             <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click="agregarFicha(tipo)" :class="['button', tipo.color]">
-              <i :class="tipo.icon" class="px-1"></i> {{ tipo.tipo }} <i :class="tipo.icon" class="px-1"></i> 
+              <i :class="tipo.icon" class="px-1"></i> 
+              {{ tipo.tipo }} 
+              <i :class="tipo.icon" class="px-1"></i> 
             </button>
           </div>
         </section>
       </div>
     </div>
-
     <div v-if="modalEliminarAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalEliminar"></div>
       <div class="modal-card">
         <header class="modal-card-head BGReservaMitos">
-          <p class="modal-card-title">Eliminar Ficha</p>
+          <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.eliminar }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalEliminar"></i>
         </header>
         <section class="modal-card-body">
           <div class="buttons is-centered">
             <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click="eliminarFicha(tipo)" :class="['button', tipo.color]">
-              <i :class="tipo.icon" class="px-1"></i> {{ tipo.tipo }} <i :class="tipo.icon" class="px-1"></i> 
+              <i :class="tipo.icon" class="px-1"></i> 
+              {{ tipo.tipo }} 
+              <i :class="tipo.icon" class="px-1"></i> 
             </button>
           </div>
         </section>
       </div>
     </div>
-
     <div v-if="modalDevolverAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalDevolver"></div>
       <div class="modal-card">
         <header class="modal-card-head BGReservaMitos">
-          <p class="modal-card-title">Devolver Ficha</p>
+          <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.devolver }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalDevolver"></i>
         </header>
         <section class="modal-card-body">
@@ -99,6 +105,29 @@ export default {
       modalAgregarAbierto: false,
       modalEliminarAbierto: false,
       modalDevolverAbierto: false,
+      textoInterfaz:{
+        error: "",
+        mitos: "",
+        tituloMapa: "",
+        reservaDeMitos: "",
+        fichas: {
+          perdicion: "",
+          enemigos: "",
+          pista: "",
+          periodico: "",
+          explosion: "",
+          retribucion: "",
+          blanco: ""
+        },
+        textoModals:{
+          añadir: "",
+          eliminar: "",
+          devolver: ""
+        },
+        botones:{
+          sacaFicha: "",
+        }
+      },
       // Propiedad para la ficha que se mostrará en grande
       fichaMostrada: null,
       tiposFicha: [
@@ -108,18 +137,52 @@ export default {
         { tipo: 'periodico', icon: 'fas fa-scroll', color: 'has-text-warning' },
         { tipo: 'explosion', icon: 'fab fa-sith', color: 'has-text-link' },
         { tipo: 'retribucion', icon: 'fab fa-hubspot', color: 'has-text-danger' },
-        { tipo: 'vacias', icon: 'fas fa-circle', color: 'has-text-light' }
+        { tipo: 'vacias', icon: 'far fa-circle', color: 'has-text-black' }
       ]
     };
   },
-  mounted() {
-    if ( this.reservaMitosLength == 0) {
-      this.inicializarReserva();
-    } else {
-      console.error("ya existe una reserva de mitos")
-    }
-  },
   methods: {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.error = "Para usar esta funcion debes seleccionar un mapa.";
+        this.textoInterfaz.mitos = "Mitos";
+        this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.title;
+        this.textoInterfaz.reservaDeMitos = "Reserva de Mitos";
+
+        this.textoInterfaz.fichas.perdicion = "";
+        this.textoInterfaz.fichas.enemigos = "";
+        this.textoInterfaz.fichas.pista = "";
+        this.textoInterfaz.fichas.periodico = "";
+        this.textoInterfaz.fichas.explosion = "";
+        this.textoInterfaz.fichas.retribucion = "";
+        this.textoInterfaz.fichas.blanco = "";
+
+        this.textoInterfaz.textoModals.añadir = "Añadir Ficha";
+        this.textoInterfaz.textoModals.eliminar = "Eliminar Ficha";
+        this.textoInterfaz.textoModals.devolver = "Devolver Ficha";
+
+        this.textoInterfaz.botones.sacaFicha = "Sacar 1 ficha";
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.error = "To use this function, you must select a map.";
+        this.textoInterfaz.mitos = "Myths";
+        this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.ENtitle;
+        this.textoInterfaz.reservaDeMitos = "Myth Reserve";
+
+        this.textoInterfaz.fichas.perdicion = "";
+        this.textoInterfaz.fichas.enemigos = "";
+        this.textoInterfaz.fichas.pista = "";
+        this.textoInterfaz.fichas.periodico = "";
+        this.textoInterfaz.fichas.explosion = "";
+        this.textoInterfaz.fichas.retribucion = "";
+        this.textoInterfaz.fichas.blanco = "";
+
+        this.textoInterfaz.textoModals.añadir = "Add Token";
+        this.textoInterfaz.textoModals.eliminar = "Delete Token";
+        this.textoInterfaz.textoModals.devolver = "Return Token";
+
+        this.textoInterfaz.botones.sacaFicha = "Draw 1 token";
+      }
+    },
     /**
      * Inicializa la reserva de fichas tomando los datos del store.
      * Por cada tipo de ficha, crea un array con la cantidad de fichas indicadas
@@ -208,7 +271,15 @@ export default {
       ficha.revelada = false;
       this.cerrarModalDevolver();
     }
-  }
+  },
+  mounted() {
+    if ( this.reservaMitosLength == 0) {
+      this.inicializarReserva();
+    } else {
+      console.error("ya existe una reserva de mitos")
+    }
+    this.rellenarTextoSegunIdioma();
+  },
 };
 </script>
 
@@ -239,5 +310,10 @@ export default {
 }
 .ficha-grande i {
   font-size: 5rem;
+}
+.BGReservaMitos{
+  background-image: url(@/assets/img/Estados/fichasDeMitos.jpg);
+  background-position: center;
+  background-size: cover;
 }
 </style>

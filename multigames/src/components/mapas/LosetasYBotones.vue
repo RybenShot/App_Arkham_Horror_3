@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="mx-4">
+    <div class="mx-4" :class="{'boxShadowGreen':!this.$store.state.mapaSeleccionado}">
       <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined is-fullwidth"><strong>Seleccionar mapa</strong></button>
       <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-fullwidth"><strong>Mapa Seleccionado</strong></button>
     </div>
@@ -41,7 +41,7 @@
       <div class="column">
         <p class=" title is-4 has-text-white py-3">{{this.$store.state.datosMapa.idMapa + 1}}/13</p>
       </div>
-      <div id="BG-boton-Selec-inv" class="helperbotones column my-2 py-4">
+      <div id="BG-boton-Selec-inv" :class="{'boxShadowGreen':this.$store.state.mapaSeleccionado}" class="helperbotones column my-2 py-4">
         <router-link to="/ListaPersonajes">
           <p class="has-text-white has-text-left subtitle is-7">{{ textoBotones.selecInv }}</p>
         </router-link>
@@ -118,7 +118,24 @@ export default {
 #BG-boton-enemigos{background-image: url(@/assets/img/4-Enemigos/Enemigos.jpg);}
 #BG-boton-inv-rec{background-image: url(@/assets/img/ZZOtros/BGinvRec.jpg);}
 #BG-boton-comunidad{background-image: url(@/assets/img/ZZOtros/BGComunidad.jpg);}
-#BG-boton-Selec-inv{background-image: url(@/assets/img/ZZOtros/BGSeleccionarInvestigador.jpg);}
+#BG-boton-Selec-inv{background-image: url(@/assets/img/ZZOtros/BGSeleccionarInvestigador.jpg); }
+
+.boxShadowGreen{
+  box-shadow: 0px 0px 10px #05FF00;
+  animation: glowing 1s linear infinite;
+}
+
+@keyframes glowing{
+  0% {
+    box-shadow: 0px 0px 10px #04ff0000;
+  }
+  50% {
+    box-shadow: 0px 0px 10px #05FF00;
+  }
+  100% {
+    box-shadow: 0px 0px 20px 20px #04ff0000;
+  }
+}
 
 /* MAPAS */
 .helperimgMapas{

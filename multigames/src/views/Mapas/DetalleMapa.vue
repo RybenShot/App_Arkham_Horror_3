@@ -2,9 +2,9 @@
   <div>
     <!-- Navegacion -->
     <nav class="columns is-mobile mb-0 pt-5 centrarHero">
-      <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-arrow-left has-text-white"></i></div>
+      <div class="column is-3 p-0" style="text-align: center;" @click="goBack() "><i class="fa-2x fas fa-arrow-left has-text-white"></i></div>
       <div class="column " style="margin: 0 auto;"><p class="has-text-centered title is-4 has-text-white">{{ titulo }}</p></div>
-      <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
+      <div class="column is-3 p-0" style="text-align: center;"><router-link to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
     </nav>
 
     <!-- Ver Loseta Mapa -->
@@ -46,7 +46,8 @@ export default {
     },
   methods:{
     goBack() {
-        this.$router.go(-1);
+      this.$store.state.mapaSeleccionado = false
+      this.$router.go(-1);
     },
 
     rellenarTextoSegunIdioma(){
