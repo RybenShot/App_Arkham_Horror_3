@@ -28,8 +28,8 @@
     </div>
 
     <div class="mx-4" :class="{'boxShadowGreen':!this.$store.state.mapaSeleccionado}">
-      <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined is-fullwidth"><strong>Seleccionar mapa</strong></button>
-      <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-fullwidth"><strong>Mapa Seleccionado</strong></button>
+      <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined is-fullwidth"><strong>{{ textoBotones.seleccionarMapa }}</strong></button>
+      <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-fullwidth"><strong>{{ textoBotones.mapaSeleccionado }}</strong></button>
     </div>
 
     <!-- Footer -->
@@ -60,6 +60,8 @@ export default {
         enemigos: "",
         invRec: "",
         comunidad: "",
+        seleccionarMapa:"",
+        mapaSeleccionado:"",
         selecInv: "",
         lista: ""
       }
@@ -74,12 +76,16 @@ export default {
         this.textoBotones.enemigos = "Enemigos";
         this.textoBotones.invRec = "Investigadores Recomendados";
         this.textoBotones.comunidad = "Comunidad";
+        this.textoBotones.seleccionarMapa = "Seleccionar Mapa";
+        this.textoBotones.mapaSeleccionado = "Mapa seleccionado";
         this.textoBotones.selecInv = "Seleccionar investigador";
         this.textoBotones.lista = "Lista";
       }else{
         this.textoBotones.enemigos = "Enemies";
         this.textoBotones.invRec = "Recommended Investigators";
         this.textoBotones.comunidad = "Community";
+        this.textoBotones.seleccionarMapa = "Select Map";
+        this.textoBotones.mapaSeleccionado = "Map Selected";
         this.textoBotones.selecInv = "Select Investigator";
         this.textoBotones.lista = "List";
       }

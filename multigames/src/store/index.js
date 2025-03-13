@@ -122,7 +122,7 @@ export default createStore({
 
     mapaSeleccionado: false,
     datosMapa: {
-      idMapa: 0,
+      idMapa: null,
       title: null,
       ENtitle: null,
       description: null,

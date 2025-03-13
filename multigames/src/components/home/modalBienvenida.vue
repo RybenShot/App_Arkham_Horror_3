@@ -11,9 +11,6 @@
             <br>
             <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'español'">Si encontrais algún error en la app, me lo podéis decir en la cuenta de <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> y siguenos para formar parte de esta familia infame.</p>
             <p class="has-text-centered has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">If you find any errors in the app, you can tell me in the account <a href="https://www.instagram.com/apparkhamhorror">Instagram</a> and follow us to be part of this infamous family.</p>
-
-            <br>
-            <p class="has-text-centered has-text-white"> {{ descripcionFinal }}</p>
           </section>
 
           <footer class="modal-card-foot has-background-grey-dark">
@@ -40,12 +37,10 @@ export default {
       if(this.$store.state.lenguaje == 'español'){
         this.titulo = "Bienvenido a casa, querido investigador";
         this.descripcion1 = "Espero que disfrutes de esta demo tanto como yo he disfrutado haciéndola. Esta app, es una HERRAMIENTA, es necesario el juego físico para poder jugar.";
-        this.descripcionFinal = "Si encontrais algún error en la app, me lo podéis decir en la cuenta de Instagram y siguenos para formar parte de esta familia infame.";
         this.boton = "Cerrar";
       } else if(this.$store.state.lenguaje == 'ingles'){
         this.titulo = "Welcome home, dear investigator";
         this.descripcion1 = "I hope you enjoy this demo as much as I have enjoyed making it. This app, is a TOOL, you need the physical game to play.";
-        this.descripcionFinal = "If you find any errors in the app, you can tell me in the account Instagram and follow us to be part of this infamous family.";
         this.boton = "Close";
       }
     }

@@ -70,8 +70,11 @@
       </div>
       <!-- Fichas de Mitos -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreReservaDeMitos = true)" class="column pt-0">
-        <i v-if="this.$store.state.StoreReservaDeMitos == true" class="has-text-success fa-2x fas fa-skull"></i>
-        <i v-if="this.$store.state.StoreReservaDeMitos == false" class="desactivado fa-2x fas fa-skull"></i>
+        <i v-if="!this.$store.state.datosMapa.title" class="has-text-danger fa-2x fas fa-skull"></i>
+        <div v-if="this.$store.state.datosMapa.title">
+          <i v-if="this.$store.state.StoreReservaDeMitos == true" class="has-text-success fa-2x fas fa-skull"></i>
+          <i v-if="this.$store.state.StoreReservaDeMitos == false" class="desactivado fa-2x fas fa-skull"></i>
+        </div>
       </div>
       <!-- Estados -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreEstadosPlay = true)" class="column pt-0">

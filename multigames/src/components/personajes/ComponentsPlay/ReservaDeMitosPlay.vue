@@ -1,6 +1,16 @@
 <template>
     <div v-if="!this.$store.state.datosMapa.title" class="mt-6">
       <h1 class="title has-text-centered has-text-white">{{ textoInterfaz.error }}</h1>
+      <div class="px-5">
+        <router-link to="/ListaMapas" class="px-6">
+        <button class="button is-rounded is-fullwidth " :class="{'boxShadowRed':!this.$store.state.mapaSeleccionado}">
+          <i class="fas fa-map-signs mx-3"></i>
+          <p class="title is-5 m-0">{{ textoInterfaz.botones.elegirMapa }}</p>
+          <i class="fas fa-map-signs mx-3"></i>
+        </button>
+      </router-link>
+      </div>
+      
     </div>
   <section v-if="this.$store.state.datosMapa.title">
     <p class="subtitle is-6 has-text-white has-text-centered mb-4">{{ textoInterfaz.mitos }}</p>
@@ -126,6 +136,7 @@ export default {
         },
         botones:{
           sacaFicha: "",
+          elegirMapa:""
         }
       },
       // Propiedad para la ficha que se mostrará en grande
@@ -144,7 +155,7 @@ export default {
   methods: {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
-        this.textoInterfaz.error = "Para usar esta funcion debes seleccionar un mapa.";
+        this.textoInterfaz.error = "Para usar esta función debes seleccionar un mapa.";
         this.textoInterfaz.mitos = "Mitos";
         this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.title;
         this.textoInterfaz.reservaDeMitos = "Reserva de Mitos";
@@ -162,6 +173,7 @@ export default {
         this.textoInterfaz.textoModals.devolver = "Devolver Ficha";
 
         this.textoInterfaz.botones.sacaFicha = "Sacar 1 ficha";
+        this.textoInterfaz.botones.elegirMapa = "Elegir Mapa";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.error = "To use this function, you must select a map.";
         this.textoInterfaz.mitos = "Myths";
@@ -181,6 +193,7 @@ export default {
         this.textoInterfaz.textoModals.devolver = "Return Token";
 
         this.textoInterfaz.botones.sacaFicha = "Draw 1 token";
+        this.textoInterfaz.botones.elegirMapa = "Select Map";
       }
     },
     /**
@@ -285,6 +298,22 @@ export default {
 
 
 <style scoped>
+.boxShadowRed{
+  box-shadow: 0px 0px 10px red;
+  animation: glowing 1s linear infinite;
+}
+
+@keyframes glowing{
+  0% {
+    box-shadow: 0px 0px 10px #04ff0000;
+  }
+  50% {
+    box-shadow: 0px 0px 10px red;
+  }
+  100% {
+    box-shadow: 0px 0px 20px 20px #04ff0000;
+  }
+}
 .has-text-monster {
   color: #7448c7 !important;
 }
