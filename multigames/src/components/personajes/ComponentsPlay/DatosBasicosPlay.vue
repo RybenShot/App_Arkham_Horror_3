@@ -22,14 +22,14 @@
         <p class="subtitle has-text-white has-text-centered mb-1"> {{ textoInterfaz.textoVariables }}</p>
 
         <!-- Vida - Cordura -->
-        <div class="columns is-mobile has-text-centered pt-2">
-          <div @click="selectProperty('vida')" class="column pb-1 selector-item">
-            <i class="fa-4x fas fa-heartbeat has-text-danger" :class="{ seleccionado: atributos.marcado.vida } "></i>
+        <div class="columns is-mobile has-text-centered pt-2 espacioVidaCordura">
+          <div @click="selectProperty('vida')" class="column pb-1 selector-item pr-0">
+            <i class="fa-4x fas fa-heartbeat has-text-danger" :class="{ efectoBumBum: atributos.marcado.vida } "></i>
             <p class="contadorVidaCordura title has-text-white">{{ atributos.vida }}</p>
           </div>
 
-          <div @click="selectProperty('cordura')" class="column pb-0 selector-item">
-            <i class="fa-4x fas fa-brain has-text-info" :class="{ seleccionado: atributos.marcado.cordura }"></i>
+          <div @click="selectProperty('cordura')" class="column pb-0 selector-item pl-0">
+            <i class="fa-4x fas fa-brain has-text-info" :class="{ efectoBumBum: atributos.marcado.cordura }"></i>
             <p class="contadorVidaCordura title has-text-white">{{ atributos.cordura }}</p>
           </div>
         </div>
@@ -37,17 +37,17 @@
         <!-- dinero, pistas y restos -->
         <div class="columns is-mobile has-text-centered pt-2">
           <div @click="selectProperty('dinero')" class="column p-0 selector-item" >
-            <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ seleccionado: atributos.marcado.dinero }"></i>
+            <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ boxShadowYellow: atributos.marcado.dinero }"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.dinero }}</p>
           </div>
 
           <div @click="selectProperty('pistas')" class="column p-0 selector-item" >
-            <i class="has-text-success fa-3x fas fa-search" :class="{ seleccionado: atributos.marcado.pistas }"></i>
+            <i class="has-text-success fa-3x fas fa-search" :class="{ boxShadowYellow: atributos.marcado.pistas }"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.pistas }}</p>
           </div>
 
           <div @click="selectProperty('restos')" class="column p-0 selector-item" >
-            <i class="has-text-info fa-3x fas fa-poop" id="restos" :class="{ seleccionado: atributos.marcado.restos }"></i>
+            <i class="has-text-info fa-3x fas fa-poop" id="restos" :class="{ boxShadowYellow: atributos.marcado.restos }"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.restos }}</p>
           </div>
         </div>
@@ -227,7 +227,42 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/* selector de corazon cordura */
+.espacioVidaCordura{
+  height: 100px;
+}
+.efectoBumBum{
+  font-size: 64px;
+  animation: palpito 1s linear infinite;
+}
+@keyframes palpito{
+  0% {font-size: 64px;}
+  50% {font-size: 70px;}
+  100% {font-size: 64px;}
+}
+
+/* selector de dinero, pista y resto */
+.boxShadowYellow{
+  border-radius: 100%;
+  border: 0px;
+  animation: glowing 1s linear infinite;
+}
+@keyframes glowing{
+  0% {
+    box-shadow: 0px 0px 10px 10px #04ff0000;
+    background-color: rgba(255, 255, 0, 0);
+  }
+  50% {
+    box-shadow: 0px 0px 10px 10px yellow;
+    background-color: yellow;
+  }
+  100% {
+    box-shadow: 0px 0px 20px 20px #04ff0000;
+    background-color: rgba(255, 255, 0, 0);
+  }
+}
+
 /* selector de variables */
 .selector-item {
   cursor: pointer;

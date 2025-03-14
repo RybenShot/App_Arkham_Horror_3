@@ -31,9 +31,10 @@
         <div class="app-version">Version: {{ textoInterfaz.versionApp }}</div>
         
         <!-- Noticias (Menu desplegable) -->
-        <div class="app-version" id="ultimasNoticias">
+        <div class="app-version boxShadowYellow" id="ultimasNoticias">
           <div class="noticias-header" @click="toggleNoticias">
             <p>{{ textoInterfaz.ultimaActualizacion }} {{ textoInterfaz.fechaUltimaActualizacion }}</p>
+
             <i :class="{'fas fa-chevron-down': !noticias.isNoticiasOpen, 'fas fa-chevron-up': noticias.isNoticiasOpen}"></i>
           </div>
           <div v-if="noticias.isNoticiasOpen" class="noticias-list">
@@ -100,7 +101,7 @@ export default {
       textoInterfaz: {
         versionApp: "Beta 1.1.1",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "24/02/2025",
+        fechaUltimaActualizacion: "14/03/2025",
         botones: {
           textBotonMapa: "",
           textBotonInvestigador: "",
@@ -111,27 +112,22 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
-          {id: 3,
-            numeroActualizacion: "1.1.1",
-            titulo: "Reajuste de interfaz de zona de juego de Investigador.",
-            ENtitulo: "Readjustment of Investigator's game area interface.",
-            descripcion: 'Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero, restos y añadir el contador de pistas. Además, se ha añadido la sección "Mapas", que por ahora solo incluye el tirador de fichas de Mitos, con la previsión de añadir próximamente los encuentros.',
-            ENdescripcion: 'The interface of the character page has been readjusted to improve the visibility of the life, sanity, money, remains counters and add the clues counter. In addition, the "Maps" section has been added, which for now only includes the Mythos token shooter, with the forecast of adding the encounters soon.',
-          },
           {id: 2,
-            numeroActualizacion: "1.1.0",
-            titulo: "Correccion de algunas traducciones",
-            ENtitulo: "Correction of some translations",
-            descripcion: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas.",
-            ENdescripcion: "The translations into English of all elements have been completed, including state cards, interface, investigators and maps.",
+            numeroActualizacion: "4.0.1",
+            titulo: "Nueva interfaz de zona de juego de Investigador, reserva de mitos y apartado de noticias.",
+            ENtitulo: "New investigator play area interface, mythos reserve, and news section.",
+            descripcion: 'Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero, restos y añadir el contador de pistas. Además, se ha añadido la sección "Reserva de Mitos", para gestionas las reserva de mitos durante el juego. Se añade apartado de noticias para informar de las nuevas actualizaciones.',
+            ENdescripcion: 'The character page interface has been adjusted to improve the visibility of the health, sanity, money, and clue counters, as well as to add a clue counter. Additionally, the "Mythos Reserve" section has been added to manage the mythos reserve during the game. A news section has also been included to inform about new updates.',
+            fechaActualizacion: "14/03/2025" 
           },
           {id: 1,
-            numeroActualizacion: "1.0.0",
-            titulo: "Primera subida de la aplicación",
-            ENtitulo: "First upload of the app",
-            descripcion: "Se ha implementado la gestión de las fichas de los investigadores, incluyendo vida, cordura y dinero, y la administración de los estados de los personajes, con algunos estados adicionales. En cuanto a los mapas, se ha completado la preparación, añadiendo las imágenes y el número de enemigos para cada mapa, además de configurar las locuciones para los mapas de la caja base.",
-            ENdescripcion: "The management of the investigator's sheets has been implemented, including life, sanity and money, and the management of the characters' states, with some additional states. As for the maps, the preparation has been completed, adding the images and the number of enemies for each map, in addition to configuring the voiceovers for the base box maps.",
-          },
+            numeroActualizacion: "4.0.0",
+            titulo: "Correccion de traducciones y nuevo apartado de versiones.",
+            ENtitulo: "Correction of translations and new versions section.",
+            descripcion: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas. Se incluye control de version en Home.",
+            ENdescripcion: "All elements have been fully translated into English, including status cards, interface, investigators, and maps. Version control has been added to the Home page.",
+            fechaActualizacion: "24/04/2025"
+          }
           
         ],
       },
@@ -172,6 +168,23 @@ export default {
 </script>
 
 <style scoped>
+.boxShadowYellow{
+  box-shadow: 0px 0px 10px yellow;
+  animation: glowing 1s linear infinite;
+}
+
+@keyframes glowing{
+  0% {
+    box-shadow: 0px 0px 10px #04ff0000;
+  }
+  50% {
+    box-shadow: 0px 0px 10px yellow;
+  }
+  100% {
+    box-shadow: 0px 0px 20px 20px #04ff0000;
+  }
+}
+
 @font-face {
   font-family: tituloSeleccion;
   src: url("@/assets/fonts/home/Stranger back in the Night.ttf");

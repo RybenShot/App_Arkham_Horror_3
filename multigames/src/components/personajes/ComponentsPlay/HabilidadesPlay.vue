@@ -9,23 +9,31 @@
 
     <hr>
 
-    <p class="title has-text-centered has-text-white">{{ textoInterfaz.tituloSeg }}</p>
-    <div class="columns is-mobile has-text-centered pt-2">
-      <div class="column pb-1">
-        <i class="fa-4x fas fa-money-bill-wave has-text-primary"></i>
-        <p class="contadorVidaCordura title has-text-white pb-2">{{ this.$store.state.datosPJactual.dinero }}</p>
-        <div class="columns is-mobile">
-          <button @click="this.$store.state.datosPJactual.dinero --" class="column mx-5 button is-small p-0">-</button>
-          <button @click="this.$store.state.datosPJactual.dinero ++" class="column mx-5 button is-small p-0">+</button>
-        </div>
-      </div>
-      <div class="column pb-0">
-        <i class="has-text-link fa-4x fas fa-poop"></i>
-        <p class="contadorVidaCordura title has-text-white pt-2">{{ this.$store.state.datosPJactual.restos }}</p>
-        <div class="columns is-mobile">
-          <button @click="this.$store.state.datosPJactual.restos --" class="column mx-5 button is-small p-0">-</button>
-          <button @click="this.$store.state.datosPJactual.restos ++" class="column mx-5 button is-small p-0">+</button>
-        </div>
+    <h1 class="title has-text-white has-text-centered">Pertenencias Iniciales</h1>
+
+    <br>
+
+    <div class="columns is-mobile mx-3">
+      <!-- Per. 1 -->
+      <img  class="CartasPertenencias cajaCartas" :src="this.$store.state.datosPJactual.Pertenencia1.fotoCartaPertenenciaURL" alt="">
+
+      <!-- Per 2 -->
+      <img v-if="this.$store.state.datosPJactual.Pertenencia2 != null" class="CartasPertenencias cajaCartas column" :src="this.$store.state.datosPJactual.Pertenencia2.fotoCartaPertenenciaURL" alt="">
+      
+    </div>
+    <br>
+
+    <div class="columns is-mobile mx-3">
+      <!-- Per 3 -->
+      <img :class="{'column': this.$store.state.datosPJactual.Pertenencia4 != null }" class="CartasPertenencias cajaCartas" :src="this.$store.state.datosPJactual.Pertenencia3.fotoCartaPertenenciaURL" alt="">
+
+      <!-- Per 4 -->
+      <img v-if="this.$store.state.datosPJactual.Pertenencia4 != null" class="CartasPertenencias cajaCartas column" :src="this.$store.state.datosPJactual.Pertenencia4.fotoCartaPertenenciaURL" alt="">
+
+      <!-- Condiciones especiales de personajes -->
+      <div v-if="this.$store.state.datosPJactual.Pertenencia4 == null" class="column has-text-white">
+          <!-- Esta partye hayq ue corregirla, para que aparezca tambien en ingles -->
+        <p v-if="this.$store.state.datosPJactual.nombrePJ == 'Calvin Wrigth'">Si coges este objeto, debes añadirte un "Pacto Siniestro"</p>
       </div>
     </div>
 
@@ -71,3 +79,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.CartasPertenencias{
+  border-radius: 10px;
+}
+</style>

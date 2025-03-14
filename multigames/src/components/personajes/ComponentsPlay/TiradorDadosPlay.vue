@@ -3,31 +3,31 @@
     <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <!-- Atributos -->
     <div class="columns is-mobile has-text-centered"> 
-      <div class="column p-1 mx-2 ml-4 boton" :class="{'active has-text-white': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.saber) && (setActiveButton(1))">
+      <div class="column p-1 mx-2 ml-4 boton" :class="{'color-saber': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.saber) && (setActiveButton(1))">
         <p><i class="fa-2x fas fa-book-open"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.saber }}</p>
         <p>{{ textoInterfaz.atributos.saber }}</p>
       </div>
 
-      <div class="column p-1 mx-2" :class="{'active has-text-white': activeButton === 2 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.influencia, setActiveButton(2))">
+      <div class="column p-1 mx-2" :class="{'color-influencia': activeButton === 2 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.influencia, setActiveButton(2))">
         <p><i class="fa-2x fas fa-handshake"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.influencia }}</p>
         <p>{{ textoInterfaz.atributos.influencia }}</p>
       </div>
 
-      <div class="column p-1 mx-2" :class="{'active has-text-white': activeButton === 3 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.observacion), setActiveButton(3)">
+      <div class="column p-1 mx-2" :class="{'color-observacion': activeButton === 3 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.observacion), setActiveButton(3)">
         <p><i class="fa-2x fas fa-eye"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.observacion }}</p>
         <p>{{ textoInterfaz.atributos.observacion }}</p>
       </div>
 
-      <div class="column p-1 mx-2" :class="{'active has-text-white': activeButton === 4 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.fuerza), setActiveButton(4)">
+      <div class="column p-1 mx-2" :class="{'color-fuerza': activeButton === 4 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.fuerza), setActiveButton(4)">
         <p><i class="fa-2x fas fa-fist-raised"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.fuerza }}</p>
         <p>{{ textoInterfaz.atributos.fuerza }}</p>
       </div>
 
-      <div class="column p-1 mx-2 mr-4" :class="{'active has-text-white': (activeButton === 5) }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.voluntad), setActiveButton(5)">
+      <div class="column p-1 mx-2 mr-4" :class="{'color-voluntad': (activeButton === 5) }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.voluntad), setActiveButton(5)">
         <p><i class="fa-2x fab fa-hornbill"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.voluntad }}</p>
         <p>{{ textoInterfaz.atributos.voluntad }}</p>
@@ -62,9 +62,14 @@
         <!-- Aqui pintamos todos los resultados, OJO!! enseñamos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
         <div v-for="item in resultados" :key="item">
           <!-- SI OPCIONES AVANZADAS -->
-          <p v-if=" (item == this.$store.state.AvAcierto) | (item == this.$store.state.AvAcierto2) | (item == this.$store.state.AvAcierto3)" class="acierto resultado-css has-text-white" > {{ item }} </p>
-          <p v-else-if=" (item == this.$store.state.AvFatal) | (item == this.$store.state.AvFatal2) | (item == this.$store.state.AvFatal3) " class="fatal resultado-css has-text-white" > {{ item }} </p>
-          <p v-else class="resultado-css has-text-white"> {{ item }} </p>
+          <p class=" resultado-css has-text-white">
+            <i v-if="item == 1" class="fa-2x fas fa-dice-one"></i>
+            <i v-if="item == 2" class="fa-2x fas fa-dice-two"></i>
+            <i v-if="item == 3" class="fa-2x fas fa-dice-three"></i>
+            <i v-if="item == 4" class="fa-2x fas fa-dice-four" :class="{'acierto': this.$store.state.AvAcierto3}"></i>
+            <i v-if="item == 5" class="fa-2x fas fa-dice-five" :class="{'acierto': this.$store.state.AvAcierto2}"></i>
+            <i v-if="item == 6" class="acierto fa-2x fas fa-dice-six"></i>
+          </p>
         </div>
       </div>
     </div>
@@ -159,6 +164,13 @@ export default {
 </script>
 
 <style>
+/* colores atributos */
+.color-saber{color: #aa20e0 !important;}
+.color-influencia{color: #e09320 !important;}
+.color-observacion{color: #56e020 !important;}
+.color-fuerza{color: #e02020 !important;}
+.color-voluntad{color: #2083e0 !important;}
+
 /* Atributo activo */
 .active {
    border-bottom: solid 1px white;
@@ -185,7 +197,9 @@ export default {
 }
 
 .acierto {
-  border: solid #1eff00;
+  border-radius: 20%;
+  background-color: #000000;
+  border: solid 0.5px #1eff00;
   box-shadow: 0 0 20px #1eff00;
 }
 

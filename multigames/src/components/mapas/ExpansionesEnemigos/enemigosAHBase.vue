@@ -5,7 +5,7 @@
         <!-- TITULO-->
         <header class="modal-card-head BGEnemigos mb-3 px-5"> 
           <h2 class="title titleDecoration is-4 pt-3 mb-3 has-text-light">{{ textoInterfaz.titulo }}</h2> 
-          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false) "></i>
+          <i class="fa-2x fas fa-times-circle has-text-danger" @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false) "></i>
         </header>
 
         <!-- ModalDetalle -->
@@ -268,7 +268,7 @@ export default {
 </script>
 
 <style>
-.cruzeta {
+.modal-card-foot, .modal-card-head {
   justify-content: space-between !important;
 }
 

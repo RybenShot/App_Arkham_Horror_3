@@ -274,6 +274,20 @@ export default {
           expansionMapa: "AH Mareas",
           ducacionMapa: 150,
           votosUsuariosMapa: 4 ,
+          espacioDeInicio:"Hotel Gilman House" ,
+          ENespacioDeInicio:"Hotel Gilman House" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            terror: 1,
+            vacias: 2
+          },
+          retribucion: "Se propaga el Terror en cada Barrio que contenga un Monstruo Profundo.",
+          ENretribucion: "The Terror spreads in each Neighborhood that contains a Deep One Monster.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa4MT.png"),
           BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG1MapaAHMareasTenebrosas.jpg")
         },
@@ -286,6 +300,19 @@ export default {
           expansionMapa: "AH Mareas",
           ducacionMapa: 170,
           votosUsuariosMapa: 4 ,
+          espacioDeInicio:"Muelles" ,
+          ENespacioDeInicio:"Docks" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Todo investigador situado en un espacio que contenga Perdición sufre un punto de Horror a menos que descarte una ficha de Concentración.",
+          ENretribucion: "Any investigator located in a space containing Doom suffers 1 point of Horror unless they discard a Focus token.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa5MT.png"),
           BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG2MapaAHMareasTenebrosas.jpg")
         },
@@ -298,6 +325,20 @@ export default {
           expansionMapa: "AH Mareas",
           ducacionMapa: 230,
           votosUsuariosMapa: 3 ,
+          espacioDeInicio:"Restaurante de Velma" ,
+          ENespacioDeInicio:"Velma's Restaurant" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            terror: 1,
+            vacias: 2
+          },
+          retribucion: "Coloca una ficha de Perdición en cualquier espacio de Innsmouth y una ficha de Perdición en cualquier espacio de Kingsport.",
+          ENretribucion: "Place a Doom token in any space in Innsmouth and a Doom token in any space in Kingsport.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa6MT.png"),
           BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG3MapaAHMareasTenebrosas.jpg")
         },
@@ -310,6 +351,19 @@ export default {
           expansionMapa: "AH Mareas",
           ducacionMapa: 200,
           votosUsuariosMapa: 3 ,
+          espacioDeInicio:"Hospital de Santa María" ,
+          ENespacioDeInicio:"Santa María Hospital" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 1
+          },
+          retribucion: "Cada investigador coloca una ficha de Peridión en su espacio a menos que sufra un punto de Horror.",
+          ENretribucion: "Each investigator places a Doom token in their space unless they suffer a point of Horror.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa7MT.png"),
           BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG4MapaAHMareasTenebrosas.jpg")
         },
@@ -324,6 +378,20 @@ export default {
           expansionMapa: "AH Noche Cerrada",
           ducacionMapa: 240,
           votosUsuariosMapa: 3 ,
+          espacioDeInicio:"Biblioteca Orne" ,
+          ENespacioDeInicio:"Orne Library" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Si hay 2 o más Pistas en algún Barrio, coloca una ficha de Perdición sobre la hoja del escenario.",
+          ENretribucion: "If there are 2 or more Clues in any Neighborhood, place a Doom token on the scenario sheet.",
+          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa0.png"),
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa8NC.png"),
           BGMapa: require("@/assets/img/3-Mapas/BG8MapaAHNocheCerrada.jpg")
         },
@@ -336,6 +404,20 @@ export default {
           expansionMapa: "AH Noche Cerrada",
           ducacionMapa: 230,
           votosUsuariosMapa: 3 ,
+
+          espacioDeInicio:"Comisaría" ,
+          ENespacioDeInicio:"Police Station" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Si ninguna de las bandas es hostil, aparece un Monstruo Sectario.",
+          ENretribucion: "If neither of the gangs is hostile, a Cultist Monster appears.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa9NC.png"),
           BGMapa: require("@/assets/img/3-Mapas/BG9MapaAHNocheCerrada.jpg")
         }
@@ -350,6 +432,19 @@ export default {
           expansionMapa: "AH Secretos",
           ducacionMapa: 330,
           votosUsuariosMapa: 2 ,
+          espacioDeInicio:"Logia del Crepúsculo de Plata" ,
+          ENespacioDeInicio:"Silver Twilight Lodge" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Cada investigador que no esté enfrentado a uno o más Mosntruos se mueve un espacio hacia el espacio inestable a menos que sufra un punto de Horror.",
+          ENretribucion: "Each investigator who is not engaged with one or more Monsters moves one space toward the unstable space unless they suffer one Horror.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa10SO.png"),
           BGMapa: require("@/assets/img/3-Mapas/BG10MapaAHSecretos.jpg")
         },
@@ -362,6 +457,19 @@ export default {
           expansionMapa: "AH Secretos",
           ducacionMapa: 130,
           votosUsuariosMapa: 3 ,
+          espacioDeInicio:"La casa de la bruja" ,
+          ENespacioDeInicio:"The Witch's House" ,
+          reservaDeMitos:{
+            perdicion: 3,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 3
+          },
+          retribucion: "Por cada Monstruo Espíritu, coloca una ficha de Perdición en su espacio. Si no hay Mosntruos Espíritu en el tablero, aparece un Monstruo Espíritu. ",
+          ENretribucion: "For each Spirit Monster, place a Doom token in its space. If there are no Spirit Monsters on the board, a Spirit Monster appears.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa11SO.png"),
           BGMapa: require("@/assets/img/3-Mapas/BG11MapaAHSecretos.jpg")
         },
@@ -374,6 +482,19 @@ export default {
           expansionMapa: "AH Secretos",
           ducacionMapa: 140,
           votosUsuariosMapa: 3 ,
+          espacioDeInicio:"Estación de Trenes" ,
+          ENespacioDeInicio:"Train Station" ,
+          reservaDeMitos:{
+            perdicion: 4,
+            enemigos: 2,
+            pistas: 2,
+            periodico: 2,
+            explosion: 1,
+            retribucion: 1,
+            vacias: 2
+          },
+          retribucion: "Coloca una carta de Aliado boca abajo en la calle más cercana al espacio inestable; luego aparece un Mosntruo en el espacio inestable.",
+          ENretribucion: "Place an Ally card face down in the street closest to the unstable space; then, a Monster appears in the unstable space.",
           imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa12SO.png"),
           BGMapa: require("@/assets/img/3-Mapas/BG12MapaAHSecretos.jpg")
         },

@@ -45,9 +45,16 @@
     </div>
 
      <!-- Ficha mostrada en grande debajo del botón -->
-     <div v-if="fichaMostrada" class="ficha-grande has-text-centered mt-4">
-      <i :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
-      <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
+    <div v-if="fichaMostrada" class="ficha-grande has-text-centered mt-4">
+      <div v-if="fichaMostrada.tipo == 'retribucion'">
+        <i class="efectoRetribucion" :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
+        <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
+      </div>
+
+      <div v-else>
+        <i :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
+        <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
+      </div>
     </div>
 
     <!-- MODALS -->
@@ -211,6 +218,24 @@ export default {
       //console.error(this.$store.state.reservaVisible)
     },
 
+    comprobarFicha(){
+      switch (this.fichaMostrada.tipo) {
+        case "retribucion":
+        this.$store.state.modalPopUpNotificacion = true
+          if (this.$store.state.EstadoPacto == true) {
+            this.$store.state.modalPacto = true
+          } if (this.$store.state.EstadoMancillado == true) {
+            this.$store.state.modalMancillado = true
+          } if (this.$store.state.EstadoPerseguido == true) {
+            this.$store.state.modalPerseguido = true
+          }
+          break;
+      
+        default:
+          break;
+      }
+    },
+
     /**
      * Selecciona una ficha al azar de las que no han sido reveladas,
      * la marca como revelada y la asigna a 'fichaMostrada' para mostrarla en grande.
@@ -230,7 +255,8 @@ export default {
       fichaSeleccionada.revelada = true;
       // Asignamos la ficha revelada a la propiedad "fichaMostrada" para mostrarla en grande
       this.fichaMostrada = fichaSeleccionada;
-      console.log(`Has revelado una ficha de ${fichaSeleccionada.tipo}`);
+      // Ejecutamos la comprobación después de 5 segundos
+      setTimeout(() => {this.comprobarFicha()}, 3000);
     },
 
     /**
@@ -298,6 +324,63 @@ export default {
 
 
 <style scoped>
+.efectoRetribucion {
+  font-size: 64px;
+  color: #FF0000; /* Color inicial */
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Sombra de texto para mayor impacto */
+  animation: palpito 0.8s ease-in-out infinite, impacto 1.2s ease-in-out infinite, destello 2s ease-in-out infinite;
+}
+
+@keyframes palpito {
+  0% {
+    font-size: 64px;
+  }
+  50% {
+    font-size: 75px;
+  }
+  100% {
+    font-size: 64px;
+  }
+}
+
+@keyframes impacto {
+  0% {
+    transform: scale(1) rotate(0deg);
+    color: #FF0000; /* Rojo inicial */
+  }
+  25% {
+    transform: scale(1.3) rotate(5deg); /* Añadido ligero giro */
+    color: #FF5733; /* Rojo más claro */
+  }
+  50% {
+    transform: scale(1.5) rotate(-10deg); /* Giro más intenso */
+    color: #900C3F; /* Rojo oscuro */
+  }
+  75% {
+    transform: scale(1.3) rotate(5deg); /* Vuelta al giro inicial */
+    color: #FF5733; /* Rojo más claro */
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    color: #FF0000; /* Rojo inicial */
+  }
+}
+
+@keyframes destello {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 40px rgba(255, 0, 0, 0.8); /* Efecto de destello */
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  }
+}
+
+
+
 .boxShadowRed{
   box-shadow: 0px 0px 10px red;
   animation: glowing 1s linear infinite;
