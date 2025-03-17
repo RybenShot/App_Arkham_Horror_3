@@ -1260,7 +1260,7 @@ export default {
           fuerza: 2,
           voluntad: 4,
           dinero: 2,
-          restos: 0,
+          restos: 1,
           pistas: 0,
           limConcentracion: 3,
           ENlimConcentracion: 3 ,
@@ -1312,7 +1312,7 @@ export default {
             ENnombre: "Drive away the darkness",
             descripcion:"Hechizo - Ensalmo. Una vez por ronda, antes de que se resuelva un efecto de Retribución, puedes hacer una prueba de SABER -1. Si la superas, ese efecto de Retribución no se resuelve en la actual fase de Mitos.",
             ENdescripcion:"Spell - Spell. Once per round, before a Retribution effect is resolved, you can do a SABER -1 test. If you overcome it, that Retribution effect is not resolved in the current Myths phase.",
-            fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerTommy3.jpg")
+            fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerPadre3.jpg")
           },
           fotoUrl: require("@/assets/img/1-Personajes/17-Padre.jpg"),
         },

@@ -9,25 +9,32 @@
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="(this.$store.state.viewDetalleMapa = true), (this.$store.state.modalVerEnemigos = false) "></i>
         </header>
 
+        <div class="mx-3 mb-2 columns is-mobile">
+          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>AH Base</p>
+          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-info mr-3"></i>AH Noche Cerrada</p>
+        </div>
+
         <!-- ModalDetalle -->
         <div v-if="this.$store.state.verDetalleEnemigo == true"><ModalDetalleEnemigo/></div>
 
         <div v-if="this.$store.state.datosMapa.idMapa == 4">
           <div id="enemisList" class="px-1">
-            <div v-for="item in EnemigosMapa1" :key="item.id">
-              <div @click="(this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = item.url)" class="helperCartasEnemigos mb-4 mx-1">
-                <img :src="item.url" :alt="item.nombreEnemigo" />
-                <p class="has-text-white  titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ item.nombreEnemigo }}</p>
-                <p class="has-text-white  titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ item.ENnombreEnemigo }}</p>
+            <div v-for="enemigo in EnemigosMapa1" :key="enemigo.id">
+              <div @click="(this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mb-4 mx-1">
+                <img :src="enemigo.url" :alt="enemigo.nombreEnemigo" 
+                :class="{'sombraExpansionMareas':enemigo.expansion == 'Mareas Tenebrosas', 'sombraExpansionBase':enemigo.expansion == 'Base'}"/>
+
+                <p class="has-text-white  titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ enemigo.nombreEnemigo }}</p>
+                <p class="has-text-white  titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ enemigo.ENnombreEnemigo }}</p>
 
                 <p class="has-text-success  titleDecoration2 pt-0" 
-                v-if= ' item.nombreEnemigo === "Bestia alterada" ||  
-                        item.nombreEnemigo === "Esclava mostruosa" || 
-                        item.nombreEnemigo === "Secuestrador al acecho" ||
-                        item.nombreEnemigo === "Endriago de río" ||
-                        item.nombreEnemigo === "Matón híbrido" ||
-                        item.nombreEnemigo === "Depredador de bajamar" ||
-                        item.nombreEnemigo === "Vástago del océano"
+                v-if= ' enemigo.nombreEnemigo === "Bestia alterada" ||  
+                        enemigo.nombreEnemigo === "Esclava mostruosa" || 
+                        enemigo.nombreEnemigo === "Secuestrador al acecho" ||
+                        enemigo.nombreEnemigo === "Endriago de río" ||
+                        enemigo.nombreEnemigo === "Matón híbrido" ||
+                        enemigo.nombreEnemigo === "Depredador de bajamar" ||
+                        enemigo.nombreEnemigo === "Vástago del océano"
                         '> X2</p>
               </div>
             </div>
@@ -36,19 +43,20 @@
 
         <div v-if="this.$store.state.datosMapa.idMapa == 5">
           <div id="enemisList" class="px-1">
-            <div v-for="item in EnemigosMapa2" :key="item.id">
-              <div @click=" (this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = item.url)" class="helperCartasEnemigos mb-4 mx-1">
-                <img :src="item.url" :alt="item.nombreEnemigo" />
+            <div v-for="enemigo in EnemigosMapa2" :key="enemigo.id">
+              <div @click=" (this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mb-4 mx-1">
+                <img :src="enemigo.url" :alt="enemigo.nombreEnemigo" 
+                :class="{'sombraExpansionMareas':enemigo.expansion == 'Mareas Tenebrosas', 'sombraExpansionBase':enemigo.expansion == 'Base'}"/>
 
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ item.nombreEnemigo }}</p>
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ item.ENnombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ enemigo.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ enemigo.ENnombreEnemigo }}</p>
 
                 <p class="has-text-success  titleDecoration2 pt-0" 
-                v-if= ' item.nombreEnemigo === "Secuestrador al acecho" ||
-                        item.nombreEnemigo === "Tocado por el vacío" ||
-                        item.nombreEnemigo === "Transeúnte asustado"
+                v-if= ' enemigo.nombreEnemigo === "Secuestrador al acecho" ||
+                        enemigo.nombreEnemigo === "Tocado por el vacío" ||
+                        enemigo.nombreEnemigo === "Transeúnte asustado"
                         '> X2</p>
-                <p class="has-text-danger  titleDecoration2 pt-0" v-if= ' item.nombreEnemigo === "Extraños con túnicas"'> X3</p>
+                <p class="has-text-danger  titleDecoration2 pt-0" v-if= ' enemigo.nombreEnemigo === "Extraños con túnicas"'> X3</p>
               </div>
             </div>
           </div>
@@ -56,19 +64,20 @@
 
         <div v-if="this.$store.state.datosMapa.idMapa == 6">
           <div id="enemisList" class="px-1">
-            <div v-for="item in EnemigosMapa3" :key="item.id">
-              <div @click=" (this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = item.url)" class="helperCartasEnemigos mb-4 mx-1">
-                <img :src="item.url" :alt="item.nombreEnemigo" />
+            <div v-for="enemigo in EnemigosMapa3" :key="enemigo.id">
+              <div @click=" (this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mb-4 mx-1">
+                <img :src="enemigo.url" :alt="enemigo.nombreEnemigo" 
+                :class="{'sombraExpansionMareas':enemigo.expansion == 'Mareas Tenebrosas', 'sombraExpansionBase':enemigo.expansion == 'Base'}"/>
 
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ item.nombreEnemigo }}</p>
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ item.ENnombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ enemigo.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ enemigo.ENnombreEnemigo }}</p>
 
                 <p class="has-text-success  titleDecoration2 pt-0" 
-                v-if= ' item.nombreEnemigo === "Esclava mostruosa" ||  
-                        item.nombreEnemigo === "Prisionero del hielo" ||
-                        item.nombreEnemigo === "Siervo alterado" ||
-                        item.nombreEnemigo === "Sonánbulo maldito" ||
-                        item.nombreEnemigo === "Transeúnte asustado"
+                v-if= ' enemigo.nombreEnemigo === "Esclava mostruosa" ||  
+                        enemigo.nombreEnemigo === "Prisionero del hielo" ||
+                        enemigo.nombreEnemigo === "Siervo alterado" ||
+                        enemigo.nombreEnemigo === "Sonanbulo maldito" ||
+                        enemigo.nombreEnemigo === "Transeúnte asustado"
                         '> X2</p>
               </div>
             </div>
@@ -77,19 +86,20 @@
 
         <div v-if="this.$store.state.datosMapa.idMapa == 7">
           <div id="enemisList" class="px-1">
-            <div v-for="item in EnemigosMapa4" :key="item.id">
-              <div @click=" (this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = item.url)" class="helperCartasEnemigos mb-4 mx-1">
-                <img :src="item.url" :alt="item.nombreEnemigo" />
+            <div v-for="enemigo in EnemigosMapa4" :key="enemigo.id">
+              <div @click=" (this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mb-4 mx-1">
+                <img :src="enemigo.url" :alt="enemigo.nombreEnemigo" 
+                :class="{'sombraExpansionMareas':enemigo.expansion == 'Mareas Tenebrosas', 'sombraExpansionBase':enemigo.expansion == 'Base'}"/>
 
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ item.nombreEnemigo }}</p>
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ item.ENnombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ enemigo.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ enemigo.ENnombreEnemigo }}</p>
 
                 <p class="has-text-success  titleDecoration2 pt-0" 
-                v-if= ' item.nombreEnemigo === "Depredador de bajamar" ||  
-                        item.nombreEnemigo === "Mago ceremonial" ||
-                        item.nombreEnemigo === "Soñador colérico" ||
-                        item.nombreEnemigo === "Sonánbulo maldito" ||
-                        item.nombreEnemigo === "Transeúnte asustado"
+                v-if= ' enemigo.nombreEnemigo === "Depredador de bajamar" ||  
+                        enemigo.nombreEnemigo === "Mago ceremonial" ||
+                        enemigo.nombreEnemigo === "Soñador colérico" ||
+                        enemigo.nombreEnemigo === "Sonanbulo maldito" ||
+                        enemigo.nombreEnemigo === "Transeúnte asustado"
                         '> X2</p>
               </div>
             </div>
@@ -109,12 +119,13 @@
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'"> Create the Anomalies deck using "Visions of the Moon" cards</p>
 
           <div id="enemisList" class="px-1">
-            <div v-for="item in EnemigosExtrasMapa2" :key="item.id">
-              <div @click="(this.$store.state.verDetalleEnemigo = true),(this.$store.state.SeleccionarURLEnemigo = item.url)" class="helperCartasEnemigos mx-1">
-                <img :src="item.url" :alt="item.nombreEnemigo" width="100" />
+            <div v-for="enemigo in EnemigosExtrasMapa2" :key="enemigo.id">
+              <div @click="(this.$store.state.verDetalleEnemigo = true),(this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mx-1">
+                <img :src="enemigo.url" :alt="enemigo.nombreEnemigo" width="100" 
+                :class="{'sombraExpansionMareas':enemigo.expansion == 'Mareas Tenebrosas', 'sombraExpansionBase':enemigo.expansion == 'Base'}"/>
 
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ item.nombreEnemigo }}</p>
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ item.ENnombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ enemigo.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ enemigo.ENnombreEnemigo }}</p>
 
               </div>
             </div>
@@ -126,11 +137,13 @@
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'">Create the Terror deck using "Frost City" cards</p>
 
           <div id="enemisList" class="px-1">
-            <div v-for="item in EnemigosExtrasMapa3" :key="item.id">
+            <div v-for="enemigo in EnemigosExtrasMapa3" :key="enemigo.id">
               <div class="helperCartasEnemigos mx-1">
-                <img :src="item.url" :alt="item.nombreEnemigo" width="100" />
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ item.nombreEnemigo }}</p>
-                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ item.ENnombreEnemigo }}</p>
+                <img :src="enemigo.url" :alt="enemigo.nombreEnemigo" width="100" 
+                :class="{'sombraExpansionMareas':enemigo.expansion == 'Mareas Tenebrosas', 'sombraExpansionBase':enemigo.expansion == 'Base'}"/>
+
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'español'">{{ enemigo.nombreEnemigo }}</p>
+                <p class="has-text-white titleDecoration2 pt-0" v-if="this.$store.state.lenguaje == 'ingles'">{{ enemigo.ENnombreEnemigo }}</p>
               </div>
             </div>
           </div>
@@ -172,63 +185,65 @@ export default {
       },
 
       EnemigosMapa1: [
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo35.jpg"),ENnombreEnemigo: "Altered beast", nombreEnemigo: "Bestia alterada",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo31.jpg"),ENnombreEnemigo: "Monster slave", nombreEnemigo: "Esclava mostruosa",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT2.jpg"),ENnombreEnemigo: "Kidnapper", nombreEnemigo: "Secuestrador al acecho",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT11.jpg"),ENnombreEnemigo: "Enraptured hybrid", nombreEnemigo: "Híbrido embelesado",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT13.jpg"),ENnombreEnemigo: "Impetuous hunter", nombreEnemigo: "Cazador impetuoso",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo26.jpg"),ENnombreEnemigo: "Sea singer", nombreEnemigo: "Cantor marino",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo25.jpg"),ENnombreEnemigo: "River bed", nombreEnemigo: "Endriago de río",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo24.jpg"),ENnombreEnemigo: "Hybrid thug", nombreEnemigo: "Matón híbrido",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo23.jpg"),ENnombreEnemigo: "Low-water predator", nombreEnemigo: "Depredador de bajamar",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo22.jpg"),ENnombreEnemigo: "Ocean stem", nombreEnemigo: "Vástago del océano",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo21.jpg"),ENnombreEnemigo: "Riverside beast", nombreEnemigo: "Bestia de la ribera",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo20.jpg"),ENnombreEnemigo: "Titan of the tide", nombreEnemigo: "Titán de la marea",}
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo35.jpg"),ENnombreEnemigo: "Altered beast", nombreEnemigo: "Bestia alterada",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo31.jpg"),ENnombreEnemigo: "Monster slave", nombreEnemigo: "Esclava mostruosa",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT2.jpg"),ENnombreEnemigo: "Kidnapper", nombreEnemigo: "Secuestrador al acecho",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT11.jpg"),ENnombreEnemigo: "Enraptured hybrid", nombreEnemigo: "Híbrido embelesado",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT13.jpg"),ENnombreEnemigo: "Impetuous hunter", nombreEnemigo: "Cazador impetuoso",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo26.jpg"),ENnombreEnemigo: "Sea singer", nombreEnemigo: "Cantor marino",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo25.jpg"),ENnombreEnemigo: "River bed", nombreEnemigo: "Endriago de río",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo24.jpg"),ENnombreEnemigo: "Hybrid thug", nombreEnemigo: "Matón híbrido",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo23.jpg"),ENnombreEnemigo: "Low-water predator", nombreEnemigo: "Depredador de bajamar",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo22.jpg"),ENnombreEnemigo: "Ocean stem", nombreEnemigo: "Vástago del océano",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo21.jpg"),ENnombreEnemigo: "Riverside beast", nombreEnemigo: "Bestia de la ribera",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo20.jpg"),ENnombreEnemigo: "Titan of the tide", nombreEnemigo: "Titán de la marea",}
       ],
       EnemigosExtrasMapa1: [],
 
       EnemigosMapa2: [
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT7.jpg"),ENnombreEnemigo: "Guardian beast", nombreEnemigo: "Bestia guardiana",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo13.jpg"),ENnombreEnemigo: "Strangers in robes", nombreEnemigo: "Extraños con túnicas",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT2.jpg"),ENnombreEnemigo: "Kidnapper", nombreEnemigo: "Secuestrador al acecho",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo32.jpg"),ENnombreEnemigo: "Touched by the void", nombreEnemigo: "Tocado por el vacío",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT6.jpg"),ENnombreEnemigo: "Scared bystander", nombreEnemigo: "Transeúnte asustado",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT1.jpg"),ENnombreEnemigo: "Scavenger glider", nombreEnemigo: "Carroñero planeador",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT3.jpg"),ENnombreEnemigo: "Byakhee rondador", nombreEnemigo: "Byakhee rondador",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT8.jpg"),ENnombreEnemigo: "Devouring master", nombreEnemigo: "Amo devorador",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT14.jpg"),ENnombreEnemigo: "Cruel slaver", nombreEnemigo: "Esclavista cruel",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT15.jpg"),ENnombreEnemigo: "Lividity lord", nombreEnemigo: "Señor de la lividez",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo11.jpg"),ENnombreEnemigo: "Fast byakhee", nombreEnemigo: "Byakhee veloz",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT7.jpg"),ENnombreEnemigo: "Guardian beast", nombreEnemigo: "Bestia guardiana",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo13.jpg"),ENnombreEnemigo: "Strangers in robes", nombreEnemigo: "Extraños con túnicas",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT2.jpg"),ENnombreEnemigo: "Kidnapper", nombreEnemigo: "Secuestrador al acecho",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo32.jpg"),ENnombreEnemigo: "Touched by the void", nombreEnemigo: "Tocado por el vacío",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT6.jpg"),ENnombreEnemigo: "Scared bystander", nombreEnemigo: "Transeúnte asustado",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT1.jpg"),ENnombreEnemigo: "Scavenger glider", nombreEnemigo: "Carroñero planeador",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT3.jpg"),ENnombreEnemigo: "Byakhee rondador", nombreEnemigo: "Byakhee rondador",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT8.jpg"),ENnombreEnemigo: "Devouring master", nombreEnemigo: "Amo devorador",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT14.jpg"),ENnombreEnemigo: "Cruel slaver", nombreEnemigo: "Esclavista cruel",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT15.jpg"),ENnombreEnemigo: "Lividity lord", nombreEnemigo: "Señor de la lividez",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo11.jpg"),ENnombreEnemigo: "Fast byakhee", nombreEnemigo: "Byakhee veloz",},
       ],
-      EnemigosExtrasMapa2: [{url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT9.jpg"),ENnombreEnemigo: "Declan Pearce", nombreEnemigo: "Declan Pearce",},],
+      EnemigosExtrasMapa2: [
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT9.jpg"),ENnombreEnemigo: "Declan Pearce", nombreEnemigo: "Declan Pearce",}
+      ],
 
       EnemigosMapa3: [
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo15.jpg"),ENnombreEnemigo: "Hungry predator", nombreEnemigo: "Depredador hambriento",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo31.jpg"),ENnombreEnemigo: "Monster slave", nombreEnemigo: "Esclava mostruosa",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo36.jpg"),ENnombreEnemigo: "Avian slave", nombreEnemigo: "Esclavo aviar",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo33.jpg"),ENnombreEnemigo: "Wolf slave", nombreEnemigo: "Esclavo lobuno",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT16.jpg"),ENnombreEnemigo: "Ice prisoner", nombreEnemigo: "Prisionero del hielo",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo34.jpg"),ENnombreEnemigo: "Altered servant", nombreEnemigo: "Siervo alterado",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT5.jpg"),ENnombreEnemigo: "Goddamned dream", nombreEnemigo: "Sonánbulo maldito",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo15.jpg"),ENnombreEnemigo: "Hungry predator", nombreEnemigo: "Depredador hambriento",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo31.jpg"),ENnombreEnemigo: "Monster slave", nombreEnemigo: "Esclava mostruosa",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo36.jpg"),ENnombreEnemigo: "Avian slave", nombreEnemigo: "Esclavo aviar",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo33.jpg"),ENnombreEnemigo: "Wolf slave", nombreEnemigo: "Esclavo lobuno",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT16.jpg"),ENnombreEnemigo: "Ice prisoner", nombreEnemigo: "Prisionero del hielo",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo34.jpg"),ENnombreEnemigo: "Altered servant", nombreEnemigo: "Siervo alterado",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT5.jpg"),ENnombreEnemigo: "Goddamned dream", nombreEnemigo: "Sonanbulo maldito",},
         
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT6.jpg"),ENnombreEnemigo: "Scared bystander", nombreEnemigo: "Transeúnte asustado",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT4.jpg"),ENnombreEnemigo: "Dreadful shadow", nombreEnemigo: "Sombra pavorosa",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT7.jpg"),ENnombreEnemigo: "Guardian beast", nombreEnemigo: "Bestia guardiana",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT6.jpg"),ENnombreEnemigo: "Scared bystander", nombreEnemigo: "Transeúnte asustado",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT4.jpg"),ENnombreEnemigo: "Dreadful shadow", nombreEnemigo: "Sombra pavorosa",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT7.jpg"),ENnombreEnemigo: "Guardian beast", nombreEnemigo: "Bestia guardiana",},
       ],
       EnemigosExtrasMapa3: [],
 
       EnemigosMapa4: [
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo21.jpg"),ENnombreEnemigo: "Riverside beast", nombreEnemigo: "Bestia de la ribera",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo26.jpg"),ENnombreEnemigo: "Sea singer", nombreEnemigo: "Cantor marino",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo23.jpg"),ENnombreEnemigo: "Low-water predator", nombreEnemigo: "Depredador de bajamar",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo12.jpg"),ENnombreEnemigo: "Ceremonial magician", nombreEnemigo: "Mago ceremonial",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo17.jpg"),ENnombreEnemigo: "High priest", nombreEnemigo: "Sumo sacerdote",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT5.jpg"),ENnombreEnemigo: "Goddamned dream", nombreEnemigo: "Sonánbulo maldito",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT6.jpg"),ENnombreEnemigo: "Scared bystander", nombreEnemigo: "Transeúnte asustado",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT10.jpg"),ENnombreEnemigo: "Angry dreamer", nombreEnemigo: "Soñador colérico",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT11.jpg"),ENnombreEnemigo: "Enraptured hybrid", nombreEnemigo: "Híbrido embelesado",},
-        {url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT12.jpg"),ENnombreEnemigo: "Supreme singer of R lyeh", nombreEnemigo: "Cantor supremo de R´lyeh",},
-        {url: require("@/assets/img/4-Enemigos/1-Base/enemigo19.jpg"),ENnombreEnemigo: "Guardian of R lyeh", nombreEnemigo: "Guardián de R´lyeh",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo21.jpg"),ENnombreEnemigo: "Riverside beast", nombreEnemigo: "Bestia de la ribera",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo26.jpg"),ENnombreEnemigo: "Sea singer", nombreEnemigo: "Cantor marino",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo23.jpg"),ENnombreEnemigo: "Low-water predator", nombreEnemigo: "Depredador de bajamar",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo12.jpg"),ENnombreEnemigo: "Ceremonial magician", nombreEnemigo: "Mago ceremonial",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo17.jpg"),ENnombreEnemigo: "High priest", nombreEnemigo: "Sumo sacerdote",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT5.jpg"),ENnombreEnemigo: "Goddamned dream", nombreEnemigo: "Sonanbulo maldito",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT6.jpg"),ENnombreEnemigo: "Scared bystander", nombreEnemigo: "Transeúnte asustado",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT10.jpg"),ENnombreEnemigo: "Angry dreamer", nombreEnemigo: "Soñador colérico",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT11.jpg"),ENnombreEnemigo: "Enraptured hybrid", nombreEnemigo: "Híbrido embelesado",},
+        {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT12.jpg"),ENnombreEnemigo: "Supreme singer of R lyeh", nombreEnemigo: "Cantor supremo de R´lyeh",},
+        {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo19.jpg"),ENnombreEnemigo: "Guardian of R lyeh", nombreEnemigo: "Guardián de R´lyeh",},
 ],
     }
   }, // end data
