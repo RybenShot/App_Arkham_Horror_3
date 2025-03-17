@@ -30,11 +30,15 @@
 
         <footer>
           <div v-if="verCartaMancillado == true" class="field has-addons columns is-mobile is-gapless">
-            <p class="control column is-half">
+            <p class="control column">
               <button @click=" seleccionarMancillado(1), (verMancillado = true), (verCartaMancillado = false)" class="button is-danger is-fullwidth">{{ textoInterfaz.botones.girar }}</button>
             </p>
 
-            <p class="control column is-half">
+            <p class="control column">
+              <button @click="(this.$store.state.EstadoMancillado = false), (this.$store.state.modalMancillado = false)" class="button is-warning is-fullwidth">{{ textoInterfaz.botones.quitarEstado }}</button>
+            </p>
+
+            <p class="control column">
               <button @click="(this.$store.state.EstadoMancillado = true), (this.$store.state.modalMancillado = false)" class="button is-link is-fullwidth">{{ textoInterfaz.botones.añadir }}</button>
             </p>
           </div>
@@ -42,7 +46,7 @@
           <div v-if="verMancillado == true" class="field has-addons columns is-mobile is-gapless">
             <p class="control column">
               <button @click="(this.$store.state.modalMancillado = false), (verMancillado = false), (verCartaMancillado = true), (this.$store.state.EstadoMancillado = false)" class="button is-link is-fullwidth" >
-                <p>{{ textoInterfaz.botones.volver }}</p>
+                <p>{{ textoInterfaz.botones.quitarEstado }}</p>
               </button>
             </p>
           </div>
@@ -70,6 +74,7 @@ export default {
           botones: {
             quitar: "",
             añadir: "",
+            quitarEstado: "",
             volver: ""
           },
         },
@@ -154,8 +159,9 @@ export default {
         this.textoInterfaz.descripcion2 = "RETRIBUCIÓN - Dale la vuelta a la carta.";
         this.textoInterfaz.descripcion3 = "No mires el reverso de la carta hasta que se te indique";
         this.textoInterfaz.expansion = "Expansion: Mareas Tenebrosas";
-        this.textoInterfaz.botones.girar = "Darle la vuelta a la carta";
+        this.textoInterfaz.botones.girar = "Ver carta";
         this.textoInterfaz.botones.añadir = "Añadir";
+        this.textoInterfaz.botones.quitarEstado = "Quitar";
         this.textoInterfaz.botones.volver = "Volver";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "State: Defiled";
@@ -163,8 +169,9 @@ export default {
         this.textoInterfaz.descripcion2 = "RETRIBUTION - Turn the letter around.";
         this.textoInterfaz.descripcion3 = "Don’t look at the back of the card until instructed";
         this.textoInterfaz.expansion = "Expansion: Under Dark Waves";
-        this.textoInterfaz.botones.girar = "Turn around the card";
+        this.textoInterfaz.botones.girar = "See card";
         this.textoInterfaz.botones.añadir = "Add";
+        this.textoInterfaz.botones.quitarEstado = "Remove";
         this.textoInterfaz.botones.volver = "Go back";
       }
     }
