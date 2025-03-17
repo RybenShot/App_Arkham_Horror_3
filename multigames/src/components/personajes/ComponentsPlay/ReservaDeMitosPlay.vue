@@ -28,7 +28,12 @@
         <button @click="abrirModalEliminar" class="button is-danger mt-3"><i class="fas fa-trash-alt"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalDevolver" class="button is-info mt-3"><i class="fas fa-recycle"></i></button>
+        <button @click="abrirModalDevolver" class="button is-link mt-3"><i class="fas fa-recycle"></i></button>
+      </div>
+
+      <!-- Informacion -->
+      <div class="column is-narrow">
+        <button @click="modalInformacion = true" class="button is-info mt-3 boton-info"><i class="fas fa-info"></i></button>
       </div>
     </div>
     
@@ -110,6 +115,22 @@
         </section>
       </div>
     </div>
+
+    <!-- Modal inforacion -->
+    <div v-if="modalInformacion" class="modal is-active px-4">
+      <div class="modal-background" @click="this.modalInformacion = false"></div>
+      <div class="modal-card ">
+        <header class="modal-card-head BGReservaMitos">
+          <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.info }}</p>
+          <i class="fa-2x fas fa-times-circle has-text-danger" @click="this.modalInformacion = false"></i>
+        </header>
+        <section class="modal-card-body ">
+          <div class="buttons is-centered">
+            <p class="subtitle is-5 has-text-centered">{{ textoInterfaz.textoModals.textoInfo }}</p>
+          </div>
+        </section>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -122,6 +143,8 @@ export default {
       modalAgregarAbierto: false,
       modalEliminarAbierto: false,
       modalDevolverAbierto: false,
+      //modalInformacion
+      modalInformacion: false,
       textoInterfaz:{
         error: "",
         mitos: "",
@@ -137,6 +160,8 @@ export default {
           blanco: ""
         },
         textoModals:{
+          info: "",
+          textoInfo: "",
           añadir: "",
           eliminar: "",
           devolver: ""
@@ -175,6 +200,8 @@ export default {
         this.textoInterfaz.fichas.retribucion = "";
         this.textoInterfaz.fichas.blanco = "";
 
+        this.textoInterfaz.textoModals.info = "Información";
+        this.textoInterfaz.textoModals.textoInfo = "Para poder usar esta funcion en una partida en grupo, usad solo 1 movil.";
         this.textoInterfaz.textoModals.añadir = "Añadir Ficha";
         this.textoInterfaz.textoModals.eliminar = "Eliminar Ficha";
         this.textoInterfaz.textoModals.devolver = "Devolver Ficha";
@@ -195,6 +222,8 @@ export default {
         this.textoInterfaz.fichas.retribucion = "";
         this.textoInterfaz.fichas.blanco = "";
 
+        this.textoInterfaz.textoModals.info = "Info";
+        this.textoInterfaz.textoModals.textoInfo = "To use this function in a group game, use only one mobile device.";
         this.textoInterfaz.textoModals.añadir = "Add Token";
         this.textoInterfaz.textoModals.eliminar = "Delete Token";
         this.textoInterfaz.textoModals.devolver = "Return Token";
@@ -388,8 +417,6 @@ export default {
   }
 }
 
-
-
 .boxShadowRed{
   box-shadow: 0px 0px 10px red;
   animation: glowing 1s linear infinite;
@@ -436,5 +463,8 @@ export default {
   background-image: url(@/assets/img/Estados/fichasDeMitos.jpg);
   background-position: center;
   background-size: cover;
+}
+.boton-info{
+  border-radius: 50%;
 }
 </style>
