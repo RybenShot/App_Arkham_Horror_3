@@ -34,11 +34,11 @@
               <button @click=" seleccionarMancillado(1), (verMancillado = true), (verCartaMancillado = false)" class="button is-danger is-fullwidth">{{ textoInterfaz.botones.girar }}</button>
             </p>
 
-            <p class="control column">
+            <p class="control column" v-if="this.$store.state.EstadoMancillado == true">
               <button @click="(this.$store.state.EstadoMancillado = false), (this.$store.state.modalMancillado = false)" class="button is-warning is-fullwidth">{{ textoInterfaz.botones.quitarEstado }}</button>
             </p>
 
-            <p class="control column">
+            <p class="control column" v-if="this.$store.state.EstadoMancillado == false">
               <button @click="(this.$store.state.EstadoMancillado = true), (this.$store.state.modalMancillado = false)" class="button is-link is-fullwidth">{{ textoInterfaz.botones.añadir }}</button>
             </p>
           </div>

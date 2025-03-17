@@ -1,11 +1,12 @@
 <template>
   <div class="modal is-active">
-        <div class="modal-background" @click="this.$store.state.modalPopUpNotificacion = false"></div>
+        <div class="modal-background" @click="this.$store.state.modalNotificacionRetribucion = false"></div>
         <div class="mr-6">
           <div class="modal-card">
             <header class="columns is-mobile modal-card-head BGBendicion m-0">
               <i class="px-1 fab fa-hubspot has-text-danger"></i>
               <p class="modal-card-title has-text-weight-bold has-text-danger" >  {{ textoInterfaz.titulo }}</p>
+              <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalNotificacionRetribucion = false"></i>
             </header>
             
 
@@ -21,7 +22,7 @@
             <footer class="">
               <div class="field has-addons columns is-mobile is-gapless">
                 <p class="control column is-fullwith">
-                  <button @click="this.$store.state.modalPopUpNotificacion = false" class="button is-danger is-fullwidth">
+                  <button @click="this.$store.state.modalNotificacionRetribucion = false" class="button is-danger is-fullwidth">
                     <p>{{ textoInterfaz.botones.quitar }}</p>
                   </button>
                 </p>

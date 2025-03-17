@@ -230,7 +230,16 @@ export default {
             this.$store.state.modalPerseguido = true
           }
           break;
-      
+        case "vacias":
+          if (this.$store.state.EstadoMancillado == true) {
+            this.$store.state.modalNotificacionEfectoMancillado = true
+          }
+          break
+        case "pistas":
+          if (this.$store.state.EstadoMancillado == true) {
+            this.$store.state.modalNotificacionEfectoMancillado = true
+          }
+          break
         default:
           break;
       }

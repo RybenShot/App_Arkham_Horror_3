@@ -1,8 +1,10 @@
 <template>
   <section>
     <div>
-    <!-- MODAL RECORDATORIO POPUP (por ahora usado para recordar los efectos de la retribucion) -->
-    <div v-if="this.$store.state.modalPopUpNotificacion"><PopUpNotificacion/></div>
+    <!-- MODAL RECORDATORIO RETRIBUCION-->
+    <div v-if="this.$store.state.modalNotificacionRetribucion"><ModalNotificacionRetribucion/></div>
+    <!-- MODAL RECORDATORIO DEL EFECTO MANCILLADO, cuando salga una ficha vacia o pista -->
+    <div v-if="this.$store.state.modalNotificacionEfectoMancillado"><ModalNotificacionEfectoMancillado/></div>
 
     <!-- MODAL PACTO SINIESTRO -->
     <div v-if="this.$store.state.modalPacto"><PactosSiniestros/></div>
@@ -34,7 +36,8 @@
 </template>
 
 <script>
-import PopUpNotificacion from "@/components/helpers/modals/popUpNotificacion.vue";
+import ModalNotificacionRetribucion from "@/components/helpers/modals/inPlay/notificacionRetribucion.vue";
+import ModalNotificacionEfectoMancillado from "@/components/helpers/modals/inPlay/notificacionEfectoMancillado.vue";
 
 import EstadoMaldicion from "@/components/helpers/estados/Maldicion.vue"
 import EstadoBendicion from "@/components/helpers/estados/Bendicion.vue"
@@ -52,7 +55,8 @@ import EstadoSeñalado from "@/components/helpers/estadosOriginales/Señalado.vu
 export default {
 name: "Modals de Estados",
   components:{
-    PopUpNotificacion,
+    ModalNotificacionRetribucion,
+    ModalNotificacionEfectoMancillado,
 
     EstadoMaldicion,
     EstadoBendicion,

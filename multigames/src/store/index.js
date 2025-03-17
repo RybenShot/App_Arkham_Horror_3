@@ -147,7 +147,12 @@ export default createStore({
       imgMapa: null,
       BGMapa: null
     },
+    // RESERVA DE MITOS
     reservaVisible: [],
+    // notificacion retribucion
+    modalNotificacionRetribucion: false,
+    modalNotificacionEfectoMancillado:false,
+
     modalVerLosetaMapa: false,
     modalVerEnemigos: false,
 
@@ -155,8 +160,6 @@ export default createStore({
     detallePersonaje: false,
 
     // HELPERS - ESTADOS
-    // notificacion retribucion
-    modalPopUpNotificacion: false,
     // Maldicion
     EstadoMaldito: false,
     modalMaldito: false,
