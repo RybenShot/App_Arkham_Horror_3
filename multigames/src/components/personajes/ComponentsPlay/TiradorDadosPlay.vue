@@ -2,6 +2,7 @@
   <section>
     <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <!-- Atributos -->
+
     <div class="columns is-mobile has-text-centered"> 
       <div class="column p-1 mx-2 ml-4 boton" :class="{'color-saber': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.saber) && (setActiveButton(1))">
         <p><i class="fa-2x fas fa-book-open"></i></p>
@@ -110,8 +111,9 @@ export default {
   methods:{
   //Atributo activo
   setActiveButton(button) {
-      this.activeButton = button;
-    },
+    this.NDeDadosExtra = 0;
+    this.activeButton = button;
+  },
 // TIRADA DE DADOS
     async tirarDados(min) {
       let max = 6; // maximo de lados de dados
