@@ -1,42 +1,61 @@
 <template>
-  <section>
-    <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
+  <section class="px-2">
+    <div class="columns is-mobile mt-1">
+      <p class="column"></p>
+      <p class="title mb-0 has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
+      <p class="column"></p>
+    </div>
+    
     <!-- Atributos -->
 
-    <div class="columns is-mobile has-text-centered"> 
+    <div class="columns is-mobile has-text-centered px-2"> 
       <div class="column p-1 mx-2 ml-4 boton" :class="{'color-saber': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.saber) && (setActiveButton(1))">
         <p><i class="fa-2x fas fa-book-open"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.saber }}</p>
-        <p>{{ textoInterfaz.atributos.saber }}</p>
       </div>
 
       <div class="column p-1 mx-2" :class="{'color-influencia': activeButton === 2 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.influencia, setActiveButton(2))">
         <p><i class="fa-2x fas fa-handshake"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.influencia }}</p>
-        <p>{{ textoInterfaz.atributos.influencia }}</p>
       </div>
 
       <div class="column p-1 mx-2" :class="{'color-observacion': activeButton === 3 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.observacion), setActiveButton(3)">
         <p><i class="fa-2x fas fa-eye"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.observacion }}</p>
-        <p>{{ textoInterfaz.atributos.observacion }}</p>
       </div>
 
       <div class="column p-1 mx-2" :class="{'color-fuerza': activeButton === 4 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.fuerza), setActiveButton(4)">
         <p><i class="fa-2x fas fa-fist-raised"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.fuerza }}</p>
-        <p>{{ textoInterfaz.atributos.fuerza }}</p>
       </div>
 
       <div class="column p-1 mx-2 mr-4" :class="{'color-voluntad': (activeButton === 5) }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.voluntad), setActiveButton(5)">
         <p><i class="fa-2x fab fa-hornbill"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.voluntad }}</p>
-        <p>{{ textoInterfaz.atributos.voluntad }}</p>
       </div>
     </div>
 
     <!-- Dados extras -->
-    <div class="columns is-mobile is-vcentered">
+    <div class="columns is-mobile is-vcentered mb-0">
+
+      <!-- Concentracion -->
+      <div class="column has-text-centered">
+        <p class="title is-5 has-text-white mb-0">Concentración</p>
+        <hr class="m-0">
+        <div class="has-text-white my-3 columns is-mobile mb-0">
+          <p class="column p-0">Max: {{ $store.state.datosPJactual.limConcentracion }}</p>
+          <div class="column p-0">
+            <!-- Mostrar fichas de concentración añadidas -->
+            <span v-for="(ficha, index) in concentracionFichas" :key="index">
+              <i :class="['fa-1x', ficha.icon, ficha.color, 'px-1']"></i>
+            </span>
+          </div>
+        </div>
+        <button class="button is-link is-active is-small mx-1" @click="modalConcentracionAbierto = true">Añadir</button>
+        <button class="button is-link is-active is-small mx-1" @click="usarFichaConcentracionSimple">Usar 1</button>
+      </div>
+
+      <!-- Dadoz extras + lanzador -->
       <div class="column has-text-white px-2">
         <p class="has-text-centered mb-3">{{ textoInterfaz.dadosExtras }}</p>
         <div class="columns is-mobile mb-0">
@@ -45,24 +64,20 @@
           <button class="column p-1 mr-5 my-2 is-size-4" @click="NDeDadosExtra++"><strong>+</strong></button>
         </div>
         <p class="has-text-centered">{{ textoInterfaz.totalDados }} : {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
+         <!-- Lanzador -->
+        <div class="column has-text-centered p-0">
+          <button @click="tirarDados(1)" class="button is-success is-active is-fullwidth"><strong>{{ textoInterfaz.botonTirar }}</strong></button>
+        </div>
       </div>
 
-      <!-- Lanzador -->
-      <div class="column has-text-centered">
-        <button @click="tirarDados(1)" class="button is-success is-active is-fullwidth mr-6"><strong>{{ textoInterfaz.botonTirar }}</strong></button>
-      </div>
-    
     </div>
-
-    <br>
     
     <!-- Resultados -->
     <div class="resultados mx-2">
-      <h1 class="title has-text-centered has-text-white is-3 mb-2"> {{ textoInterfaz.resultados }} </h1>
+      <hr class="my-1">
       <div id="resultados-css" class="container">
         <!-- Aqui pintamos todos los resultados, OJO!! enseñamos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
         <div v-for="item in resultados" :key="item">
-          <!-- SI OPCIONES AVANZADAS -->
           <p class=" resultado-css has-text-white">
             <i v-if="item == 1" class="fa-2x fas fa-dice-one"></i>
             <i v-if="item == 2" class="fa-2x fas fa-dice-two"></i>
@@ -72,6 +87,25 @@
             <i v-if="item == 6" class="acierto fa-2x fas fa-dice-six"></i>
           </p>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal para Concentración -->
+    <div v-if="modalConcentracionAbierto" class="modal is-active">
+      <div class="modal-background" @click="modalConcentracionAbierto = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Concentrarse</p>
+          <button class="delete" @click="modalConcentracionAbierto = false"></button>
+        </header>
+        <section class="modal-card-body ">
+          <div class="buttons is-centered">
+            <button v-for="tipo in tiposConcentracion" :key="tipo.tipo" @click="agregarConcentracion(tipo)" :class="['button', tipo.color]">
+              <i :class="tipo.icon" class="px-1"></i> 
+              <p>{{ tipo.tipo }} </p>
+            </button>
+          </div>
+        </section>
       </div>
     </div>
 
@@ -91,12 +125,21 @@ export default {
       resultados: [1, 6, 5, 4],
       sumaResultado: 0,
 
+      concentracionFichas: [],
+      modalConcentracionAbierto: false,
+      tiposConcentracion: [
+        { tipo: 'saber', icon: 'fas fa-book-open', color: 'color-saber' },
+        { tipo: 'influencia', icon: 'fas fa-handshake', color: 'color-influencia' },
+        { tipo: 'observacion', icon: 'fas fa-eye', color: 'color-observacion' },
+        { tipo: 'fuerza', icon: 'fas fa-fist-raised', color: 'color-fuerza' },
+        { tipo: 'voluntad', icon: 'fab fa-hornbill', color: 'color-voluntad' }
+      ],
+
       textoInterfaz: {
         titulo: "",
         totalDados: "",
         dadosExtras: "",
         botonTirar: "",
-        resultados: "",
         atributos: {
           saber: "",
           influencia: "",
@@ -133,11 +176,10 @@ export default {
 
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
-        this.textoInterfaz.titulo = "Dados de Atributos";
+        this.textoInterfaz.titulo = "Atributos";
         this.textoInterfaz.totalDados = "Total de dados";
         this.textoInterfaz.dadosExtras = "Dados Extras";
         this.textoInterfaz.botonTirar = "TIRAR!";
-        this.textoInterfaz.resultados = "RESULTADOS";
 
         this.textoInterfaz.atributos.saber = "Saber";
         this.textoInterfaz.atributos.influencia = "Infl.";
@@ -145,11 +187,10 @@ export default {
         this.textoInterfaz.atributos.fuerza = "Fuer.";
         this.textoInterfaz.atributos.voluntad = "Voluntad";
       }else if (this.$store.state.lenguaje == "ingles"){
-        this.textoInterfaz.titulo = "Attribute Dice";
+        this.textoInterfaz.titulo = "Attribute";
         this.textoInterfaz.totalDados = "Total dice";
         this.textoInterfaz.dadosExtras = "Extra dice";
         this.textoInterfaz.botonTirar = "THROW!";
-        this.textoInterfaz.resultados = "RESULTS";
 
         this.textoInterfaz.atributos.saber = "Know.";
         this.textoInterfaz.atributos.influencia = "Infl.";
@@ -157,6 +198,23 @@ export default {
         this.textoInterfaz.atributos.fuerza = "Stre.";
         this.textoInterfaz.atributos.voluntad = "Will";
       }
+    },
+    agregarConcentracion(tipo) {
+      this.concentracionFichas.push({ ...tipo });
+      this.modalConcentracionAbierto = false
+    },
+    // Método para usar 1 ficha de concentración:
+    usarFichaConcentracionSimple() {
+      if (this.concentracionFichas.length === 0) {
+        alert("No hay fichas de concentración disponibles");
+        return;
+      }
+      const resultado = Math.floor(Math.random() * 6) + 1;
+      // Añadir el resultado al array de resultados
+      this.vaciarArray(); 
+      this.resultados.push(resultado);
+      // Eliminar la primera ficha del array:
+      this.concentracionFichas.shift();
     }
   },
   mounted(){

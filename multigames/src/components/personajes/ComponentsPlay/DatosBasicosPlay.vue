@@ -319,11 +319,13 @@ export default {
   position: relative;
   top: -4vh;
   line-height: 0;
+  text-shadow: 0px 0px 5px rgb(0, 0, 0);
 }
 .contadorVidaCorduraPeques{
   position: relative;
   top: -3vh;
   line-height: 0;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
 }
 
 .desactivado{
