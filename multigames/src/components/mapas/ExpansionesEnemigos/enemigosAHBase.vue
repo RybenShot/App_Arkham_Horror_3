@@ -9,7 +9,7 @@
         </header>
 
         <div class="mx-3 mb-3 columns is-mobile">
-          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>AH Base</p>
+          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>{{ textoInterfaz.infocolor1 }}</p>
         </div>
 
         <!-- ModalDetalle -->
@@ -178,6 +178,7 @@ export default {
     return {
       textoInterfaz: {
         titulo: "",
+        infocolor1:"",
         enemigos: "",
         enemigosExtras: "",
         volver: ""
@@ -253,10 +254,12 @@ export default {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.titulo = "Enemigos";
+        this.textoInterfaz.infocolor1 = "AH Base";
         this.textoInterfaz.enemigosExtras = "Enemigos extras";
         this.textoInterfaz.volver = "Volver a Mapas";
       }else{
         this.textoInterfaz.titulo = "Enemies";
+        this.textoInterfaz.infocolor1 = "AH Base";
         this.textoInterfaz.enemigosExtras = "Extra enemies";
         this.textoInterfaz.volver = "Back to maps";
       }
@@ -277,6 +280,7 @@ azul oscuro: Secretos
  */
 .sombraExpansionBase{
   box-shadow: 0px 0px 10px #05FF00 ;
+
 }
 .sombraExpansionNoche{
   box-shadow: 0px 0px 10px #fffb00 ;
@@ -311,6 +315,11 @@ azul oscuro: Secretos
 #enemisList {
   display: grid;
   grid-template-columns: auto auto auto;
+}
+
+/* redondeado de cartas de enemigos */
+.helperCartasEnemigos img{
+  border-radius: 5%;
 }
 
 .BGEnemigos{

@@ -9,7 +9,7 @@
 
 <script>
 import ListaEnemigosAHBase from "@/components/mapas/ExpansionesEnemigos/enemigosAHBase.vue";
-import ListaEnemigosAHMareas from "@/components/mapas/ExpansionesEnemigos/enemigosAHareasTenerbosas.vue";
+import ListaEnemigosAHMareas from "@/components/mapas/ExpansionesEnemigos/enemigosAHMareasTenerbosas.vue";
 import ListaEnemigosAHNoche from "@/components/mapas/ExpansionesEnemigos/enemigosAHNoche.vue";
 import ListaEnemigosAHSecretos from "@/components/mapas/ExpansionesEnemigos/enemigosAHSecretos.vue"
 export default {

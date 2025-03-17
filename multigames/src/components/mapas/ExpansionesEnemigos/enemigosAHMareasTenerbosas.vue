@@ -10,8 +10,8 @@
         </header>
 
         <div class="mx-3 mb-2 columns is-mobile">
-          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>AH Base</p>
-          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-info mr-3"></i>AH Noche Cerrada</p>
+          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>{{ textoInterfaz.infocolor1 }}</p>
+          <p class="subtitle is-7 mb-0 has-text-white column"><i class="fa-1x fas fa-circle has-text-info mr-3"></i>{{ textoInterfaz.infocolor2 }}</p>
         </div>
 
         <!-- ModalDetalle -->
@@ -118,6 +118,9 @@
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'español'"> Crea el mazo de Anomalias utilizando las cartas de "Visiones de la luna"</p>
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'"> Create the Anomalies deck using "Visions of the Moon" cards</p>
 
+          <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'español'"> Aparta a un lado el Monstruo Declan Pearce</p>
+          <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'"> Set aside the Declan Pearce Monster.</p>
+
           <div id="enemisList" class="px-1">
             <div v-for="enemigo in EnemigosExtrasMapa2" :key="enemigo.id">
               <div @click="(this.$store.state.verDetalleEnemigo = true),(this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mx-1">
@@ -179,11 +182,14 @@ export default {
     return {
       textoInterfaz: {
         titulo: "",
+        infocolor1:"",
+        infocolor2:"",
         enemigos: "",
         enemigosExtras: "",
         volver: ""
       },
 
+      // Tiranos de la desolacion
       EnemigosMapa1: [
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo35.jpg"),ENnombreEnemigo: "Altered beast", nombreEnemigo: "Bestia alterada",},
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo31.jpg"),ENnombreEnemigo: "Monster slave", nombreEnemigo: "Esclava mostruosa",},
@@ -200,6 +206,7 @@ export default {
       ],
       EnemigosExtrasMapa1: [],
 
+      //Lampara mortecina
       EnemigosMapa2: [
         {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT7.jpg"),ENnombreEnemigo: "Guardian beast", nombreEnemigo: "Bestia guardiana",},
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo13.jpg"),ENnombreEnemigo: "Strangers in robes", nombreEnemigo: "Extraños con túnicas",},
@@ -217,6 +224,7 @@ export default {
         {expansion: "Mareas Tenebrosas" ,url: require("@/assets/img/4-Enemigos/2-Mareas/enemigoMT9.jpg"),ENnombreEnemigo: "Declan Pearce", nombreEnemigo: "Declan Pearce",}
       ],
 
+      // La progenie de Ithaqua
       EnemigosMapa3: [
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo15.jpg"),ENnombreEnemigo: "Hungry predator", nombreEnemigo: "Depredador hambriento",},
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo31.jpg"),ENnombreEnemigo: "Monster slave", nombreEnemigo: "Esclava mostruosa",},
@@ -232,6 +240,7 @@ export default {
       ],
       EnemigosExtrasMapa3: [],
 
+      // Sueños de R'lyeh
       EnemigosMapa4: [
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo21.jpg"),ENnombreEnemigo: "Riverside beast", nombreEnemigo: "Bestia de la ribera",},
         {expansion: "Base" ,url: require("@/assets/img/4-Enemigos/1-Base/enemigo26.jpg"),ENnombreEnemigo: "Sea singer", nombreEnemigo: "Cantor marino",},
@@ -251,10 +260,14 @@ export default {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.titulo = "Enemigos";
+        this.textoInterfaz.infocolor1 = "AH Base";
+        this.textoInterfaz.infocolor2 = "Mareas Tenebrosas";
         this.textoInterfaz.enemigosExtras = "Enemigos extras";
         this.textoInterfaz.volver = "Volver a Mapas";
       }else{
         this.textoInterfaz.titulo = "Enemies";
+        this.textoInterfaz.infocolor1 = "AH Base";
+        this.textoInterfaz.infocolor2 = "Dark Waves";
         this.textoInterfaz.enemigosExtras = "Extra enemies";
         this.textoInterfaz.volver = "Back to maps";
       }
