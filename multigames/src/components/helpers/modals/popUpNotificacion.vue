@@ -11,9 +11,11 @@
 
             <section class="modal-card-body hero is-large py-2">
               <h1 class="has-text-centered title mb-1">{{ textoInterfaz.recuerda }}</h1>
+              <hr class="my-0">
+              <p class="subtitle is-6 has-text-centered mt-1">{{ textoInterfaz.retribucionText }}</p>
               <br>
               <h2 class="subtitle is-5 has-text-centered">{{ textoInterfaz.descripcion }}</h2>
-              <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
+              <p class="subtitle is-7 has-text-right mt-2"> {{ textoInterfaz.expansion }}</p>
             </section>
 
             <footer class="">
@@ -41,6 +43,7 @@ export default {
         recuerda:"",
         descripcion: "",
         expansion: "",
+        retribucionText: "",
         botones: {
           quitar: ""
         },
@@ -55,12 +58,14 @@ export default {
         this.textoInterfaz.recuerda = "Recuerda!";
         this.textoInterfaz.descripcion = this.$store.state.datosMapa.retribucion;
         this.textoInterfaz.expansion = this.$store.state.datosMapa.expansionMapa;
+        this.textoInterfaz.retribucionText = "Retribución de hoja de mapa: ";
         this.textoInterfaz.botones.quitar = "Cerrar";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "Retribution";
         this.textoInterfaz.recuerda = "Remember!";
         this.textoInterfaz.descripcion = this.$store.state.datosMapa.ENretribucion;
         this.textoInterfaz.expansion = this.$store.state.datosMapa.expansionMapa;
+        this.textoInterfaz.retribucionText = "Map Sheet Retribution: ";
         this.textoInterfaz.botones.quitar = "Close";
       }
     }

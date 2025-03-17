@@ -4,12 +4,15 @@
         <div class="">
           <div class="modal-card m-0">
             <header class="modal-card-head BGHistoria mb-0 columns is-mobile">
-              <div class="column has-text-left">
+              <div class="column has-text-left is-three-fifths">
                 <p class="modal-card-title has-text-white">{{ textoInterfaz.titulo }}</p>
               </div>
               <div class="column has-text-right has-text-white">
                 <p v-if="reproduciendo == false" @click="(reproducirAudio()), (reproduciendo = true)"><i class="fas fa-2x fa-volume-up"></i></p>
                 <p v-if="reproduciendo == true" @click="(detenerAudio()), (reproduciendo = false)" ><i class="fas fa-2x fa-pause-circle"></i></p>
+              </div>
+              <div class="column">
+                <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalHistoriaDetalle = false"></i>
               </div>
             </header>
             

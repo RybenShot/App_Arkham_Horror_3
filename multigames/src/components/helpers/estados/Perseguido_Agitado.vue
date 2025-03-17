@@ -12,6 +12,7 @@
           <div class="modal-card">
             <header id="Agitado" class="modal-card-head BGManco">
               <p class="modal-card-title has-text-weight-bold has-text-white">{{ textoInterfaz.titulo }}</p>
+              <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalPerseguido_Agitado = false"></i>
             </header>
 
             <!-- PARTE 1 -->
@@ -19,27 +20,27 @@
               <h2>{{ textoInterfaz.descripcion1 }}</h2>
               <div class="mt-2">
                 <div class="columns is-mobile has-text-centered"> 
-                  <div class="column p-1 mx-2 ml-4 boton" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 1 }" @click="(this.$store.state.AtributoElegido = 1) , (ElegirAtributo = false)">
+                  <div class="column p-1  ml-4 boton" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 1 }" @click="(this.$store.state.AtributoElegido = 1) , (ElegirAtributo = false)">
                     <p><i class="fa-2x fas fa-book-open"></i></p>
                     <p>{{ textoInterfaz.saber }}</p>
                   </div>
 
-                  <div class="column p-1 mx-2" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 2 }" @click="(this.$store.state.AtributoElegido = 2) , (ElegirAtributo = false)">
+                  <div class="column p-1 " :class="{'active has-text-danger': this.$store.state.AtributoElegido === 2 }" @click="(this.$store.state.AtributoElegido = 2) , (ElegirAtributo = false)">
                     <p><i class="fa-2x fas fa-handshake"></i></p>
                     <p>{{ textoInterfaz.influencia }}</p>
                   </div>
 
-                  <div class="column p-1 mx-2" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 3 }" @click="(this.$store.state.AtributoElegido = 3) , (ElegirAtributo = false)">
+                  <div class="column p-1 " :class="{'active has-text-danger': this.$store.state.AtributoElegido === 3 }" @click="(this.$store.state.AtributoElegido = 3) , (ElegirAtributo = false)">
                     <p><i class="fa-2x fas fa-eye"></i></p>
                     <p>{{ textoInterfaz.observacion }}</p>
                   </div>
 
-                  <div class="column p-1 mx-2" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 4 }" @click="(this.$store.state.AtributoElegido = 4) , (ElegirAtributo = false)">
+                  <div class="column p-1 " :class="{'active has-text-danger': this.$store.state.AtributoElegido === 4 }" @click="(this.$store.state.AtributoElegido = 4) , (ElegirAtributo = false)">
                     <p><i class="fa-2x fas fa-fist-raised"></i></p>
                     <p>{{ textoInterfaz.fuerza }}</p>
                   </div>
 
-                  <div class="column p-1 mx-2 mr-4" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 5 }" @click="(this.$store.state.AtributoElegido = 5) , (ElegirAtributo = false)">
+                  <div class="column p-1  mr-4" :class="{'active has-text-danger': this.$store.state.AtributoElegido === 5 }" @click="(this.$store.state.AtributoElegido = 5) , (ElegirAtributo = false)">
                     <p><i class="fa-2x fab fa-hornbill"></i></p>
                     <p>{{ textoInterfaz.voluntad }}</p>
                   </div>

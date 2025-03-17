@@ -5,6 +5,7 @@
       <div class="modal-card">
         <header class="modal-card-head BGBendicion">
           <p class="modal-card-title">{{ textoInterfaz.titulo }}</p>
+          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.ModalConfirmacion = false"></i>
         </header>
         <section class="modal-card-body hero is-large py-2">
           <!-- cambio de personaje -->

@@ -123,7 +123,7 @@ export default createStore({
     mapaSeleccionado: false,
     datosMapa: {
       idMapa: null,
-      title: "La llegada de Azathoth",
+      title: null,
       ENtitle: null,
       description: null,
       ENdescription: null,
@@ -134,16 +134,16 @@ export default createStore({
       espacioDeInicio: null,
       ENespacioDeInicio: null,
       reservaDeMitos: {
-        perdicion: 3,
-        enemigos: 2,
-        pistas: 2,
-        periodico: 2,
-        explosion: 1,
-        retribucion: 1,
-        vacias: 3
+        perdicion: null,
+        enemigos: null,
+        pistas: null,
+        periodico: null,
+        explosion: null,
+        retribucion: null,
+        vacias: null
       },
-      retribucion: "Por cada Monstruo Sectario, coloca una ficha de Perdición en su espacio. (Si está en un espacio de calle, la ficha de perdición se coloca en un espacio de Barrio adyacente.)",
-      ENretribucion: "For each Cultist Monster, place a Doom token in its space. (If it is in a street space, the Doom token is placed in an adjacent Neighborhood space.)",
+      retribucion: null,
+      ENretribucion: null,
       imgMapa: null,
       BGMapa: null
     },

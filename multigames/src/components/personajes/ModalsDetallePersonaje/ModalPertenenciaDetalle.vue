@@ -4,8 +4,9 @@
         <div class="mr-6">
           <div class="modal-card">
             <!-- TITULO -->
-            <header class="modal-card-head BGPertenencias">
-              <p class="modal-card-title has-text-white title is-6">{{ textoInterfaz.pertenencias }}</p>
+            <header class="modal-card-head BGPertenencias ">
+              <p class="modal-card-title has-text-white title is-4 pt-2 m-0">{{ textoInterfaz.pertenencias }}</p>
+              <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalPertenenciasDetalle = false"></i>
             </header>
 
             <!-- ModalDetalle -->

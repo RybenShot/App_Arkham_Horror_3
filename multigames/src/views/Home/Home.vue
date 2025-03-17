@@ -99,7 +99,7 @@ export default {
   data() {
     return {
       textoInterfaz: {
-        versionApp: "Beta 1.1.1",
+        versionApp: "Beta 4.0.1",
         ultimaActualizacion: "",
         fechaUltimaActualizacion: "14/03/2025",
         botones: {

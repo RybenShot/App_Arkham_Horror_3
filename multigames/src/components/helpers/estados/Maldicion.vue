@@ -5,6 +5,7 @@
           <div class="modal-card">
             <header class="modal-card-head BGMaldicion">
               <p class="modal-card-title has-text-light has-text-weight-bold">{{ textoInterfaz.titulo }}</p>
+              <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalMaldito = false"></i>
             </header>
 
             <section class="modal-card-body hero is-large py-2">
