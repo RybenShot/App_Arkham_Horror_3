@@ -23,13 +23,16 @@
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 export default {
   name: 'app',
   data() {
     return {
       titulo: "",
       descripcion: "",
-      parrafo: ""
+      parrafo: "",
+      apiData: null, // Guardará la respuesta de la API
     }
   },
   methods: {
@@ -43,10 +46,14 @@ export default {
         this.descripcion = "The app is in a Beta phase and has been designed (in principle) for mobile viewing. Being only 1 person it costs a lot to take such a wide project forward, so I decided to focus all the effort on perfecting first in mobile view, then I will focus on the responsive.";
         this.parrafo = "Please start the application on a mobile or put the search engine in mobile mode to enjoy it. Thank you very much.";
       }
-    }
+    },
+    async obtenerDatosApi() {
+      this.apiData = await apiService.fetchData(); // Llamada a la API
+    },
   },
-  mounted() {
+  async mounted() {
     this.rellenarTextosegunIdioma();
+    await this.obtenerDatosApi(); // Llamamos a la API al montar el componente
   }
 }
 </script>
