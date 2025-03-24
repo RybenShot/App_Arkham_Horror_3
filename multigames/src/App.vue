@@ -50,10 +50,15 @@ export default {
     async obtenerDatosApi() {
       this.apiData = await apiService.fetchData(); // Llamada a la API
     },
+    async obtenerVisitasApi() {
+      this.$store.state.contadorVisitasTotales = await apiService.fetchVisits(); // Llamada a la API
+    },
   },
   async mounted() {
     this.rellenarTextosegunIdioma();
     await this.obtenerDatosApi(); // Llamamos a la API al montar el componente
+    // llamamos a la API para obtener las visitas totales
+    await this.obtenerVisitasApi();
   }
 }
 </script>

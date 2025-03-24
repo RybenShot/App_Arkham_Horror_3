@@ -11,7 +11,13 @@
       </div>
       
       <!-- hero -->
-      <div class="hero pt-6 pb-2">
+      <div class="hero pt-3 pb-2">
+        <div class="visit-counter">
+          <i class="fas fa-eye pr-2"></i>
+          <p class="counter-text">{{ textoInterfaz.textoVisitas }}: <span class="">{{ this.$store.state.contadorVisitasTotales }}</span></p>
+          <i class="fas fa-eye pl-2"></i>
+        </div>
+
         <div class=" columns is-mobile mx-6">
           <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png" alt="Logo de Arkham Horror"/>
         </div>
@@ -82,6 +88,8 @@
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 import ModalBienvenida from '@/components/home/modalBienvenida.vue';
 import ModalDonacion from '@/components/home/modalDonacion.vue';
 import { Howl } from 'howler';                  // dependencia para la reproduccion de sonidos
@@ -98,10 +106,12 @@ export default {
     },
   data() {
     return {
+      contadorVisitas: null,
       textoInterfaz: {
         versionApp: "Beta 4.0.1",
         ultimaActualizacion: "",
         fechaUltimaActualizacion: "14/03/2025",
+        textoVisitas: "",
         botones: {
           textBotonMapa: "",
           textBotonInvestigador: "",
@@ -143,19 +153,21 @@ export default {
         this.textoInterfaz.botones.textBotonSupport = "Apoyanos";
         this.textoInterfaz.botones.textBotonCreditos = "Creditos";
         this.textoInterfaz.ultimaActualizacion = "Ultima actualización:";
+        this.textoInterfaz.textoVisitas = "Visitas totales";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.botones.textBotonMapa = "Maps";
         this.textoInterfaz.botones.textBotonInvestigador = "Investigators";
         this.textoInterfaz.botones.textBotonSupport = "Support";
         this.textoInterfaz.botones.textBotonCreditos = "Credits";
         this.textoInterfaz.ultimaActualizacion = "Last update:";
+        this.textoInterfaz.textoVisitas = "Total visits";
       }
     },
     toggleNoticias() {
       this.noticias.isNoticiasOpen = !this.noticias.isNoticiasOpen;
     },
   },
-  mounted(){
+  async mounted(){
     //Esta función tonta es una manera de que salga o no el anuncion al principio
     this.resultadoAnuncio = Math.floor(Math.random() * (1, 3)) + 1;
     console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
@@ -240,6 +252,29 @@ export default {
   margin-top: 10px;
   padding: 15px;
 }
+
+/* Estilos para el contador de visitas */
+.visit-counter {
+  background: linear-gradient(45deg, #6bff8b, #bbf065);
+  padding: 10px 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 10px auto;
+  width: 90%;
+}
+
+.visit-counter i {
+  animation: blink 1s infinite;
+}
+/* Efecto parpadeante para el icono */
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.5; }
+}
+
 
 
 #BGAHHome {
