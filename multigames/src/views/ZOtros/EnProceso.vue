@@ -12,7 +12,7 @@
     <h1 class="title is-2 px-2 has-text-centered has-text-danger">{{ textoInterfaz.paginaEnProceso }}</h1>
     <section class="hero is-halfheight ">
       <div class="hero-body">
-        <button @click="goBack" class="button is-fullwidth">textoInterfaz.botonHuir</button>
+        <button @click="goBack" class="button is-fullwidth">{{ textoInterfaz.botonHuir }}</button>
       </div>
     </section>
   </div>

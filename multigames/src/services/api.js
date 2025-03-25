@@ -22,7 +22,6 @@ export const apiService = {
   async fetchVisits() {
     try {
       // Concatenamos el endpoint /visits a la URL base
-      console.log("vamos a ver cuantas visitas hay ....")
       const response = await axios.get(`${API_URL}/visits`);
       await axios.post(`${API_URL}/visits`);
       return response.data.contadorVisitasTotales;
