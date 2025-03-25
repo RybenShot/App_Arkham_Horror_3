@@ -125,7 +125,6 @@ export default {
       resultados: [1, 6, 5, 4],
       sumaResultado: 0,
 
-      concentracionFichas: [],
       modalConcentracionAbierto: false,
       tiposConcentracion: [
         { tipo: 'saber', icon: 'fas fa-book-open', color: 'color-saber' },
@@ -200,21 +199,32 @@ export default {
       }
     },
     agregarConcentracion(tipo) {
-      this.concentracionFichas.push({ ...tipo });
-      this.modalConcentracionAbierto = false
-    },
+    // Dispara la acción y pasa la ficha seleccionada
+    this.$store.dispatch('addConcentrationToken_Action', tipo);
+    this.modalConcentracionAbierto = false;
+  },
     // Método para usar 1 ficha de concentración:
     usarFichaConcentracionSimple() {
       if (this.concentracionFichas.length === 0) {
         alert("No hay fichas de concentración disponibles");
         return;
       }
+
       const resultado = Math.floor(Math.random() * 6) + 1;
+
       // Añadir el resultado al array de resultados
       this.vaciarArray(); 
       this.resultados.push(resultado);
+
       // Eliminar la primera ficha del array:
-      this.concentracionFichas.shift();
+      this.$store.dispatch('removeConcentrationToken_Action');
+    }
+  },
+  computed: {
+    // Recupera las fichas desde Vuex usando el getter
+    //! ESTA FUNCION SE USA COMO VARIABLE
+    concentracionFichas() {
+      return this.$store.getters.getConcentrationInPlay;
     }
   },
   mounted(){

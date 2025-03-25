@@ -243,9 +243,30 @@ export default createStore({
     AvFatal2: null,
     AvFatal3: null,
 
+    fichaConcentracionSeleccionada : null,
+    fichasConcentracion: [],
   },
-  getters: {},
-  mutations: {},
-  actions: {},
+  getters: {
+    getConcentrationInPlay(state){
+      return state.fichasConcentracion
+    }
+  },
+
+  mutations: {
+    addConcentrationToken(state, token){
+      state.fichasConcentracion.push(token)
+    },
+    removeConcentrationToken(state){
+      state.fichasConcentracion.shift()
+    }
+  },
+  actions: {
+    addConcentrationToken_Action({commit}, token){
+      commit('addConcentrationToken', token)
+    },
+    removeConcentrationToken_Action({commit}){
+      commit('removeConcentrationToken')
+    }
+  },
   modules: {}
 })

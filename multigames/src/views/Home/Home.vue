@@ -47,8 +47,8 @@
             <div class="box">
               <ul>
                 <li v-for="(articulo, index) in noticias.articulos" :key="index" class="noticia-item">
-                  <p v-if="this.$store.state.lenguaje == 'español'"><strong>Actualización N° {{ articulo.numeroActualizacion }}</strong></p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'"><strong>Update N° {{ articulo.numeroActualizacion }}</strong></p>
+                  <p v-if="this.$store.state.lenguaje == 'español'"><strong>Actualización V {{ articulo.numeroActualizacion }}</strong></p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'"><strong>Update V {{ articulo.numeroActualizacion }}</strong></p>
 
                   <h4 v-if="this.$store.state.lenguaje == 'español'">{{ articulo.titulo }}</h4>
                   <h4 v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.ENtitulo }}</h4>
@@ -108,9 +108,9 @@ export default {
     return {
       contadorVisitas: null,
       textoInterfaz: {
-        versionApp: "Beta 4.0.1",
+        versionApp: "Beta 4.0.2",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "14/03/2025",
+        fechaUltimaActualizacion: "28/03/2025",
         textoVisitas: "",
         botones: {
           textBotonMapa: "",
@@ -122,6 +122,14 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
+          {id: 3,
+            numeroActualizacion: "4.0.2",
+            titulo: "Mejoras en Enemigos y Gestión de Datos",
+            ENtitulo: "Improvements in Enemies and Data Management",
+            descripcion: "Añadido indicador de expansion de cada enemigo. Añadido gestion de fichas de concentracón. Corregido algunas traducciones. Añadido gestion de datos por backend.",
+            ENdescripcion: "Added expansion indicator for each enemy. Added management of concentration tokens. Fixed some translations. Added data management via backend.",
+            fechaActualizacion: "28/03/2025" 
+          },
           {id: 2,
             numeroActualizacion: "4.0.1",
             titulo: "Nueva interfaz de zona de juego de Investigador, reserva de mitos y apartado de noticias.",
