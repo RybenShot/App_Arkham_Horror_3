@@ -54,7 +54,7 @@ export default {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.titulo = "Estado: Determinado";
-        this.textoInterfaz.descripcion = "Tu límite de concentración aumenta en uno. Al final de tu turno, si nop estás Fatigado, puedes darle la vuelta a esta carta (quitar carta de determinado y activar carta de Fatigado) para realizar una acción adicional.";
+        this.textoInterfaz.descripcion = "Tu límite de concentración aumenta en uno. Al final de tu turno, si no estás Fatigado, puedes darle la vuelta a esta carta (quitar carta de determinado y activar carta de Fatigado) para realizar una acción adicional.";
         this.textoInterfaz.expansion = "Expansion: Secretos";
         this.textoInterfaz.botones.quitar = "Descartar";
         this.textoInterfaz.botones.añadir = "Añadir";

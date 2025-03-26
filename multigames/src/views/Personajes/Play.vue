@@ -1,5 +1,8 @@
 <template>
   <div class="p-2">
+     <!-- recordatorio sobre Bendicion y maldicion -->
+     <div v-if="$store.state.ModalPopUp_Notificaciones"><PopUpNotificaciones/></div>
+
     <!-- Confirmacion al intentar salir de terminar partida -->
     <div v-if="$store.state.ModalConfirmacion"><ModalConfirmacion/></div>
     <!-- Modals de los estados para verlos -->
@@ -27,6 +30,8 @@ import EstadosPlay from "@/components/personajes/ComponentsPlay/EstadosPlay.vue"
 import HabilidadesPlay from "@/components/personajes/ComponentsPlay/HabilidadesPlay.vue";
 import AjustesPlay from "@/components/personajes/ComponentsPlay/AjustesPlay.vue";
 
+import PopUpNotificaciones from "@/components/helpers/popUp/notificaciones.vue";
+
 import ModalConfirmacion from "@/components/personajes/ComponentsPlay/ModalConfirmacion.vue";
 import ModalsEstadosPlay from "@/components/personajes/ComponentsPlay/ModalsEstadosPlay.vue";
 
@@ -41,6 +46,8 @@ export default {
     EstadosPlay,
     HabilidadesPlay,
     AjustesPlay,
+
+    PopUpNotificaciones,
 
     ModalConfirmacion,
     ModalsEstadosPlay

@@ -96,6 +96,18 @@ export default createStore({
     StoreEstadosPlay: false,
     StoreHabilidades: false,
     StoreAjustesPlay: false,
+
+    //PopUp - Notificaciones
+    ModalPopUp_Notificaciones: false,
+    NotificacionTexto: {
+      title: null,
+      texto1: null,
+      texto2: null,
+      texto3: null,
+      texto4: null,
+      expansion: "AH Base"
+    },
+
     //Audio
     PistasAudio: {
       EfectoInmersion: false,
@@ -151,7 +163,7 @@ export default createStore({
     // RESERVA DE MITOS
     reservaVisible: [],
     // notificacion retribucion
-    modalNotificacionRetribucion: false,
+    modalNotificacionRetribucion: true,
     modalNotificacionEfectoMancillado:false,
 
     modalVerLosetaMapa: false,

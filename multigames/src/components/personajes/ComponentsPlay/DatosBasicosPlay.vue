@@ -10,7 +10,7 @@
     <div class="columns is-mobile">
       <!-- foto y nombre -->
       <div class="column is-half image">
-        <img class="is-rounded image image bordeImagen" :src="this.$store.state.datosPJactual.fotoUrl" alt="">
+        <img class="is-rounded image image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " :src="this.$store.state.datosPJactual.fotoUrl" >
         <div class="nombrePosicion">
           <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
           <p class="has-background-dark subtitle is-6 has-text-white posicion">{{ textoInterfaz.posicion }}</p>
@@ -54,8 +54,8 @@
 
         <!-- sumar restar -->
         <div class="columns is-mobile my-2 ">
-          <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-5 button is-small p-0 is-danger">-</button>
-          <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-5 button is-small p-0 is-primary">+</button>
+          <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-5 button is-small p-0 is-danger pb-1"><i class="fas fa-window-minimize"></i></button>
+          <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-5 button is-small p-0 is-primary "><i class="fas fa-plus"></i></button>
         </div>
 
       </div>
@@ -299,6 +299,22 @@ export default {
 }
 .bordeImagen{
   border: thick double #F2C94C;
+}
+.bordeImagenBendecido{
+  animation: glowingBendecido 3s linear infinite;
+}
+@keyframes glowingBendecido{
+  0% {box-shadow: 0px 0px 10px 10px #04ff0000;}
+  50% {box-shadow: 0px 0px 50px 10px rgb(0, 225, 255);}
+  100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
+}
+.bordeImagenMaldito{
+  animation: glowingMaldito 3s linear infinite;
+}
+@keyframes glowingMaldito{
+  0% {box-shadow: 0px 0px 10px 10px #04ff0000;}
+  50% {box-shadow: 0px 0px 50px 10px rgb(225, 0, 0);}
+  100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
 }
 
 .nombrePosicion{

@@ -55,7 +55,7 @@ export default {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.titulo = "Estado: Fatigado";
-        this.textoInterfaz.descripcion = "Si estás Determinado, descarta esa estado. No puedes ganar Determinado. Cuendo estés resolkviendo una prueba, como coste adicional para volver a tirar uno o más dados quita un dado de esa prueba. Después de que realices una acción de concentración, descarta esta carta.";
+        this.textoInterfaz.descripcion = "Si estás Determinado, descarta esa estado. No puedes ganar Determinado. Cuendo estés resolviendo una prueba, como coste adicional para volver a tirar uno o más dados quita un dado de esa prueba. Después de que realices una acción de concentración, descarta esta carta.";
         this.textoInterfaz.expansion = "Expansion: Secretos";
         this.textoInterfaz.botones.quitar = "Descartar";
         this.textoInterfaz.botones.añadir = "Añadir";

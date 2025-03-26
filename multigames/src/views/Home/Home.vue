@@ -124,10 +124,10 @@ export default {
         articulos: [
           {id: 3,
             numeroActualizacion: "4.0.2",
-            titulo: "Mejoras en Enemigos y Gestión de Datos",
-            ENtitulo: "Improvements in Enemies and Data Management",
-            descripcion: "Añadido indicador de expansion de cada enemigo. Añadido gestion de fichas de concentracón. Corregido algunas traducciones. Añadido gestion de datos por backend.",
-            ENdescripcion: "Added expansion indicator for each enemy. Added management of concentration tokens. Fixed some translations. Added data management via backend.",
+            titulo: "Mejoras en Enemigos, recordatorios y Gestión de Datos",
+            ENtitulo: "Improvements in Enemies, Reminders, and Data Management",
+            descripcion: "Añadido indicador de expansion de cada enemigo. Añadido recordatorio para bendición y maldición. Añadido gestion de fichas de concentracón. Corregido algunas traducciones. Añadido gestion de datos por backend.",
+            ENdescripcion: "Added expansion indicator for each enemy. Added reminder for Blessing and Curse. Added management of concentration tokens. Fixed some translations. Added data management via backend.",
             fechaActualizacion: "28/03/2025" 
           },
           {id: 2,
@@ -189,20 +189,13 @@ export default {
 
 <style scoped>
 .boxShadowYellow{
-  box-shadow: 0px 0px 10px yellow;
   animation: glowing 1s linear infinite;
 }
 
 @keyframes glowing{
-  0% {
-    box-shadow: 0px 0px 10px #04ff0000;
-  }
-  50% {
-    box-shadow: 0px 0px 10px yellow;
-  }
-  100% {
-    box-shadow: 0px 0px 20px 20px #04ff0000;
-  }
+  0% {box-shadow: 0px 0px 10px #04ff0000;}
+  50% {box-shadow: 0px 0px 10px rgb(195, 0, 255);}
+  100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
 }
 
 @font-face {

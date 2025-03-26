@@ -250,7 +250,7 @@ export default {
     comprobarFicha(){
       switch (this.fichaMostrada.tipo) {
         case "retribucion":
-        this.$store.state.modalPopUpNotificacion = true
+        this.$store.state.modalNotificacionRetribucion = true
           if (this.$store.state.EstadoPacto == true) {
             this.$store.state.modalPacto = true
           } if (this.$store.state.EstadoMancillado == true) {

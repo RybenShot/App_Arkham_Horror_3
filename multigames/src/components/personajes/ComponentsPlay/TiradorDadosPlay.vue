@@ -156,17 +156,62 @@ export default {
     this.NDeDadosExtra = 0;
     this.activeButton = button;
   },
+  // Funcion encargada de escribir el modal de notificacion popUP para bendicion y maldicion por ahora
+  writeNotification(pjState){
+    if (pjState == "bendicion") {
+      if (this.$store.state.lenguaje == "español") {
+        this.$store.state.NotificacionTexto.title =  "Has perdido la Bendición";
+        this.$store.state.NotificacionTexto.texto1 =  "Al no haber sacado ningun acierto, piertes la Bendición.";
+      } else if (this.$store.state.lenguaje == "ingles") {
+        this.$store.state.NotificacionTexto.title =  "You have lost the Blessing.";
+        this.$store.state.NotificacionTexto.texto1 =  "As you didn't roll any success, you lose the Blessing.";
+      }
+    } 
+    else if (pjState == "maldicion") {
+      if (this.$store.state.lenguaje == "español") {
+        this.$store.state.NotificacionTexto.title =  "Has perdido la Maldición";
+        this.$store.state.NotificacionTexto.texto1 =  "Al haber sacado un acierto, piertes la Maldición.";
+      } else if (this.$store.state.lenguaje == "ingles") {
+        this.$store.state.NotificacionTexto.title =  "You have lost the Curse.";        
+        this.$store.state.NotificacionTexto.texto1 =  "As you rolled a success, you lose the Curse.";
+      }
+    }
+  },
+  // comprobador de perdida de bendicion o maldicion por la tirada
+  comprobarResultado(){
+    if (this.$store.state.EstadoBendicion == true) {
+      if (!this.resultados.includes(4) && !this.resultados.includes(5) && !this.resultados.includes(6)) {
+        this.writeNotification("bendicion")
+        this.$store.state.ModalPopUp_Notificaciones = true
+        this.$store.state.EstadoBendicion = false;
+      }
+    } else if (this.$store.state.EstadoMaldito == true) {
+      if (this.resultados.includes(6)) {
+        this.writeNotification("maldicion")
+        this.$store.state.ModalPopUp_Notificaciones = true
+        this.$store.state.EstadoMaldito = false;
+      }
+    }
+  },
 // TIRADA DE DADOS
     async tirarDados(min) {
       let max = 6; // maximo de lados de dados
       let totalDados = this.NDadosAtributo + this.NDeDadosExtra;
+      if (totalDados <= 0) {
+        // TODO notificar al usuario de que tiene que seleccionar algun atributo para tirar dados
+        return
+      }
       await this.vaciarArray(); // vaciamos el array de resultados
       for (let i = 0; i < totalDados; i++) {
         // un bucle normal
         this.resultado = Math.floor(Math.random() * (min, max)) + min;
-        console.log(this.resultado);
         this.resultados.push(this.resultado); // en cada vuelta metemos el resultado ene l array
       }
+      // funcion que se ejecuta por si el jugador estuviera bendecido o maldecido
+      setTimeout(() => {
+        this.comprobarResultado();
+      }, 3000);
+      
     },
     vaciarArray: function () {
       this.resultados = []; // vaciamos el array de resultado
