@@ -163,7 +163,7 @@ export default createStore({
     // RESERVA DE MITOS
     reservaVisible: [],
     // notificacion retribucion
-    modalNotificacionRetribucion: true,
+    modalNotificacionRetribucion: false,
     modalNotificacionEfectoMancillado:false,
 
     modalVerLosetaMapa: false,
