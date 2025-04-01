@@ -1,12 +1,12 @@
 import axios from "axios";
 //const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-//const API_URL = process.env.VUE_APP_API_URL_DEV;
-const API_URL = process.env.VUE_APP_API_URL_PROD ;
+const API_URL = process.env.VUE_APP_API_URL_DEV;
+//const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
 export const apiService = {
   // metodo basico para la bienvenida
-  async fetchData() {
+  async wellcome() {
     try {
       const response = await axios.get(API_URL);
       console.log(response.data.message);
@@ -19,7 +19,7 @@ export const apiService = {
   },
 
   // metodo basico para obtener las visitas totales
-  async fetchVisits() {
+  async obtainVisits() {
     try {
       // Concatenamos el endpoint /visits a la URL base
       const response = await axios.get(`${API_URL}/visits`);

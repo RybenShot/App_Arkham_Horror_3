@@ -19,20 +19,30 @@
         </div>
 
         <div class=" columns is-mobile mx-6">
-          <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorrorEDITADO.png" alt="Logo de Arkham Horror"/>
+          <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorror.png" alt="Logo de Arkham Horror"/>
         </div>
       </div>
 
       <!-- menu list -->
       <section class="mt-4">
-        <div >
+        <div>
           <ul>
-            <router-link to="/ListaMapas" @click="SonidoTecla()"><button class="buttonsHome ">{{ textoInterfaz.botones.textBotonMapa }}</button></router-link>
-            <router-link to="/ListaPersonajes" @click="SonidoTecla()"><button class="buttonsHome ">{{ textoInterfaz.botones.textBotonInvestigador }}</button></router-link>
-            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()"><button class="buttonsHome">{{ textoInterfaz.botones.textBotonSupport }}</button></a>
-            <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button>
+            <router-link to="/ListaMapas" @click="SonidoTecla()">
+              <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonMapa }}</button>
+            </router-link>
+
+            <router-link to="/ListaPersonajes" @click="SonidoTecla()">
+              <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonInvestigador }}</button>
+            </router-link>
+
+            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
+              <button class="buttonsHome">{{ textoInterfaz.botones.textBotonSupport }}</button>
+            </a>
+
+            <!-- <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button> -->
           </ul>
         </div>
+
         <!-- Apartado para la versión de la aplicación -->
         <div class="app-version">Version: {{ textoInterfaz.versionApp }}</div>
         
@@ -47,8 +57,7 @@
             <div class="box">
               <ul>
                 <li v-for="(articulo, index) in noticias.articulos" :key="index" class="noticia-item">
-                  <p v-if="this.$store.state.lenguaje == 'español'"><strong>Actualización V {{ articulo.numeroActualizacion }}</strong></p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'"><strong>Update V {{ articulo.numeroActualizacion }}</strong></p>
+                  <p><strong> {{ textoInterfaz.textoActualizacion }} {{ articulo.numeroActualizacion }}</strong></p>
 
                   <h4 v-if="this.$store.state.lenguaje == 'español'">{{ articulo.titulo }}</h4>
                   <h4 v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.ENtitulo }}</h4>
@@ -71,14 +80,11 @@
       <div class="columns is-movile has-text-centered">
         <p class="column">
           <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'español'), (this.rellenarTextosegunIdioma())">
-            <img v-if="this.$store.state.lenguaje == 'español'" class="buttonsBanderas" src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
-            <img v-if="this.$store.state.lenguaje == 'ingles'" class="buttonsBanderas buttonsBanderasDesactivado" src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
+            <img class="buttonsBanderas" :class="{'buttonsBanderasDesactivado': this.$store.state.lenguaje == 'ingles'}" src="@/assets/img/ZZOtros/banderas/espana.png" alt="bandera español">
           </button>
           
-
           <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'ingles') , (this.rellenarTextosegunIdioma())">
-            <img v-if="this.$store.state.lenguaje == 'ingles'" class="buttonsBanderas" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
-            <img v-if="this.$store.state.lenguaje == 'español'" class="buttonsBanderas buttonsBanderasDesactivado" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
+            <img class="buttonsBanderas" :class="{'buttonsBanderasDesactivado': this.$store.state.lenguaje == 'español'}" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
           </button>
         </p>
       </div>
@@ -112,6 +118,7 @@ export default {
         ultimaActualizacion: "",
         fechaUltimaActualizacion: "28/03/2025",
         textoVisitas: "",
+        textoActualizacion: "",
         botones: {
           textBotonMapa: "",
           textBotonInvestigador: "",
@@ -162,6 +169,7 @@ export default {
         this.textoInterfaz.botones.textBotonCreditos = "Creditos";
         this.textoInterfaz.ultimaActualizacion = "Ultima actualización:";
         this.textoInterfaz.textoVisitas = "Visitas totales";
+        this.textoInterfaz.textoActualizacion = "Actualización V";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.botones.textBotonMapa = "Maps";
         this.textoInterfaz.botones.textBotonInvestigador = "Investigators";
@@ -169,6 +177,7 @@ export default {
         this.textoInterfaz.botones.textBotonCreditos = "Credits";
         this.textoInterfaz.ultimaActualizacion = "Last update:";
         this.textoInterfaz.textoVisitas = "Total visits";
+        this.textoInterfaz.textoActualizacion = "Update V";
       }
     },
     toggleNoticias() {

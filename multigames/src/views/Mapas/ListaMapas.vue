@@ -1,16 +1,7 @@
 <template>
   <div class="BGGeneralAH">
     <!-- notificacion de activar o desactivar -->
-    <transition name="fade">
-      <div v-if="mostrarNotifDesactivar" class="notificacion has-text-light has-background-danger">
-        <span>{{ mensajeDesactivado }}</span>
-      </div>
-    </transition>
-    <transition name="fade">
-      <div v-if="mostrarNotifActivar" class="notificacion has-background-success">
-        <span>{{ mensajeActivado }}</span>
-      </div>
-    </transition>
+    <poUp_Notificaciones/>
 
     <div>
       <!-- Seleccionar Mapa -->
@@ -25,107 +16,22 @@
       <!-- Colecciones y botones -->
       <h2 class="title is-4 has-text-white has-text-centered">{{ textoInterfaz.subtitulo }}</h2>
       <p class="subtitle is-6 has-text-white has-text-centered mb-2"> {{ textoInterfaz.descripcion }}</p>
+      
+      <!-- Botones de expansión -->
       <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
-
-        <button v-if="this.$store.state.ActivarBase == true" class=" button  is-success" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarBase = false)">{{ textoInterfaz.botones.base }}</button>
-        <button v-if="this.$store.state.ActivarBase == false" class="button is-success is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarBase = true)">{{ textoInterfaz.botones.base }}</button>
-
-        <button v-if="this.$store.state.ActivarMareasTenebrosas == true" class="button  is-info" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarMareasTenebrosas = false)">{{ textoInterfaz.botones.mareas }}</button>
-        <button v-if="this.$store.state.ActivarMareasTenebrosas == false" class="button is-info is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarMareasTenebrosas = true)">{{ textoInterfaz.botones.mareas }}</button>
-
-        <button v-if="this.$store.state.ActivarNocheCerrada == true" class="button  is-warning" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNocheCerrada = false)">{{ textoInterfaz.botones.noche }}</button>
-        <button v-if="this.$store.state.ActivarNocheCerrada == false" class="button is-warning is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNocheCerrada = true)">{{ textoInterfaz.botones.noche }}</button>
-
-        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == true" class="button  is-link" @click="(SonidoTecla()), (mostrarNotificacionDesactivar()), (this.$store.state.ActivarNSecretosDeLaOrden = false)">{{ textoInterfaz.botones.secretos }}</button>
-        <button v-if="this.$store.state.ActivarNSecretosDeLaOrden == false" class="button is-link is-outlined" @click="(SonidoTecla()), (mostrarNotificacionActivar()), (this.$store.state.ActivarNSecretosDeLaOrden = true)">{{ textoInterfaz.botones.secretos }}</button>
-
+        <button v-for="btn in expansionButtons" :key="btn.key" class="button" :class="[btn.buttonClass, {'is-outlined': !$store.state[btn.key]}]" @click="handleToggle(btn.key)">
+          {{ btn.text }}
+        </button>
       </div>
+
     </div>
-<br>
+    <br>
 
-<!-- Expansiones // Mapas -->
-
-    <div v-if="this.$store.state.ActivarBase">
-      <div class="PersonajesList">
-        <div v-for="mapa in MapasBase" :key="mapa">
-          <router-link to="/DetalleMapa">
-            <div @click="this.$store.state.datosMapa = mapa" class="p-1" >
-
-              <div class="card cajaDePersonajesBase">
-                <div class="card-image-wrapper">
-                  <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
-                </div>
-                <div class="card-overlay has-text-centered">
-                  
-                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
-                </div>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="this.$store.state.ActivarMareasTenebrosas">
-      <div class="PersonajesList">
-        <div v-for="mapa in MapasMareasTenebrosas" :key="mapa">
-          <router-link to="/DetalleMapa">
-            <div @click="this.$store.state.datosMapa = mapa" class="p-1" >
-
-              <div class="card cajaDePersonajesMareasTenebrosas">
-                <div class="card-image-wrapper">
-                  <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
-                </div>
-                <div class="card-overlay has-text-centered">
-                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
-                </div>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="this.$store.state.ActivarNocheCerrada">
-      <div class="PersonajesList">
-        <div v-for="mapa in MapasNocheCerrada" :key="mapa">
-          <router-link to="/DetalleMapa">
-            <div @click="this.$store.state.datosMapa = mapa" class="p-1" >
-
-              <div class="card cajaDePersonajesNocheCerrada">
-                <div class="card-image-wrapper">
-                  <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
-                </div>
-                <div class="card-overlay has-text-centered">
-                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
-                </div>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="this.$store.state.ActivarNSecretosDeLaOrden">
-      <div class="PersonajesList">
-        <div v-for="mapa in MapasSecretosDeLaOrden" :key="mapa">
-          <router-link to="/DetalleMapa">
-            <div @click="this.$store.state.datosMapa = mapa" class="p-1" >
-
-              <div class="card cajaDePersonajesSecretosDeLaOrden">
-                <div class="card-image-wrapper">
-                  <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
-                </div>
-                <div class="card-overlay has-text-centered">
-                  <p v-if="this.$store.state.lenguaje == 'español'" class="title is-7 tipografiaElegante">{{mapa.title}}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'" class="title is-7 tipografiaElegante">{{mapa.ENtitle}}</p>
-                </div>
-              </div>
-            </div>
-          </router-link>
+    <!-- Secciones de expansiones (Mapas) -->
+    <div v-for="expansion in expansions" :key="expansion.key" >
+      <div v-if="$store.state[expansion.key]">
+        <div class="PersonajesList">
+          <MapCard v-for="mapa in expansion.maps" :key="mapa" :mapa="mapa" :cardClass="expansion.cardClass"/>
         </div>
       </div>
     </div>
@@ -135,6 +41,8 @@
 
 <script>
 import { Howl } from 'howler';
+import poUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue'
+import MapCard from '@/components/mapas/MapCard.vue'
 
 const sound = new Howl({
   src: require('@/assets/sound/SonidoTecla.mp3'),
@@ -143,10 +51,7 @@ export default {
   name: "lista_De_Mapas",
   data() {
     return {
-      mostrarNotifDesactivar: false,
-      mensajeDesactivado: "Expansión desactivada!",
-      mostrarNotifActivar: false,
-      mensajeActivado: "Expansión Activada!",
+      stateExpansionBase: true,
 
       textoInterfaz:{
         titulo: "",
@@ -503,24 +408,42 @@ export default {
 
     }; // end return
   }, // end data
+  computed: {
+    expansionButtons() {
+      return [
+        { key: 'stateExpansionBase', text: this.textoInterfaz.botones.base, buttonClass: 'is-success' },
+        { key: 'stateExpansionWaves', text: this.textoInterfaz.botones.mareas, buttonClass: 'is-info' },
+        { key: 'stateExpansionNigth', text: this.textoInterfaz.botones.noche, buttonClass: 'is-warning' },
+        { key: 'stateExpansionSecrets', text: this.textoInterfaz.botones.secretos, buttonClass: 'is-link' }
+      ];
+    },
+    expansions() {
+      return [
+        { key: 'stateExpansionBase', maps: this.MapasBase, cardClass: 'cajaDePersonajesBase' },
+        { key: 'stateExpansionWaves', maps: this.MapasMareasTenebrosas, cardClass: 'cajaDePersonajesMareasTenebrosas' },
+        { key: 'stateExpansionNigth', maps: this.MapasNocheCerrada, cardClass: 'cajaDePersonajesNocheCerrada' },
+        { key: 'stateExpansionSecrets', maps: this.MapasSecretosDeLaOrden, cardClass: 'cajaDePersonajesSecretosDeLaOrden' }
+      ];
+    }
+  },
+  components:{
+    poUp_Notificaciones,
+    MapCard
+  },
   methods: {
+    handleToggle(expansionKey) {
+      this.SonidoTecla();
+      // si la la expanion esta en true, la desactivamos, si no, la activamos
+      let message = this.$store.state[expansionKey] ? "expansion desactivada" : "expansion activada";
+      this.$store.commit('toggleExpansion', { key: expansionKey, value: !this.$store.state[expansionKey] });
+      this.$store.dispatch('ejecutarFlashPopUp_Action', message);
+    },
     goBack() {
       this.$router.go(-1);
     },
-    mostrarNotificacionDesactivar() {
-      this.mostrarNotifDesactivar = true;
-      setTimeout(() => {
-        this.mostrarNotifDesactivar = false;
-      }, 2000);
+    SonidoTecla() {
+      sound.play();
     },
-    mostrarNotificacionActivar() {
-      this.mostrarNotifActivar = true;
-      setTimeout(() => {
-        this.mostrarNotifActivar = false;
-      }, 2000);
-    },
-    SonidoTecla() {sound.play();},
-
     rellenarTextosegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.titulo = "Seleccionar Mapa";
@@ -556,29 +479,6 @@ export default {
   align-items: center
 }
 
-/* Notificacion de expansion activa*/
-.notificacion {
-  position: fixed;
-  top: 50vh;
-  left: 15vh;
-  width: 40%;
-  background-color: #f1f1f1;
-  box-shadow: 0px 0px 50px 50px rgb(255, 255, 255);
-  border-style: inset;
-  padding: 10px;
-  z-index: 20;
-  opacity: 1;
-  text-align: center;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 /* Usado */
 .BGGeneralAH {
   background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
@@ -592,37 +492,5 @@ export default {
   display: grid;
   grid-template-columns: auto auto auto ;
 }
-.cajaDePersonajesBase{
-  border: 2px solid #48c78e;
-  border-radius: 3px;
-}
-.cajaDePersonajesMareasTenebrosas{
-  border: 2px solid #3e8ed0;
-  border-radius: 3px;
-}
-.cajaDePersonajesNocheCerrada{
-  border: 2px solid #ffdc7d;
-  border-radius: 3px;
-}
-.cajaDePersonajesSecretosDeLaOrden{
-  border: 2px solid #485fc7;
-  border-radius: 3px;
-}
-.cajaimg{
-  object-fit: cover;
-  min-height: 80px;
-}
 
-.card-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 5px;
-  z-index: 2;
-}
-.tipografiaElegante{
-  font-family: "Cinzel";
-}
 </style>

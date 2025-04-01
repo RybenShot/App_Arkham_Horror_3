@@ -31,8 +31,7 @@ export default {
     return {
       titulo: "",
       descripcion: "",
-      parrafo: "",
-      apiData: null, // Guardará la respuesta de la API
+      parrafo: ""
     }
   },
   methods: {
@@ -47,23 +46,23 @@ export default {
         this.parrafo = "Please start the application on a mobile or put the search engine in mobile mode to enjoy it. Thank you very much.";
       }
     },
-    async obtenerDatosApi() {
-      this.apiData = await apiService.fetchData(); // Llamada a la API
+    async obtainWellcomeApi() {
+      this.apiData = await apiService.wellcome(); // Llamada a la API
     },
-    async obtenerVisitasApi() {
-      this.$store.state.contadorVisitasTotales = await apiService.fetchVisits(); // Llamada a la API
+    async obtainVisitsApi() {
+      this.$store.state.contadorVisitasTotales = await apiService.obtainVisits(); // Llamada a la API
     },
   },
   async mounted() {
     this.rellenarTextosegunIdioma();
-    await this.obtenerDatosApi(); // Llamamos a la API al montar el componente
+    await this.obtainWellcomeApi();
     // llamamos a la API para obtener las visitas totales
-    await this.obtenerVisitasApi();
+    await this.obtainVisitsApi();
   }
 }
 </script>
 
-<style>
+<style scoped>
 @import "./views/CssHome.css";
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap');

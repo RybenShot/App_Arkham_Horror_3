@@ -16,6 +16,13 @@ export default createStore({
     modalHistoriaDetalle: false,
     modalArquetipoDetalle: false,
 
+    //EXPANSIONES - Estasdos usados para activar o descativar expansiones, usado en lista de mapas o lista de investigadores
+    stateExpansionBase: true,
+    stateExpansionWaves: false,
+    stateExpansionNigth: false,
+    stateExpansionSecrets: false,
+    stateExpansionOriginal: false,
+
     //PERSONAJES
     contadorPJ: 0,
 
@@ -98,6 +105,11 @@ export default createStore({
     StoreAjustesPlay: false,
 
     //PopUp - Notificaciones
+    FlashPopUP_notifications: {
+      state: false,
+      text: ""
+    },
+
     ModalPopUp_Notificaciones: false,
     NotificacionTexto: {
       title: null,
@@ -270,6 +282,18 @@ export default createStore({
     },
     removeConcentrationToken(state){
       state.fichasConcentracion.shift()
+    },
+
+    toggleExpansion(state, { key, value }) {
+      state[key] = value;
+    },
+    ejecutarFlashPopUp(state, message) {
+      state.FlashPopUP_notifications.text = message;
+      state.FlashPopUP_notifications.state = true;
+  
+      setTimeout(() => {
+        state.FlashPopUP_notifications.state = false;
+      }, 2000);
     }
   },
   actions: {
@@ -278,6 +302,10 @@ export default createStore({
     },
     removeConcentrationToken_Action({commit}){
       commit('removeConcentrationToken')
+    },
+
+    ejecutarFlashPopUp_Action({commit}, message){
+      commit('ejecutarFlashPopUp', message)
     }
   },
   modules: {}
