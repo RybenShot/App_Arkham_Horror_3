@@ -3,7 +3,7 @@
     <div class="columns is-mobile mt-5 mb-0 mx-2">
       <!-- Loseta -->
       <div class="column is-6 ml-2">
-        <div class=" helperimgMapas" :class="[imgMapa]" @click="this.$store.state.modalVerLosetaMapa = true"></div>
+        <div class=" helperimgMapas" :style="losetaStyle" @click="this.$store.state.modalVerLosetaMapa = true"></div>
       </div>
 
       <!-- Botones derecha -->
@@ -39,7 +39,7 @@
         <p>{{ textoBotones.lista }}</p>
       </div>
       <div class="column">
-        <p class=" title is-4 has-text-white py-3">{{this.$store.state.datosMapa.idMapa + 1}}/13</p>
+        <p class=" title is-4 has-text-white py-3">{{this.$store.state.datosMapa.idMap + 1}}/13</p>
       </div>
       <div id="BG-boton-Selec-inv" :class="{'boxShadowGreen':this.$store.state.mapaSeleccionado}" class="helperbotones column my-2 py-4">
         <router-link to="/ListaPersonajes">
@@ -64,6 +64,18 @@ export default {
         mapaSeleccionado:"",
         selecInv: "",
         lista: ""
+      }
+    }
+  },
+  computed: {
+    losetaStyle() {
+      const fileName = this.$store.state.datosMapa.imgMap
+      return {
+        width: '150px',
+        height: '200px',
+        backgroundImage: `url(/img/3-mapas/losetas/${fileName})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "contain",
       }
     }
   },
@@ -93,24 +105,6 @@ export default {
   },
   mounted(){
     this.rellenarTextoSegunIdioma()
-    // Esta parte se tiene que dejar para que en la primera carga aparezca ya las LOSETAS del mapa cargado.
-    if (this.$store.state.datosMapa.idMapa == 0) {this.imgMapa = "imgMapa0"}
-    else if (this.$store.state.datosMapa.idMapa == 1) {this.imgMapa = "imgMapa1"}
-    else if (this.$store.state.datosMapa.idMapa == 2) {this.imgMapa = "imgMapa2"}
-    else if (this.$store.state.datosMapa.idMapa == 3) {this.imgMapa = "imgMapa3"}
-    
-    else if (this.$store.state.datosMapa.idMapa == 4) {this.imgMapa = "imgMapa4"}
-    else if (this.$store.state.datosMapa.idMapa == 5) {this.imgMapa = "imgMapa5"}
-    else if (this.$store.state.datosMapa.idMapa == 6) {this.imgMapa = "imgMapa6"}
-    else if (this.$store.state.datosMapa.idMapa == 7) {this.imgMapa = "imgMapa7"}
-
-    else if (this.$store.state.datosMapa.idMapa == 8) {this.imgMapa = "imgMapa8"}
-    else if (this.$store.state.datosMapa.idMapa == 9) {this.imgMapa = "imgMapa9"}
-
-    else if (this.$store.state.datosMapa.idMapa == 10) {this.imgMapa = "imgMapa10"}
-    else if (this.$store.state.datosMapa.idMapa == 11) {this.imgMapa = "imgMapa11"}
-    else if (this.$store.state.datosMapa.idMapa == 12) {this.imgMapa = "imgMapa12"}
-    else {this.imgMapa = "imgMapa1"}
   },
 }
 </script>

@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-const API_URL = process.env.VUE_APP_API_URL_DEV;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+//const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -30,4 +30,28 @@ export const apiService = {
       return null;
     }
   },
+
+  // listar todos los mapas
+  async obtainMapList(){
+    try {
+      const response = await axios.get(`${API_URL}/maps`);
+      return response
+
+    } catch (error) {
+      console.log("Error al cargar la lista de mapa")
+      return null
+    }
+  },
+
+  // listar mapa por expansion
+  async obtainMapsByExpansion() {
+    try {
+      const response = await axios.get(`${API_URL}/maps/previewMap`);
+      return response.data; 
+    } catch (error) {
+      console.error(`Error al obtener la lista de mapas`, error);
+      return [];
+    }
+  }
+  
 };

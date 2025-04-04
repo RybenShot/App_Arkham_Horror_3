@@ -4,22 +4,22 @@
       <div class="columns is-mobile">
         <div class="column p-0 py-1" id="barraDerechaAbajo" >
           <p>{{ textoInterfaz.votosUsuarios }}</p>
-          <p>{{ this.$store.state.datosMapa.votosUsuariosMapa }} de 5</p>
+          <p>{{ this.$store.state.datosMapa.userVotes }}/5</p>
         </div>
         <div class="column p-0 py-1" >
           <p>{{ textoInterfaz.duracion }}</p>
-          <p>{{ this.$store.state.datosMapa.ducacionMapa }} min</p>
+          <p>{{ this.$store.state.datosMapa.duration }} min</p>
         </div>
       </div>
 
       <div class="columns is-mobile" >
         <div class="column p-0 py-1">
           <p>{{ textoInterfaz.cajaNecesaria }}</p>
-          <p>{{ this.$store.state.datosMapa.expansionMapa }}</p>
+          <p>{{ this.$store.state.datosMapa.expansion }}</p>
         </div>
         <div class="column p-0 py-1" id="barraIzquierdaArriba">
           <p>{{ textoInterfaz.dificultad }}</p>
-          <p>{{ this.$store.state.datosMapa.dificultadMapa }} de 5</p>
+          <p>{{ this.$store.state.datosMapa.difficulty }}/5</p>
         </div>
       </div>
     </div>

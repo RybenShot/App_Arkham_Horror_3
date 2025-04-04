@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div v-if="this.$store.state.datosMapa.expansionMapa == 'AHBase'"><ListaEnemigosAHBase/></div>
-    <div v-if="this.$store.state.datosMapa.expansionMapa == 'AH Mareas'"><ListaEnemigosAHMareas/></div>
-    <div v-if="this.$store.state.datosMapa.expansionMapa == 'AH Noche Cerrada'"><ListaEnemigosAHNoche/></div>
-    <div v-if="this.$store.state.datosMapa.expansionMapa == 'AH Secretos'"><ListaEnemigosAHSecretos/></div>
+    <div v-if="this.$store.state.datosMapa.expansion == 'AHBase'"><ListaEnemigosAHBase/></div>
+    <div v-if="this.$store.state.datosMapa.expansion == 'AHWaves'"><ListaEnemigosAHMareas/></div>
+    <div v-if="this.$store.state.datosMapa.expansion == 'AHNigth'"><ListaEnemigosAHNoche/></div>
+    <div v-if="this.$store.state.datosMapa.expansion == 'AHSecrets'"><ListaEnemigosAHSecretos/></div>
   </div>
 </template>
 

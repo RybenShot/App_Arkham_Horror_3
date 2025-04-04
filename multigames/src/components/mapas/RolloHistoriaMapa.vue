@@ -42,20 +42,20 @@ export default {
   methods: {
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.titulo = this.$store.state.datosMapa.translations.es.title;
+        this.textoInterfaz.descripcion = this.$store.state.datosMapa.translations.es.description;
+      }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = this.$store.state.datosMapa.title;
         this.textoInterfaz.descripcion = this.$store.state.datosMapa.description;
-      }else if(this.$store.state.lenguaje == 'ingles'){
-        this.textoInterfaz.titulo = this.$store.state.datosMapa.ENtitle;
-        this.textoInterfaz.descripcion = this.$store.state.datosMapa.ENdescription;
       }
     },
     reproducirAudio() {
-      const idMapasound = this.$store.state.datosMapa.idMapa;
+      const idMapasound = this.$store.state.datosMapa.idMap;
       const sound = sounds[idMapasound];
       sound.play()
     },
     detenerAudio() {
-      const idMapasound = this.$store.state.datosMapa.idMapa;
+      const idMapasound = this.$store.state.datosMapa.idMap;
       const sound = sounds[idMapasound];
       sound.stop()
     }

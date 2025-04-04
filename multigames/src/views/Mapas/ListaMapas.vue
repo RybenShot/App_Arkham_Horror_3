@@ -1,59 +1,73 @@
 <template>
   <div class="BGGeneralAH">
-    <!-- notificacion de activar o desactivar -->
+    <!-- Notificación de activar o desactivar -->
     <poUp_Notificaciones/>
 
     <div>
       <!-- Seleccionar Mapa -->
-      <div class="columns is-mobile mb-0 pt-3 centrarHero" >
-        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-arrow-left has-text-white"></i></div>
-        <div class="column " style="margin: 0 auto;"><p class="has-text-centered title has-text-white"> {{ textoInterfaz.titulo }}</p></div>
-        <div class="column is-3 p-0" style="text-align: center;"><router-link class="" to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
+      <div class="columns is-mobile mb-0 pt-3 centrarHero">
+        <div class="column is-3 p-0" style="text-align: center;" @click="goBack">
+          <i class="fa-2x fas fa-arrow-left has-text-white"></i>
+        </div>
+        <div class="column" style="margin: 0 auto;">
+          <p class="has-text-centered title has-text-white">{{ textoInterfaz.titulo }}</p>
+        </div>
+        <div class="column is-3 p-0" style="text-align: center;">
+          <router-link to="/">
+            <i class="fa-2x fas fa-home has-text-white"></i>
+          </router-link>
+        </div>
       </div>
 
-      <hr class="m-1 mx-4 linea-separacion"> 
+      <hr class="m-1 mx-4 linea-separacion">
 
       <!-- Colecciones y botones -->
       <h2 class="title is-4 has-text-white has-text-centered">{{ textoInterfaz.subtitulo }}</h2>
-      <p class="subtitle is-6 has-text-white has-text-centered mb-2"> {{ textoInterfaz.descripcion }}</p>
+      <p class="subtitle is-6 has-text-white has-text-centered mb-2">
+        {{ textoInterfaz.descripcion }}
+      </p>
       
       <!-- Botones de expansión -->
       <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
-        <button v-for="btn in expansionButtons" :key="btn.key" class="button" :class="[btn.buttonClass, {'is-outlined': !$store.state[btn.key]}]" @click="handleToggle(btn.key)">
+        <button
+          v-for="btn in expansionButtons"
+          :key="btn.key"
+          class="button"
+          :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
+          @click="handleToggle(btn.key)"
+        >
           {{ btn.text }}
         </button>
       </div>
-
     </div>
     <br>
 
-    <!-- Secciones de expansiones (Mapas) -->
-    <div v-for="expansion in expansions" :key="expansion.key" >
-      <div v-if="$store.state[expansion.key]">
-        <div class="PersonajesList">
-          <MapCard v-for="mapa in expansion.maps" :key="mapa" :mapa="mapa" :cardClass="expansion.cardClass"/>
-        </div>
-      </div>
+    <!-- Cartas de mapas filtradas -->
+    <div class="PersonajesList">
+      <MapCard v-for="mapa in mapsList" :key="mapa.id" :mapa="mapa" />
     </div>
-
   </div>
 </template>
 
 <script>
 import { Howl } from 'howler';
-import poUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue'
-import MapCard from '@/components/mapas/MapCard.vue'
+import { apiService } from '@/services/api.js';
+import poUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
+import MapCard from '@/components/mapas/MapCard.vue';
 
 const sound = new Howl({
   src: require('@/assets/sound/SonidoTecla.mp3'),
 });
+
 export default {
   name: "lista_De_Mapas",
   data() {
     return {
-      stateExpansionBase: true,
-
-      textoInterfaz:{
+      // Lista completa de mapas obtenidos desde el backend
+      mapsListAll: [],
+      // Lista filtrada según las expansiones activadas
+      mapsList: [],
+      textoInterfaz: {
         titulo: "",
         subtitulo: "",
         descripcion: "",
@@ -64,379 +78,41 @@ export default {
           secretos: "",
         },
       },
-
-      tituloMapa: "",
-      
-      MapasBase:[
-        { idMapa: 0,
-          title:  "La llegada de Azathoth",
-          ENtitle: "The arrival of Azathoth",
-          description: "En el corazón del infinito mora el aletargado Azathoth, arrullado por las incesantes notas de funestas flautas. Pero hay mortales que desean invocar el poder y la calamidad inconmensurables del Dios Ciego e Idiota, aunque ello suponga condenar a la humanidad ...",
-          ENdescription: "In the heart of infinity dwells the lethargic Azathoth, lulled by the incessant notes of ominous flutes. But there are mortals who wish to invoke the immeasurable power and calamity of the Blind and Idiot God, even if it means condemning humanity ...",
-          dificultadMapa: 1,
-          expansionMapa: "AHBase",
-          ducacionMapa: 130,
-          votosUsuariosMapa: 4,
-          espacioDeInicio:"Estación de trenes" ,
-          ENespacioDeInicio:"Train Station" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Por cada Monstruo Sectario, coloca una ficha de Perdición en su espacio. (Si está en un espacio de calle, la ficha de perdición se coloca en un espacio de Barrio adyacente.)",
-          ENretribucion: "For each Cultist Monster, place a Doom token in its space. (If it is in a street space, the Doom token is placed in an adjacent Neighborhood space.)",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa0.png"),
-          BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG1MapaArkham.jpg")
-        },
-        { idMapa: 1,
-          title:  "Festin para Umordhoth",
-          ENtitle: "Feast for Umordhoth",
-          description: "Los gules que habitan en el mundo subterráneo se alimentan de la carne de los muertos: con todo, incluso ellos viven temerosos del Devorador de las Profundidades al que reverencian. Pero los gules no son los únicos en Arkham que veneran a Umórdhoth...",
-          ENdescription: "The Gules who dwell in the underworld feed on the flesh of the dead: yet even they live in fear of the Devourer of the Deep whom they revere. But the Gules are not the only ones in Arkham who worship Umórdhoth...",
-          dificultadMapa: 1,
-          expansionMapa: "AHBase",
-          ducacionMapa: 150,
-          votosUsuariosMapa: 3,
-          espacioDeInicio:"Colmado" ,
-          ENespacioDeInicio:"Grocery store" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Coloca una ficha de Perdición sobre la hoja de escenario.",
-          ENretribucion: "Place a Doom token on the scenario sheet.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa1.png"),
-          BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG2MapaArkham.jpg")
-        },
-        { idMapa: 2,
-          title:  "El velo del Crepusculo",
-          ENtitle: "The veil of the Twilight",
-          description: "Algo acecha en el gélido vacío que separa nuestros mundos. Susurra desde el otro lado del velo, llamando a todos los que tengan el poder necesario para liberarlo de su confinamiento. Quienes sucumben a su influjo obtienen un gran poder, pero el precio que pagan es terrible. Y con cada día que pasa su liberación está más próxima...",
-          ENdescription: "Something lurks in the icy void that separates our worlds. He whispers from the other side of the veil, calling all who have the power to release him from confinement. Those who succumb to their influence gain great power, but the price they pay is terrible. And with each passing day their liberation is closer...",
-          dificultadMapa: 2,
-          expansionMapa: "AHBase",
-          ducacionMapa: 90,
-          votosUsuariosMapa: 2,
-          espacioDeInicio:"Pensión de Má" ,
-          ENespacioDeInicio:"Ma’s Guesthouse" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Coloca una ficha de Perdición en cada espacio que contenga una herida abierta.",
-          ENretribucion: "Place a Doom token in each space that contains an open wound.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa2.png"),
-          BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG3MapaArkham.jpg")
-        },
-        { idMapa: 3,
-          title:  "Ecos de las profundidades",
-          ENtitle: "Echoes of the deep",
-          description: "En su morada de R’lyeh, el difunto Cthulhu aguarda soñando. Se agita en su letargo y espera a que las estrellas sean propicias para que R’lyeh emerja de su hogar bajo las olas y los primigenios regresen. Pues no está muerto lo que puede yacer eternamente, y con los evos extraños aun la muerte puede morir...",
-          ENdescription: "In his abode of R'lyeh, the late Cthulhu waits dreaming. He agitates in his lethargy and waits for the stars to be propitious for R'lyeh to emerge from his home under the waves and the primeval ones to return. For what can lie eternally is not dead, and with the strange evos even death can die...",
-          dificultadMapa: 3,
-          expansionMapa: "AHBase",
-          ducacionMapa: 240,
-          votosUsuariosMapa: 5,
-          espacioDeInicio:"Observatorio" ,
-          ENespacioDeInicio:"Observatory" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Cada investigador sufre tanto Horror como el número de fichas que haya en su espacio.",
-          ENretribucion: "Each investigator suffers Horror equal to the number of tokens in their space.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa3.png"),
-          BGMapa: require("@/assets/img/Games/AHBase/1imgMapas/BG4MapaArkham.jpg")
-        },
-      ],
-      MapasMareasTenebrosas:[
-        { idMapa: 4,
-          title:  "Tiranos de la desolación",
-          ENtitle: "Tyrants of desolation",
-          description: "En las profundidades submarinas del Arredice del Diablo, los tiranos de Y´hanthlei gobiernan las mareas tenebrosas mientras sueñan con transcender ses vetustas formas mortales. Se agitan bajo las aguas y envían a sus profundos para que corrompan el mundo de la superficie.",
-          ENdescription: "In the underwater depths of the Devil’s Arredice, the tyrants of Y hanthlei rule the dark tides as they dream of transcending these ancient mortal forms. They stir under the waters and send them deep to corrupt the surface world.",
-          dificultadMapa: 3,
-          expansionMapa: "AH Mareas",
-          ducacionMapa: 150,
-          votosUsuariosMapa: 4 ,
-          espacioDeInicio:"Hotel Gilman House" ,
-          ENespacioDeInicio:"Hotel Gilman House" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            terror: 1,
-            vacias: 2
-          },
-          retribucion: "Se propaga el Terror en cada Barrio que contenga un Monstruo Profundo.",
-          ENretribucion: "The Terror spreads in each Neighborhood that contains a Deep One Monster.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa4MT.png"),
-          BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG1MapaAHMareasTenebrosas.jpg")
-        },
-        { idMapa: 5,
-          title:  "La lámpara Mortecina",
-          ENtitle: "The Mortecina lamp",
-          description: "En el brumoso pueblo de Kingsport, la clase alta prospera en el seno de una nueva sociedad conocida como el Club de la Lámpara. En callejones y barrios bajos, muchas personas que habían desaparecido regresan despojados de sus recuerdos, como meras sombras de lo que fueron.",
-          ENdescription: "In the foggy town of Kingsport, the upper class thrives within a new society known as the Lamp Club. In alleys and slums, many disappeared people return stripped of their memories, like mere shadows of what they were.",
-          dificultadMapa: 2,
-          expansionMapa: "AH Mareas",
-          ducacionMapa: 170,
-          votosUsuariosMapa: 4 ,
-          espacioDeInicio:"Muelles" ,
-          ENespacioDeInicio:"Docks" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Todo investigador situado en un espacio que contenga Perdición sufre un punto de Horror a menos que descarte una ficha de Concentración.",
-          ENretribucion: "Any investigator located in a space containing Doom suffers 1 point of Horror unless they discard a Focus token.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa5MT.png"),
-          BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG2MapaAHMareasTenebrosas.jpg")
-        },
-        { idMapa: 6,
-          title:  "La progenie de Ithaqua",
-          ENtitle: "The progeny of Ithaqua",
-          description: "Ithaqua, el que camina en el viento, acecha en el gélido norte. Es el viento helado que cala hasta el alma, el hielo voras que aprisiona a los incautos. Olvidado y solitario, Ithaqua propaga si influencia coo la cruel esteranza de engendrar una progenie terrible, un nuevo vástago capaz de venzer a los mismísimos dioses arquetípicos.",
-          ENdescription: "Ithaqua, who walks in the wind, lurks in the icy north. It is the icy wind that reaches to the soul, the vore ice that imprisons the unwary. Forgotten and lonely, Ithaqua propagates if it influences the cruel sterility of begetting a terrible progeny, a new offspring capable of defeating the archetypal gods themselves.",
-          dificultadMapa: 4,
-          expansionMapa: "AH Mareas",
-          ducacionMapa: 230,
-          votosUsuariosMapa: 3 ,
-          espacioDeInicio:"Restaurante de Velma" ,
-          ENespacioDeInicio:"Velma's Restaurant" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            terror: 1,
-            vacias: 2
-          },
-          retribucion: "Coloca una ficha de Perdición en cualquier espacio de Innsmouth y una ficha de Perdición en cualquier espacio de Kingsport.",
-          ENretribucion: "Place a Doom token in any space in Innsmouth and a Doom token in any space in Kingsport.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa6MT.png"),
-          BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG3MapaAHMareasTenebrosas.jpg")
-        },
-        { idMapa: 7,
-          title:  "Sueños de R´lyeh",
-          ENtitle: "Dreams of R´lyeh",
-          description: "La fresca brisa otoñal arrastra consigo una melodía sobrenatural, prácticamente imperceptible para al mente despierta. En sueños, visitáis una fantástica ciudad submarina y os deleitáis en la gloria de una entidad ciclópea que no alcanzáis a ver.",
-          ENdescription: "The fresh autumn breeze carries with it a supernatural melody, practically imperceptible to the awake mind. In dreams, you visit a fantastic underwater city and delight in the glory of a cyclopean entity that you cannot see.",
-          dificultadMapa: 5,
-          expansionMapa: "AH Mareas",
-          ducacionMapa: 200,
-          votosUsuariosMapa: 3 ,
-          espacioDeInicio:"Hospital de Santa María" ,
-          ENespacioDeInicio:"Santa María Hospital" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 1
-          },
-          retribucion: "Cada investigador coloca una ficha de Peridión en su espacio a menos que sufra un punto de Horror.",
-          ENretribucion: "Each investigator places a Doom token in their space unless they suffer a point of Horror.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa7MT.png"),
-          BGMapa: require("@/assets/img/Games/AHMareasTenebrosas/1imgMapas/BG4MapaAHMareasTenebrosas.jpg")
-        },
-      ],
-      MapasNocheCerrada:[
-        {idMapa: 8,
-          title: "El silencio de Tsathoggua",
-          ENtitle:"The Silence of Tsathoggua",
-          description: "La bestia de Voormithabreth dormita mientras los adeptos que abandonó en la lejana Yuggoth preparan sus ofrendas devocionales para colmarsu voraz apetito. Si el Durmiente de N'Kai llegase a despertar, estaríamos todos condenados.",
-          ENdescription: "The beast of Voormithabreth slumbers while the adepts it abandoned in distant Yuggoth prepare their devotional offerings to sate its voracious appetite. If the Sleeper of N'Kai were to awaken, we would all be doomed.",
-          dificultadMapa: 4,
-          expansionMapa: "AH Noche Cerrada",
-          ducacionMapa: 240,
-          votosUsuariosMapa: 3 ,
-          espacioDeInicio:"Biblioteca Orne" ,
-          ENespacioDeInicio:"Orne Library" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Si hay 2 o más Pistas en algún Barrio, coloca una ficha de Perdición sobre la hoja del escenario.",
-          ENretribucion: "If there are 2 or more Clues in any Neighborhood, place a Doom token on the scenario sheet.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa0.png"),
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa8NC.png"),
-          BGMapa: require("@/assets/img/3-Mapas/BG8MapaAHNocheCerrada.jpg")
-        },
-        {idMapa: 9,
-          title: "Disparos en la oscuridad",
-          ENtitle:"Shots in the Dark",
-          description: "Las mafias de Arkham tienen una larga historia, y la tregua entre los O'Bannion y los Sheldon ha sido, en el mejor de los casos, frájil. Durante en caluroso verano de 1926, una sombra tenebrosa los empuja a una cruenta guerra de bandas.",
-          ENdescription: "The mafias of Arkham have a long history, and the truce between the O'Bannions and the Sheldons has been, at best, fragile. During the sweltering summer of 1926, a sinister shadow drives them into a brutal gang war.",
-          dificultadMapa: 3,
-          expansionMapa: "AH Noche Cerrada",
-          ducacionMapa: 230,
-          votosUsuariosMapa: 3 ,
-
-          espacioDeInicio:"Comisaría" ,
-          ENespacioDeInicio:"Police Station" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Si ninguna de las bandas es hostil, aparece un Monstruo Sectario.",
-          ENretribucion: "If neither of the gangs is hostile, a Cultist Monster appears.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa9NC.png"),
-          BGMapa: require("@/assets/img/3-Mapas/BG9MapaAHNocheCerrada.jpg")
-        }
-      ],
-      MapasSecretosDeLaOrden:[
-        {idMapa: 10,
-          title: "La LLave y la Puerta",
-          ENtitle:"The Key and the Gate",
-          description: "Durante eones, Yog-Sothoth ha observado el universo desde más allá del tiempo y del espacio. El que Acecha en l Umbral se agita, pues ya no se conforma con limitarse a observar y esperar. Innumerables siervos se afan por abrir la puerta que encierra al Primigenio fuera de nuestro universo.",
-          ENdescription: "For eons, Yog-Sothoth has watched the universe from beyond time and space. The Lurker at the Threshold stirs, no longer content to merely watch and wait. Countless servants toil to open the gate that keeps the Ancient One sealed outside our universe.",
-          dificultadMapa: 2,
-          expansionMapa: "AH Secretos",
-          ducacionMapa: 330,
-          votosUsuariosMapa: 2 ,
-          espacioDeInicio:"Logia del Crepúsculo de Plata" ,
-          ENespacioDeInicio:"Silver Twilight Lodge" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Cada investigador que no esté enfrentado a uno o más Mosntruos se mueve un espacio hacia el espacio inestable a menos que sufra un punto de Horror.",
-          ENretribucion: "Each investigator who is not engaged with one or more Monsters moves one space toward the unstable space unless they suffer one Horror.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa10SO.png"),
-          BGMapa: require("@/assets/img/3-Mapas/BG10MapaAHSecretos.jpg")
-        },
-        {idMapa: 11,
-          title: "Obligados a servir",
-          ENtitle:"Forced to Serve",
-          description: "Una plaga de espíritus inquietos invade Arkham, creando una perturbación psíquica que no se puede ignorar. Estas almas perdidas están estan atrapadas por un antiguo pacto y es necesario liberarlas del mal que las ata por toda la enernidad.",
-          ENdescription: "A plague of restless spirits invades Arkham, creating a psychic disturbance that cannot be ignored. These lost souls are trapped by an ancient pact, and it is necessary to free them from the evil that binds them for all eternity.",
-          dificultadMapa: 2,
-          expansionMapa: "AH Secretos",
-          ducacionMapa: 130,
-          votosUsuariosMapa: 3 ,
-          espacioDeInicio:"La casa de la bruja" ,
-          ENespacioDeInicio:"The Witch's House" ,
-          reservaDeMitos:{
-            perdicion: 3,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 3
-          },
-          retribucion: "Por cada Monstruo Espíritu, coloca una ficha de Perdición en su espacio. Si no hay Mosntruos Espíritu en el tablero, aparece un Monstruo Espíritu. ",
-          ENretribucion: "For each Spirit Monster, place a Doom token in its space. If there are no Spirit Monsters on the board, a Spirit Monster appears.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa11SO.png"),
-          BGMapa: require("@/assets/img/3-Mapas/BG11MapaAHSecretos.jpg")
-        },
-        {idMapa: 12,
-          title: "Los muertos gritan",
-          ENtitle:"The Dead Scream",
-          description: "Una antigua magia ha rasgado el velo que protege Arkham de los mundos que hay más allá. Terribles criaturas surgen del Mundo subterraneo para amenazar todo lo que te importa.",
-          ENdescription: "An ancient magic has torn the veil that protects Arkham from the worlds beyond. Terrible creatures emerge from the Underdark to threaten everything you hold dear.",
-          dificultadMapa: 3,
-          expansionMapa: "AH Secretos",
-          ducacionMapa: 140,
-          votosUsuariosMapa: 3 ,
-          espacioDeInicio:"Estación de Trenes" ,
-          ENespacioDeInicio:"Train Station" ,
-          reservaDeMitos:{
-            perdicion: 4,
-            enemigos: 2,
-            pistas: 2,
-            periodico: 2,
-            explosion: 1,
-            retribucion: 1,
-            vacias: 2
-          },
-          retribucion: "Coloca una carta de Aliado boca abajo en la calle más cercana al espacio inestable; luego aparece un Mosntruo en el espacio inestable.",
-          ENretribucion: "Place an Ally card face down in the street closest to the unstable space; then, a Monster appears in the unstable space.",
-          imgMapa: require("@/assets/img/3-Mapas/losetas/LosetasMapa12SO.png"),
-          BGMapa: require("@/assets/img/3-Mapas/BG12MapaAHSecretos.jpg")
-        },
-      ]
-
-
-    }; // end return
-  }, // end data
+    };
+  },
   computed: {
     expansionButtons() {
       return [
         { key: 'stateExpansionBase', text: this.textoInterfaz.botones.base, buttonClass: 'is-success' },
         { key: 'stateExpansionWaves', text: this.textoInterfaz.botones.mareas, buttonClass: 'is-info' },
         { key: 'stateExpansionNigth', text: this.textoInterfaz.botones.noche, buttonClass: 'is-warning' },
-        { key: 'stateExpansionSecrets', text: this.textoInterfaz.botones.secretos, buttonClass: 'is-link' }
+        { key: 'stateExpansionSecrets', text: this.textoInterfaz.botones.secretos, buttonClass: 'is-link' },
       ];
     },
-    expansions() {
-      return [
-        { key: 'stateExpansionBase', maps: this.MapasBase, cardClass: 'cajaDePersonajesBase' },
-        { key: 'stateExpansionWaves', maps: this.MapasMareasTenebrosas, cardClass: 'cajaDePersonajesMareasTenebrosas' },
-        { key: 'stateExpansionNigth', maps: this.MapasNocheCerrada, cardClass: 'cajaDePersonajesNocheCerrada' },
-        { key: 'stateExpansionSecrets', maps: this.MapasSecretosDeLaOrden, cardClass: 'cajaDePersonajesSecretosDeLaOrden' }
-      ];
-    }
   },
-  components:{
+  components: {
     poUp_Notificaciones,
-    MapCard
+    MapCard,
   },
   methods: {
     handleToggle(expansionKey) {
       this.SonidoTecla();
-      // si la la expanion esta en true, la desactivamos, si no, la activamos
-      let message = this.$store.state[expansionKey] ? "expansion desactivada" : "expansion activada";
+      const message = this.$store.state[expansionKey]
+        ? "expansion desactivada"
+        : "expansion activada";
       this.$store.commit('toggleExpansion', { key: expansionKey, value: !this.$store.state[expansionKey] });
       this.$store.dispatch('ejecutarFlashPopUp_Action', message);
+      this.updateMapsList();
+    },
+    // Filtra mapsListAll según el estado de las expansiones activadas
+    updateMapsList() {
+      this.mapsList = this.mapsListAll.filter((map) => {
+        if (map.expansion === "AHBase" && this.$store.state.stateExpansionBase) return true;
+        if (map.expansion === "AHWaves" && this.$store.state.stateExpansionWaves) return true;
+        if (map.expansion === "AHNigth" && this.$store.state.stateExpansionNigth) return true;
+        if (map.expansion === "AHSecrets" && this.$store.state.stateExpansionSecrets) return true;
+        return false;
+      });
     },
     goBack() {
       this.$router.go(-1);
@@ -444,8 +120,8 @@ export default {
     SonidoTecla() {
       sound.play();
     },
-    rellenarTextosegunIdioma(){
-      if(this.$store.state.lenguaje == 'español'){
+    rellenarTextosegunIdioma() {
+      if (this.$store.state.lenguaje === 'español') {
         this.textoInterfaz.titulo = "Seleccionar Mapa";
         this.textoInterfaz.subtitulo = "Colecciones";
         this.textoInterfaz.descripcion = "Haz click para añadir o quitar la expansión que quieras y luego elige un mapa para verlo en detalle.";
@@ -453,8 +129,7 @@ export default {
         this.textoInterfaz.botones.mareas = "AH Mareas";
         this.textoInterfaz.botones.noche = "AH Noche";
         this.textoInterfaz.botones.secretos = "AH Secretos";
-
-      }else if(this.$store.state.lenguaje == 'ingles'){
+      } else if (this.$store.state.lenguaje === 'ingles') {
         this.textoInterfaz.titulo = "Select Map";
         this.textoInterfaz.subtitulo = "Collections";
         this.textoInterfaz.descripcion = "Click to add or remove the expansion you want and then choose a map to view it in detail.";
@@ -463,34 +138,40 @@ export default {
         this.textoInterfaz.botones.noche = "AH Nigth";
         this.textoInterfaz.botones.secretos = "AH Secrets";
       }
-    }
-  }, // end methods
-  mounted(){
+    },
+    async getPreviewMapsList() {
+      try {
+        const maps = await apiService.obtainMapsByExpansion();
+        // Guarda la lista completa de mapas
+        this.mapsListAll = maps;
+        // Inicializa la lista filtrada según el estado actual de las expansiones
+        this.updateMapsList();
+      } catch (error) {
+        console.error("Error al cargar los mapas:", error);
+      }
+    },
+  },
+  mounted() {
     this.rellenarTextosegunIdioma();
+    this.getPreviewMapsList();
   },
 };
 </script>
 
 <style scoped>
-/* Helers */
-.centrarHero{
-  display: flex; 
-  justify-content: center; 
-  align-items: center
+.centrarHero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-/* Usado */
 .BGGeneralAH {
   background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
   min-height: 110vh;
   background-position: center;
   background-size: cover;
 }
-
-/* Lista de Personajes */
 .PersonajesList {
   display: grid;
-  grid-template-columns: auto auto auto ;
+  grid-template-columns: auto auto auto;
 }
-
 </style>

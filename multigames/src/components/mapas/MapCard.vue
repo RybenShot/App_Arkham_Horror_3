@@ -1,9 +1,9 @@
 <template>
 <router-link to="/DetalleMapa">
     <div @click="selectMapa" class="p-1">
-        <div :class="['card', cardClass]">
+      <div class="card" :class="{'cajaDePersonajesBase': mapa.expansion === 'AHBase', 'cajaDePersonajesMareasTenebrosas': mapa.expansion === 'AHWaves', 'cajaDePersonajesNocheCerrada': mapa.expansion === 'AHNigth', 'cajaDePersonajesSecretosDeLaOrden': mapa.expansion === 'AHSecrets'}">
             <div class="card-image-wrapper">
-                <img :src="mapa.BGMapa" :alt="mapa.title" class="card-image" />
+                <img :src="mapa.BGMap" :alt="mapa.title" class="card-image" />
             </div>
             <div class="card-overlay has-text-centered">
                 <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">
@@ -22,8 +22,7 @@
 export default {
 name: 'MapaCard',
 props: {
-    mapa: { type: Object, required: true },
-    cardClass: { type: String, required: true }
+    mapa: { type: Object, required: true }
 },
 methods: {
     selectMapa() {

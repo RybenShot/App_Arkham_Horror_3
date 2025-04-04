@@ -59,6 +59,7 @@ export default {
     }
   },
   mounted(){
+    console.log(this.$store.state.datosMapa);
     this.rellenarTextoSegunIdioma();
   }
 }
