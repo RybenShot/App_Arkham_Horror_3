@@ -146,31 +146,37 @@ export default createStore({
     viewDetalleMapa: true, //cambia de vista de seleccion de mapas a enemigos
 
     mapaSeleccionado: false,
-    datosMapa: {
-      idMapa: null,
-      title: null,
-      ENtitle: null,
-      description: null,
-      ENdescription: null,
-      dificultadMapa: null,
-      expansionMapa: null,
-      ducacionMapa: null,
-      votosUsuariosMapa: null,
-      espacioDeInicio: null,
-      ENespacioDeInicio: null,
-      reservaDeMitos: {
-        perdicion: null,
-        enemigos: null,
-        pistas: null,
-        periodico: null,
-        explosion: null,
-        retribucion: null,
-        vacias: null
+    datosMapa: 
+    { idMap: 0,
+      title: "The Arrival of Azathoth",
+      description: "In the heart of infinity dwells the lethargic Azathoth, lulled by the incessant notes of ominous flutes. But there are mortals who wish to invoke the immeasurable power and calamity of the Blind and Idiot God, even if it means condemning humanity ...",
+      difficulty: 1,
+      expansion: "AHBase",
+      duration: 130,
+      userVotes: 4,
+      initialSpace: "Train Station",
+      retribution: "For each Cultist Monster, place a Doom token in its space. (If it is in a street space, the Doom token is placed in an adjacent Neighborhood space.)",
+      mythosReserve: {
+        doom: 3,
+        enemies: 2,
+        clues: 2,
+        newspaper: 2,
+        explosion: 1,
+        retribution: 1,
+        empty: 3
       },
-      retribucion: null,
-      ENretribucion: null,
-      imgMapa: null,
-      BGMapa: null
+      enemies: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      specialEnemies: [],
+      imgMap: "LosetasMapa1.png",
+      BGMap: "/img/3-mapas/imgPortada/BG1MapaArkham.jpg",
+      translations: {
+        es: {
+          title: "La llegada de Azathoth",
+          description: "En el corazón del infinito mora el aletargado Azathoth, arrullado por las incesantes notas de funestas flautas. Pero hay mortales que desean invocar el poder y la calamidad inconmensurables del Dios Ciego e Idiota, aunque ello suponga condenar a la humanidad ...",
+          initialSpace: "Estación de trenes",
+          retribution: "Por cada Monstruo Sectario, coloca una ficha de Perdición en su espacio. (Si está en un espacio de calle, la ficha de perdición se coloca en un espacio de Barrio adyacente.)"
+        }
+      }
     },
     // RESERVA DE MITOS
     reservaVisible: [],
@@ -294,7 +300,13 @@ export default createStore({
       setTimeout(() => {
         state.FlashPopUP_notifications.state = false;
       }, 2000);
+    },
+
+    // funcion para meter los datos que llegan desde back del mapa a store
+    setDatosMapa(state, payload) {
+      state.datosMapa = payload;
     }
+    
   },
   actions: {
     addConcentrationToken_Action({commit}, token){

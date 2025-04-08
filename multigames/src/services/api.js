@@ -52,6 +52,17 @@ export const apiService = {
       console.error(`Error al obtener la lista de mapas`, error);
       return [];
     }
+  },
+
+  // Buscar un mapa por su ID
+  async obtainMapByID(idMap){
+    try {
+      const response = await axios.get(`${API_URL}/maps/${idMap}`);
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener la lista de mapas`, error);
+      return null;
+    }
   }
   
 };

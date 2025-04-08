@@ -1,32 +1,42 @@
 <template>
-<router-link to="/DetalleMapa">
-    <div @click="selectMapa" class="p-1">
-      <div class="card" :class="{'cajaDePersonajesBase': mapa.expansion === 'AHBase', 'cajaDePersonajesMareasTenebrosas': mapa.expansion === 'AHWaves', 'cajaDePersonajesNocheCerrada': mapa.expansion === 'AHNigth', 'cajaDePersonajesSecretosDeLaOrden': mapa.expansion === 'AHSecrets'}">
-            <div class="card-image-wrapper">
-                <img :src="mapa.BGMap" :alt="mapa.title" class="card-image" />
-            </div>
-            <div class="card-overlay has-text-centered">
-                <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">
-                    {{ mapa.title }}
-                </p>
-                <p v-else class="title is-7 tipografiaElegante">
-                    {{ mapa.ENtitle }}
-                </p>
-            </div>
-        </div>
-    </div>
-</router-link>
+  <div @click="selectMap" class="p-1">
+    <div class="card" :class="{'cajaDePersonajesBase': mapa.expansion === 'AHBase', 'cajaDePersonajesMareasTenebrosas': mapa.expansion === 'AHWaves', 'cajaDePersonajesNocheCerrada': mapa.expansion === 'AHNigth', 'cajaDePersonajesSecretosDeLaOrden': mapa.expansion === 'AHSecrets'}">
+          <div class="card-image-wrapper">
+              <img :src="mapa.BGMap" :alt="mapa.title" class="card-image" />
+          </div>
+          <div class="card-overlay has-text-centered">
+              <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">
+                  {{ mapa.title }}
+              </p>
+              <p v-else class="title is-7 tipografiaElegante">
+                  {{ mapa.ENtitle }}
+              </p>
+          </div>
+      </div>
+  </div>
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 export default {
 name: 'MapaCard',
 props: {
     mapa: { type: Object, required: true }
 },
 methods: {
-    selectMapa() {
-    this.$store.state.datosMapa = this.mapa;
+    async selectMap() {
+      // cogemos la id del mapa clicadow
+      const idMap = this.mapa.idMap;
+      // hacemos una llamada al endpoint de buscar mapa por la id
+      const response = await apiService.obtainMapByID(idMap);
+
+      if (response) {
+        this.$store.commit('setDatosMapa', response);
+        this.$router.push('/DetalleMapa');
+      } else {
+        console.error("No se pudo obtener el mapa");
+      }
     }
 }
 };
