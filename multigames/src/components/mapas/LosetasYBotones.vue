@@ -10,7 +10,7 @@
       <div class="column has-text-centered is-6">
         <!-- Enemigos -->
         <div id="BG-boton-enemigos" class="helperbotones mb-5 pt-2 pb-6">
-          <p class="has-text-white subtitle is-6" @click="(this.$store.state.viewDetalleMapa = false), (this.$store.state.modalVerEnemigos = true) ">{{ textoBotones.enemigos }}</p>
+          <p class="has-text-white subtitle is-6" @click="openEnemyList()">{{ textoBotones.enemigos }}</p>
         </div>
         <!-- "Inv Recomendados" -->
         <router-link to="/enproceso">
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 export default {
   name: "Losetas y botones",
   data(){
@@ -101,6 +103,18 @@ export default {
         this.textoBotones.selecInv = "Select Investigator";
         this.textoBotones.lista = "List";
       }
+    },
+    async openEnemyList(){
+      // capturamos la id del mapa
+      const idMap = this.$store.state.datosMapa.idMap
+      // llama a la api para obtener los enemigos con la id del mapa
+      let enemyList = await apiService.obtainEnemyList(idMap)
+      console.log(enemyList)
+      // guardamos la lista de enemigos en el store
+      this.$store.commit('setEnemysList', enemyList)
+      // cambiamos la vista
+      this.$store.state.viewDetalleMapa = false
+      this.$store.state.modalVerEnemigos = true
     }
   },
   mounted(){

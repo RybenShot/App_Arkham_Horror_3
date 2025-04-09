@@ -15,7 +15,7 @@
         <!-- ModalDetalle -->
         <div v-if="this.$store.state.verDetalleEnemigo == true"> <ModalDetalleEnemigo/> </div>
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 0">
+        <div v-if="this.$store.state.datosMapa.idMap == 0">
           <div id="enemisList" class="px-1">
             <div v-for="enemigo in EnemigosMapa1Base" :key="enemigo.id">
               <div @click="(this.$store.state.verDetalleEnemigo = true), (this.$store.state.SeleccionarURLEnemigo = enemigo.url)" class="helperCartasEnemigos mb-4 mx-1">
@@ -35,7 +35,7 @@
           </div>
         </div><!-- end IF MAPA 0  -->
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 1">
+        <div v-if="this.$store.state.datosMapa.idMap == 1">
           <div id="enemisList" class="px-1">
             <div v-for="enemigo in EnemigosMapa2Base" :key="enemigo.id">
               <div
@@ -56,7 +56,7 @@
           </div>
         </div><!-- end IF MAPA 1  -->
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 2">
+        <div v-if="this.$store.state.datosMapa.idMap == 2">
           <div id="enemisList" class="px-1">
             <div v-for="enemigo in EnemigosMapa3Base" :key="enemigo.id">
               <div
@@ -78,7 +78,7 @@
           </div>
         </div><!-- end IF MAPA 2  -->
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 3">
+        <div v-if="this.$store.state.datosMapa.idMap == 3">
           <div id="enemisList" class="px-1">
             <div v-for="enemigo in EnemigosMapa4Base" :key="enemigo.id">
               <div
@@ -104,12 +104,12 @@
         <h2 class="title titleDecoration has-text-white has-text-centered is-4 pt-3 mb-3">{{ textoInterfaz.enemigosExtras }}</h2>
         <hr class="my-1">
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 0">
+        <div v-if="this.$store.state.datosMapa.idMap == 0">
           <p class="has-text-white" v-if="this.$store.state.lenguaje == 'español'">Sin enemigos extras</p>
           <p class="has-text-white" v-if="this.$store.state.lenguaje == 'ingles'">No extra enemies</p>
         </div><!-- end IF MAPA 0  -->
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 1">
+        <div v-if="this.$store.state.datosMapa.idMap == 1">
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'español'"> Aparta a un lado los siguientes mounstruos, estos son “los adoradores de Umordhoth”</p>
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'"> Set aside the following monsters, these are "the worshippers of Umordhoth"</p>
 
@@ -127,7 +127,7 @@
           </div>
         </div><!-- end IF MAPA 1  -->
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 2">
+        <div v-if="this.$store.state.datosMapa.idMap == 2">
           <p class="has-text-white p-2">Aparta a un lado los siguientes mounstruos, todos los Logia</p>
           <div id="enemisList" class="px-1">
             <div v-for="enemigo in EnemigosExtrasMapa3Base" :key="enemigo.id">
@@ -148,7 +148,7 @@
           </div>
         </div><!-- end IF MAPA 2  -->
 
-        <div v-if="this.$store.state.datosMapa.idMapa == 3">
+        <div v-if="this.$store.state.datosMapa.idMap == 3">
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'español'">Sin enemigos extras</p>
           <p class="has-text-white p-2" v-if="this.$store.state.lenguaje == 'ingles'">No extra enemies</p>
         </div><!-- end IF MAPA 3  -->

@@ -178,6 +178,7 @@ export default createStore({
         }
       }
     },
+    enemyList: [],
     // RESERVA DE MITOS
     reservaVisible: [],
     // notificacion retribucion
@@ -279,6 +280,9 @@ export default createStore({
   getters: {
     getConcentrationInPlay(state){
       return state.fichasConcentracion
+    },
+    getEnemysList(state) {
+      return state.enemyList
     }
   },
 
@@ -305,7 +309,13 @@ export default createStore({
     // funcion para meter los datos que llegan desde back del mapa a store
     setDatosMapa(state, payload) {
       state.datosMapa = payload;
-    }
+    },
+
+    // funcion para añadir los enemigos a la lista despues de llamada a la API
+    setEnemysList(state, payload) {
+      console.log("vamos a guardar la lista de enmigos")
+      state.enemyList = payload;
+    },
     
   },
   actions: {
