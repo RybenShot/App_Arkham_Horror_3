@@ -2,7 +2,7 @@
   <section>
     <div>
     <!-- MODAL RECORDATORIO RETRIBUCION-->
-    <div v-if="this.$store.state.modalNotificacionRetribucion"><ModalNotificacionRetribucion/></div>
+    <div v-if="this.$store.state.modalNotificacionRetribution"><ModalNotificacionRetribution/></div>
     <!-- MODAL RECORDATORIO DEL EFECTO MANCILLADO, cuando salga una ficha vacia o pista -->
     <div v-if="this.$store.state.modalNotificacionEfectoMancillado"><ModalNotificacionEfectoMancillado/></div>
 
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import ModalNotificacionRetribucion from "@/components/helpers/modals/inPlay/notificacionRetribucion.vue";
+import ModalNotificacionRetribution from "@/components/helpers/modals/inPlay/notificacionRetribucion.vue";
 import ModalNotificacionEfectoMancillado from "@/components/helpers/modals/inPlay/notificacionEfectoMancillado.vue";
 
 import EstadoMaldicion from "@/components/helpers/estados/Maldicion.vue"
@@ -55,7 +55,7 @@ import EstadoSeñalado from "@/components/helpers/estadosOriginales/Señalado.vu
 export default {
 name: "Modals de Estados",
   components:{
-    ModalNotificacionRetribucion,
+    ModalNotificacionRetribution,
     ModalNotificacionEfectoMancillado,
 
     EstadoMaldicion,

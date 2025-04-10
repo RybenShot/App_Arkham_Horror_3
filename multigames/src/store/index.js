@@ -182,7 +182,7 @@ export default createStore({
     // RESERVA DE MITOS
     reservaVisible: [],
     // notificacion retribucion
-    modalNotificacionRetribucion: false,
+    modalNotificacionRetribution: false,
     modalNotificacionEfectoMancillado:false,
 
     modalVerLosetaMapa: false,
@@ -283,7 +283,13 @@ export default createStore({
     },
     getEnemysList(state) {
       return state.enemyList
+    },
+
+    // funcion para ver en que estado estan algunos modales
+    getModalState: (state) => (modalKey) => {
+      return state[modalKey];
     }
+    
   },
 
   mutations: {
@@ -313,8 +319,17 @@ export default createStore({
 
     // funcion para añadir los enemigos a la lista despues de llamada a la API
     setEnemysList(state, payload) {
-      console.log("vamos a guardar la lista de enmigos")
       state.enemyList = payload;
+    },
+
+    // funcion para cambiar la vista de notificacion de retribucion al sacar una ficha de la reserva de mitos
+    setModalNotificacionRetribution(state, value) {
+      state.modalNotificacionRetribution = value;
+    },
+
+    // funcion global para cambiar estados de true a false y viceversa
+    toggleModal(state, { modal, modalState }) {
+      state[modal] = modalState;
     },
     
   },
@@ -328,7 +343,7 @@ export default createStore({
 
     ejecutarFlashPopUp_Action({commit}, message){
       commit('ejecutarFlashPopUp', message)
-    }
+    },
   },
   modules: {}
 })

@@ -3,12 +3,12 @@
       <h1 class="title has-text-centered has-text-white">{{ textoInterfaz.error }}</h1>
       <div class="px-5">
         <router-link to="/ListaMapas" class="px-6">
-        <button class="button is-rounded is-fullwidth " :class="{'boxShadowRed':!this.$store.state.mapaSeleccionado}">
-          <i class="fas fa-map-signs mx-3"></i>
-          <p class="title is-5 m-0">{{ textoInterfaz.botones.elegirMapa }}</p>
-          <i class="fas fa-map-signs mx-3"></i>
-        </button>
-      </router-link>
+          <button class="button is-rounded is-fullwidth " :class="{'boxShadowRed':!this.$store.state.mapaSeleccionado}">
+            <i class="fas fa-map-signs mx-3"></i>
+            <p class="title is-5 m-0">{{ textoInterfaz.botones.elegirMapa }}</p>
+            <i class="fas fa-map-signs mx-3"></i>
+          </button>
+        </router-link>
       </div>
       
     </div>
@@ -51,8 +51,8 @@
 
      <!-- Ficha mostrada en grande debajo del botón -->
     <div v-if="fichaMostrada" class="ficha-grande has-text-centered mt-4">
-      <div v-if="fichaMostrada.tipo == 'retribucion'">
-        <i class="efectoRetribucion" :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
+      <div v-if="fichaMostrada.tipo == 'retribution'">
+        <i class="efectoRetribution" :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
         <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
       </div>
 
@@ -151,12 +151,12 @@ export default {
         tituloMapa: "",
         reservaDeMitos: "",
         fichas: {
-          perdicion: "",
-          enemigos: "",
-          pista: "",
-          periodico: "",
+          doom: "",
+          enemies: "",
+          clues: "",
+          newspaper: "",
           explosion: "",
-          retribucion: "",
+          retribution: "",
           blanco: ""
         },
         textoModals:{
@@ -174,13 +174,13 @@ export default {
       // Propiedad para la ficha que se mostrará en grande
       fichaMostrada: null,
       tiposFicha: [
-        { tipo: 'perdicion', icon: 'fas fa-star-of-life', color: 'has-text-perdicion' },
-        { tipo: 'enemigos', icon: 'fas fa-spider', color: 'has-text-monster' },
-        { tipo: 'pistas', icon: 'fas fa-search', color: 'has-text-success' },
-        { tipo: 'periodico', icon: 'fas fa-scroll', color: 'has-text-warning' },
+        { tipo: 'doom', icon: 'fas fa-star-of-life', color: 'has-text-perdicion' },
+        { tipo: 'enemies', icon: 'fas fa-spider', color: 'has-text-monster' },
+        { tipo: 'clues', icon: 'fas fa-search', color: 'has-text-success' },
+        { tipo: 'newspaper', icon: 'fas fa-scroll', color: 'has-text-warning' },
         { tipo: 'explosion', icon: 'fab fa-sith', color: 'has-text-link' },
-        { tipo: 'retribucion', icon: 'fab fa-hubspot', color: 'has-text-danger' },
-        { tipo: 'vacias', icon: 'far fa-circle', color: 'has-text-black' }
+        { tipo: 'retribution', icon: 'fab fa-hubspot', color: 'has-text-danger' },
+        { tipo: 'empty', icon: 'far fa-circle', color: 'has-text-black' }
       ]
     };
   },
@@ -189,15 +189,15 @@ export default {
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.error = "Para usar esta función debes seleccionar un mapa.";
         this.textoInterfaz.mitos = "Mitos";
-        this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.title;
+        this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.translations.es.title;
         this.textoInterfaz.reservaDeMitos = "Reserva de Mitos";
 
-        this.textoInterfaz.fichas.perdicion = "";
-        this.textoInterfaz.fichas.enemigos = "";
-        this.textoInterfaz.fichas.pista = "";
-        this.textoInterfaz.fichas.periodico = "";
+        this.textoInterfaz.fichas.doom = "";
+        this.textoInterfaz.fichas.enemies = "";
+        this.textoInterfaz.fichas.clues = "";
+        this.textoInterfaz.fichas.newspaper = "";
         this.textoInterfaz.fichas.explosion = "";
-        this.textoInterfaz.fichas.retribucion = "";
+        this.textoInterfaz.fichas.retribution = "";
         this.textoInterfaz.fichas.blanco = "";
 
         this.textoInterfaz.textoModals.info = "Información";
@@ -211,15 +211,15 @@ export default {
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.error = "To use this function, you must select a map.";
         this.textoInterfaz.mitos = "Myths";
-        this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.ENtitle;
+        this.textoInterfaz.tituloMapa = this.$store.state.datosMapa.title;
         this.textoInterfaz.reservaDeMitos = "Myth Reserve";
 
-        this.textoInterfaz.fichas.perdicion = "";
-        this.textoInterfaz.fichas.enemigos = "";
-        this.textoInterfaz.fichas.pista = "";
-        this.textoInterfaz.fichas.periodico = "";
+        this.textoInterfaz.fichas.doom = "";
+        this.textoInterfaz.fichas.enemies = "";
+        this.textoInterfaz.fichas.clues = "";
+        this.textoInterfaz.fichas.newspaper = "";
         this.textoInterfaz.fichas.explosion = "";
-        this.textoInterfaz.fichas.retribucion = "";
+        this.textoInterfaz.fichas.retribution = "";
         this.textoInterfaz.fichas.blanco = "";
 
         this.textoInterfaz.textoModals.info = "Info";
@@ -239,7 +239,7 @@ export default {
      */
     inicializarReserva() {
       // Obtenemos la reserva de mitos desde Vuex
-      const reserva = this.$store.state.datosMapa.reservaDeMitos;
+      const reserva = this.$store.state.datosMapa.mythosReserve;
       // Generamos el array de fichas visibles a partir de los tipos y la cantidad indicada
       this.$store.state.reservaVisible = this.tiposFicha.flatMap(tipo => 
         Array.from({ length: reserva[tipo.tipo] || 0 }, () => ({ ...tipo, revelada: false }))
@@ -249,24 +249,28 @@ export default {
 
     comprobarFicha(){
       switch (this.fichaMostrada.tipo) {
-        case "retribucion":
-        this.$store.state.modalNotificacionRetribucion = true
-          if (this.$store.state.EstadoPacto == true) {
-            this.$store.state.modalPacto = true
-          } if (this.$store.state.EstadoMancillado == true) {
-            this.$store.state.modalMancillado = true
-          } if (this.$store.state.EstadoPerseguido == true) {
-            this.$store.state.modalPerseguido = true
+        case "retribution":
+        // esneñamos la retribucion ....
+        this.$store.commit('toggleModal' , { modal: 'modalNotificacionRetribution', modalState: true });
+          //y si algunos de estos estados estan activos, los mostramos
+          if (this.$store.getters.getModalState("EstadoPacto")) {
+            this.$store.commit('toggleModal' , { modal: 'modalPacto', modalState: true });
+          } 
+          if (this.$store.getters.getModalState("EstadoMancillado")) {
+            this.$store.commit('toggleModal' , { modal: 'modalMancillado', modalState: true });
+          } 
+          if (this.$store.getters.getModalState("EstadoPerseguido")) {
+            this.$store.commit('toggleModal' , { modal: 'modalPerseguido', modalState: true });
           }
           break;
-        case "vacias":
-          if (this.$store.state.EstadoMancillado == true) {
-            this.$store.state.modalNotificacionEfectoMancillado = true
+        case "empty":
+          if (this.$store.getters.getModalState("EstadoMancillado")) {
+            this.$store.commit('toggleModal' , { modal: 'modalNotificacionEfectoMancillado', modalState: true });
           }
           break
-        case "pistas":
-          if (this.$store.state.EstadoMancillado == true) {
-            this.$store.state.modalNotificacionEfectoMancillado = true
+        case "clues":
+          if (this.$store.getters.getModalState("EstadoMancillado")) {
+            this.$store.commit('toggleModal' , { modal: 'modalNotificacionEfectoMancillado', modalState: true });
           }
           break
         default:
@@ -293,8 +297,11 @@ export default {
       fichaSeleccionada.revelada = true;
       // Asignamos la ficha revelada a la propiedad "fichaMostrada" para mostrarla en grande
       this.fichaMostrada = fichaSeleccionada;
+
       // Ejecutamos la comprobación después de 5 segundos
-      setTimeout(() => {this.comprobarFicha()}, 3000);
+      setTimeout(() => {
+        this.comprobarFicha()
+      }, 3000);
     },
 
     /**
@@ -362,7 +369,7 @@ export default {
 
 
 <style scoped>
-.efectoRetribucion {
+.efectoRetribution {
   font-size: 64px;
   color: #FF0000; /* Color inicial */
   font-weight: bold;
