@@ -11,10 +11,18 @@
 
       <!-- info color expansion-->
       <div class="mx-3 mb-3 columns is-mobile pt-2">
-        <div class="column p-0"><p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>{{ textoInterfaz.infocolor1 }}</p></div>
-        <div class="column p-0"><p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-info mr-3"></i>{{ textoInterfaz.infocolor2 }}</p></div>
-        <div class="column p-0"><p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-warning mr-3"></i>{{ textoInterfaz.infocolor3 }}</p></div>
-        <div class="column p-0"><p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-link mr-3"></i>{{ textoInterfaz.infocolor4 }}</p></div>
+        <div class="column p-0 px-2">
+          <p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-success mr-3"></i>{{ textoInterfaz.infocolor1 }}</p>
+        </div>
+        <div class="column p-0 px-2">
+          <p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-info mr-3"></i>{{ textoInterfaz.infocolor2 }}</p>
+        </div>
+        <div class="column p-0 px-2">
+          <p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-warning mr-3"></i>{{ textoInterfaz.infocolor3 }}</p>
+        </div>
+        <div class="column p-0 px-2">
+          <p class="subtitle is-7 mb-0 has-text-white"><i class="fa-1x fas fa-circle has-text-link mr-3"></i>{{ textoInterfaz.infocolor4 }}</p>
+        </div>
       </div>
 
       <!-- ModalDetalle -->
@@ -29,7 +37,9 @@
                 'sombraExpansionMareas':monster.expansion == 'AHWaves', 
                 'sombraExpansionNoche':monster.expansion == 'AHNigth',
                 'sombraExpansionSecretos':monster.expansion == 'AHSecrets'}"/>
-              <p class="has-text-white titleDecoration2 pt-0" >{{ monster.name }}</p>
+              <p v-if="$store.state.lenguaje === 'español'" class="has-text-white titleDecoration2 pt-0" >{{ monster.translations.es.name }}</p>
+              <p v-else class="has-text-white titleDecoration2 pt-0" >{{ monster.name }}</p>
+
               <p class="has-text-success  titleDecoration2 pt-0">X {{ monster.quantity }}</p>
 
             </div>
@@ -40,7 +50,8 @@
       <hr class="my-1">
 
       <div>
-        <p class="has-text-white has-text-centered py-3" >{{ monstersList.EStextSpecialEnemies }}</p>
+        <p v-if="$store.state.lenguaje === 'español'" class="has-text-white has-text-centered py-3" >{{ monstersList.EStextSpecialEnemies }}</p>
+        <p v-else class="has-text-white has-text-centered py-3" >{{ monstersList.textSpecialEnemies }}</p>
 
         <div id="enemisList" class="px-1 py-3">
             <div v-for="monster in monstersList.specialEnemies" :key="monster.id">
@@ -51,7 +62,9 @@
                   'sombraExpansionMareas':monster.expansion == 'AHWaves', 
                   'sombraExpansionNoche':monster.expansion == 'AHNigth',
                   'sombraExpansionSecretos':monster.expansion == 'AHSecrets'}"/>
-                <p class="has-text-white titleDecoration2 pt-0" >{{ monster.name }}</p>
+                <p v-if="$store.state.lenguaje === 'español'" class="has-text-white titleDecoration2 pt-0" >{{ monster.translations.es.name }}</p>
+                <p v-else class="has-text-white titleDecoration2 pt-0" >{{ monster.name }}</p>
+
                 <p class="has-text-success  titleDecoration2 pt-0">X {{ monster.quantity }}</p>
 
               </div>

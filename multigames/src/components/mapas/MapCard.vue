@@ -6,11 +6,9 @@
           </div>
           <div class="card-overlay has-text-centered">
               <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">
-                  {{ mapa.title }}
+                  {{ mapa.translations.es.title }}
               </p>
-              <p v-else class="title is-7 tipografiaElegante">
-                  {{ mapa.ENtitle }}
-              </p>
+              <p v-else class="title is-7 tipografiaElegante">{{ mapa.title }}</p>
           </div>
       </div>
   </div>
