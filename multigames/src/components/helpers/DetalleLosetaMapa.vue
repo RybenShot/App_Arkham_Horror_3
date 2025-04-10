@@ -8,7 +8,7 @@
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalVerLosetaMapa = false"></i>
         </header>
         <section class="modal-card-body hero is-large py-2">
-          <img :src="this.$store.state.datosMapa.imgMapa"  />
+          <img :src="`/img/3-mapas/losetas/${this.$store.state.datosMapa.imgMap}`"  />
         </section>
         <footer class="modal-card-foot">
           <button @click="this.$store.state.modalVerLosetaMapa = false" class="button column is-3 is-danger p-1"> {{ textoInterfaz.botonVolver }} </button>
