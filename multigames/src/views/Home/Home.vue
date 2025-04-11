@@ -114,9 +114,9 @@ export default {
     return {
       contadorVisitas: null,
       textoInterfaz: {
-        versionApp: "Beta 4.0.2",
+        versionApp: "Beta 4.0.3",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "28/03/2025",
+        fechaUltimaActualizacion: "11/04/2025",
         textoVisitas: "",
         textoActualizacion: "",
         botones: {
@@ -129,6 +129,14 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
+        {id: 4,
+            numeroActualizacion: "4.0.3",
+            titulo: "Implementacion de backEnd",
+            ENtitulo: "Backend Implementation",
+            descripcion: "Para futuras mejoras de la aplicaicon se esta desarrollando un backend para la gestion de los datos. Se ha completado con exito las pruebas con los mapas y se sube a produccion para hacer los test finales.",
+            ENdescripcion: "For future improvements to the application, a backend is being developed for data management. The tests with the maps have been successfully completed, and it is being deployed to production for final testing.",
+            fechaActualizacion: "11/04/2025" 
+          },
           {id: 3,
             numeroActualizacion: "4.0.2",
             titulo: "Mejoras en Enemigos, recordatorios y Gestión de Datos",
