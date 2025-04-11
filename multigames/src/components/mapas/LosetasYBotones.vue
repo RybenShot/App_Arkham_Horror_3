@@ -2,8 +2,8 @@
   <div>
     <div class="columns is-mobile mt-5 mb-0 mx-2">
       <!-- Loseta -->
-      <div class="column is-6 ml-2">
-        <div class=" helperimgMapas" :style="losetaStyle" @click="this.$store.state.modalVerLosetaMapa = true"></div>
+      <div class="column is-6 px-5">
+        <div class=" helperimgMapas ml-2" :style="losetaStyle" @click="this.$store.state.modalVerLosetaMapa = true"></div>
       </div>
 
       <!-- Botones derecha -->
@@ -14,13 +14,13 @@
         </div>
         <!-- "Inv Recomendados" -->
         <router-link to="/enproceso">
-          <div id="BG-boton-inv-rec" class="helperbotones py-2 my-2 pl-2">
+          <div id="BG-boton-inv-rec" class="helperbotones p-4 ">
             <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">{{ textoBotones.invRec }}</p>
           </div>
         </router-link>
         <!-- Comunidad -->
         <a href="https://boardgamegeek.com/boardgame/257499/arkham-horror-third-edition/forums/0?pageid=1&sort=recent" target="_blank">
-          <div id="BG-boton-comunidad" class="helperbotones py-4 my-2 pl-2">
+          <div id="BG-boton-comunidad" class="helperbotones my-2 p-4">
             <p class="has-text-white subtitle is-7 has-text-left">{{ textoBotones.comunidad }}</p>
           </div>
         </a>

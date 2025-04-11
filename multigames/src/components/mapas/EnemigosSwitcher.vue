@@ -29,8 +29,8 @@
       <div v-if="this.$store.state.verDetalleEnemigo == true"> <ModalDetalleEnemigo/> </div>
 
         <div id="enemisList" class="px-1">
-          <div v-for="monster in monstersList.enemies" :key="monster.id">
-            <div @click="watchEnemiDetail(monster)" class="helperCartasEnemigos mb-4 mx-1">
+          <div v-for="monster in monstersList.enemies" :key="monster.id" class="px-3">
+            <div @click="watchEnemiDetail(monster)" class="helperCartasEnemigos  mb-4 mx-1">
 
               <img :src="monster.img" :alt="monster.name" :class="{
                 'sombraExpansionBase':monster.expansion == 'AHBase',
