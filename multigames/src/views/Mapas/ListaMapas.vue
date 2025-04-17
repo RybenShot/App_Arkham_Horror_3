@@ -1,31 +1,21 @@
 <template>
   <div class="BGGeneralAH">
     <!-- Notificación de activar o desactivar -->
-    <poUp_Notificaciones/>
+    <popUp_Notificaciones/>
 
     <div>
       <!-- Seleccionar Mapa -->
       <div class="columns is-mobile mb-0 pt-3 centrarHero">
-        <div class="column is-3 p-0" style="text-align: center;" @click="goBack">
-          <i class="fa-2x fas fa-arrow-left has-text-white"></i>
-        </div>
-        <div class="column" style="margin: 0 auto;">
-          <p class="has-text-centered title has-text-white">{{ textoInterfaz.titulo }}</p>
-        </div>
-        <div class="column is-3 p-0" style="text-align: center;">
-          <router-link to="/">
-            <i class="fa-2x fas fa-home has-text-white"></i>
-          </router-link>
-        </div>
+        <div class="column is-3 p-0" style="text-align: center;" @click="goBack"><i class="fa-2x fas fa-arrow-left has-text-white"></i></div>
+        <div class="column" style="margin: 0 auto;"><p class="has-text-centered title has-text-white">{{ textoInterfaz.titulo }}</p></div>
+        <div class="column is-3 p-0" style="text-align: center;"><router-link to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
       </div>
 
       <hr class="m-1 mx-4 linea-separacion">
 
       <!-- Colecciones y botones -->
       <h2 class="title is-4 has-text-white has-text-centered">{{ textoInterfaz.subtitulo }}</h2>
-      <p class="subtitle is-6 has-text-white has-text-centered mb-2">
-        {{ textoInterfaz.descripcion }}
-      </p>
+      <p class="subtitle is-6 has-text-white has-text-centered mb-2">{{ textoInterfaz.descripcion }}</p>
       
       <!-- Botones de expansión -->
       <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
@@ -44,7 +34,7 @@
 
     <!-- Cartas de mapas filtradas -->
     <div class="PersonajesList">
-      <MapCard v-for="mapa in mapsList" :key="mapa.id" :mapa="mapa" />
+      <MapCard v-for="map in mapsList" :key="map.id" :map="map" />
     </div>
   </div>
 </template>
@@ -52,7 +42,7 @@
 <script>
 import { Howl } from 'howler';
 import { apiService } from '@/services/api.js';
-import poUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
+import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import MapCard from '@/components/mapas/MapCard.vue';
 
 const sound = new Howl({
@@ -91,7 +81,7 @@ export default {
     },
   },
   components: {
-    poUp_Notificaciones,
+    popUp_Notificaciones,
     MapCard,
   },
   methods: {
@@ -141,7 +131,7 @@ export default {
     },
     async getPreviewMapsList() {
       try {
-        const maps = await apiService.obtainMapsByExpansion();
+        const maps = await apiService.obtainMaps();
         // Guarda la lista completa de mapas
         this.mapsListAll = maps;
         // Inicializa la lista filtrada según el estado actual de las expansiones

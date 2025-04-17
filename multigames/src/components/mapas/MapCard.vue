@@ -1,14 +1,14 @@
 <template>
   <div @click="selectMap" class="p-1">
-    <div class="card" :class="{'cajaDePersonajesBase': mapa.expansion === 'AHBase', 'cajaDePersonajesMareasTenebrosas': mapa.expansion === 'AHWaves', 'cajaDePersonajesNocheCerrada': mapa.expansion === 'AHNigth', 'cajaDePersonajesSecretosDeLaOrden': mapa.expansion === 'AHSecrets'}">
+    <div class="card" :class="{'cajaDePersonajesBase': map.expansion === 'AHBase', 'cajaDePersonajesMareasTenebrosas': map.expansion === 'AHWaves', 'cajaDePersonajesNocheCerrada': map.expansion === 'AHNigth', 'cajaDePersonajesSecretosDeLaOrden': map.expansion === 'AHSecrets'}">
           <div class="card-image-wrapper">
-              <img :src="mapa.BGMap" :alt="mapa.title" class="card-image" />
+              <img :src="map.BGMap" :alt="map.title" class="card-image" />
           </div>
           <div class="card-overlay has-text-centered">
               <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">
-                  {{ mapa.translations.es.title }}
+                  {{ map.translations.es.title }}
               </p>
-              <p v-else class="title is-7 tipografiaElegante">{{ mapa.title }}</p>
+              <p v-else class="title is-7 tipografiaElegante">{{ map.title }}</p>
           </div>
       </div>
   </div>
@@ -18,14 +18,14 @@
 import { apiService } from '@/services/api.js';
 
 export default {
-name: 'MapaCard',
+name: 'MapCard',
 props: {
-    mapa: { type: Object, required: true }
+    map: { type: Object, required: true }
 },
 methods: {
     async selectMap() {
-      // cogemos la id del mapa clicadow
-      const idMap = this.mapa.idMap;
+      // cogemos la id del mapa
+      const idMap = this.map.idMap;
       // hacemos una llamada al endpoint de buscar mapa por la id
       const response = await apiService.obtainMapByID(idMap);
 

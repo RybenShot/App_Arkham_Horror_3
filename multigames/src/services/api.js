@@ -1,7 +1,7 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
 //const API_URL = process.env.VUE_APP_API_URL_DEV;
-const API_URL = process.env.VUE_APP_API_URL_PROD ;
+//const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
 export const apiService = {
@@ -44,7 +44,7 @@ export const apiService = {
   },
 
   // listar mapa por expansion
-  async obtainMapsByExpansion() {
+  async obtainMaps() {
     try {
       const response = await axios.get(`${API_URL}/maps/previewMap`);
       return response.data; 
@@ -72,6 +72,16 @@ export const apiService = {
     } catch (error) {
       console.error(`Error al obtener la lista de enemigos`, error);
       return null;
+    }
+  },
+
+  async obtainInv(){
+    try {
+      const response = await axios.get(`${API_URL}/inv/previewList`)
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener la lista de investigadores`, error);
+      return [];
     }
   }
   

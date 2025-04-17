@@ -22,6 +22,7 @@ export default createStore({
     stateExpansionNigth: false,
     stateExpansionSecrets: false,
     stateExpansionOriginal: false,
+    stateExpansionComunity: false,
 
     //PERSONAJES
     contadorPJ: 0,
