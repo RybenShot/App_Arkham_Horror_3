@@ -34,68 +34,80 @@ export default createStore({
     ActivarOriginal: false,
 
     datosPJactual: {
-      imgPersonaje: "imgTommy",
-      nombrePJ: "Tommy MulDoon",
-      idPersonaje: 1,
-      posicion: "Poli Novato",
-      ENposicion: "Rookie cop",
-      vida: 7,
-      cordura: 5,
-      saber: 2,
-      influencia: 2,
-      observacion: 3,
-      fuerza: 3,
-      voluntad: 3,
-      dinero: 2,
-      restos: 0,
-      pistas: 0,
-      limConcentracion: 2,
-      ENlimConcentracion: 2,
-      efecto1: "Protector: Si un Monstruo va a enfrentarse a otro investigador en tu espacio, puedes enfrentarte tú a ese Monstruo en su lugar.",
-      ENefecto1: "Protector: If a Monster is going to face another researcher in your space, you can face that Monster instead.",
-      efecto2: null,
-      frase: '“Vamos allá, Tommy. Es hora de hacerse el héroe.”',
-      locucionURL: null,
-      ENfrase: '“Come on, Tommy. It’s time to become a hero.”',
-      historia: "Los Muldoon habían servido en el cuerpo de policía durante generaciones, y Tommy no iba a ser menos. Fue el orgullo de su familia cuando se graduó en la academia de Boston. Por eso no hizo mucha gracia que lo trasladasen a la comisaría de Arkham; después de todo ¿qué podía ocurrir en aquel pueblucho comparado con los crímenes que habría sido capaz de resolver en Boston? Al final resultó que el trabajo policial en Arkham no estaba exento de interés, después de todo. Había muchos sucesos inexplicables, y la policía local parecía más interesada en aparentar normalidad que en buscar una solución. Así que Tommy echó mano a Becky, el rifle de su abuelo, y se dispuso a buscar soluciones por su cuenta ...",
-      ENhistoria: "The Muldoons had served in the police force for generations, and Tommy was no less. He was the pride of his family when he graduated from the Boston Academy. That’s why it wasn’t very funny to be transferred to the Arkham police station; after all, what could happen in that small town compared to the crimes I would have been able to solve in Boston? It turned out that police work in Arkham was not without interest after all. There were many unexplained events, and the local police seemed more interested in appearing normal than in finding a solution. So Tommy reached for Becky, his grandfather’s rifle, and set out to find solutions on his own ...",
-      arquetipos: {
-        tituloArquetipo1: "Defensor",
-        ENtituloArquetipo1: "Defender",
-        descripcionArquetipo1: "Tu responsabilidad consiste en proteger a tus compañeros investigadores. Esto podría significar ayudarles a recuperarse de daños físicos y mentales, o bien despachar Monstruos antes de que se conviertan en una amenaza.",
-        ENdescripcionArquetipo1: "Your responsibility is to protect your fellow investigators. This could mean helping them recover from physical and mental damage, or dispatching Monsters before they become a threat.",
-        tituloArquetipo2: "Superviviente",
-        ENtituloArquetipo2: "Survivor",
-        descripcionArquetipo2: "Tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducirá a la victoria.",
-        ENdescripcionArquetipo2: "Your advantage lies in surviving the relentless assault of Myths and helping your fellow researchers do the same. Teamwork will lead you to victory."
+      idInv: 23,
+      isActive: true,
+      expansion: "AHNigth",
+      name: "“Malasombra” O'Toole",
+      position: "Ex-Convict",
+      effect1: "I Won't Go Back – Once per round, after a test in which you rolled a 1, you may focus on a skill of your choice, even if doing so exceeds your Concentration limit.",
+      effect2: null,
+      effect3: null,
+      phrase: "\"In my situation, you see all kinds of things, detective. How much is that worth to you?\"",
+      theStory: "Malasombra always tried to make decisions that would make his mother proud, but his luck never lasted long. Something always went wrong, and each new decision he made seemed to limit his options even further. Then his mother fell ill, and his 'few options' quickly turned into 'no options.' After being caught for robbing a bank to pay the mounting hospital bills, Malasombra soon discovered that things could get even worse: his cellmate, endlessly rambling about the 'Great Old Ones,' scribbled dozens of cryptic messages on the cell walls just before bursting into flames. When he finally got out, Malasombra found a new way to make his mother proud. After kneeling to place a bouquet of flowers on her grave, he swore to do whatever it took to protect the world from those ancient horrors.",
+      focusLimit: 0,
+      locutionURL: "___",
+      imgInv: "/img/1-Personajes/28-Malasombra.jpg",
+      atributes: {
+        life: 6,
+        sanity: 6,
+        lore: 2,
+        influence: 1,
+        observation: 3,
+        strength: 3,
+        will: 4,
+        money: 2,
+        remnant: 0
       },
-      Pertenencia1: {
-        urlFoto: "",
-        nombre: "Becky",
-        ENnombre: "Becky",
-        descripcion: "Objeto - Arma. Recibes +4 de FUERZA cuando estés realizando una acción de ataque.",
-        ENdescripcion: "Object - Weapon. You receive +4 FORCE when performing an attack action.",
-        fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerTommy2.jpg")
-      },
-      Pertenencia2: null,
-      Pertenencia3: {
-        urlFoto: "",
-        nombre: "Esposas",
-        ENnombre: "handcuffs",
-        descripcion: "Objeto - Común. Una vez por ronda, después de que infrinjas Daño, te separes o sufras Daño de un monstruo HUMANO que no sea épico, puedes derrotar a ese monstruo.",
-        ENdescripcion: "Object - Common. Once per round, after you break Damage, separate or take Damage from a non-epic HUMAN monster, you can defeat that monster.",
-        fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerTommy3.jpg")
-      },
-      Pertenencia4: {
-        urlFoto: "",
-        nombre: "Motocicleta",
-        ENnombre: "motorcycle",
-        descripcion: "Objeto - Vehículo. En vez de realizar una acción de movimiento normal, te mueves un máximo de 3 espacios y puedes gastar 1$ para moverte un espacio adicional.",
-        ENdescripcion: "Object - Vehicle. Instead of a normal motion action, you move a maximum of 3 spaces and can spend $1 to move an extra space.",
-        fotoCartaPertenenciaURL: require("@/assets/img/2-Pertenencias/PerTommy1.jpg")
-      },
-      fotoUrl: require("@/assets/img/1-Personajes/1-Tommy.jpg"),
-      expansion: "Base"
+      rol: [
+        {
+          rol: "Expert",
+          description: "You possess a unique set of skills that allows you to specialize in a specific task. \"Malasombra\" is accustomed to making the most of risky situations; use this ability to perform complicated tests that, under other circumstances, would waste an action."
+        },
+        {
+          rol: "Survivor",
+          description: "Your strength lies in surviving the relentless assault of the Mythos and helping your fellow investigators do the same. Teamwork will lead you to victory."
+        }
+      ],
+      possessions: [
+        {
+          id: 12,
+          require: true,
+          title: "Prófugo"
+        },
+        {
+          id: 12,
+          require: false,
+          title: "Manos largas"
+        },
+        {
+          id: 12,
+          require: false,
+          title: "Navaja automática"
+        }
+      ],
+      translations: {
+        es: {
+          name: "“Malasombra” O'Toole",
+          position: "Ex presidiario",
+          effect1: "No pienso volver - Una vez por ronda, después de una prueba en la que hayas sacado un 1, puedes concentrarte en una habilidad de tu elección, incluso aunque al hacerlo sobrepases tu límite de Concentración.",
+          effect2: null,
+          effect3: null,
+          phrase: "“En mi situación uno ve toda clase de cosas, detective. ¿Cuánto vale eso para usted?”",
+          theStory: "Malasombra siempre procuró tomar decisiones que hicieran que su madre se sintiese orgullosa de él, pero la suerte le duraba bastante poco. Siempre salía algo mal, y cada nueva decisión que tomaba parecía limitar aún más sus opciones. Y entonces su madre enfermó, y sus “pocas opciones” se convirtieron rápidamente en “ninguna opción”. Tras dar con sus huesos en la cárcel por atracar un banco para pagar las facturas hospitalarias acumuladas, Malasombra no tardó en comprobar que las cosas podían torcerse aún más: su compañero de celda, que no paraba de desvariar por unos “Primigenios”, garabateó docenas de mensajes enigmáticos en las paredes justo antes de estallar en llamas. Cuando por fin salió de la trena, Malasombra halló otra forma de hacer que su madre se sintiera orgullosa. Tras arrodillarse para depositar un ramo de flores en su tumba, juró hacer cuanto estuviese en su mano para proteger al mundo de aquellos horrores ancestrales.",
+          focusLimit: 0,
+          locutionURL: "___",
+          rol: [
+            {
+              rol: "Experto",
+              description: "Posees un conjunto exclusivo de habilidades que te permite especializarte en una tarea concreta. “Malasombra” tiene por costumbre sacar partido de situaciones arriesgadas; aprovecha esta capacidad para realizar pruebas complicadas que en otras circunstancias supongan malgastar una acción."
+            },
+            {
+              rol: "Superviviente",
+              description: "Tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducirá a la victoria."
+            }
+          ]
+        }
+      }
     },
 
     //PLAY
@@ -316,6 +328,11 @@ export default createStore({
     // funcion para meter los datos que llegan desde back del mapa a store
     setDatosMapa(state, payload) {
       state.datosMapa = payload;
+    },
+
+    // funcion para meter los datos que llegan desde back del investigador a store
+    setDatosInvestigator(state, payload) {
+      state.datosPJactual = payload;
     },
 
     // funcion para añadir los enemigos a la lista despues de llamada a la API

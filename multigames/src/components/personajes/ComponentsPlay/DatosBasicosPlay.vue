@@ -10,9 +10,10 @@
     <div class="columns is-mobile">
       <!-- foto y nombre -->
       <div class="column is-half image">
-        <img class="is-rounded image image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " :src="this.$store.state.datosPJactual.fotoUrl" >
+        <img class="is-rounded image image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " 
+        :src="this.$store.state.datosPJactual.imgInv" >
         <div class="nombrePosicion">
-          <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
+          <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ this.$store.state.datosPJactual.name }}</p>
           <p class="has-background-dark subtitle is-6 has-text-white posicion">{{ textoInterfaz.posicion }}</p>
         </div>
       </div>
@@ -104,14 +105,14 @@ export default {
       mensajeVidaCorduraMax: "",
 
        atributos: {
-        maxVida :this.$store.state.datosPJactual.vida,
-        maxCordura :this.$store.state.datosPJactual.cordura,
+        maxVida :this.$store.state.datosPJactual.atributes.life,
+        maxCordura :this.$store.state.datosPJactual.atributes.sanity,
 
-        vida: this.$store.state.datosPJactual.vida,
-        cordura: this.$store.state.datosPJactual.cordura,
-        dinero: this.$store.state.datosPJactual.dinero,
-        pistas: this.$store.state.datosPJactual.pistas,
-        restos: this.$store.state.datosPJactual.restos,
+        vida: this.$store.state.datosPJactual.atributes.life,
+        cordura: this.$store.state.datosPJactual.atributes.sanity,
+        dinero: this.$store.state.datosPJactual.atributes.money,
+        pistas: this.$store.state.datosPJactual.atributes.clue,
+        restos: this.$store.state.datosPJactual.atributes.remnant,
         marcado: {
           vida: false,
           cordura: false,
@@ -151,11 +152,11 @@ export default {
     },
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
-        this.textoInterfaz.posicion = this.$store.state.datosPJactual.posicion;
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.translations.es.position;
         this.textoInterfaz.textoVariables = "Selecciona 1 para modificar";
 
       }else if (this.$store.state.lenguaje == "ingles"){
-        this.textoInterfaz.posicion = this.$store.state.datosPJactual.ENposicion;
+        this.textoInterfaz.posicion = this.$store.state.datosPJactual.position;
         this.textoInterfaz.textoVariables = "Select 1 to modify";
       }
     },

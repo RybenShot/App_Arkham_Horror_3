@@ -16,7 +16,7 @@
         <b-tabs size="is-medium" type="is-boxed" position="is-centered" v-model="activeTab">
             <b-tab-item>
               <template #header>
-                  <i class="fa-1x fas fa-home pr-2"></i>
+                  <i class="fa-1x fas fa-box pr-2"></i>
                   <span> Expansiones </span>
               </template>
 
@@ -34,9 +34,18 @@
 
             <b-tab-item>
               <template #header>
-                  <i class="fa-1x fas fa-arrow-left pr-2"></i>
+                  <i class="fa-1x fas fa-user-tag pr-2"></i>
                   <span> Arquetipos </span>
               </template>
+
+              <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
+                <button v-for="btn in rolButtons" class="button"
+                  :key="btn.key"
+                  :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
+                  @click="changeForRol(btn.key)">
+                  {{ btn.text }}
+                </button>
+              </div>
             </b-tab-item>
 
         </b-tabs>
@@ -82,11 +91,6 @@ export default {
 
   data() {
     return {
-      mostrarNotifDesactivar: false,
-      mensajeDesactivado: "Expansión desactivada!",
-      mostrarNotifActivar: false,
-      mensajeActivado: "Expansión Activada!",
-
       // guarda la lista completa - no se muestra
       invListAll:[],
       // guarda la lista filtrada - si se muestra
@@ -104,7 +108,14 @@ export default {
           noche: "",
           secretos: "",
           original:"",
-          comunity: ""
+          comunity: "",
+
+          survivor: "",
+          mystic: "",
+          rogue: "",
+          guardian: "",
+          seeker: "",
+          neutral: "",
         },
       },
 
@@ -119,11 +130,21 @@ export default {
         { key: 'stateExpansionBase', text: this.textoInterfaz.botones.base, buttonClass: 'is-success' },
         { key: 'stateExpansionWaves', text: this.textoInterfaz.botones.mareas, buttonClass: 'is-info' },
         { key: 'stateExpansionNigth', text: this.textoInterfaz.botones.noche, buttonClass: 'is-warning' },
-        { key: 'stateExpansionSecrets', text: this.textoInterfaz.botones.secretos, buttonClass: 'is-link' },
+        { key: 'stateExpansionSecrets', text: this.textoInterfaz.botones.secretos, buttonClass: 'is-danger' },
         { key: 'stateExpansionOriginal', text: this.textoInterfaz.botones.original, buttonClass: 'is-link' },
-        { key: 'stateExpansionComunity', text: this.textoInterfaz.botones.comunity, buttonClass: 'is-link' },
+        { key: 'stateExpansionComunity', text: this.textoInterfaz.botones.comunity, buttonClass: 'is-orange' },
       ];
     },
+    rolButtons(){
+      return [
+        { key: 'survivor', text: this.textoInterfaz.botones.survivor, buttonClass: 'is-success' },
+        { key: 'mystic', text: this.textoInterfaz.botones.mystic, buttonClass: 'is-info' },
+        { key: 'rogue', text: this.textoInterfaz.botones.rogue, buttonClass: 'is-warning' },
+        { key: 'guardian', text: this.textoInterfaz.botones.guardian, buttonClass: 'is-danger' },
+        { key: 'seeker', text: this.textoInterfaz.botones.seeker, buttonClass: 'is-link' },
+        { key: 'neutral', text: this.textoInterfaz.botones.neutral, buttonClass: 'is-orange' },
+      ];
+    }
   },
 
   methods: {
@@ -147,6 +168,12 @@ export default {
         this.textoInterfaz.botones.secretos = "Secretos";
         this.textoInterfaz.botones.original = "Original";
         this.textoInterfaz.botones.comunity = "Comunidad";
+        this.textoInterfaz.botones.survivor = "Superviviente";
+        this.textoInterfaz.botones.mystic = "Místico";
+        this.textoInterfaz.botones.rogue = "Experto";
+        this.textoInterfaz.botones.guardian = "Defensor";
+        this.textoInterfaz.botones.seeker = "Buscador";
+        this.textoInterfaz.botones.neutral = "Neutral";
 
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "Select Investigator";
@@ -161,6 +188,26 @@ export default {
         this.textoInterfaz.botones.secretos = "Secrets";
         this.textoInterfaz.botones.original = "Original";
         this.textoInterfaz.botones.comunity = "Comunity";
+        this.textoInterfaz.botones.survivor = "Survivor";
+        this.textoInterfaz.botones.mystic = "Mystic";
+        this.textoInterfaz.botones.rogue = "Rogue";
+        this.textoInterfaz.botones.guardian = "Guardian";
+        this.textoInterfaz.botones.seeker = "Seeker";
+        this.textoInterfaz.botones.neutral = "Neutral";
+      }
+    },
+    async changeForRol(rolKey) {
+      try {
+        // ejecutamos el sonido de las teclas
+        this.SonidoTecla();
+        //limpiamos la lista de investigadores
+        this.invList = [];
+        // llamamos a back con la expansion seleccionada
+        const investigators = await apiService.obtainPreviewInvForRol(rolKey)
+        // guardamos el resultado en la lista
+        this.invList = investigators;
+        } catch (error) {
+        console.log("Error al cargar los investigadores por el rol:", error);
       }
     },
     handleToggle(expansionKey) {
@@ -173,10 +220,22 @@ export default {
       //mandamos a enseñar el mensaje activado desactivado
       this.$store.dispatch('ejecutarFlashPopUp_Action', message);
       // refrescamos la lista de investigadores
-      this.updateInvList();
+      this.updateInvListForExpansion();
     },
     // Filtra invListAll según el estado de las expansiones activadas
-    updateInvList(){
+    updateInvListForExpansion(){
+      this.invList = this.invListAll.filter((inv) => {
+        if (inv.expansion == "AHBase" && this.$store.state.stateExpansionBase) return true
+        if (inv.expansion == "AHWaves" && this.$store.state.stateExpansionWaves) return true
+        if (inv.expansion == "AHNigth" && this.$store.state.stateExpansionNigth) return true
+        if (inv.expansion == "AHSecrets" && this.$store.state.stateExpansionSecrets) return true
+
+        if (inv.expansion == "AHOriginal" && this.$store.state.stateExpansionOriginal) return true
+        if (inv.expansion == "AHComunity" && this.$store.state.stateExpansionComunity) return true
+        return false
+      })
+    },
+    updateInvListForRol(){
       this.invList = this.invListAll.filter((inv) => {
         if (inv.expansion == "AHBase" && this.$store.state.stateExpansionBase) return true
         if (inv.expansion == "AHWaves" && this.$store.state.stateExpansionWaves) return true
@@ -192,12 +251,12 @@ export default {
     async getPreviewInvestigatorsList(){
       try {
         // obtenemos la lista completa de todos los preview de los investigadores
-        const investigators = await apiService.obtainInv()
+        const investigators = await apiService.obtainPreviewInv()
         // guaramos lo resivido en un array
         this.invListAll = investigators;
-        this.updateInvList();
+        this.updateInvListForExpansion();
       } catch (error) {
-        console.error("Error al cargar los investigadores:", error);
+        console.error("Error al cargar los investigadores por expansion:", error);
       }
     },
     //funcion para comprobar el estado de las expansiones y enseñar mensaje o no
@@ -228,6 +287,16 @@ export default {
   display: flex; 
   justify-content: center; 
   align-items: center
+}
+.is-orange{
+  background-color: hsl(17, 100%, 66%) !important;
+  border-color: transparent;
+  color: white !important;
+}
+.is-orange.is-outlined{
+  background-color: transparent !important;
+  border-color: hsl(17, 100%, 66%) !important;
+  color: hsl(17, 100%, 66%) !important;
 }
 
 /* Usado */

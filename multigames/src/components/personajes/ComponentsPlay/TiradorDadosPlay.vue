@@ -9,29 +9,29 @@
     <!-- Atributos -->
 
     <div class="columns is-mobile has-text-centered px-2"> 
-      <div class="column p-1 mx-2 ml-4 boton" :class="{'color-saber': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.saber) && (setActiveButton(1))">
+      <div class="column p-1 mx-2 ml-4 boton" :class="{'color-saber': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.atributes.lore) && (setActiveButton(1))">
         <p><i class="fa-2x fas fa-book-open"></i></p>
-        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.saber }}</p>
+        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.atributes.lore }}</p>
       </div>
 
-      <div class="column p-1 mx-2" :class="{'color-influencia': activeButton === 2 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.influencia, setActiveButton(2))">
+      <div class="column p-1 mx-2" :class="{'color-influencia': activeButton === 2 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.atributes.influence, setActiveButton(2))">
         <p><i class="fa-2x fas fa-handshake"></i></p>
-        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.influencia }}</p>
+        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.atributes.influence }}</p>
       </div>
 
-      <div class="column p-1 mx-2" :class="{'color-observacion': activeButton === 3 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.observacion), setActiveButton(3)">
+      <div class="column p-1 mx-2" :class="{'color-observacion': activeButton === 3 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.atributes.observation), setActiveButton(3)">
         <p><i class="fa-2x fas fa-eye"></i></p>
-        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.observacion }}</p>
+        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.atributes.observation }}</p>
       </div>
 
-      <div class="column p-1 mx-2" :class="{'color-fuerza': activeButton === 4 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.fuerza), setActiveButton(4)">
+      <div class="column p-1 mx-2" :class="{'color-fuerza': activeButton === 4 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.atributes.strength), setActiveButton(4)">
         <p><i class="fa-2x fas fa-fist-raised"></i></p>
-        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.fuerza }}</p>
+        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.atributes.strength }}</p>
       </div>
 
-      <div class="column p-1 mx-2 mr-4" :class="{'color-voluntad': (activeButton === 5) }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.voluntad), setActiveButton(5)">
+      <div class="column p-1 mx-2 mr-4" :class="{'color-voluntad': (activeButton === 5) }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.atributes.will), setActiveButton(5)">
         <p><i class="fa-2x fab fa-hornbill"></i></p>
-        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.voluntad }}</p>
+        <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.atributes.will }}</p>
       </div>
     </div>
 
@@ -43,7 +43,7 @@
         <p class="title is-5 has-text-white mb-0">Concentración</p>
         <hr class="m-0">
         <div class="has-text-white my-3 columns is-mobile mb-0">
-          <p class="column p-0">Max: {{ $store.state.datosPJactual.limConcentracion }}</p>
+          <p class="column p-0">Max: {{ $store.state.datosPJactual.focusLimit }}</p>
           <div class="column p-0">
             <!-- Mostrar fichas de concentración añadidas -->
             <span v-for="(ficha, index) in concentracionFichas" :key="index">

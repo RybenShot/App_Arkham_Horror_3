@@ -1,11 +1,11 @@
 <template>
   <section class="mt-4 mb-4 has-text-white">
-    <p>{{ textoInterfaz.efecto1 }}</p>
-    <div v-if="this.$store.state.datosPJactual.efecto2">
-      <p>{{ textoInterfaz.efecto2 }}</p>
+    <p>{{ textoInterfaz.effect1 }}</p>
+    <div v-if="this.$store.state.datosPJactual.effect2">
+      <p>{{ textoInterfaz.effect2 }}</p>
     </div>
-    <p class="is-italic pt-2 has-text-centered">{{ textoInterfaz.frase }}</p>
-    <p class="has-text-weight-semibold is-underlined pt-3"> {{ textoInterfaz.limConcentracion }} : {{ this.$store.state.datosPJactual.limConcentracion }}</p>
+    <p class="is-italic pt-2 has-text-centered">{{ textoInterfaz.phrase }}</p>
+    <p class="has-text-weight-semibold is-underlined pt-3"> {{ textoInterfaz.focusLimit_text }} : {{ textoInterfaz.focusLimit }}</p>
   </section>
 </template>
 
@@ -15,25 +15,31 @@ export default {
   data(){
     return{
       textoInterfaz: {
-        efecto1: "",
-        efecto2: "",
-        frase: "",
-        limConcentracion: ""
+        effect1: "",
+        effect2: "",
+        effect3: "",
+        phrase: "",
+        focusLimit_text: "",
+        focusLimit:""
       }
     }
   },
   methods:{
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
-        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.efecto1;
-        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.efecto2;
-        this.textoInterfaz.frase = this.$store.state.datosPJactual.frase;
-        this.textoInterfaz.limConcentracion = "Limite de concentración";
+        this.textoInterfaz.effect1 = this.$store.state.datosPJactual.translations.es.effect1;
+        this.textoInterfaz.effect2 = this.$store.state.datosPJactual.translations.es.effect2;
+        this.textoInterfaz.effect3 = this.$store.state.datosPJactual.translations.es.effect3;
+        this.textoInterfaz.phrase = this.$store.state.datosPJactual.translations.es.phrase;
+        this.textoInterfaz.focusLimit = this.$store.state.datosPJactual.translations.es.focusLimit;
+        this.textoInterfaz.focusLimit_text = "Limite de concentración";
       }else if (this.$store.state.lenguaje == "ingles"){
-        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.ENefecto1;
-        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.ENefecto2;
-        this.textoInterfaz.frase = this.$store.state.datosPJactual.ENfrase;
-        this.textoInterfaz.limConcentracion = "Concentration limit";
+        this.textoInterfaz.effect1 = this.$store.state.datosPJactual.effect1;
+        this.textoInterfaz.effect2 = this.$store.state.datosPJactual.effect2;
+        this.textoInterfaz.effect3 = this.$store.state.datosPJactual.effect3;
+        this.textoInterfaz.phrase = this.$store.state.datosPJactual.ENphrase;
+        this.textoInterfaz.focusLimit = this.$store.state.datosPJactual.focusLimit;
+        this.textoInterfaz.focusLimit_text = "Concentration limit";
       }
     }
   },

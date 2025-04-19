@@ -1,7 +1,7 @@
 <template>
       <div class="modal is-active ">
-        <div class="modal-background"></div>
-        <div class="">
+        <div class="modal-background" @click="this.$store.state.modalHistoriaDetalle = false"></div>
+        <div class=" p-2">
           <div class="modal-card m-0">
             <header class="modal-card-head BGHistoria mb-0 columns is-mobile">
               <div class="column has-text-left is-three-fifths">
@@ -19,7 +19,7 @@
             <section class="modal-card-body hero is-large py-2">
 
               <!-- Nombre Personaje -->
-              <p class="has-text-centered title is-italic mb-0">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
+              <p class="has-text-centered title is-italic mb-0">{{ this.$store.state.datosPJactual.name }}</p>
               <div class="lineaSeparatoria mx-6">
                 <div class="columns is-mobile" style="position: relative; top: 4px">
                   <i class=" has-text-left fas fa-dot-circle column p-0"></i>
@@ -28,24 +28,24 @@
               </div>
               <br>
 
-              <p class="subtitle is-7 has-text-centered">{{ textoInterfaz.historia }}</p>
+              <p class="subtitle is-6 has-text-centered">{{ textoInterfaz.historia }}</p>
               <br>
 
               <!-- TODO corregir esta atrocidad -->
               <div v-if="
-                this.$store.state.datosPJactual.nombrePJ == 'Marie Lambeau' ||
-                this.$store.state.datosPJactual.nombrePJ == 'Jenny Barnes' ||
-                this.$store.state.datosPJactual.nombrePJ == 'Dexter Drake' ||
-                this.$store.state.datosPJactual.nombrePJ == 'Rex Murphy' ||
-                this.$store.state.datosPJactual.nombrePJ == 'Agnes Baker' ||
-                this.$store.state.datosPJactual.nombrePJ == 'Gloria Goldberg'"
+                this.$store.state.datosPJactual.name == 'Marie Lambeau' ||
+                this.$store.state.datosPJactual.name == 'Jenny Barnes' ||
+                this.$store.state.datosPJactual.name == 'Dexter Drake' ||
+                this.$store.state.datosPJactual.name == 'Rex Murphy' ||
+                this.$store.state.datosPJactual.name == 'Agnes Baker' ||
+                this.$store.state.datosPJactual.name == 'Gloria Goldberg'"
                 class="has-text-centered">
-                  <iframe v-if="this.$store.state.datosPJactual.nombrePJ == 'Marie Lambeau'" class="has-ratio" :src="`https://www.youtube.com/embed/nLVtMyycF2A`" frameborder="0" allowfullscreen></iframe>
-                  <iframe v-if="this.$store.state.datosPJactual.nombrePJ == 'Jenny Barnes'" class="has-ratio" :src="`https://www.youtube.com/embed/A3eG_3SDUTA`" frameborder="0" allowfullscreen></iframe>
-                  <iframe v-if="this.$store.state.datosPJactual.nombrePJ == 'Dexter Drake'" class="has-ratio" :src="`https://www.youtube.com/embed/nCDlFIKAKUw`" frameborder="0" allowfullscreen></iframe>
-                  <iframe v-if="this.$store.state.datosPJactual.nombrePJ == 'Rex Murphy'" class="has-ratio" :src="`https://www.youtube.com/embed/2CNEDE9mJ-0`" frameborder="0" allowfullscreen></iframe>
-                  <iframe v-if="this.$store.state.datosPJactual.nombrePJ == 'Agnes Baker'" class="has-ratio" :src="`https://www.youtube.com/embed/Cx4GNKVIWHQ`" frameborder="0" allowfullscreen></iframe>
-                  <iframe v-if="this.$store.state.datosPJactual.nombrePJ == 'Gloria Goldberg'" class="has-ratio" :src="`https://www.youtube.com/embed/k7XDNDEgZhM`" frameborder="0" allowfullscreen></iframe>
+                  <iframe v-if="this.$store.state.datosPJactual.name == 'Marie Lambeau'" class="has-ratio" :src="`https://www.youtube.com/embed/nLVtMyycF2A`" frameborder="0" allowfullscreen></iframe>
+                  <iframe v-if="this.$store.state.datosPJactual.name == 'Jenny Barnes'" class="has-ratio" :src="`https://www.youtube.com/embed/A3eG_3SDUTA`" frameborder="0" allowfullscreen></iframe>
+                  <iframe v-if="this.$store.state.datosPJactual.name == 'Dexter Drake'" class="has-ratio" :src="`https://www.youtube.com/embed/nCDlFIKAKUw`" frameborder="0" allowfullscreen></iframe>
+                  <iframe v-if="this.$store.state.datosPJactual.name == 'Rex Murphy'" class="has-ratio" :src="`https://www.youtube.com/embed/2CNEDE9mJ-0`" frameborder="0" allowfullscreen></iframe>
+                  <iframe v-if="this.$store.state.datosPJactual.name == 'Agnes Baker'" class="has-ratio" :src="`https://www.youtube.com/embed/Cx4GNKVIWHQ`" frameborder="0" allowfullscreen></iframe>
+                  <iframe v-if="this.$store.state.datosPJactual.name == 'Gloria Goldberg'" class="has-ratio" :src="`https://www.youtube.com/embed/k7XDNDEgZhM`" frameborder="0" allowfullscreen></iframe>
               </div>
             </section>
 
@@ -64,13 +64,13 @@
 <script>
 import { Howl } from 'howler';
 const sounds = {
-  1: new Howl({ src: require('@/assets/sound/Locucion/personajes/1-Tommy.mp3') }),
-  2: new Howl({ src: require('@/assets/sound/Locucion/personajes/2-Marie.mp3') }),
-  3: new Howl({ src: require('@/assets/sound/Locucion/personajes/3-Jenny.mp3') }),
-  4: new Howl({ src: require('@/assets/sound/Locucion/personajes/4-Dexter.mp3') }),
-  6: new Howl({ src: require('@/assets/sound/Locucion/personajes/6-Rex.mp3') }),
-  8: new Howl({ src: require('@/assets/sound/Locucion/personajes/8-Agnes.mp3') }),
-  9: new Howl({ src: require('@/assets/sound/Locucion/personajes/9-Michael.mp3') })
+  0: new Howl({ src: require('@/assets/sound/Locucion/personajes/1-Tommy.mp3') }),
+  1: new Howl({ src: require('@/assets/sound/Locucion/personajes/2-Marie.mp3') }),
+  2: new Howl({ src: require('@/assets/sound/Locucion/personajes/3-Jenny.mp3') }),
+  3: new Howl({ src: require('@/assets/sound/Locucion/personajes/4-Dexter.mp3') }),
+  5: new Howl({ src: require('@/assets/sound/Locucion/personajes/6-Rex.mp3') }),
+  7: new Howl({ src: require('@/assets/sound/Locucion/personajes/8-Agnes.mp3') }),
+  8: new Howl({ src: require('@/assets/sound/Locucion/personajes/9-Michael.mp3') })
 };
 
 export default {
@@ -88,12 +88,12 @@ export default {
   },
   methods: {
     reproducirAudio() {
-      const idPersonaje = this.$store.state.datosPJactual.idPersonaje;
+      const idPersonaje = this.$store.state.datosPJactual.idInv;
       const sound = sounds[idPersonaje];
       sound.play()
     },
     detenerAudio() {
-      const idPersonaje = this.$store.state.datosPJactual.idPersonaje;
+      const idPersonaje = this.$store.state.datosPJactual.idInv;
       const sound = sounds[idPersonaje];
       sound.stop()
     },
@@ -101,12 +101,12 @@ export default {
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.titulo = "La historia hasta ahora...";
         this.textoInterfaz.volver = "Volver";
-        this.textoInterfaz.historia = this.$store.state.datosPJactual.historia;
+        this.textoInterfaz.historia = this.$store.state.datosPJactual.translations.es.theStory;
 
       }else if(this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.titulo = "The story until now";
         this.textoInterfaz.volver = "Go back";
-        this.textoInterfaz.historia = this.$store.state.datosPJactual.ENhistoria;
+        this.textoInterfaz.historia = this.$store.state.datosPJactual.theStory;
       }
     }
   },

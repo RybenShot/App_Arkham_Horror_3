@@ -76,7 +76,7 @@ export default {
 
 <style>
   .BGGeneralAH {
-    background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
+    background-image: url(@/assets/img/ZZOtros/newBGAH.png)!important;
     min-height: 110vh;
     background-position: center;
     background-size: cover;

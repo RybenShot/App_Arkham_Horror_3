@@ -1,4 +1,5 @@
 <template>
+  <div class="inv-wrapper">
     <div class="card" :class="{
         'cajaDePersonajesBase': investigator.expansion === 'AHBase', 
         'cajaDePersonajesMareasTenebrosas': investigator.expansion === 'AHWaves', 
@@ -6,7 +7,7 @@
         'cajaDePersonajesSecretosDeLaOrden': investigator.expansion === 'AHSecrets',
         'cajaDePersonajesOriginal': investigator.expansion === 'AHOriginal',
         'cajaDePersonajesComunity': investigator.expansion === 'AHComunity'
-        }">
+        }" @click="selectInv(investigator.idInv)">
         <div class="card-icon top-left has-text-danger"><i class="fas fa-heartbeat"></i></div>
         <div class="card-icon top-right has-text-info"><i class="fas fa-brain"></i></div>
 
@@ -25,6 +26,8 @@
             <p v-else class="subtitle is-7">{{investigator.position}}</p>
         </div>
     </div>
+    <img src="@/assets/img/ZZOtros/marcoInvestigador.png" class="marcoInv" alt="marco investigador" aria-hidden="true"/>
+  </div>
 </template>
 
 <script>
@@ -36,10 +39,17 @@ export default {
         investigator: { type: Object, required: true }
     },
     methods:{
-        async selectInv(){
-            // cogemos la id del investigadorç
-            const idInv = this.inv.idInv
+        async selectInv(idInv){
             console.log(idInv)
+
+            const response = await apiService.obtainInvByID(idInv);
+
+            if (response) {
+               await this.$store.commit('setDatosInvestigator', response);
+              this.$router.push('/DetallePersonaje');
+            } else {
+              console.error("No se pudo obtener el investigador");
+            }
         }
     }
 };
@@ -49,12 +59,35 @@ export default {
 .tipografiaElegante{
   font-family: "Cinzel";
 }
+
+.inv-wrapper {
+  position: relative;
+  width: 120px;   /* mismas dimensiones que .card */
+  height: 180px;
+  padding-left: -20px;
+}
+
+.marcoInv {
+  position: absolute;
+  top: -25px;
+  left: -34px;
+    /* estíralo un 50% extra hacia la derecha */
+    transform-origin: left center;
+    transform: scaleX(1.5);
+    /* mantiene la altura al 100% del wrapper */
+  height: 105%;
+  z-index: 10;    /* > cualquier z-index de .card-icon, .card-overlay… */
+  pointer-events: none; /* para que no bloquee clicks en la tarjeta */
+}
+
+/* Ajusta o elimina tu .marcoInv previo */
+
 .cajaDePersonajesBase{border: 2px solid #48c78e;border-radius: 3px;}
 .cajaDePersonajesMareasTenebrosas{border: 2px solid #3e8ed0; border-radius: 3px;}
 .cajaDePersonajesNocheCerrada{border: 2px solid #ffdc7d;border-radius: 3px;}
-.cajaDePersonajesSecretosDeLaOrden{border: 2px solid #485fc7;border-radius: 3px;}
-.cajaDePersonajesOriginal{border: 2px solid #f14668;border-radius: 3px;}
-.cajaDePersonajesComunity{border: 2px solid #46f1e8;border-radius: 3px;}
+.cajaDePersonajesSecretosDeLaOrden{border: 2px solid #f14668 !important;border-radius: 3px;}
+.cajaDePersonajesOriginal{border: 2px solid #7957d5;border-radius: 3px;}
+.cajaDePersonajesComunity{border: 2px solid hsl(17, 100%, 66%);border-radius: 3px;}
 
 /* CLASES PARA TARJETAS */
 .card {

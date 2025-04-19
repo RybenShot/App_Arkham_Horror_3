@@ -75,7 +75,8 @@ export const apiService = {
     }
   },
 
-  async obtainInv(){
+  // obtiene el preview de la lista de investigadores
+  async obtainPreviewInv(){
     try {
       const response = await axios.get(`${API_URL}/inv/previewList`)
       return response.data
@@ -83,6 +84,27 @@ export const apiService = {
       console.error(`Error al obtener la lista de investigadores`, error);
       return [];
     }
-  }
+  },
+
+  async obtainPreviewInvForRol(rol){
+    try {
+      const response = await axios.get(`${API_URL}/inv/previewList?rol=${rol}`)
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener la lista de investigadores por rol`, error);
+      return [];
+    }
+  },
+
+  async obtainInvByID(idInv){
+    try {
+      const response = await axios.get(`${API_URL}/inv/${idInv}`);
+      console.log(response.data)
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener la lista de investigadores`, error);
+      return null;
+    }
+  },
   
 };
