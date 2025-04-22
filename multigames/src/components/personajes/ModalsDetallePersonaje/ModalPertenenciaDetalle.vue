@@ -1,12 +1,12 @@
 <template>
     <div class="modal is-active">
-        <div class="modal-background"></div>
+        <div class="modal-background" @click=" closeModal()"></div>
         <div class="mr-6">
           <div class="modal-card">
             <!-- TITULO -->
             <header class="modal-card-head BGPertenencias ">
               <p class="modal-card-title has-text-white title is-4 pt-2 m-0">{{ textoInterfaz.pertenencias }}</p>
-              <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalPertenenciasDetalle = false"></i>
+              <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click=" closeModal()"></i>
             </header>
 
             <!-- ModalDetalle -->
@@ -15,7 +15,7 @@
             </div>
 
             <section class="modal-card-body hero is-large pt-2 pb-6">
-              <p class="has-text-centered title is-italic mb-0">{{ this.$store.state.datosPJactual.nombrePJ }}</p>
+              <p class="has-text-centered title is-italic mb-0">{{ this.$store.state.datosPJactual.name }}</p>
               <div class="lineaSeparatoria mx-6">
                 <div class="columns is-mobile" style="position: relative; top: 4px">
                   <i class=" has-text-left fas fa-dot-circle column p-0"></i>
@@ -25,14 +25,10 @@
               <br>
               
               <div class="columns is-mobile">
-
                 <!-- Per. 1 -->
-                <img @click="(this.$store.state.verDetallePertenencia = true), (this.$store.state.SeleccionarURLPertenencia = this.$store.state.datosPJactual.Pertenencia1.fotoCartaPertenenciaURL)" 
-                :class="{'column': this.$store.state.datosPJactual.Pertenencia2 }" class="CartasPertenencias cajaCartas" :src="this.$store.state.datosPJactual.Pertenencia1.fotoCartaPertenenciaURL" alt="">
-
-                <!-- Per 2 -->
-                <img @click="(this.$store.state.verDetallePertenencia = true), (this.$store.state.SeleccionarURLPertenencia = this.$store.state.datosPJactual.Pertenencia2.fotoCartaPertenenciaURL)" 
-                v-if="this.$store.state.datosPJactual.Pertenencia2 != null" class="CartasPertenencias cajaCartas column" :src="this.$store.state.datosPJactual.Pertenencia2.fotoCartaPertenenciaURL" alt="">
+                 <div v-for="object in responseObjects.objects" :key="object.id" class="column">
+                    <img @click="seeCard(object.img)" :src="object.img" :alt="object.name" class="imageObject has-text-centered">
+                 </div>
               </div>
               <br>
 
@@ -46,25 +42,16 @@
               </div>
               <br>
               <div class="columns is-mobile">
-                <!-- Per 3 -->
-                <img @click="(this.$store.state.verDetallePertenencia = true), (this.$store.state.SeleccionarURLPertenencia = this.$store.state.datosPJactual.Pertenencia3.fotoCartaPertenenciaURL)" 
-                :class="{'column': this.$store.state.datosPJactual.Pertenencia4 != null }" class="CartasPertenencias cajaCartas" :src="this.$store.state.datosPJactual.Pertenencia3.fotoCartaPertenenciaURL" alt="">
-
-                <!-- Per 4 -->
-                <img @click="(this.$store.state.verDetallePertenencia = true), (this.$store.state.SeleccionarURLPertenencia = this.$store.state.datosPJactual.Pertenencia4.fotoCartaPertenenciaURL)" 
-                v-if="this.$store.state.datosPJactual.Pertenencia4 != null" class="CartasPertenencias cajaCartas column" :src="this.$store.state.datosPJactual.Pertenencia4.fotoCartaPertenenciaURL" alt="">
-
-                <!-- Condiciones especiales de personajes -->
-                <div v-if="this.$store.state.datosPJactual.Pertenencia4 == null" class="column">
-                   <!-- Esta partye hayq ue corregirla, para que aparezca tambien en ingles -->
-                  <p v-if="this.$store.state.datosPJactual.nombrePJ == 'Calvin Wrigth'">Si coges este objeto, debes añadirte un "Pacto Siniestro"</p>
-                </div>
+                <!-- Per opcionales -->
+                <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="column">
+                    <img @click="seeCard(object.img)" :src="object.img" :alt="object.name" class="imageObject has-text-centered">
+                 </div>
               </div>
             </section>
 
             <footer>
               <div class="field has-addons columns is-mobile is-gapless">
-                  <button @click="this.$store.state.modalPertenenciasDetalle = false" class="button is-link is-fullwidth">
+                  <button @click="closeModal()" class="button is-link is-fullwidth">
                     <p >{{ textoInterfaz.volver }}</p>
                   </button>
 
@@ -78,6 +65,7 @@
 
 <script>
 import  ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePersonaje/ModalVerDetallePertenencia.vue";
+import { apiService } from '@/services/api.js';
 export default {
   name: "Lista Pertenencias",
   data(){
@@ -86,27 +74,50 @@ export default {
         pertenencias:"",
         elije: "",
         volver: ""
-      }
+      },
+      responseObjects:{}
     }
   },
   components:{
     ModalVerDetallePertenencia
   },
   methods:{
+    closeModal(){
+      this.$store.state.modalPertenenciasDetalle = false;
+      this.$store.state.verDetallePertenencia = false;
+    },
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.pertenencias = "Pertenencias Iniciales";
-        this.textoInterfaz.elije = "Elige 1";
+        this.textoInterfaz.elije = this.responseObjects.optionalText;
         this.textoInterfaz.volver = "Volver";
       }else if(this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.pertenencias = "Belongings Initial";
-        this.textoInterfaz.elije = "Choose 1";
+        this.textoInterfaz.elije = this.responseObjects.optionalText;
         this.textoInterfaz.volver = "Go back";
       }
+    },
+    async serchInitialObjectsInv(){
+      try {
+        let idInv = this.$store.state.datosPJactual.idInv;
+        const objects = await apiService.obtainPertenencesInv(idInv);
+        this.responseObjects = objects;
+        this.$store.state.responseObjectsInPlay = objects;
+        console.log("Objetos principales del investigador", this.responseObjects);
+      } catch (error) {
+        console.error("Error al cargar los objetos principales del investigador", error);
+      }
+    },
+    seeCard( url){
+      this.$store.state.SeleccionarURLPertenencia = url;
+      this.$store.state.verDetallePertenencia = true;
+      console.log("URL de la carta seleccionada", this.$store.state.SeleccionarURLPertenencia);
     }
   },
-  mounted(){
+  async mounted(){
+    await this.serchInitialObjectsInv();
     this.rellenarTextoSegunIdioma();
+    
   }
 }
 </script>
@@ -121,10 +132,14 @@ export default {
 .CartasPertenencias{
   height: 40vh;
 }
- .cajaCartas{
-  height: 30vh;
-  overflow: hidden;
- }
+.cajaCartas{
+height: 30vh;
+overflow: hidden;
+}
+
+.imageObject{
+  max-width: 140px;
+}
 
 .lineaSeparatoria{
   max-height: 1px;

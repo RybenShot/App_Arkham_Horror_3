@@ -13,8 +13,7 @@
 
       <div class="has-text-centered mt-4 mr-2">
         <div class="columns is-mobile">
-          <!-- <div class="column p-0 py-1" id="barraDerechaAbajo" @click="this.$store.state.modalPertenenciasDetalle = true"> Seleccionar Investigador -->
-          <div class="column p-0 py-1" id="barraDerechaAbajo" @click="redireccionarTemporalmente()">
+          <div class="column p-0 py-1" id="barraDerechaAbajo" @click="openModalPertenences()">
             <i class="fas fa-suitcase"></i>
             <p>{{ textoInterfaz.pertenencias }}</p>
           </div>
@@ -55,6 +54,9 @@ export default {
     }
   },
   methods:{
+    openModalPertenences(){
+      this.$store.state.modalPertenenciasDetalle = true;
+    },
     redireccionarTemporalmente(){
       this.$router.push('/enproceso');
     },

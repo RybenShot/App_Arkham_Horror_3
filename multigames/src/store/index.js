@@ -110,6 +110,9 @@ export default createStore({
       }
     },
 
+    // aqui se almacenarán todos los objetos que tengan in play
+    responseObjectsInPlay:[],
+
     //PLAY
     StoreTiradorDados: true,
     StoreReservaDeMitos:false,
@@ -161,7 +164,7 @@ export default createStore({
     mapaSeleccionado: false,
     datosMapa: 
     { idMap: 0,
-      title: "The Arrival of Azathoth",
+      title: null,
       description: "In the heart of infinity dwells the lethargic Azathoth, lulled by the incessant notes of ominous flutes. But there are mortals who wish to invoke the immeasurable power and calamity of the Blind and Idiot God, even if it means condemning humanity ...",
       difficulty: 1,
       expansion: "AHBase",
@@ -349,6 +352,17 @@ export default createStore({
     toggleModal(state, { modal, modalState }) {
       state[modal] = modalState;
     },
+
+    // funciones para obtener los objetos iniciales de los investigadores al empezar la partida
+    clearResponseObjectsInPlay(state) {
+      state.responseObjectsInPlay = [];
+    },
+    addResponseObjectInPlay(state, obj) {
+      state.responseObjectsInPlay.push(obj);
+    },
+    setOptionalText(state, text) {
+      state.optionalTextForObjects = text;
+    }
     
   },
   actions: {

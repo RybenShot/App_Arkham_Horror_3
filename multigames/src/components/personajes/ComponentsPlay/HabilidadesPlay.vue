@@ -4,38 +4,25 @@
     <div class="container mx-3 has-text-white">
       <p>{{ textoInterfaz.efecto1 }}</p>
       <p v-if="this.$store.state.datosPJactual.efecto2">{{ textoInterfaz.efecto2 }}</p>
-      <p class="has-text-weight-semibold is-underlined pt-3">{{ textoInterfaz.limConcentracion }} {{ this.$store.state.datosPJactual.limConcentracion }}</p>
     </div>
-
     <hr>
 
     <h1 class="title has-text-white has-text-centered">Pertenencias Iniciales</h1>
 
-    <br>
-
     <div class="columns is-mobile mx-3">
-      <!-- Per. 1 -->
-      <img  class="CartasPertenencias cajaCartas" :src="this.$store.state.datosPJactual.Pertenencia1.fotoCartaPertenenciaURL" alt="">
+      <!-- Pertenencias -->
+          <b-carousel-list v-model="test" :data="this.$store.state.responseObjectsInPlay" :items-to-show="3">
+            <template #item="object">
+              <div class="card-image">
+                  <figure class="image mx-1" @click="seeCard(object.img)">
+                    <img :src="object.img" >
+                  </figure>
+              </div>
+            </template>
+          </b-carousel-list>
 
-      <!-- Per 2 -->
-      <img v-if="this.$store.state.datosPJactual.Pertenencia2 != null" class="CartasPertenencias cajaCartas column" :src="this.$store.state.datosPJactual.Pertenencia2.fotoCartaPertenenciaURL" alt="">
-      
     </div>
     <br>
-
-    <div class="columns is-mobile mx-3">
-      <!-- Per 3 -->
-      <img :class="{'column': this.$store.state.datosPJactual.Pertenencia4 != null }" class="CartasPertenencias cajaCartas" :src="this.$store.state.datosPJactual.Pertenencia3.fotoCartaPertenenciaURL" alt="">
-
-      <!-- Per 4 -->
-      <img v-if="this.$store.state.datosPJactual.Pertenencia4 != null" class="CartasPertenencias cajaCartas column" :src="this.$store.state.datosPJactual.Pertenencia4.fotoCartaPertenenciaURL" alt="">
-
-      <!-- Condiciones especiales de personajes -->
-      <div v-if="this.$store.state.datosPJactual.Pertenencia4 == null" class="column has-text-white">
-          <!-- Esta partye hayq ue corregirla, para que aparezca tambien en ingles -->
-        <p v-if="this.$store.state.datosPJactual.nombrePJ == 'Calvin Wrigth'">Si coges este objeto, debes añadirte un "Pacto Siniestro"</p>
-      </div>
-    </div>
 
   
   </section>
@@ -54,22 +41,33 @@ export default {
         efecto1: "",
         efecto2: "",
       },
+      
+      test: 0,
+
     }
   },
   methods:{
+    seeCard(url){
+      this.$store.state.SeleccionarURLPertenencia = url;
+      this.$store.state.verDetallePertenencia = true;
+      console.log("URL de la carta seleccionada", this.$store.state.SeleccionarURLPertenencia);
+    },
+    info(value) {
+        this.test = value
+    },
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.titulo = "Habilidades";
         this.textoInterfaz.tituloSeg = "Dinero y Restos";
         this.textoInterfaz.limConcentracion = "Limite de concentración :";
-        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.efecto1;
+        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.translations.es.effect1;
         this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.efecto2;
 
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "Skills";
         this.textoInterfaz.tituloSeg = "Money and Rests";
         this.textoInterfaz.limConcentracion = "Concentration limit :";
-        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.ENefecto1;
+        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.effect1;
         this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.ENefecto2;
       }
     }

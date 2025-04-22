@@ -2,6 +2,8 @@
   <div class="p-2">
      <!-- recordatorio sobre Bendicion y maldicion -->
      <div v-if="$store.state.ModalPopUp_Notificaciones"><PopUpNotificaciones/></div>
+     <!-- Modal para ver el detalle de un objeto al ser clicado -->
+     <div v-if="this.$store.state.verDetallePertenencia == true"><ModalVerDetallePertenencia/></div>
 
     <!-- Confirmacion al intentar salir de terminar partida -->
     <div v-if="$store.state.ModalConfirmacion"><ModalConfirmacion/></div>
@@ -9,6 +11,8 @@
     <div><ModalsEstadosPlay/></div>
     <!-- Parte superior, datos del personaje, nombre, vida y eso -->
     <DatosBasicosPlay/>
+
+
 
     <hr class="my-2">
 
@@ -31,9 +35,12 @@ import HabilidadesPlay from "@/components/personajes/ComponentsPlay/HabilidadesP
 import AjustesPlay from "@/components/personajes/ComponentsPlay/AjustesPlay.vue";
 
 import PopUpNotificaciones from "@/components/helpers/popUp/notificaciones.vue";
+import ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePersonaje/ModalVerDetallePertenencia.vue";
 
 import ModalConfirmacion from "@/components/personajes/ComponentsPlay/ModalConfirmacion.vue";
 import ModalsEstadosPlay from "@/components/personajes/ComponentsPlay/ModalsEstadosPlay.vue";
+
+import { apiService } from '@/services/api.js';
 
 
 export default {
@@ -48,9 +55,33 @@ export default {
     AjustesPlay,
 
     PopUpNotificaciones,
+    ModalVerDetallePertenencia,
 
     ModalConfirmacion,
     ModalsEstadosPlay
+  },
+  methods:{
+    async serchInitialObjectsInv(){
+      try {
+        let idInv = this.$store.state.datosPJactual.idInv;
+        const { objects = [], optionalObjects = [] } = await apiService.obtainPertenencesInv(idInv);
+
+        // 1) Limpiar el array global de objetos en juego
+        this.$store.commit('clearResponseObjectsInPlay');
+
+        // 2) Añadir cada objeto "obligatorio"
+        objects.forEach(obj => { this.$store.commit('addResponseObjectInPlay', obj) });
+
+        // 3) Añadir cada objeto "opcional"
+        optionalObjects.forEach(obj => { this.$store.commit('addResponseObjectInPlay', obj) });
+        
+      } catch (error) {
+        console.error("Error al cargar los objetos principales del investigador", error);
+      }
+    },
+  },
+  mounted(){
+    this.serchInitialObjectsInv();
   },
 }
 </script>

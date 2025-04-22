@@ -106,5 +106,15 @@ export const apiService = {
       return null;
     }
   },
+
+  async obtainPertenencesInv(idInv){
+    try {
+      const response = await axios.get(`${API_URL}/inv/${idInv}/objects`);
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener la lista de pertenencias`, error);
+      return null;
+    }
+  }
   
 };
