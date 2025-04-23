@@ -314,6 +314,8 @@ export default {
   column-gap: 10px;
   row-gap: 10px;
   justify-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 </style>

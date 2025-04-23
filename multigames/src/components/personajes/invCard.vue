@@ -26,7 +26,6 @@
             <p v-else class="subtitle is-7">{{investigator.position}}</p>
         </div>
     </div>
-    <img src="@/assets/img/ZZOtros/marcoInvestigador.png" class="marcoInv" alt="marco investigador" aria-hidden="true"/>
   </div>
 </template>
 
@@ -60,12 +59,6 @@ export default {
   font-family: "Cinzel";
 }
 
-.inv-wrapper {
-  position: relative;
-  width: 120px;   /* mismas dimensiones que .card */
-  height: 180px;
-  padding-left: -20px;
-}
 
 .marcoInv {
   position: absolute;

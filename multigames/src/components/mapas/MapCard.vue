@@ -1,7 +1,13 @@
 <template>
-  <div @click="selectMap" class="p-1">
-    <div class="card" :class="{'cajaDePersonajesBase': map.expansion === 'AHBase', 'cajaDePersonajesMareasTenebrosas': map.expansion === 'AHWaves', 'cajaDePersonajesNocheCerrada': map.expansion === 'AHNigth', 'cajaDePersonajesSecretosDeLaOrden': map.expansion === 'AHSecrets'}">
-          <div class="card-image-wrapper">
+  <div class="map-wrapper">
+    <div class="card" :class="{
+      'cajaDePersonajesBase': map.expansion === 'AHBase', 
+      'cajaDePersonajesMareasTenebrosas': map.expansion === 'AHWaves', 
+      'cajaDePersonajesNocheCerrada': map.expansion === 'AHNigth', 
+      'cajaDePersonajesSecretosDeLaOrden': map.expansion === 'AHSecrets'}"
+      @click="selectMap()">
+          
+      <div class="card-image-wrapper">
               <img :src="map.BGMap" :alt="map.title" class="card-image" />
           </div>
           <div class="card-overlay has-text-centered">

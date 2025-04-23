@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     //Home
+    loadingPageState: null,
     contadorVisitasTotales: null,
     StoreModalBienvenida: true,
     StoreModalDonacion: true,
@@ -81,7 +82,7 @@ export default createStore({
           effect1: "Primera posesion -- Al comenzar la partida, debes robar 2 aliados del mazo de aliados, quedate con uno (este personaje sera el que poseas) y el otro colocalo al fondo de la baraja de Aliados.",
           effect2: "Recuerda Vivir -- Si fueras a ser derrotado, puedes en su lugar quedar RETRASADO y robar las dos primeras cartas de aliado de la baraja. Elige una para quedártela y coloca la otra al fondo de la baraja.",
           effect3: null,
-          phrase: "'A veces,ww la muerte no es el final.'",
+          phrase: "'A veces, la muerte no es el final.'",
           focusLimit: 2,
           theStory: "Muchos en Arkham caerían aún víctimas de oscuros complots, pero esta alma perdida fue una de las primeras. La vida que una vez llevaron les fue arrebatada, tanto física como mentalmente, cuando la realidad empezó a fracturarse. Aquellos que podrían haberlos salvado llegaron demasiado tarde, al menos para rescatar su primera vida. Inexplicablemente atrapados entre el mundo de los vivos y el frío vacío del más allá, comenzaron a buscar respuestas. ¿Quiénes eran? ¿Por qué habían sido asesinados? ¿Existía un camino de regreso a la vida? ¿Qué estaba sucediendo en Arkham? Las limitaciones de su forma incorpórea se hicieron evidentes rápidamente, pero la solución se presentó durante uno de los muchos intentos de comunicarse con un ser vivo. Al fluir hacia el cuerpo de un transeúnte desprevenido, la sensación y el propósito regresaron con venganza. Algo o alguien los había matado, y estaban decididos a llegar al fondo del asunto, sin importar cuántas vidas tuvieran que vivir.",
           locutionURL: "___",

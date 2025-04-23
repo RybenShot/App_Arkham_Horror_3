@@ -1,28 +1,43 @@
 <template>
-  <div>
-    <div id="VistaMovil">
-      <router-view/>
-    </div><!-- end Vista Movil -->
+  <div id="app">
+    <!-- Transición suave entre loader y contenido -->
+    <transition name="fade" mode="out-in">
+      <!-- Loader con key para animación -->
+      <LoadingPage
+        v-if="$store.state.loadingPageState"
+        key="loader"
+      />
 
-    <!-- Primeras pruebas entre ingles y Español -->
-    <div id="VistaNoValida">
-      <section class="container is-fullhd has-background-dark hero is-fullheight">
-        <div class="hero-body">
-          <div class="">
-            <p class="title has-text-white has-text-centered"> {{ titulo }}</p>
-            <p class="subtitle has-text-white has-text-centered"> {{ descripcion }}</p>
-            <img src="@/assets/img/ZZOtros/70242-man-working.gif" alt="" style="height: 400px" id="imgWorking">
-            <p class="title has-text-white is-4 has-text-centered mt-4"> {{ parrafo }}</p>
-
-          </div>
+      <!-- Contenido principal con key único por ruta -->
+      <div v-else key="content">
+        <div id="VistaMovil">
+          <router-view />
         </div>
-      </section>
-    </div><!-- end Vista No Valida -->
 
+        <div id="VistaNoValida">
+          <section class="container is-fullhd has-background-dark hero is-fullheight">
+            <div class="hero-body">
+              <div>
+                <p class="title has-text-white has-text-centered">{{ titulo }}</p>
+                <p class="subtitle has-text-white has-text-centered">{{ descripcion }}</p>
+                <img
+                  src="@/assets/img/ZZOtros/70242-man-working.gif"
+                  alt=""
+                  style="height: 400px"
+                  id="imgWorking"
+                />
+                <p class="title has-text-white is-4 has-text-centered mt-4">{{ parrafo }}</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import LoadingPage from '@/components/helpers/loadingPage.vue';
 import { apiService } from '@/services/api.js';
 
 export default {
@@ -33,6 +48,9 @@ export default {
       descripcion: "",
       parrafo: ""
     }
+  },
+  components: {
+    LoadingPage
   },
   methods: {
     rellenarTextosegunIdioma(){
@@ -52,17 +70,40 @@ export default {
     async obtainVisitsApi() {
       this.$store.state.contadorVisitasTotales = await apiService.obtainVisits(); // Llamada a la API
     },
+
+    getRandomDelay() {
+      const min = 300;
+      const max = 3000;
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  },
+  created() {
+    // Transición "fake" de 10s entre rutas
+    this.$router.beforeEach((to, from, next) => {
+      this.$store.state.loadingPageState = true;
+      const delay = this.getRandomDelay();
+      console.log(`⏳ Fake loading: ${delay}ms`);
+      setTimeout(() => next(), delay);
+    });
+    this.$router.afterEach(() => {
+      this.$store.state.loadingPageState = false;
+    });
   },
   async mounted() {
     this.rellenarTextosegunIdioma();
     await this.obtainWellcomeApi();
     // llamamos a la API para obtener las visitas totales
     await this.obtainVisitsApi();
+    this.$store.state.loadingPageState = false;
   }
 }
 </script>
 
-<style scoped>
+<style >
+/* Fondo negro para evitar flash blanco durante transiciones */
+html, body, #app {
+  background-color: #000;
+}
 @import "./views/CssHome.css";
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&display=swap');
@@ -83,4 +124,15 @@ export default {
   display: block;
   margin: auto;
 }
+
+/* Transición fade más lenta y suave */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 </style>

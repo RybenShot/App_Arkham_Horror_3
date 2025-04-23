@@ -163,5 +163,10 @@ export default {
 .PersonajesList {
   display: grid;
   grid-template-columns: auto auto auto;
+  column-gap: 10px;
+  row-gap: 10px;
+  justify-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>
