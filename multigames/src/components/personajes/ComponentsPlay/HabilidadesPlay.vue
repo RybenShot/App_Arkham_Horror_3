@@ -2,8 +2,9 @@
   <section>
     <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <div class="container mx-3 has-text-white">
-      <p>{{ textoInterfaz.efecto1 }}</p>
-      <p v-if="this.$store.state.datosPJactual.efecto2">{{ textoInterfaz.efecto2 }}</p>
+      <p>>> {{ textoInterfaz.efecto1 }}</p>
+      <br>
+      <p>>> {{ textoInterfaz.efecto2 }}</p>
     </div>
     <hr>
 
@@ -61,14 +62,14 @@ export default {
         this.textoInterfaz.tituloSeg = "Dinero y Restos";
         this.textoInterfaz.limConcentracion = "Limite de concentración :";
         this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.translations.es.effect1;
-        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.efecto2;
+        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.translations.es.effect2;
 
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "Skills";
         this.textoInterfaz.tituloSeg = "Money and Rests";
         this.textoInterfaz.limConcentracion = "Concentration limit :";
         this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.effect1;
-        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.ENefecto2;
+        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.effect2;
       }
     }
   },

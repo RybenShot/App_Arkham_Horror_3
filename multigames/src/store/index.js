@@ -34,76 +34,65 @@ export default createStore({
     ActivarOriginal: false,
 
     datosPJactual: {
-      idInv: 23,
-      isActive: true,
-      expansion: "AHNigth",
-      name: "“Malasombra” O'Toole",
-      position: "Ex-Convict",
-      effect1: "I Won't Go Back – Once per round, after a test in which you rolled a 1, you may focus on a skill of your choice, even if doing so exceeds your Concentration limit.",
-      effect2: null,
+      idInv: 56,
+      isActive: false,
+      expansion: "AHComunity",
+      name: "Nameless Soul",
+      position: "The revenant",
+      effect1: "First Possession -- At the start of the game, draw 2 Allies from the Ally deck. Keep one (this character will be the one you possess) and place the other at the bottom of the Ally deck.",
+      effect2: "Memento Vivere -- If you wold be defeated, you may instead become delayed and draw the top two allies from the deck. Select one to possess, placing the other at the bottom of the deck.",
       effect3: null,
-      phrase: "\"In my situation, you see all kinds of things, detective. How much is that worth to you?\"",
-      theStory: "Malasombra always tried to make decisions that would make his mother proud, but his luck never lasted long. Something always went wrong, and each new decision he made seemed to limit his options even further. Then his mother fell ill, and his 'few options' quickly turned into 'no options.' After being caught for robbing a bank to pay the mounting hospital bills, Malasombra soon discovered that things could get even worse: his cellmate, endlessly rambling about the 'Great Old Ones,' scribbled dozens of cryptic messages on the cell walls just before bursting into flames. When he finally got out, Malasombra found a new way to make his mother proud. After kneeling to place a bouquet of flowers on her grave, he swore to do whatever it took to protect the world from those ancient horrors.",
-      focusLimit: 0,
+      phrase: "'Sometimes, death is not the end.'",
+      focusLimit: 2,
+      theStory: "Many in Arkham would yet fall victim to dark plots, but this lost soul was one of the first. The life they once lived was stipped both physically and mentally from them when reality started to fracture. Those who might have saved them came too late, at least to save their first life. Inexplicably caught between the land of the living and the cold void of the afterlife, they started searching for answers. Who were they? Why had they been killed? Was there a path back to life? Just what was happening in Arkham? The limitations of their incorporeal from became apparent quickly, but a solution would present itself during one of many attempts to communicate with a living being. Flowing into the body of an unsuspecting bystander, sensation and purpose returned with vengance. Some or something had killed them, and they were determined to get to the borrom of it no matter how many lives they had to live.",
       locutionURL: "___",
-      imgInv: "/img/1-Personajes/28-Malasombra.jpg",
-      atributes: {
-        life: 6,
-        sanity: 6,
-        lore: 2,
-        influence: 1,
-        observation: 3,
-        strength: 3,
+      imgInv: "/img/1-inv/57-Nameless.jpg",
+      atributes:{
+        life: 0,
+        sanity: 0,
+        lore: 3,
+        influence: 3,
+        observation: 2,
+        strength: 1,
         will: 4,
         money: 2,
-        remnant: 0
+        remnant: 0,
+        clue: 0
       },
       rol: [
         {
-          rol: "Expert",
-          description: "You possess a unique set of skills that allows you to specialize in a specific task. \"Malasombra\" is accustomed to making the most of risky situations; use this ability to perform complicated tests that, under other circumstances, would waste an action."
+          rol: "survivor",
+          description: "As a survivor, you advantages like with surviving the relentless assault of the mythos and helping your fellows do the same. Supporting one another will lead to victory."
         },
         {
-          rol: "Survivor",
-          description: "Your strength lies in surviving the relentless assault of the Mythos and helping your fellow investigators do the same. Teamwork will lead you to victory."
+          rol: "mystic",
+          description: "As a mystic, you are adept at warding against evil. Your focus should be on removing doom from the board. You are the best defense against the Ancient Ones."
         }
       ],
-      possessions: [
-        {
-          id: 12,
-          require: true,
-          title: "Prófugo"
-        },
-        {
-          id: 12,
-          require: false,
-          title: "Manos largas"
-        },
-        {
-          id: 12,
-          require: false,
-          title: "Navaja automática"
-        }
-      ],
+      possessions: {
+        required: [126],
+        optionalText: "You can choose one of the following objects",
+        optional: [127, 128]
+      },
       translations: {
         es: {
-          name: "“Malasombra” O'Toole",
-          position: "Ex presidiario",
-          effect1: "No pienso volver - Una vez por ronda, después de una prueba en la que hayas sacado un 1, puedes concentrarte en una habilidad de tu elección, incluso aunque al hacerlo sobrepases tu límite de Concentración.",
-          effect2: null,
+          name: "Alma sin nombre",
+          position: "El resucitado",
+          effect1: "Primera posesion -- Al comenzar la partida, debes robar 2 aliados del mazo de aliados, quedate con uno (este personaje sera el que poseas) y el otro colocalo al fondo de la baraja de Aliados.",
+          effect2: "Recuerda Vivir -- Si fueras a ser derrotado, puedes en su lugar quedar RETRASADO y robar las dos primeras cartas de aliado de la baraja. Elige una para quedártela y coloca la otra al fondo de la baraja.",
           effect3: null,
-          phrase: "“En mi situación uno ve toda clase de cosas, detective. ¿Cuánto vale eso para usted?”",
-          theStory: "Malasombra siempre procuró tomar decisiones que hicieran que su madre se sintiese orgullosa de él, pero la suerte le duraba bastante poco. Siempre salía algo mal, y cada nueva decisión que tomaba parecía limitar aún más sus opciones. Y entonces su madre enfermó, y sus “pocas opciones” se convirtieron rápidamente en “ninguna opción”. Tras dar con sus huesos en la cárcel por atracar un banco para pagar las facturas hospitalarias acumuladas, Malasombra no tardó en comprobar que las cosas podían torcerse aún más: su compañero de celda, que no paraba de desvariar por unos “Primigenios”, garabateó docenas de mensajes enigmáticos en las paredes justo antes de estallar en llamas. Cuando por fin salió de la trena, Malasombra halló otra forma de hacer que su madre se sintiera orgullosa. Tras arrodillarse para depositar un ramo de flores en su tumba, juró hacer cuanto estuviese en su mano para proteger al mundo de aquellos horrores ancestrales.",
-          focusLimit: 0,
+          phrase: "'A veces,ww la muerte no es el final.'",
+          focusLimit: 2,
+          theStory: "Muchos en Arkham caerían aún víctimas de oscuros complots, pero esta alma perdida fue una de las primeras. La vida que una vez llevaron les fue arrebatada, tanto física como mentalmente, cuando la realidad empezó a fracturarse. Aquellos que podrían haberlos salvado llegaron demasiado tarde, al menos para rescatar su primera vida. Inexplicablemente atrapados entre el mundo de los vivos y el frío vacío del más allá, comenzaron a buscar respuestas. ¿Quiénes eran? ¿Por qué habían sido asesinados? ¿Existía un camino de regreso a la vida? ¿Qué estaba sucediendo en Arkham? Las limitaciones de su forma incorpórea se hicieron evidentes rápidamente, pero la solución se presentó durante uno de los muchos intentos de comunicarse con un ser vivo. Al fluir hacia el cuerpo de un transeúnte desprevenido, la sensación y el propósito regresaron con venganza. Algo o alguien los había matado, y estaban decididos a llegar al fondo del asunto, sin importar cuántas vidas tuvieran que vivir.",
           locutionURL: "___",
           rol: [
             {
-              rol: "Experto",
-              description: "Posees un conjunto exclusivo de habilidades que te permite especializarte en una tarea concreta. “Malasombra” tiene por costumbre sacar partido de situaciones arriesgadas; aprovecha esta capacidad para realizar pruebas complicadas que en otras circunstancias supongan malgastar una acción."
+              rol: "Superviviente",
+              description: "Como superviviente, disfrutas de ventajas para soportar el implacable asalto del Mito y ayudar a tus compañeros a hacer lo mismo. Apoyarse mutuamente conducirá a la victoria."
             },
             {
-              rol: "Superviviente",
-              description: "Tu ventaja radica en sobrevivir al implacable asalto de los Mitos y ayudar a tus compañeros investigadores a hacer lo mismo. El trabajo en equipo os conducirá a la victoria."
+              rol: "Místico",
+              description: " Como místico, eres experto en repeler el mal. Tu enfoque debe estar en eliminar las fichas de perdición del tablero. Eres la mejor defensa contra los Primigenios. "
             }
           ]
         }

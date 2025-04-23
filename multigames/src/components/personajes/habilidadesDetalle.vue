@@ -1,9 +1,8 @@
 <template>
   <section class="mt-4 mb-4 has-text-white">
-    <p>{{ textoInterfaz.effect1 }}</p>
-    <div v-if="this.$store.state.datosPJactual.effect2">
-      <p>{{ textoInterfaz.effect2 }}</p>
-    </div>
+    <p>>> {{ textoInterfaz.effect1 }}</p>
+    <br>
+    <p>>> {{ textoInterfaz.effect2 }}</p>
     <p class="is-italic pt-2 has-text-centered">{{ textoInterfaz.phrase }}</p>
     <p class="has-text-weight-semibold is-underlined pt-3"> {{ textoInterfaz.focusLimit_text }} : {{ textoInterfaz.focusLimit }}</p>
   </section>
