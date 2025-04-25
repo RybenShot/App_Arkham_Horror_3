@@ -82,7 +82,6 @@ export default {
     this.$router.beforeEach((to, from, next) => {
       this.$store.state.loadingPageState = true;
       const delay = this.getRandomDelay();
-      console.log(`⏳ Fake loading: ${delay}ms`);
       setTimeout(() => next(), delay);
     });
     this.$router.afterEach(() => {
