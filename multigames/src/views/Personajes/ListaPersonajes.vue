@@ -252,7 +252,7 @@ export default {
       try {
         // obtenemos la lista completa de todos los preview de los investigadores
         const investigators = await apiService.obtainPreviewInv()
-        // guaramos lo resivido en un array
+        // guaramos lo recivido en un array
         this.invListAll = investigators;
         this.updateInvListForExpansion();
       } catch (error) {

@@ -4,7 +4,7 @@
     <div class="container mx-3 has-text-white">
       <p>>> {{ textoInterfaz.efecto1 }}</p>
       <br>
-      <p>>> {{ textoInterfaz.efecto2 }}</p>
+      <p v-if="textoInterfaz.efecto2">>> {{ textoInterfaz.efecto2 }}</p>
     </div>
     <hr>
 

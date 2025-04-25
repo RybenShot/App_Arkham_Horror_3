@@ -23,7 +23,7 @@
       <p class="NombresAtributos">{{ textoInterfaz.influencia }}</p>
     </div>
     <div class="column">
-      <i class="fa-3x fas fa-eye has-text-primary"></i>
+      <i class="fa-3x fas fa-eye color-observacion"></i>
       <p class="title is-4 has-text-white contadorAtributos">{{ this.$store.state.datosPJactual.atributes.observation }}</p>
       <p class="NombresAtributos">{{ textoInterfaz.observacion }}</p>
     </div>
@@ -80,6 +80,9 @@ export default {
 </script>
 
 <style scoped>
+.color-observacion {
+    color: #56e020 !important;
+}
 .contadorVidaCordura{
   position: relative;
   top: -5vh;

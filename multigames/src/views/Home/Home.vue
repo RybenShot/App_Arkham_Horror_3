@@ -35,11 +35,25 @@
               <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonInvestigador }}</button>
             </router-link>
 
-            <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
-              <button class="buttonsHome">{{ textoInterfaz.botones.textBotonSupport }}</button>
-            </a>
+            <router-link to="/credits" @click="SonidoTecla()">
+              <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button>
+            </router-link>
 
-            <!-- <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button> -->
+            <li class="support-row mb-2">
+              <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
+                <button class="buttonsHomeIB coffee-button">
+                  <i class="fas fa-mug-hot mr-2"></i>
+                  {{ textoInterfaz.botones.textBotonSupport }}
+                </button>
+              </a>
+              <a href="https://instagram.com/apparkhamhorror" target="_blank" @click="SonidoTecla()">
+                <button class="buttonsHomeIB instagram-button">
+                  <i class="fab fa-instagram mr-2"></i>
+                  Instagram
+                </button>
+              </a>
+            </li>
+            
           </ul>
         </div>
 
@@ -116,7 +130,7 @@ export default {
       textoInterfaz: {
         versionApp: "Beta 4.0.3",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "11/04/2025",
+        fechaUltimaActualizacion: "25/04/2025",
         textoVisitas: "",
         textoActualizacion: "",
         botones: {
@@ -129,13 +143,13 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
-        {id: 4,
+          {id: 4,
             numeroActualizacion: "4.0.3",
-            titulo: "Implementacion de backEnd",
-            ENtitulo: "Backend Implementation",
-            descripcion: "Para futuras mejoras de la aplicaicon se esta desarrollando un backend para la gestion de los datos. Se ha completado con exito las pruebas con los mapas y se sube a produccion para hacer los test finales.",
-            ENdescripcion: "For future improvements to the application, a backend is being developed for data management. The tests with the maps have been successfully completed, and it is being deployed to production for final testing.",
-            fechaActualizacion: "11/04/2025" 
+            titulo: "Nuevos investigadores!! , añadido pantalla de carga y Backend completado",
+            ENtitulo: "New Investigators!! Added Loading Screen and Backend Completed",
+            descripcion: "Se ha completado la migracion de datos y ya esta toda la aplicacion reactiva con su respectivo backend, lo que ahora dara paso mas adelante a mas ineracciones con los usuarios, como dar la posibilidad de guardar partida, creacion de personajes o interaccion entre jugadores. Para ello se ha necesitado hacer una pantalla de carga entre pestaña y pestaña y se ha emepzado a añadir personajes nuevos de la comunidad de BGG.",
+            ENdescripcion: "Data migration is complete and the entire application is now fully reactive with its backend. This will pave the way for additional user interactions, such as saving games, character creation, and player-to-player interaction. A loading screen between tabs has been implemented, and new community-created investigators from BGG have started to be added.",
+            fechaActualizacion: "25/04/2025" 
           },
           {id: 3,
             numeroActualizacion: "4.0.2",
@@ -211,7 +225,7 @@ export default {
 
 @keyframes glowing{
   0% {box-shadow: 0px 0px 10px #04ff0000;}
-  50% {box-shadow: 0px 0px 10px rgb(195, 0, 255);}
+  50% {box-shadow: 0px 0px 10px rgb(0, 195, 255);}
   100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
 }
 
@@ -327,6 +341,39 @@ button{
   border: thick double #272727;
   border-radius: 5px;
   background: rgb(80, 80, 80);
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-list li {
+  margin-bottom: 10px;
+}
+
+.support-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.coffee-button {
+  background: #FFDD00;
+  color: #333;
+}
+
+.instagram-button {
+  background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF);
+  color: #fff;
+}
+
+/* Ajustes comunes */
+.buttonsHomeIB {
+  width: auto;
+  padding: 10px 20px;
 }
 
 </style>

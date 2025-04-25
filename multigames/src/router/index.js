@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 // HOME
 import Home from '../views/Home/Home.vue'
+import Credits from '../views/Home/creditos.vue'
 // OTROS
 import EnProceso from '../views/ZOtros/EnProceso.vue'
 import Error404 from '../views/ZOtros/Error404.vue'
@@ -16,6 +17,7 @@ import DetalleMapa from '../views/Mapas/DetalleMapa.vue'
 const routes = [
   // HOME
  {path: '/', name: 'home', component: Home},
+ {path: '/credits', name: 'credits', component: Credits},
 
   // PERSONAJES
   {path: '/ListaPersonajes', name: 'lista_Personajes', component: ListaPersonajes},
