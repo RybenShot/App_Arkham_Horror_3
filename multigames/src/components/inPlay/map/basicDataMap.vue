@@ -9,9 +9,8 @@
     <div class="columns is-mobile">
       <!-- foto y nombre -->
       <div class="column is-half image">
-        <img class="is-rounded image image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " 
-        :src="this.$store.state.datosMapa.BGMap" >
-        <div class="nombrePosicion">
+        <img class="is-rounded image image bordeImagen " :src="this.$store.state.datosMapa.BGMap" >
+        <div class="mapName">
           <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ textoInterfaz.title }}</p>
         </div>
       </div>
@@ -44,11 +43,11 @@
 
     <!-- Navegacion -->
     <div class="columns is-mobile has-text-centered has-text-white">
-      <!-- Dados -->
+      <!-- Encuentros -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreEncuentros = true)" class="column pt-0">
-        <i v-if="this.$store.state.StoreEncuentros == true" class="has-text-success fa-2x fas fa-street-view"></i>
-        <i v-if="this.$store.state.StoreEncuentros == false" class="desactivado fa-2x fas fa-street-view"></i>
-      </div>
+        <i v-if="this.$store.state.StoreEncuentros == true" class="has-text-success fa-2x fas fa-house-damage"></i>
+        <i v-if="this.$store.state.StoreEncuentros == false" class="desactivado fa-2x fas fa-house-damage"></i>
+      </div> 
       <!-- Fichas de Mitos -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreReservaDeMitos = true)" class="column pt-0">
         <i v-if="!this.$store.state.datosMapa.title" class="has-text-danger fa-2x fas fa-skull"></i>
@@ -202,7 +201,7 @@ export default {
     background-color: rgba(255, 255, 0, 0);
   }
 }
-
+ 
 /* selector de variables */
 .selector-item {
   cursor: pointer;
@@ -211,7 +210,7 @@ export default {
   border-radius: 10px;
 }
 
-/* Resaltar el selector activo */
+/* Resaltar el selector activo */ 
 .seleccionado {
   background: radial-gradient(circle, rgba(0, 255, 0, 0.5) 5%, rgba(0, 255, 0, 0.2) 50%);
   /*background: radial-gradient(circle, #39ff14, #f00); /* Verde fosforito */
@@ -240,33 +239,13 @@ export default {
 .bordeImagen{
   border: thick double #F2C94C;
 }
-.bordeImagenBendecido{
-  animation: glowingBendecido 3s linear infinite;
-}
-@keyframes glowingBendecido{
-  0% {box-shadow: 0px 0px 10px 10px #04ff0000;}
-  50% {box-shadow: 0px 0px 50px 10px rgb(0, 225, 255);}
-  100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
-}
-.bordeImagenMaldito{
-  animation: glowingMaldito 3s linear infinite;
-}
-@keyframes glowingMaldito{
-  0% {box-shadow: 0px 0px 10px 10px #04ff0000;}
-  50% {box-shadow: 0px 0px 50px 10px rgb(225, 0, 0);}
-  100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
-}
 
-.nombrePosicion{
+.mapName{
   position: absolute;
   top: 16vh;
   text-align: center;
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(242, 201, 76, 0.8);
-  border-radius: 10px;
-}
-.posicion{
   border: 2px solid rgba(242, 201, 76, 0.8);
   border-radius: 10px;
 }
@@ -277,17 +256,8 @@ export default {
   line-height: 0;
   text-shadow: 0px 0px 5px rgb(0, 0, 0);
 }
-.contadorVidaCorduraPeques{
-  position: relative;
-  top: -3vh;
-  line-height: 0;
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
-}
 
 .desactivado{
   opacity: 30%;
-}
-#restos{
-  color: #8B4513 !important;
 }
 </style>

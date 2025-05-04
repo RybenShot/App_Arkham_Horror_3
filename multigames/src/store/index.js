@@ -110,9 +110,10 @@ export default createStore({
     //map
     StoreEncuentros: true,
     StoreReservaDeMitos:false,
-    
+
     //player
     StoreTiradorDados: true,
+    StoreUbicationPlayer: false,
     StoreEstadosPlay: false,
     StoreHabilidades: false,
     StoreAjustesPlay: false,

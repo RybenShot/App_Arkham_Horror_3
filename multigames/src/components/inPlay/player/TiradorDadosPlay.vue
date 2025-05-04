@@ -1,9 +1,7 @@
 <template>
   <section class="px-2">
-    <div class="columns is-mobile mt-1">
-      <p class="column"></p>
-      <p class="title mb-0 has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
-      <p class="column"></p>
+    <div class="my-3 has-text-centered ">
+      <p class="title mb-0 has-text-white">{{ textoInterfaz.titulo }}</p>
     </div>
     
     <!-- Atributos -->

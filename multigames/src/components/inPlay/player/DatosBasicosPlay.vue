@@ -69,6 +69,11 @@
         <i v-if="this.$store.state.StoreTiradorDados == true" class="has-text-success fa-2x fas fa-dice"></i>
         <i v-if="this.$store.state.StoreTiradorDados == false" class="desactivado fa-2x fas fa-dice"></i>
       </div>
+      <!-- Ubicacion -->
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreUbicationPlayer = true)" class="column pt-0">
+        <i v-if="this.$store.state.StoreUbicationPlayer == true" class="has-text-success fa-2x fas fa-street-view"></i>
+        <i v-if="this.$store.state.StoreUbicationPlayer == false" class="desactivado fa-2x fas fa-street-view"></i>
+      </div>
       <!-- Estados -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreEstadosPlay = true)" class="column pt-0">
         <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-user-injured"></i>
@@ -154,6 +159,7 @@ export default {
     },
     resetearNavegacion(){
       this.$store.state.StoreTiradorDados = false;
+      this.$store.state.StoreUbicationPlayer = false;
       this.$store.state.StoreEstadosPlay = false;
       this.$store.state.StoreHabilidades = false;
       this.$store.state.StoreAjustesPlay = false;
