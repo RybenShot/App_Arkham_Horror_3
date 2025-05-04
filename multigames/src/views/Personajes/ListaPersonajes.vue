@@ -22,9 +22,7 @@
 
               <!-- Botones de expansión -->
               <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
-                <button v-for="btn in expansionButtons" class="button"
-                  :key="btn.key"
-                  :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
+                <button v-for="btn in expansionButtons" class="button" :key="btn.key" :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
                   @click="handleToggle(btn.key)">
                   {{ btn.text }}
                 </button>
@@ -224,18 +222,6 @@ export default {
     },
     // Filtra invListAll según el estado de las expansiones activadas
     updateInvListForExpansion(){
-      this.invList = this.invListAll.filter((inv) => {
-        if (inv.expansion == "AHBase" && this.$store.state.stateExpansionBase) return true
-        if (inv.expansion == "AHWaves" && this.$store.state.stateExpansionWaves) return true
-        if (inv.expansion == "AHNigth" && this.$store.state.stateExpansionNigth) return true
-        if (inv.expansion == "AHSecrets" && this.$store.state.stateExpansionSecrets) return true
-
-        if (inv.expansion == "AHOriginal" && this.$store.state.stateExpansionOriginal) return true
-        if (inv.expansion == "AHComunity" && this.$store.state.stateExpansionComunity) return true
-        return false
-      })
-    },
-    updateInvListForRol(){
       this.invList = this.invListAll.filter((inv) => {
         if (inv.expansion == "AHBase" && this.$store.state.stateExpansionBase) return true
         if (inv.expansion == "AHWaves" && this.$store.state.stateExpansionWaves) return true

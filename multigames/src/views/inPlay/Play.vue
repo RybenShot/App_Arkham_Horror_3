@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-2 BGGeneralPlay">
      <!-- recordatorio sobre Bendicion y maldicion -->
      <div v-if="$store.state.ModalPopUp_Notificaciones"><PopUpNotificaciones/></div>
      <!-- Modal para ver el detalle de un objeto al ser clicado -->
@@ -9,36 +9,30 @@
     <div v-if="$store.state.ModalConfirmacion"><ModalConfirmacion/></div>
     <!-- Modals de los estados para verlos -->
     <div><ModalsEstadosPlay/></div>
-    <!-- Parte superior, datos del personaje, nombre, vida y eso -->
-    <DatosBasicosPlay/>
 
+    <!-- Navegacion -->
+    <b-tabs position="is-centered" class="block mb-0">
+        <b-tab-item label="Player">
+          <viewMap/>
+        </b-tab-item>
+        <b-tab-item label="Map">
+          <viewPlayer/>
+        </b-tab-item>
+    </b-tabs>
 
-
-    <hr class="my-2">
-
-    <div v-if="this.$store.state.StoreTiradorDados == true"><TiradorDados/></div>
-    <div v-if="this.$store.state.StoreReservaDeMitos == true"><ReservaDeMitos/></div>
-    <div v-if="this.$store.state.StoreEstadosPlay == true"><EstadosPlay/></div>
-    <div v-if="this.$store.state.StoreHabilidades == true"><HabilidadesPlay/></div>
-    <div v-if="this.$store.state.StoreAjustesPlay == true"><AjustesPlay/></div>
     
   </div>
 </template>
 
 <script>
-import DatosBasicosPlay from "@/components/personajes/ComponentsPlay/DatosBasicosPlay.vue";
-
-import TiradorDados from "@/components/personajes/ComponentsPlay/TiradorDadosPlay.vue";
-import ReservaDeMitos from "@/components/personajes/ComponentsPlay/ReservaDeMitosPlay.vue";
-import EstadosPlay from "@/components/personajes/ComponentsPlay/EstadosPlay.vue";
-import HabilidadesPlay from "@/components/personajes/ComponentsPlay/HabilidadesPlay.vue";
-import AjustesPlay from "@/components/personajes/ComponentsPlay/AjustesPlay.vue";
+import viewPlayer from "@/views/inPlay/viewPlayer.vue";
+import viewMap from "@/views/inPlay/viewMap.vue";
 
 import PopUpNotificaciones from "@/components/helpers/popUp/notificaciones.vue";
 import ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePersonaje/ModalVerDetallePertenencia.vue";
 
-import ModalConfirmacion from "@/components/personajes/ComponentsPlay/ModalConfirmacion.vue";
-import ModalsEstadosPlay from "@/components/personajes/ComponentsPlay/ModalsEstadosPlay.vue";
+import ModalConfirmacion from "@/components/inPlay/ModalConfirmacion.vue";
+import ModalsEstadosPlay from "@/components/inPlay/ModalsEstadosPlay.vue";
 
 import { apiService } from '@/services/api.js';
 
@@ -46,13 +40,8 @@ import { apiService } from '@/services/api.js';
 export default {
   name: "Play",
   components:{
-    DatosBasicosPlay,
-
-    TiradorDados,
-    ReservaDeMitos,
-    EstadosPlay,
-    HabilidadesPlay,
-    AjustesPlay,
+    viewPlayer,
+    viewMap,
 
     PopUpNotificaciones,
     ModalVerDetallePertenencia,
@@ -85,3 +74,13 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+.BGGeneralPlay{
+  background-image: url(@/assets/img/ZZOtros/newBGAH.png)!important;
+  min-height: 110vh;
+  background-position: center;
+  background-size: cover;
+}
+</style>

@@ -1,3 +1,5 @@
+DOC OLVIDADO
+
 <template>
   <div >
     <ul v-if="this.$store.state.lenguaje == 'español'">

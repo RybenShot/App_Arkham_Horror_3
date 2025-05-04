@@ -27,7 +27,7 @@ import EspecificacionesMapas from "@/components/mapas/EspecificacionesMapa.vue";
 import LosetasYBotones from "@/components/mapas/LosetasYBotones.vue";
 
 import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
-import ModalLosetaMapa from "@/components/helpers/DetalleLosetaMapa.vue"
+import ModalLosetaMapa from "@/components/mapas/DetalleLosetaMapa.vue";
 
 export default {
   name:"DetalleMapa",

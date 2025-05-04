@@ -6,15 +6,13 @@
       </div>
     </transition>
 
-    <!-- Parte datos -->
     <div class="columns is-mobile">
       <!-- foto y nombre -->
       <div class="column is-half image">
         <img class="is-rounded image image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " 
-        :src="this.$store.state.datosPJactual.imgInv" >
+        :src="this.$store.state.datosMapa.BGMap" >
         <div class="nombrePosicion">
-          <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ this.$store.state.datosPJactual.name }}</p>
-          <p class="has-background-dark subtitle is-6 has-text-white posicion">{{ textoInterfaz.posicion }}</p>
+          <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ textoInterfaz.title }}</p>
         </div>
       </div>
       
@@ -22,41 +20,23 @@
       <div class="column is-half has-text-white pt-4">
         <p class="subtitle has-text-white has-text-centered mb-1"> {{ textoInterfaz.textoVariables }}</p>
 
-        <!-- Vida - Cordura -->
-        <div class="columns is-mobile has-text-centered pt-2 espacioVidaCordura">
-          <div @click="selectProperty('vida')" class="column pb-1 selector-item pr-0">
-            <i class="fa-4x fas fa-heartbeat has-text-danger" :class="{ efectoBumBum: atributos.marcado.vida } "></i>
-            <p class="contadorVidaCordura title has-text-white">{{ atributos.vida }}</p>
+        <!-- perdicion - pistas -->
+        <div class="columns is-mobile has-text-centered pt-2 ">
+          <div @click="selectProperty('doom')" class="column selector-item pr-0">
+            <i class="fa-4x fas fa-star-of-life has-text-danger"></i>
+            <p class="contadorperdicionPista title has-text-white">{{ variables.doom }}</p>
           </div>
 
-          <div @click="selectProperty('cordura')" class="column pb-0 selector-item pl-0">
-            <i class="fa-4x fas fa-brain has-text-info" :class="{ efectoBumBum: atributos.marcado.cordura }"></i>
-            <p class="contadorVidaCordura title has-text-white">{{ atributos.cordura }}</p>
-          </div>
-        </div>
-
-        <!-- dinero, pistas y restos -->
-        <div class="columns is-mobile has-text-centered pt-2">
-          <div @click="selectProperty('dinero')" class="column p-0 selector-item" >
-            <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ boxShadowYellow: atributos.marcado.dinero }"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.dinero }}</p>
-          </div>
-
-          <div @click="selectProperty('pistas')" class="column p-0 selector-item" >
-            <i class="has-text-success fa-3x fas fa-search" :class="{ boxShadowYellow: atributos.marcado.pistas }"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.pistas }}</p>
-          </div>
-
-          <div @click="selectProperty('restos')" class="column p-0 selector-item" >
-            <i class="has-text-info fa-3x fas fa-poop" id="restos" :class="{ boxShadowYellow: atributos.marcado.restos }"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.restos }}</p>
+          <div @click="selectProperty('clue')" class="column selector-item pl-0">
+            <i class="fa-4x fas fa-search has-text-info"></i>
+            <p class="contadorperdicionPista title has-text-white">{{ variables.clue }}</p>
           </div>
         </div>
 
         <!-- sumar restar -->
         <div class="columns is-mobile my-2 ">
-          <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-5 button is-small p-0 is-danger pb-1"><i class="fas fa-window-minimize"></i></button>
-          <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-5 button is-small p-0 is-primary "><i class="fas fa-plus"></i></button>
+          <button @click="sumarRestarPropiedad('-')" class="column mx-5 button is-small p-0 is-danger pb-1"><i class="fas fa-window-minimize"></i></button>
+          <button @click="sumarRestarPropiedad('+')" class="column mx-5 button is-small p-0 is-primary "><i class="fas fa-plus"></i></button>
         </div>
 
       </div>
@@ -65,9 +45,9 @@
     <!-- Navegacion -->
     <div class="columns is-mobile has-text-centered has-text-white">
       <!-- Dados -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreTiradorDados = true)" class="column pt-0">
-        <i v-if="this.$store.state.StoreTiradorDados == true" class="has-text-success fa-2x fas fa-dice"></i>
-        <i v-if="this.$store.state.StoreTiradorDados == false" class="desactivado fa-2x fas fa-dice"></i>
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreEncuentros = true)" class="column pt-0">
+        <i v-if="this.$store.state.StoreEncuentros == true" class="has-text-success fa-2x fas fa-street-view"></i>
+        <i v-if="this.$store.state.StoreEncuentros == false" class="desactivado fa-2x fas fa-street-view"></i>
       </div>
       <!-- Fichas de Mitos -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreReservaDeMitos = true)" class="column pt-0">
@@ -76,16 +56,6 @@
           <i v-if="this.$store.state.StoreReservaDeMitos == true" class="has-text-success fa-2x fas fa-skull"></i>
           <i v-if="this.$store.state.StoreReservaDeMitos == false" class="desactivado fa-2x fas fa-skull"></i>
         </div>
-      </div>
-      <!-- Estados -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreEstadosPlay = true)" class="column pt-0">
-        <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-user-injured"></i>
-        <i v-if="this.$store.state.StoreEstadosPlay == false" class="desactivado fa-2x fas fa-user-injured"></i>
-      </div>
-      <!-- Habilidades -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreHabilidades = true) " class="column pt-0">
-        <i v-if="this.$store.state.StoreHabilidades == true" class="has-text-success fa-2x fas fa-address-card"></i>
-        <i v-if="this.$store.state.StoreHabilidades == false" class="desactivado fa-2x fas fa-address-card"></i>
       </div>
       <!-- Ajustes -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreAjustesPlay = true) " class="column pt-0">
@@ -104,27 +74,18 @@ export default {
       notificacionMaxVida: false,
       mensajeVidaCorduraMax: "",
 
-       atributos: {
-        maxVida :this.$store.state.datosPJactual.atributes.life,
-        maxCordura :this.$store.state.datosPJactual.atributes.sanity,
+      variables: {
 
-        vida: this.$store.state.datosPJactual.atributes.life,
-        cordura: this.$store.state.datosPJactual.atributes.sanity,
-        dinero: this.$store.state.datosPJactual.atributes.money,
-        pistas: this.$store.state.datosPJactual.atributes.clue,
-        restos: this.$store.state.datosPJactual.atributes.remnant,
+        doom : 0,
+        clue: 0,
         marcado: {
-          vida: false,
-          cordura: false,
-          dinero: false,
-          pistas: false,
-          restos: false
+          clue: false,
+          doom: false,
         }
       },
 
       textoInterfaz: {
-        posicion: "",
-        textoVariables: ""
+        textoVariables: null,
       }
     }
   },
@@ -133,13 +94,14 @@ export default {
     // selector de variables
     selectProperty(prop) {
       // Reiniciamos todos y activamos solo el seleccionado
-      Object.keys(this.atributos.marcado).forEach(key => {
-        this.atributos.marcado[key] = false;
+      Object.keys(this.variables.marcado).forEach(key => {
+        this.variables.marcado[key] = false;
       });
-      this.atributos.marcado[prop] = true;
+      console.log("se va a cambiar la propiedad", prop , "a true")
+      this.variables.marcado[prop] = true;
     },
 
-    mostrarNotificacionDesactivar(textoAMostrar, ENTextoAMostrar) {
+    showNotification(textoAMostrar, ENTextoAMostrar) {
       if(this.$store.state.lenguaje == "español"){
         this.mensajeVidaCorduraMax = textoAMostrar;
       } else if(this.$store.state.lenguaje == "ingles"){
@@ -152,19 +114,17 @@ export default {
     },
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
-        this.textoInterfaz.posicion = this.$store.state.datosPJactual.translations.es.position;
+        this.textoInterfaz.title = this.$store.state.datosMapa.translations.es.title;
         this.textoInterfaz.textoVariables = "Selecciona 1 para modificar";
 
       }else if (this.$store.state.lenguaje == "ingles"){
-        this.textoInterfaz.posicion = this.$store.state.datosPJactual.position;
+        this.textoInterfaz.title = this.$store.state.datosMapa.title;
         this.textoInterfaz.textoVariables = "Select 1 to modify";
       }
     },
     resetearNavegacion(){
-      this.$store.state.StoreTiradorDados = false;
+      this.$store.state.StoreEncuentros = false;
       this.$store.state.StoreReservaDeMitos = false;
-      this.$store.state.StoreEstadosPlay = false;
-      this.$store.state.StoreHabilidades = false;
       this.$store.state.StoreAjustesPlay = false;
     },
     resetearSelectorAtributos(){
@@ -172,24 +132,10 @@ export default {
         this.atributos.marcado[key] = false;
       }
     },
-    sumarRestarVidaCordura(signo, propiedad){
-      if(signo == "+" && propiedad == "vida" && this.atributos.vida < this.atributos.maxVida){
-        this.atributos.vida ++;
-      }else if(signo == "+" && propiedad == "cordura" && this.atributos.cordura < this.atributos.maxCordura){
-        this.atributos.cordura ++;
-      }else if(signo == "-" && propiedad == "vida" && this.atributos.vida > 0){
-        this.atributos.vida --;
-      }else if(signo == "-" && propiedad == "cordura" && this.atributos.cordura > 0){
-        this.atributos.cordura --;
-      } else {
-        console.error("No se puede sumar más vida o cordura");
-        this.mostrarNotificacionDesactivar("Vida Maxima alcanzada", "Max life reached");
-
-      }
-    },
     buscarPropiedadActiva(){
-      for (const key in this.atributos.marcado) {
-        if (this.atributos.marcado[key] == true) {
+      for (const key in this.variables.marcado) {
+        if (this.variables.marcado[key] == true) {
+          console.error(key)
           return key;
         }
       }
@@ -199,24 +145,20 @@ export default {
     sumarRestarPropiedad(signo){
       let propiedad = this.buscarPropiedadActiva();
       if (propiedad == null){ 
-        this.mostrarNotificacionDesactivar("No se ha seleccionado ninguna propiedad", "No property selected");
+        this.showNotification("No se ha seleccionado ninguna propiedad", "No property selected");
+        return
+      }
+      if (this.variables[propiedad] <= 0 && signo == '-' ) {
+        this.showNotification("No se puede bajar mas el contador", "____");
         return
       }
       
       if(signo == '+'){
-        if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-          console.log("Vamos a sumar a la propiedad " + propiedad)
-          this.atributos[propiedad]++;
-          return
-        }
-        this.sumarRestarVidaCordura(signo, propiedad);
+        this.variables[propiedad]++;
+        return
       } else if(signo == '-'){
-        if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-          console.log("Vamos a restar a la propiedad " + propiedad)
-          this.atributos[propiedad]--;
-          return
-        }
-        this.sumarRestarVidaCordura(signo, propiedad);
+        this.variables[propiedad]--;
+        return
       } 
     }
   },
@@ -230,9 +172,6 @@ export default {
 
 <style scoped>
 /* selector de corazon cordura */
-.espacioVidaCordura{
-  height: 100px;
-}
 .efectoBumBum{
   font-size: 64px;
   animation: palpito 1s linear infinite;
@@ -332,7 +271,7 @@ export default {
   border-radius: 10px;
 }
 
-.contadorVidaCordura{
+.contadorperdicionPista{
   position: relative;
   top: -4vh;
   line-height: 0;

@@ -104,8 +104,15 @@ export default createStore({
     responseObjectsInPlay:[],
 
     //PLAY
-    StoreTiradorDados: true,
+    viewPlayer: true,
+    viewMap : false,
+
+    //map
+    StoreEncuentros: true,
     StoreReservaDeMitos:false,
+    
+    //player
+    StoreTiradorDados: true,
     StoreEstadosPlay: false,
     StoreHabilidades: false,
     StoreAjustesPlay: false,
@@ -153,7 +160,7 @@ export default createStore({
 
     mapaSeleccionado: false,
     datosMapa: 
-    { idMap: 0,
+    {idMap: 0,
       title: null,
       description: "In the heart of infinity dwells the lethargic Azathoth, lulled by the incessant notes of ominous flutes. But there are mortals who wish to invoke the immeasurable power and calamity of the Blind and Idiot God, even if it means condemning humanity ...",
       difficulty: 1,
@@ -170,6 +177,10 @@ export default createStore({
         explosion: 1,
         retribution: 1,
         empty: 3
+      },
+      variables:{
+        doom: 6,
+        clue: 6
       },
       enemies: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       specialEnemies: [],
