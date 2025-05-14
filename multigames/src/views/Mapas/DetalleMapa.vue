@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div class="BGGeneralAH">
     <!-- Navegacion -->
     <nav class="columns is-mobile mb-0 pt-5 centrarHero">
       <div class="column is-3 p-0" style="text-align: center;" @click="goBack() "><i class="fa-2x fas fa-arrow-left has-text-white"></i></div>
       <div class="column " style="margin: 0 auto;"><p class="has-text-centered title is-4 has-text-white">{{ titulo }}</p></div>
       <div class="column is-3 p-0" style="text-align: center;"><router-link to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
     </nav>
+
+    <!-- Crear Mapa On-Line -->
+    <div v-if="this.$store.state.modalCrearMapaOnLine == true"><ModalPostOnLineMap/></div>
 
     <!-- Ver Loseta Mapa -->
     <div v-if="this.$store.state.modalVerLosetaMapa == true"><ModalLosetaMapa/></div>
@@ -28,6 +31,7 @@ import LosetasYBotones from "@/components/mapas/LosetasYBotones.vue";
 
 import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
 import ModalLosetaMapa from "@/components/mapas/DetalleLosetaMapa.vue";
+import ModalPostOnLineMap from "@/components/mapas/modalPostOnLineMap.vue";
 
 export default {
   name:"DetalleMapa",
@@ -42,7 +46,8 @@ export default {
       LosetasYBotones,
 
       ModalEnemigos,
-      ModalLosetaMapa
+      ModalLosetaMapa,
+      ModalPostOnLineMap
     },
   methods:{
     goBack() {
@@ -72,5 +77,11 @@ export default {
   display: flex; 
   justify-content: center; 
   align-items: center
+}
+.BGGeneralAH {
+  background-image: url(@/assets/img/ZZOtros/newBGAH.png)!important;
+  min-height: 110vh;
+  background-position: center;
+  background-size: cover;
 }
 </style>

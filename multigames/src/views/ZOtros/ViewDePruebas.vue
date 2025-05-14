@@ -4,7 +4,14 @@
       <span>Seleccionar</span>
       <canvas ref="fogCanvas" class="fog-canvas"></canvas>
     </div>
+    <hr>
+    
+
+    <div class="has-text-centered">
+      <button class="join-btn">Unirse <img class="svgIMG" src="../../assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt=""></button>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -71,39 +78,31 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #222;
-}
-
-.selector {
-  position: relative;
-  width: 150px;
-  height: 60px;
-  background-color: #444;
+/* boton de nubes */
+.join-btn {
+  display: block;
+  width: 80%;
+  max-width: 260px;
+  margin: 0.5rem auto;
+  padding: 0.75rem 1rem;
+  background-color: #28a745;
   color: white;
-  text-align: center;
-  line-height: 60px;
-  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
-  overflow: hidden;
+  /* Animación de pulso */
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
-.selector.active {
-  background-color: #666;
+@keyframes pulse {
+  0%   { transform: scale(1);     }
+  50%  { transform: scale(1.05);  }
+  100% { transform: scale(1);     }
 }
 
-.fog-canvas {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  height: 150px;
-  pointer-events: none;
+.svgIMG{
+  width: 10%;
 }
 </style>

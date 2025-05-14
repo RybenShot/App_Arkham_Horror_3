@@ -29,11 +29,20 @@ props: {
     map: { type: Object, required: true }
 },
 methods: {
+
     async selectMap() {
       // cogemos la id del mapa
       const idMap = this.map.idMap;
+      const isModalJoin = this.$store.state.modalJoinMapInPlay
+      let response
       // hacemos una llamada al endpoint de buscar mapa por la id
-      const response = await apiService.obtainMapByID(idMap);
+      // si el modal mapInPlay estaba abierto, esque la llamada era para un mapa in play, si no, se llamara a un mapa normal
+      if (isModalJoin) {
+        console.log(this.map.id)
+        response = await apiService.getMapInPlayByID(this.map.id);
+      } else {
+        response = await apiService.obtainMapByID(idMap);
+      }
 
       if (response) {
         this.$store.commit('setDatosMapa', response);

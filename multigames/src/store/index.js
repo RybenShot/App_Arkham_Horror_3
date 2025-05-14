@@ -18,7 +18,7 @@ export default createStore({
     modalArquetipoDetalle: false,
 
     //EXPANSIONES - Estasdos usados para activar o descativar expansiones, usado en lista de mapas o lista de investigadores
-    stateExpansionBase: true,
+    stateExpansionBase: false,
     stateExpansionWaves: false,
     stateExpansionNigth: false,
     stateExpansionSecrets: false,
@@ -101,6 +101,9 @@ export default createStore({
     },
 
     // aqui se almacenarán todos los objetos que tengan in play
+    modalJoinMapInPlay: false,
+    modalCrearMapaOnLine: false,
+    IDUserHost: 666, // dejo este valor por defecto para trabajar con la creacion de mapas in play
     responseObjectsInPlay:[],
 
     //PLAY
@@ -160,6 +163,8 @@ export default createStore({
     viewDetalleMapa: true, //cambia de vista de seleccion de mapas a enemigos
 
     mapaSeleccionado: false,
+    habilitarMapaOL: false,
+
     datosMapa: 
     {idMap: 0,
       title: null,

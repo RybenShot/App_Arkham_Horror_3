@@ -21,14 +21,14 @@
 
         <!-- perdicion - pistas -->
         <div class="columns is-mobile has-text-centered pt-2 ">
-          <div @click="selectProperty('doom')" class="column selector-item pr-0">
+          <div @click="selectProperty('dooms')" class="column selector-item pr-0">
             <i class="fa-4x fas fa-star-of-life has-text-danger"></i>
-            <p class="contadorperdicionPista title has-text-white">{{ variables.doom }}</p>
+            <p class="contadorperdicionPista title has-text-white">{{ this.$store.state.datosMapa.variables.dooms }}</p>
           </div>
 
-          <div @click="selectProperty('clue')" class="column selector-item pl-0">
+          <div @click="selectProperty('clues')" class="column selector-item pl-0">
             <i class="fa-4x fas fa-search has-text-info"></i>
-            <p class="contadorperdicionPista title has-text-white">{{ variables.clue }}</p>
+            <p class="contadorperdicionPista title has-text-white">{{ this.$store.state.datosMapa.variables.clues }}</p>
           </div>
         </div>
 
@@ -66,8 +66,10 @@
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 export default {
-  name: "DatosBasicosPlay",
+  name: "Basic data map in play",
   data(){
     return{
       notificacionMaxVida: false,
@@ -75,11 +77,11 @@ export default {
 
       variables: {
 
-        doom : 0,
-        clue: 0,
+        dooms : this.$store.state.datosMapa.variables.dooms || 0,
+        clue: this.$store.state.datosMapa.variables.clues || 0,
         marcado: {
           clue: false,
-          doom: false,
+          dooms: false,
         }
       },
 
@@ -125,6 +127,7 @@ export default {
       this.$store.state.StoreEncuentros = false;
       this.$store.state.StoreReservaDeMitos = false;
       this.$store.state.StoreAjustesPlay = false;
+      this.updateDataMap()
     },
     resetearSelectorAtributos(){
       for (const key in this.atributos.marcado) {
@@ -134,31 +137,39 @@ export default {
     buscarPropiedadActiva(){
       for (const key in this.variables.marcado) {
         if (this.variables.marcado[key] == true) {
-          console.error(key)
           return key;
         }
       }
       console.log("No se ha seleccionado ninguna propiedad");
       return null
     },
-    sumarRestarPropiedad(signo){
+    async sumarRestarPropiedad(signo){
       let propiedad = this.buscarPropiedadActiva();
       if (propiedad == null){ 
         this.showNotification("No se ha seleccionado ninguna propiedad", "No property selected");
         return
       }
-      if (this.variables[propiedad] <= 0 && signo == '-' ) {
+      if (this.$store.state.datosMapa.variables[propiedad] <= 0 && signo == '-' ) {
         this.showNotification("No se puede bajar mas el contador", "____");
         return
       }
+      const idMap = this.$store.state.datosMapa.id
+      const value = await signo == '+' ? 1 : -1
       
-      if(signo == '+'){
-        this.variables[propiedad]++;
-        return
-      } else if(signo == '-'){
-        this.variables[propiedad]--;
-        return
-      } 
+      // llamamos a la API para hacer la cuenta
+      const countResult = await apiService.editMapInPlatVariables(idMap, propiedad, value);
+      // actualizamos valores
+      this.$store.state.datosMapa.variables.clues = countResult.variables.clues
+      this.$store.state.datosMapa.variables.dooms = countResult.variables.dooms
+      
+    },
+    async updateDataMap(){
+      // si no estamos en modo online no seguimos
+
+      // hacer una llamada a api con la id del mapa in play
+      const response = await apiService.getMapInPlayByID(this.$store.state.datosMapa.id);
+      // copiar el resultado en el store "datosMapa" actualizando todos los datos
+      this.$store.commit('setDatosMapa', response);
     }
   },
   mounted(){

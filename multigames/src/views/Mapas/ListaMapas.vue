@@ -2,6 +2,8 @@
   <div class="BGGeneralAH">
     <!-- Notificación de activar o desactivar -->
     <popUp_Notificaciones/>
+    <div v-if="this.$store.state.modalJoinMapInPlay"><modalJoinMapInPlay/></div>
+    
 
     <div>
       <!-- Seleccionar Mapa -->
@@ -13,22 +15,30 @@
 
       <hr class="m-1 mx-4 linea-separacion">
 
-      <!-- Colecciones y botones -->
-      <h2 class="title is-4 has-text-white has-text-centered">{{ textoInterfaz.subtitulo }}</h2>
-      <p class="subtitle is-6 has-text-white has-text-centered mb-2">{{ textoInterfaz.descripcion }}</p>
-      
       <!-- Botones de expansión -->
       <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
-        <button
-          v-for="btn in expansionButtons"
-          :key="btn.key"
-          class="button"
-          :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
-          @click="handleToggle(btn.key)"
-        >
-          {{ btn.text }}
-        </button>
+        <!-- Colecciones y botones -->
+        <p class="subtitle is-6 has-text-white has-text-centered mb-2">{{ textoInterfaz.descripcionLocal }}</p>
+        
+        <!-- Botones de expansión -->
+        <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2 has-text-centered">
+          <button v-for="btn in expansionButtons" :key="btn.key"
+            class="button p-3 column" :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
+            @click="handleToggle(btn.key)" >
+            {{ btn.text }}
+          </button>
+          <button class=" py-0 join-btn column button" @click="this.$store.state.modalJoinMapInPlay = true">
+            <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+            On-Line 
+            <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+          </button>
+
+
+        </div>
       </div>
+
+      <hr class="m-1 mx-4 linea-separacion">
+
     </div>
     <br>
 
@@ -44,6 +54,7 @@ import { Howl } from 'howler';
 import { apiService } from '@/services/api.js';
 import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import MapCard from '@/components/mapas/MapCard.vue';
+import modalJoinMapInPlay from '@/components/mapas/modalJoinMapInPlay.vue';
 
 const sound = new Howl({
   src: require('@/assets/sound/SonidoTecla.mp3'),
@@ -59,15 +70,17 @@ export default {
       mapsList: [],
       textoInterfaz: {
         titulo: "",
-        subtitulo: "",
-        descripcion: "",
+        tituloLocal: "",
+        descripcionLocal: "",
+        tituloOL: "",
+        descripcionOL: "",
         botones: {
           base: "",
           mareas: "",
           noche: "",
           secretos: "",
         },
-      },
+      }
     };
   },
   computed: {
@@ -83,6 +96,7 @@ export default {
   components: {
     popUp_Notificaciones,
     MapCard,
+    modalJoinMapInPlay
   },
   methods: {
     handleToggle(expansionKey) {
@@ -96,7 +110,8 @@ export default {
     },
     // Filtra mapsListAll según el estado de las expansiones activadas
     updateMapsList() {
-      this.mapsList = this.mapsListAll.filter((map) => {
+      const all = this.normalizeMapsList();
+      this.mapsList = all.filter((map) => {
         if (map.expansion === "AHBase" && this.$store.state.stateExpansionBase) return true;
         if (map.expansion === "AHWaves" && this.$store.state.stateExpansionWaves) return true;
         if (map.expansion === "AHNigth" && this.$store.state.stateExpansionNigth) return true;
@@ -113,16 +128,22 @@ export default {
     rellenarTextosegunIdioma() {
       if (this.$store.state.lenguaje === 'español') {
         this.textoInterfaz.titulo = "Seleccionar Mapa";
-        this.textoInterfaz.subtitulo = "Colecciones";
-        this.textoInterfaz.descripcion = "Haz click para añadir o quitar la expansión que quieras y luego elige un mapa para verlo en detalle.";
+        this.textoInterfaz.tituloLocal = "Local";
+        this.textoInterfaz.descripcionLocal = "Selecciona un mapa para ver su detalle. Si quieres jugar con amigos, puedes unirte a ellos en un mismo mapa en la opcion ON-LINE.";
+        this.textoInterfaz.tituloOL = "On-Line";
+        this.textoInterfaz.descripcionOL = "Crea una partida o unete a una para jugar con tus amigos en el mismo mapa";
+
         this.textoInterfaz.botones.base = "AH Base";
         this.textoInterfaz.botones.mareas = "AH Mareas";
         this.textoInterfaz.botones.noche = "AH Noche";
         this.textoInterfaz.botones.secretos = "AH Secretos";
       } else if (this.$store.state.lenguaje === 'ingles') {
         this.textoInterfaz.titulo = "Select Map";
-        this.textoInterfaz.subtitulo = "Collections";
-        this.textoInterfaz.descripcion = "Click to add or remove the expansion you want and then choose a map to view it in detail.";
+        this.textoInterfaz.tituloLocal = "Collections";
+        this.textoInterfaz.descripcionLocal = "Click to add or remove the expansion you want and then choose a map to view it in detail.";
+        this.textoInterfaz.tituloOL = "On-Line";
+        this.textoInterfaz.descripcionOL = "____";
+
         this.textoInterfaz.botones.base = "AH Base";
         this.textoInterfaz.botones.mareas = "AH Waves";
         this.textoInterfaz.botones.noche = "AH Nigth";
@@ -140,6 +161,12 @@ export default {
         console.error("Error al cargar los mapas:", error);
       }
     },
+    // funcion para asegurar que tenemos un array de mapas, incluso si es con solo 1 objeto
+    normalizeMapsList() {
+      return Array.isArray(this.mapsListAll)
+        ? this.mapsListAll
+        : [this.mapsListAll].filter(m => m); // descarta null/undefined
+    }
   },
   mounted() {
     this.rellenarTextosegunIdioma();
@@ -155,7 +182,7 @@ export default {
   align-items: center;
 }
 .BGGeneralAH {
-  background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
+  background-image: url(@/assets/img/ZZOtros/newBGAH.png)!important;
   min-height: 110vh;
   background-position: center;
   background-size: cover;
@@ -168,5 +195,31 @@ export default {
   justify-items: center;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.join-btn {
+  display: block;
+  width: 80%;
+  max-width: 260px;
+  margin: 0.5rem auto;
+  padding: 0.75rem 1rem;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  /* Animación de pulso */
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);     }
+  50%  { transform: scale(1.05);  }
+  100% { transform: scale(1);     }
+}
+.gifIMG{
+  width: 30px;
 }
 </style>

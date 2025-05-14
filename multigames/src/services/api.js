@@ -1,7 +1,7 @@
 import axios from "axios";
 //const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-//const API_URL = process.env.VUE_APP_API_URL_DEV;
-const API_URL = process.env.VUE_APP_API_URL_PROD ;
+const API_URL = process.env.VUE_APP_API_URL_DEV;
+//const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
 export const apiService = {
@@ -115,6 +115,49 @@ export const apiService = {
       console.error(`Error al obtener la lista de pertenencias`, error);
       return null;
     }
+  },
+
+  // MAPAS IN PLAY
+  async postNewMapInPlay(idMap, IDUserHost){
+    try {
+      // capturamos los datos que vamos a pasar por post
+      const payload = {
+        idMap,
+        IDUserHost
+      }
+      // hacemos la llamada junto con los datos que tenemos que enviarle
+      const response = await axios.post(`${API_URL}/mapInPlay`, payload)
+      return response.data
+    } catch (error) {
+      console.error('❌ error al crear el mapa in play :', error);
+      throw error
+    }
+  },
+
+  async getMapInPlayByID(idMapInPlay){
+    try {
+      const response = await axios.get(`${API_URL}/mapInPlay/${idMapInPlay}`);
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener el mapa in play solicitado`, error);
+      throw error;
+    }
+  },
+
+  async editMapInPlatVariables(idMap, key, delta){
+    try {
+      // capturamos los parametros
+      const payload = {key, delta}
+      // hacemos llamada, capturando el resultado de la API
+      const response = await axios.post(`${API_URL}/mapInPlay/${idMap}/variable`, payload)
+      // console.log(response)
+      return response.data
+    } catch(error){
+      console.error('❌ error al editar las variables en el mapa in play :', error);
+      throw error
+    }
+
   }
+  
   
 };

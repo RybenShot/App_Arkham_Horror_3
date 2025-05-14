@@ -244,7 +244,7 @@ export default {
       this.$store.state.reservaVisible = this.tiposFicha.flatMap(tipo => 
         Array.from({ length: reserva[tipo.tipo] || 0 }, () => ({ ...tipo, revelada: false }))
       );
-      //console.error(this.$store.state.reservaVisible)
+      console.error(this.$store.state.reservaVisible)
     },
 
     comprobarFicha(){

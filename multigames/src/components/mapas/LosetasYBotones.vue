@@ -27,20 +27,31 @@
       </div>
     </div>
 
-    <div class="mx-4" :class="{'boxShadowGreen':!this.$store.state.mapaSeleccionado}">
-      <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined is-fullwidth"><strong>{{ textoBotones.seleccionarMapa }}</strong></button>
-      <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-fullwidth"><strong>{{ textoBotones.mapaSeleccionado }}</strong></button>
+    <div class="mb-0 ">
+      <button v-if="!this.$store.state.datosMapa.id" class=" py-0 join-btn  button" @click="this.$store.state.modalCrearMapaOnLine = true">
+        <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+        Crear Mapa On-Line
+        <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+      </button>
+
+      <div class=" has-text-centered">
+        <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined " :class="{'boxShadowGreen': !this.$store.state.mapaSeleccionado}"><strong>{{ textoBotones.seleccionarMapa }}</strong></button>
+        <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success "><strong>{{ textoBotones.mapaSeleccionado }}</strong></button>
+      </div>
+
     </div>
 
     <!-- Footer -->
-    <div class="columns is-mobile mt-5 mx-2 has-text-centered has-text-white">
+    <div class="columns is-mobile mt-3 mx-2 has-text-centered has-text-white">
       <div class="column" @click="goBack">
         <p><i class="fa-2x fas fa-bars "></i></p>
         <p>{{ textoBotones.lista }}</p>
       </div>
+
       <div class="column">
         <p class=" title is-4 has-text-white py-3">{{this.$store.state.datosMapa.idMap + 1}}/13</p>
       </div>
+      
       <div id="BG-boton-Selec-inv" :class="{'boxShadowGreen':this.$store.state.mapaSeleccionado}" class="helperbotones column my-2 py-4">
         <router-link to="/ListaPersonajes">
           <p class="has-text-white has-text-left subtitle is-7">{{ textoBotones.selecInv }}</p>
@@ -62,8 +73,12 @@ export default {
         enemigos: "",
         invRec: "",
         comunidad: "",
+
         seleccionarMapa:"",
         mapaSeleccionado:"",
+        habilitarMapaOL: "",
+        mapaOLHabilitado: "",
+
         selecInv: "",
         lista: ""
       }
@@ -90,8 +105,12 @@ export default {
         this.textoBotones.enemigos = "Enemigos";
         this.textoBotones.invRec = "Investigadores Recomendados";
         this.textoBotones.comunidad = "Comunidad";
+
         this.textoBotones.seleccionarMapa = "Seleccionar Mapa";
         this.textoBotones.mapaSeleccionado = "Mapa seleccionado";
+        this.textoBotones.habilitarMapaOL = "OnLine OFF";
+        this.textoBotones.mapaOLHabilitado = "OnLine ON";
+
         this.textoBotones.selecInv = "Seleccionar investigador";
         this.textoBotones.lista = "Lista";
       }else{
@@ -180,5 +199,31 @@ p{
   color: #fff; /* Color del texto */
   padding: 1px;
   text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.733);
+}
+
+.join-btn {
+  display: block;
+  width: 80%;
+  max-width: 260px;
+  margin: 0.5rem auto;
+  padding: 0.75rem 1rem;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  /* Animación de pulso */
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);     }
+  50%  { transform: scale(1.05);  }
+  100% { transform: scale(1);     }
+}
+.gifIMG{
+  width: 30px;
 }
 </style>
