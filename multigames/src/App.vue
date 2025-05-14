@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="BGGeneralAH">
     <!-- Transición suave entre loader y contenido -->
     <transition name="fade" mode="out-in">
       <!-- Loader con key para animación -->
@@ -14,23 +14,6 @@
           <router-view />
         </div>
 
-        <div id="VistaNoValida">
-          <section class="container is-fullhd has-background-dark hero is-fullheight">
-            <div class="hero-body">
-              <div>
-                <p class="title has-text-white has-text-centered">{{ titulo }}</p>
-                <p class="subtitle has-text-white has-text-centered">{{ descripcion }}</p>
-                <img
-                  src="@/assets/img/ZZOtros/70242-man-working.gif"
-                  alt=""
-                  style="height: 400px"
-                  id="imgWorking"
-                />
-                <p class="title has-text-white is-4 has-text-centered mt-4">{{ parrafo }}</p>
-              </div>
-            </div>
-          </section>
-        </div>
       </div>
     </transition>
   </div>
@@ -117,6 +100,9 @@ html, body, #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
 }
 
 #imgWorking{
@@ -134,4 +120,10 @@ html, body, #app {
   opacity: 0;
 }
 
+.BGGeneralAH {
+  background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
+  min-height: 110vh;
+  background-position: center;
+  background-size: cover;
+}
 </style>

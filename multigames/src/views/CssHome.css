@@ -12,32 +12,12 @@ html, body {
   overflow-x: hidden; /* evita desbordamiento horizontal */
 }
 
-@media only screen and (min-width: 1201px){
-  /* PANORAMICOS */
-
-  #VistaMovil{
-    display: none
-  }
-
-}
-@media (min-width: 769px) and (max-width: 1200px){
-  /* NORMALES */
-  #VistaNoValida{
-    background-color: rgb(31, 184, 100);
-  }
-  #VistaMovil{
-    display: none
-  }
-}
-
-@media (min-width: 500px) and (max-width: 768px){
-  /* TABLETS */
-  #VistaNoValida{
-    background-color: rgb(121, 2, 2)!important;
-  }
-  #VistaMovil{
-    display: none
-  }
+#app,
+#VistaMovil {
+  width: 100%;
+  max-width: 430px;    /* límite de ancho en px */
+  margin: 0 auto;      /* lo centra en pantallas más grandes */
+  box-sizing: border-box;
 }
 
 @media only screen and (max-width: 499px){
@@ -49,6 +29,8 @@ html, body {
     background-repeat: no-repeat;
     min-height: 100vh;
     width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
     height: 100%;
     overflow: hidden;
   }

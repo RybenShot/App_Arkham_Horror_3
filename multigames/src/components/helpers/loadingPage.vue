@@ -3,13 +3,13 @@
       <div class="symbol"></div>
       
       <div class="modalLoading is-active">
-        <div class="mr-6">
+        <div class="">
           <div class="modal-card has-text-center">
             <header class="columns is-mobile BGArticles modal-card-head m-0">
               <p class="modal-card-title is-5 " ></p>
             </header>
 
-            <section class="modal-card-body hero is-large p-2">
+            <section class="modal-card-body hero is-large p-2 is-vcentered">
               <h1 v-if="this.$store.state.lenguaje == 'ingles'" class="title has-text-centered mb-0">{{ selected.title }}</h1>
               <h1 v-else class="title has-text-centered mb-0">{{ selected.translations.es.title }}</h1>
 
@@ -18,7 +18,7 @@
               <h2 v-if="this.$store.state.lenguaje == 'ingles'" class="subtitle has-text-centered px-3">{{ selected.description }}</h2>
               <h2 v-else class="subtitle has-text-centered px-3">{{ selected.translations.es.description }}</h2>
 
-              <img :src="selected.img" :alt="selected.title">
+              <img class="imgLoading" :src="selected.img" :alt="selected.title">
             </section>
 
           </div>
@@ -199,6 +199,8 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    max-width: 450px;
+    margin: 0 auto;
   }
     
   .symbol {
@@ -228,8 +230,8 @@
     50% { opacity: 0; }
   }
 
-  .modalLoading{
-    min-width: 80%;
-    max-width: 81%;
+  .imgLoading{
+    max-width: 300px;
+    margin: 0 auto;
   }
 </style>  
