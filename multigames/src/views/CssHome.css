@@ -20,6 +20,10 @@ html, body {
   box-sizing: border-box;
 }
 
+.modal-card{
+  max-width: 430px;
+}
+
 @media only screen and (max-width: 499px){
   /* MOVIL */
   #VistaMovil {

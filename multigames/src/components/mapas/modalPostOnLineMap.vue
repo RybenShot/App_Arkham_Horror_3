@@ -9,19 +9,32 @@
           </header>
 
           <section class="modal-card-body hero is-large py-4">
-            <h2>{{ textoInterfaz.textoError }}</h2>
-            <button @click="postNewMapInPlay()" class="button my-3 is-success">Crear Mapa</button>
-            <b-field >
-                <b-input placeholder="ej: 1234-1234-1234"
-                    type="search"
-                    icon="magnify"
-                    v-model="barCode">
-                </b-input>
-                <p class="control">
-                    <b-button type="is-primary" label="Copiar" @click="copyCode()" />
-                </p>
-            </b-field>
 
+            <SignedOut>
+              <p class="subtitle has-text-centered">{{ textoInterfaz.textoError }}</p>
+              <SignInButton class="button" />
+            </SignedOut>
+
+            <SignedIn>
+              <div class="has-text-centered" v-if="this.beforeCreateMap">
+                <h2 class="subtitle mb-0">{{ textoInterfaz.confirm }}</h2>
+                <button @click="postNewMapInPlay()" class="button my-3 is-success">Crear Mapa</button>
+              </div>
+
+              <div class="has-text-centered" v-else>
+                <h2 class="subtitle">{{ textoInterfaz.textLogged }}</h2>
+                <b-field >
+                    <b-input placeholder="ej: 1234-1234-1234"
+                        type="search"
+                        icon="magnify"
+                        v-model="barCode">
+                    </b-input>
+                    <p class="control">
+                        <b-button type="is-primary" label="Copiar" @click="copyCode()" />
+                    </p>
+                </b-field>
+              </div>
+            </SignedIn>
           </section>
 
           <footer>
@@ -42,14 +55,29 @@
   
 <script>
   import { apiService } from '@/services/api.js';
+  // importamos clear para la gestion de usuarios
+  import { SignedIn, SignedOut, SignInButton, useUser } from '@clerk/vue'
 
   export default {
     name:"EstadoBendicion",
+    components: {
+      SignedIn,
+      SignedOut,
+      SignInButton
+    },
+    // Aquí añadimos setup() para usar useUser()
+    setup() {
+      const { user } = useUser()
+      // Exponemos user
+      return { user }
+    },
     data(){
       return{
+        beforeCreateMap: true,
         textoInterfaz:{
           titulo: "",
           textoError: "",
+          confirm:"",
           textLogged: "",
           botones: {
             añadir: ""
@@ -66,7 +94,8 @@
         if(this.$store.state.lenguaje == 'español'){
           this.textoInterfaz.titulo = "Crear Partida";
           this.textoInterfaz.textoError = "Para crear una partida debes estar Logueado a la app";
-          this.textoInterfaz.textLogged = "Copia este codigo y pasaselo a tus compañeros de mesa para jugar a la misma partida.";
+          this.textoInterfaz.confirm = "Recuerda que al crear la partida esta quedará registrada en nuestra base de datos junto con tu usuario, si vemos anomalias como creacion de multiples mapas se estudiará el caso y se tomaran medidas sancionadoras. Gracias y disfruta!";
+          this.textoInterfaz.textLogged = "Copia este codigo y pasaselo a tus compañeros de mesa para unirse a la misma partida.";
           this.textoInterfaz.botones.añadir = "Cerrar";
         }else if(this.$store.state.lenguaje == 'ingles'){
           this.textoInterfaz.titulo = "___";
@@ -78,7 +107,10 @@
       async postNewMapInPlay(){
         try {
           const idMap = this.$store.state.datosMapa.idMap
-          const IDUserHost = this.$store.state.IDUserHost
+          const IDUserHost = this.user.id
+
+
+          console.log(idMap, IDUserHost)
 
           const postNewMap = await apiService.postNewMapInPlay(idMap, IDUserHost);
           // añadir el mapa que venga al store para jugarlo
@@ -87,6 +119,7 @@
           this.barCode = postNewMap.id
           // meter en el input la id del mapa para copiarlo y pasarlo a otras personas
           console.log(postNewMap)
+          this.beforeCreateMap = false
         } catch (error) {
           console.error("❌ Error al crear el nuevo mapa:", error);
         }

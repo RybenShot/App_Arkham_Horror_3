@@ -27,6 +27,23 @@
       <section class="mt-4">
         <div>
           <ul>
+            <div class="has-text-centered">
+              <SignedOut>
+                <SignInButton class="icon-btn button is-info mx-2"/>
+              </SignedOut>
+              <SignedIn>
+                <div class="has-text-centered ">
+                  <p class="subtitle is-6 has-text-white m-0">{{ textoInterfaz.wellcome }}</p>
+                    <hr class="p-0 my-0 mx-3">
+                    <h1 class="title has-text-white my-1"><UserButton /> {{ user.username }}</h1>
+                    <hr class="p-0 my-0 mx-3">
+                </div>
+                <router-link to="/profile"> 
+                  <button class="icon-btn button is-info mx-2"> <i class="fas px-1 fa-user"></i> Mi Perfil <i class="fas px-1 fa-user"></i></button> 
+                </router-link>
+              </SignedIn>
+            </div>
+            
             <router-link to="/ListaMapas" @click="SonidoTecla()">
               <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonMapa }}</button>
             </router-link>
@@ -110,6 +127,9 @@
 <script>
 import { apiService } from '@/services/api.js';
 
+// importamos clear para la gestion de usuarios
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/vue'
+
 import ModalBienvenida from '@/components/home/modalBienvenida.vue';
 import ModalDonacion from '@/components/home/modalDonacion.vue';
 import { Howl } from 'howler';                  // dependencia para la reproduccion de sonidos
@@ -120,14 +140,24 @@ const sound = new Howl({                        // necesario para enlazar y ejec
 
 export default {
   name: "view_Home",
-   components:{
+  components:{
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    UserButton,
     ModalBienvenida,
     ModalDonacion,
-    },
+  },
+  setup() {
+    const { user } = useUser()
+    // Exponemos user
+    return { user }
+  },
   data() {
     return {
       contadorVisitas: null,
       textoInterfaz: {
+        wellcome: "",
         versionApp: "Beta 4.0.3",
         ultimaActualizacion: "",
         fechaUltimaActualizacion: "25/04/2025",
@@ -189,6 +219,7 @@ export default {
         this.textoInterfaz.botones.textBotonInvestigador = "Investigadores";
         this.textoInterfaz.botones.textBotonSupport = "Apoyanos";
         this.textoInterfaz.botones.textBotonCreditos = "Creditos";
+        this.textoInterfaz.wellcome = "Bienvenido";
         this.textoInterfaz.ultimaActualizacion = "Ultima actualización:";
         this.textoInterfaz.textoVisitas = "Visitas totales";
         this.textoInterfaz.textoActualizacion = "Actualización V";
@@ -197,6 +228,7 @@ export default {
         this.textoInterfaz.botones.textBotonInvestigador = "Investigators";
         this.textoInterfaz.botones.textBotonSupport = "Support";
         this.textoInterfaz.botones.textBotonCreditos = "Credits";
+        this.textoInterfaz.wellcome = "Wellcome";
         this.textoInterfaz.ultimaActualizacion = "Last update:";
         this.textoInterfaz.textoVisitas = "Total visits";
         this.textoInterfaz.textoActualizacion = "Update V";
@@ -374,6 +406,17 @@ button{
 .buttonsHomeIB {
   width: auto;
   padding: 10px 20px;
+}
+
+.icon-btn {
+  align-items: center;
+  width: 50%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  border: none;
+  cursor: pointer;
+  margin: 10px auto;
 }
 
 </style>

@@ -7,37 +7,45 @@
                 <p class="modal-card-title has-text-weight-bold" >{{ textoInterfaz.titulo }}</p>
                 <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalJoinMapInPlay = false"></i>
               </header>
+
+              <SignedOut>
+                <section class="modal-card-body hero is-large py-2">
+                  <p class="subtitle has-text-centered">{{ textoInterfaz.textoError }}</p>
+                  <SignInButton class="button" />
+                </section>                
+              </SignedOut>
   
-              <section class="modal-card-body hero is-large py-2">
-                
-                <div>
-                  <h1 class="title">Buscar partida</h1>
-                  <p class="subtitle">{{ textoInterfaz.descripcion }}</p>
-                  <section>
-                      <b-field >
-                          <b-input placeholder="ej: 1234-1234-1234"
-                              type="search"
-                              icon="magnify"
-                              v-model="searchId">
-                          </b-input>
-                          <p class="control">
-                              <b-button type="is-primary" label="Buscar" @click="searchMapInPlay()" />
-                          </p>
-                      </b-field>
-                  </section>
-                </div>
+              <SignedIn>
+                <section class="modal-card-body hero is-large py-2">
+                  <div>
+                    <h1 class="title">Buscar partida</h1>
+                    <p class="subtitle">{{ textoInterfaz.descripcion }}</p>
+                    <section>
+                        <b-field >
+                            <b-input placeholder="ej: 1234-1234-1234"
+                                type="search"
+                                icon="magnify"
+                                v-model="searchId">
+                            </b-input>
+                            <p class="control">
+                                <b-button type="is-primary" label="Buscar" @click="searchMapInPlay()" />
+                            </p>
+                        </b-field>
+                    </section>
+                  </div>
 
-                <div v-if="!mapFound">
-                  <hr>
-                  <h1 class="title">Crear partida</h1>
-                  <p class="subtitle">Para crear una partida debes entar a un mapa y seleccionar la opcion "Crear Mapa On-Line"</p>
-                </div>
+                  <div v-if="!mapFound">
+                    <hr>
+                    <h1 class="title">Crear partida</h1>
+                    <p class="subtitle">Para crear una partida debes entar a un mapa y seleccionar la opcion "Crear Mapa On-Line"</p>
+                  </div>
 
-                <!-- Resultado de busqueda -->
-                <div v-if="mapFound">
-                    <MapCard :map="mapFound" />
-                </div>
-              </section>
+                  <!-- Resultado de busqueda -->
+                  <div v-if="mapFound">
+                      <MapCard :map="mapFound" />
+                  </div>
+                </section>
+              </SignedIn>
   
               <footer class="">
                 <div class="field has-addons columns is-mobile is-gapless">
@@ -56,8 +64,11 @@
   </template>
   
 <script>
-import MapCard from '@/components/mapas/MapCard.vue';
-import { apiService } from '@/services/api.js';
+  import MapCard from '@/components/mapas/MapCard.vue';
+  import { apiService } from '@/services/api.js';
+
+  // importamos clear para la gestion de usuarios
+  import { SignedIn, SignedOut, SignInButton } from '@clerk/vue'
 
   export default {
     name:"EstadoBendicion",
@@ -66,6 +77,7 @@ import { apiService } from '@/services/api.js';
         textoInterfaz:{
           titulo: "",
           descripcion: "",
+          textoError:"",
           botones: {
             añadir: ""
           },
@@ -75,18 +87,23 @@ import { apiService } from '@/services/api.js';
         searchId: "d6ef5fdd-672d-4c6e-84eb-f244031670ad"
         }
     },
-  components: {
-    MapCard
-  },
+    components: {
+      MapCard,
+      SignedIn,
+      SignedOut,
+      SignInButton
+    },
     methods:{
       rellenarTextoSegunIdioma(){
         if(this.$store.state.lenguaje == 'español'){
           this.textoInterfaz.titulo = "Partida On-Line";
           this.textoInterfaz.descripcion = "Introduce el codigo del mapa para buscar la partida.";
+          this.textoInterfaz.textoError = "Para unirte a una partida On-Line debes estar Logueado.";
           this.textoInterfaz.botones.añadir = "Cerrar";
         }else if(this.$store.state.lenguaje == 'ingles'){
           this.textoInterfaz.titulo = "___";
           this.textoInterfaz.descripcion = "___";
+          this.textoInterfaz.textoError = "___";
           this.textoInterfaz.botones.añadir = "__";
         }
       },

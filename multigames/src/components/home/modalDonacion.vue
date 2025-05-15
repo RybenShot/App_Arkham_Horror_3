@@ -1,7 +1,7 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background"></div>
-    <div class="mr-6">
+    <div class="">
       <div class="modal-card">
         
         <!-- titulo  -->

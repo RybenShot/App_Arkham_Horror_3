@@ -32,8 +32,6 @@
             On-Line 
             <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
           </button>
-
-
         </div>
       </div>
 

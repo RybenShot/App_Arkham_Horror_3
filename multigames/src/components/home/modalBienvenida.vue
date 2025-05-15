@@ -1,7 +1,7 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background"></div>
-      <div class="mr-6">
+      <div class="">
         <div class="modal-card">
           <section class="modal-card-body hero is-large py-2 has-background-black-ter p-4">
             <h2 class="has-text-centered title mb-0 has-text-white">{{ titulo }}</h2>
