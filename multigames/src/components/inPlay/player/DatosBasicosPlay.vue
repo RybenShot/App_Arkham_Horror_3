@@ -10,7 +10,7 @@
     <div class="columns is-mobile">
       <!-- foto y nombre -->
       <div class="column is-half image">
-        <img class="is-rounded image image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " 
+        <img class="is-rounded image  bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " 
         :src="this.$store.state.datosPJactual.imgInv" >
         <div class="nombrePosicion">
           <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ this.$store.state.datosPJactual.name }}</p>
