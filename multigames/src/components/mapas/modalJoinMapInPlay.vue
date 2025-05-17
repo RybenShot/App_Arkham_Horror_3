@@ -18,7 +18,7 @@
               <SignedIn>
                 <section class="modal-card-body hero is-large py-2">
                   <div>
-                    <h1 class="title">Buscar partida</h1>
+                    <h1 class="title">{{ textoInterfaz.titleSearchInterface }}</h1>
                     <p class="subtitle">{{ textoInterfaz.descripcion }}</p>
                     <section>
                         <b-field >
@@ -36,8 +36,8 @@
 
                   <div v-if="!mapFound">
                     <hr>
-                    <h1 class="title">Crear partida</h1>
-                    <p class="subtitle">Para crear una partida debes entar a un mapa y seleccionar la opcion "Crear Mapa On-Line"</p>
+                    <h1 class="title">{{ textoInterfaz.postParty.title }}</h1>
+                    <p class="subtitle">{{ textoInterfaz.postParty.description }}</p>
                   </div>
 
                   <!-- Resultado de busqueda -->
@@ -52,7 +52,7 @@
   
                   <p class="control column ">
                     <button @click="(this.$store.state.modalJoinMapInPlay = false)" class="button is-link is-fullwidth">
-                      <p>{{ textoInterfaz.botones.añadir }}</p>
+                      <p>{{ textoInterfaz.botones.cerrar }}</p>
                     </button>
                   </p>
                 </div>
@@ -75,16 +75,21 @@
     data(){
       return{
         textoInterfaz:{
+          titleSearchInterface: "",
           titulo: "",
           descripcion: "",
           textoError:"",
+          postParty: {
+            title: "",
+            description: "",
+          },
           botones: {
-            añadir: ""
+            cerrar: ""
           },
         },
         mapFound: null,
         // variable para capturar la id del buscador
-        searchId: "d6ef5fdd-672d-4c6e-84eb-f244031670ad"
+        searchId: null
         }
     },
     components: {
@@ -94,39 +99,50 @@
       SignInButton
     },
     methods:{
-      rellenarTextoSegunIdioma(){
-        if(this.$store.state.lenguaje == 'español'){
+      rellenarTextoSegunIdioma() {
+        if (this.$store.state.lenguaje == 'español') {
+          this.textoInterfaz.titleSearchInterface = "Buscar Partida";
           this.textoInterfaz.titulo = "Partida On-Line";
-          this.textoInterfaz.descripcion = "Introduce el codigo del mapa para buscar la partida.";
+          this.textoInterfaz.descripcion = "Introduce el código del mapa para buscar la partida.";
           this.textoInterfaz.textoError = "Para unirte a una partida On-Line debes estar Logueado.";
-          this.textoInterfaz.botones.añadir = "Cerrar";
-        }else if(this.$store.state.lenguaje == 'ingles'){
-          this.textoInterfaz.titulo = "___";
-          this.textoInterfaz.descripcion = "___";
-          this.textoInterfaz.textoError = "___";
-          this.textoInterfaz.botones.añadir = "__";
+
+          this.textoInterfaz.postParty.title = "Crear Partida";
+          this.textoInterfaz.postParty.description = "Para crear una partida debes entrar a un mapa y seleccionar la opción \"Crear Mapa On-Line\"";
+
+          this.textoInterfaz.botones.cerrar = "Cerrar";
+        } else if (this.$store.state.lenguaje == 'ingles') {
+          this.textoInterfaz.titleSearchInterface = "Search Game";
+          this.textoInterfaz.titulo = "Online Game";
+          this.textoInterfaz.descripcion = "Enter the map code to search for the game.";
+          this.textoInterfaz.textoError = "To join an online game you must be logged in.";
+
+          this.textoInterfaz.postParty.title = "Create Game";
+          this.textoInterfaz.postParty.description = "To create a game you must enter a map and select the \"Create Online Map\" option.";
+
+          this.textoInterfaz.botones.cerrar = "Close";
         }
       },
+
       async searchMapInPlay(){
-      try {
-        const idMap = this.searchId
-        const findMap = await apiService.getMapInPlayByID(idMap);
-        this.mapFound = findMap;
-        console.log(this.mapFound)
-      } catch (error) {
-        console.error("❌ Error al encontrar el mapa:", error);
-      }
-    },
+        try {
+          const idMap = this.searchId
+          const findMap = await apiService.getMapInPlayByID(idMap);
+          this.mapFound = findMap;
+          console.log(this.mapFound)
+        } catch (error) {
+          console.error("❌ Error al encontrar el mapa:", error);
+        }
+      },
     },
     mounted(){
       this.rellenarTextoSegunIdioma();
     }
   }
   </script>
-  <style>
+<style>
   .BGBendicion{
     background-image: url(@/assets/img/Estados/Bendicion.jpg);
     background-position: center;
     background-size: cover;
   }
-  </style>
+</style>

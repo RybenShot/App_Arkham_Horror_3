@@ -18,7 +18,7 @@
             <SignedIn>
               <div class="has-text-centered" v-if="this.beforeCreateMap">
                 <h2 class="subtitle mb-0">{{ textoInterfaz.confirm }}</h2>
-                <button @click="postNewMapInPlay()" class="button my-3 is-success">Crear Mapa</button>
+                <button @click="postNewMapInPlay()" class="button my-3 is-success">{{ textoInterfaz.botones.create }}</button>
               </div>
 
               <div class="has-text-centered" v-else>
@@ -42,7 +42,7 @@
 
               <p class="control column ">
                 <button @click="(this.$store.state.modalCrearMapaOnLine = false)" class="button is-link is-fullwidth">
-                  <p>{{ textoInterfaz.botones.añadir }}</p>
+                  <p>{{ textoInterfaz.botones.cerrar }}</p>
                 </button>
               </p>
             </div>
@@ -80,7 +80,8 @@
           confirm:"",
           textLogged: "",
           botones: {
-            añadir: ""
+            create: "",
+            cerrar: ""
           },
         },
         mapFound: null,
@@ -90,20 +91,26 @@
         
     },
     methods:{
-      rellenarTextoSegunIdioma(){
-        if(this.$store.state.lenguaje == 'español'){
+      rellenarTextoSegunIdioma() {
+        if (this.$store.state.lenguaje == 'español') {
           this.textoInterfaz.titulo = "Crear Partida";
           this.textoInterfaz.textoError = "Para crear una partida debes estar Logueado a la app";
-          this.textoInterfaz.confirm = "Recuerda que al crear la partida esta quedará registrada en nuestra base de datos junto con tu usuario, si vemos anomalias como creacion de multiples mapas se estudiará el caso y se tomaran medidas sancionadoras. Gracias y disfruta!";
-          this.textoInterfaz.textLogged = "Copia este codigo y pasaselo a tus compañeros de mesa para unirse a la misma partida.";
-          this.textoInterfaz.botones.añadir = "Cerrar";
-        }else if(this.$store.state.lenguaje == 'ingles'){
-          this.textoInterfaz.titulo = "___";
-          this.textoInterfaz.textoError = "___";
-          this.textoInterfaz.textLogged = "___";
-          this.textoInterfaz.botones.añadir = "__";
+          this.textoInterfaz.confirm = "Recuerda que al crear la partida esta quedará registrada en nuestra base de datos junto con tu usuario, si vemos anomalías como creación de múltiples mapas se estudiará el caso y se tomarán medidas sancionadoras. ¡Gracias y disfruta!";
+          this.textoInterfaz.textLogged = "Copia este código y pásaselo a tus compañeros de mesa para unirse a la misma partida.";
+
+          this.textoInterfaz.botones.create = "Crear mapa";
+          this.textoInterfaz.botones.cerrar = "Cerrar";
+        } else if (this.$store.state.lenguaje == 'ingles') {
+          this.textoInterfaz.titulo = "Create Game";
+          this.textoInterfaz.textoError = "To create a game you must be logged into the app.";
+          this.textoInterfaz.confirm = "Remember that when you create a game, it will be recorded in our database along with your user account. If we detect any anomalies—such as the creation of multiple maps—we will review the case and take appropriate sanctioning measures. Thank you, and enjoy!";
+          this.textoInterfaz.textLogged = "Copy this code and share it with your tablemates so they can join the same game.";
+
+          this.textoInterfaz.botones.create = "Create map";
+          this.textoInterfaz.botones.cerrar = "Close";
         }
       },
+
       async postNewMapInPlay(){
         try {
           const idMap = this.$store.state.datosMapa.idMap

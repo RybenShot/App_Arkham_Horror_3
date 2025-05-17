@@ -37,7 +37,8 @@ methods: {
       let response
       // hacemos una llamada al endpoint de buscar mapa por la id
       // si el modal mapInPlay estaba abierto, esque la llamada era para un mapa in play, si no, se llamara a un mapa normal
-      if (isModalJoin) {
+      // si el this.map.id existe, quiere decir que es un mapa On-Line
+      if (isModalJoin || this.map.id) {
         console.log(this.map.id)
         response = await apiService.getMapInPlayByID(this.map.id);
       } else {

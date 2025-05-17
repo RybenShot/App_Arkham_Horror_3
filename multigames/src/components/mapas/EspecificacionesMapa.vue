@@ -7,7 +7,7 @@
           <b-input placeholder="1234-1234-1234"
               type="search"
               icon="magnify"
-              v-model="barCode">
+              v-model="this.$store.state.datosMapa.id ">
           </b-input>
           <p class="control">
               <b-button type="is-primary" label="Copiar" @click="copyCode()" />
@@ -52,7 +52,7 @@ export default {
         cajaNecesaria: "",
         dificultad: ""
       },
-      barCode: this.$store.state.datosMapa.id || ''
+      barCode: this.$store.state.datosMapa.id 
     }
   },
   methods:{

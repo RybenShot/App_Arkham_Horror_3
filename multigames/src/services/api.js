@@ -157,6 +157,17 @@ export const apiService = {
       throw error
     }
 
+  },
+
+  async getMapsInPlayByIDUser(idUser){
+    try {
+      const response = await axios.get(`${API_URL}/mapInPlay/users/${idUser}`)
+      console.log(response.data)
+      return response.data
+    } catch (error) {
+      console.error(`Error al obtener los mapas in play del usuario solicitado`, error);
+      throw error;
+    }
   }
   
   
