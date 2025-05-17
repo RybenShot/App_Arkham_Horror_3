@@ -21,7 +21,7 @@ html, body {
 }
 
 .modal-card{
-  max-width: 430px;
+  max-width: 390px;
 }
 
 @media only screen and (max-width: 499px){
@@ -39,7 +39,4 @@ html, body {
     overflow: hidden;
   }
 
-  #VistaNoValida {
-    display: none;
-  }
 }

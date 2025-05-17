@@ -1,7 +1,7 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background"></div>
-    <div class="mr-6">
+    <div class="">
       <div class="modal-card">
         <header class="modal-card-head BGBendicion">
           <p class="modal-card-title">{{ textoInterfaz.titulo }}</p>
@@ -87,3 +87,7 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+</style>
