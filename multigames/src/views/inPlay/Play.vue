@@ -13,10 +13,10 @@
     <!-- Navegacion -->
     <b-tabs position="is-centered" class="block mb-0">
         <b-tab-item label="Player">
-          <viewMap/>
+          <viewPlayer/>
         </b-tab-item>
         <b-tab-item label="Map">
-          <viewPlayer/>
+          <viewMap/>
         </b-tab-item>
     </b-tabs>
 

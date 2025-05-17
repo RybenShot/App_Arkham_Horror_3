@@ -165,6 +165,9 @@ export default {
     },
     async updateDataMap(){
       // si no estamos en modo online no seguimos
+      if (!this.$store.state.datosMapa.id) {
+        return
+      }
 
       // hacer una llamada a api con la id del mapa in play
       const response = await apiService.getMapInPlayByID(this.$store.state.datosMapa.id);

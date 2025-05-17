@@ -158,9 +158,9 @@ export default {
       contadorVisitas: null,
       textoInterfaz: {
         wellcome: "",
-        versionApp: "Beta 4.0.3",
+        versionApp: "Beta 4.0.4",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "25/04/2025",
+        fechaUltimaActualizacion: "18/05/2025",
         textoVisitas: "",
         textoActualizacion: "",
         botones: {
@@ -173,6 +173,14 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
+          {id: 4,
+            numeroActualizacion: "4.0.4",
+            titulo: "Dispoible modo Online",
+            ENtitulo: "Online mode available",
+            descripcion: "Con la reciende actualizacion de gestion de usuario, podras registrarte y crear un mapa online para gestonar la partida junto con tus compañeros investigadores. Para ello, solo tienes que registrarte y crear un mapa, el cual podras compartir con tus amigos para que ellos puedan unirse a tu partida.",
+            ENdescripcion: "With the recent user-management update, you’ll be able to register and create an online map to manage the game alongside your fellow investigators. To do so, simply sign up and create a map, which you can then share with your friends so they can join your game.",
+            fechaActualizacion: "18/05/2025" 
+          },
           {id: 4,
             numeroActualizacion: "4.0.3",
             titulo: "Nuevos investigadores!! , añadido pantalla de carga y Backend completado",
