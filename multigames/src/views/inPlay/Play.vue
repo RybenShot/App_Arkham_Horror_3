@@ -16,6 +16,7 @@
           <viewPlayer/>
         </b-tab-item>
         <b-tab-item label="Map">
+          <p v-if="!this.$store.state.datosMapa.id" class="title has-text-white has-text-centered">Por favor, para usar correctamente estas funcionalidades, crea un mapa OnLine</p>
           <viewMap/>
         </b-tab-item>
     </b-tabs>

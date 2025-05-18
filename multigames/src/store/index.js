@@ -111,7 +111,7 @@ export default createStore({
     viewMap : false,
 
     //map
-    StoreEncuentros: true,
+    StoreEncountresPage: true,
     StoreReservaDeMitos:false,
 
     //player

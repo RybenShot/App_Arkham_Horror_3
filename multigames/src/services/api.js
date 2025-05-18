@@ -60,7 +60,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/maps/${idMap}`);
       return response.data
     } catch (error) {
-      console.error(`Error al obtener la lista de mapas`, error);
+      console.error(`❌ Error al obtener la lista de mapas`, error);
       return null;
     }
   },
@@ -70,7 +70,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/maps/enemies/${idMap}`);
       return response.data
     } catch (error) {
-      console.error(`Error al obtener la lista de enemigos`, error);
+      console.error(`❌ Error al obtener la lista de enemigos`, error);
       return null;
     }
   },
@@ -81,7 +81,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/inv/previewList`)
       return response.data
     } catch (error) {
-      console.error(`Error al obtener la lista de investigadores`, error);
+      console.error(`❌ Error al obtener la lista de investigadores`, error);
       return [];
     }
   },
@@ -91,7 +91,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/inv/previewList?rol=${rol}`)
       return response.data
     } catch (error) {
-      console.error(`Error al obtener la lista de investigadores por rol`, error);
+      console.error(`❌ Error al obtener la lista de investigadores por rol`, error);
       return [];
     }
   },
@@ -102,7 +102,7 @@ export const apiService = {
       console.log(response.data)
       return response.data
     } catch (error) {
-      console.error(`Error al obtener la lista de investigadores`, error);
+      console.error(`❌ Error al obtener la lista de investigadores`, error);
       return null;
     }
   },
@@ -112,7 +112,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/inv/${idInv}/objects`);
       return response.data
     } catch (error) {
-      console.error(`Error al obtener la lista de pertenencias`, error);
+      console.error(`❌ Error al obtener la lista de pertenencias`, error);
       return null;
     }
   },
@@ -139,7 +139,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/mapInPlay/${idMapInPlay}`);
       return response.data
     } catch (error) {
-      console.error(`Error al obtener el mapa in play solicitado`, error);
+      console.error(`❌ Error al obtener el mapa in play solicitado`, error);
       throw error;
     }
   },
@@ -165,10 +165,46 @@ export const apiService = {
       console.log(response.data)
       return response.data
     } catch (error) {
-      console.error(`Error al obtener los mapas in play del usuario solicitado`, error);
+      console.error(`❌ Error al obtener los mapas in play del usuario solicitado`, error);
       throw error;
     }
-  }
+  },
+
+  // Reserva de mitos
+  // reinicia la Reserva de mitos con las fichas que hay
+  async ressetMithReserve(idMapInPlay){
+    try {
+      const response = await axios.get(`${API_URL}/mapInPlay/${idMapInPlay}/ressetMithReserve`)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al resetear la reserva de mitos`, error);
+      throw error;
+    }
+  },
+
+  // Pido una ficha de mitos
+  async getMithToken(idMapInPlay){
+    try {
+      const response = await axios.get(`${API_URL}/mapInPlay/${idMapInPlay}/getMithToken`)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener una ficha de la reserva de mitos`, error);
+      throw error;
+    }
+  },
+
+  // Esta funcion nos sirve para Añadir, borrar o devolver fichas de mitos a la reserva de mitos
+  // segun lo que venga desde "action" -add-, -remove- o -reset-
+  async modifieMithReserve (idMapInPlay, action, type){
+    try {
+      const payload = {action, type}
+      const response = await axios.post(`${API_URL}/mapInPlay/${idMapInPlay}/token`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al añadir una ficha de la reserva de mitos`, error);
+      throw error;
+    }
+  },
   
   
 };

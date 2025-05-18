@@ -1,22 +1,24 @@
 <template>
-    <div v-if="!this.$store.state.datosMapa.title" class="mt-6">
-      <h1 class="title has-text-centered has-text-white">{{ textoInterfaz.error }}</h1>
-      <div class="px-5">
-        <router-link to="/ListaMapas" class="px-6">
-          <button class="button is-rounded is-fullwidth " :class="{'boxShadowRed':!this.$store.state.mapaSeleccionado}">
-            <i class="fas fa-map-signs mx-3"></i>
-            <p class="title is-5 m-0">{{ textoInterfaz.botones.elegirMapa }}</p>
-            <i class="fas fa-map-signs mx-3"></i>
-          </button>
-        </router-link>
-      </div>
-      
+  <!-- mensaje de Error -->
+  <div v-if="!this.$store.state.datosMapa.title" class="mt-6">
+    <h1 class="title has-text-centered has-text-white">{{ textoInterfaz.error }}</h1>
+    <div class="px-5">
+      <router-link to="/ListaMapas" class="px-6">
+        <button class="button is-rounded is-fullwidth " :class="{'boxShadowRed':!this.$store.state.mapaSeleccionado}">
+          <i class="fas fa-map-signs mx-3"></i>
+          <p class="title is-5 m-0">{{ textoInterfaz.botones.elegirMapa }}</p>
+          <i class="fas fa-map-signs mx-3"></i>
+        </button>
+      </router-link>
     </div>
+  </div>
+
   <section v-if="this.$store.state.datosMapa.title">
     <p class="subtitle is-6 has-text-white has-text-centered mb-4">{{ textoInterfaz.mitos }}</p>
     <h1 class="title has-text-white has-text-centered mb-1">{{ textoInterfaz.tituloMapa }}</h1>
     <hr class="my-3">
 
+    <!-- botones de modals -->
     <div class="columns is-mobile is-centered botones-accion">
       <div class="column is-narrow">
         <button @click="restablecerReserva" class="button is-warning mt-3"><i class="fas fa-undo"></i></button>
@@ -31,18 +33,30 @@
         <button @click="abrirModalDevolver" class="button is-link mt-3"><i class="fas fa-recycle"></i></button>
       </div>
 
-      <!-- Informacion -->
+      <!-- Informacion 
       <div class="column is-narrow">
         <button @click="modalInformacion = true" class="button is-info mt-3 boton-info"><i class="fas fa-info"></i></button>
-      </div>
+      </div>-->
     </div>
     
 
+    <!-- miniaturas de mitos -->
     <p class="has-text-white">{{ textoInterfaz.reservaDeMitos }}</p>
     <div class="mb-2">
-      <span v-for="(ficha, index) in this.$store.state.reservaVisible" :key="index">
-        <i :class="['fa-1x', ficha.icon, ficha.color, 'px-1', { 'tachado': ficha.revelada }]"></i>
+      <span v-for="(ficha, index) in $store.state.datosMapa.mythosReserveInPlay" :key="index">
+        <i class="px-1" :class="[
+          {'has-text-perdicion fas fa-star-of-life':ficha.type == 'doom' },
+          {'has-text-monster fas fa-spider':ficha.type == 'enemies' },
+          {'has-text-success fas fa-search':ficha.type == 'clues' },
+          {'has-text-warning fas fa-scroll':ficha.type == 'newspaper' },
+          {'has-text-link fab fa-sith':ficha.type == 'explosion' },
+          {'has-text-black far fa-circle':ficha.type == 'empty' },
+          {'has-text-danger fab fa-hubspot':ficha.type == 'retribution' },
+          { tachado: ficha.reveal }
+          ]">
+        </i>
       </span>
+
     </div>
 
     <div class="px-4">
@@ -51,18 +65,27 @@
 
      <!-- Ficha mostrada en grande debajo del botón -->
     <div v-if="fichaMostrada" class="ficha-grande has-text-centered mt-4">
-      <div v-if="fichaMostrada.tipo == 'retribution'">
-        <i class="efectoRetribution" :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
-        <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
+      <div v-if="fichaMostrada.type == 'retribution'">
+        <i class="efectoRetribution has-text-danger fa-3x fab fa-hubspot" ></i>
+        <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.type }}</p>
       </div>
 
       <div v-else>
-        <i :class="['fa-3x', fichaMostrada.icon, fichaMostrada.color]"></i>
-        <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.tipo }}</p>
+        <i :class=" [
+          {'has-text-perdicion fas fa-star-of-life':fichaMostrada.type == 'doom' },
+          {'has-text-monster fas fa-spider':fichaMostrada.type == 'enemies' },
+          {'has-text-success fas fa-search':fichaMostrada.type == 'clues' },
+          {'has-text-warning fas fa-scroll':fichaMostrada.type == 'newspaper' },
+          {'has-text-link fab fa-sith':fichaMostrada.type == 'explosion' },
+          {'has-text-black far fa-circle':fichaMostrada.type == 'empty' },
+          {'has-text-danger fab fa-hubspot':fichaMostrada.type == 'retribution' }
+          ]" ></i>
+        <p class="has-text-white is-size-4 mt-2">{{ fichaMostrada.type }}</p>
       </div>
     </div>
 
     <!-- MODALS -->
+    <!-- Modal agregar -->
     <div v-if="modalAgregarAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalAgregar"></div>
       <div class="modal-card ">
@@ -72,7 +95,7 @@
         </header>
         <section class="modal-card-body ">
           <div class="buttons is-centered">
-            <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click="agregarFicha(tipo)" :class="['button', tipo.color]">
+            <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click='agregarFicha("add", tipo)' :class="['button', tipo.color]">
               <i :class="tipo.icon" class="px-1"></i> 
               {{ tipo.tipo }} 
               <i :class="tipo.icon" class="px-1"></i> 
@@ -81,6 +104,8 @@
         </section>
       </div>
     </div>
+
+    <!-- Modal eliminar -->
     <div v-if="modalEliminarAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalEliminar"></div>
       <div class="modal-card">
@@ -90,7 +115,7 @@
         </header>
         <section class="modal-card-body">
           <div class="buttons is-centered">
-            <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click="eliminarFicha(tipo)" :class="['button', tipo.color]">
+            <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click='eliminarFicha("remove", tipo)' :class="['button', tipo.color]">
               <i :class="tipo.icon" class="px-1"></i> 
               {{ tipo.tipo }} 
               <i :class="tipo.icon" class="px-1"></i> 
@@ -99,6 +124,8 @@
         </section>
       </div>
     </div>
+
+    <!-- Modal devolver -->
     <div v-if="modalDevolverAbierto" class="modal is-active px-4">
       <div class="modal-background" @click="cerrarModalDevolver"></div>
       <div class="modal-card">
@@ -108,15 +135,27 @@
         </header>
         <section class="modal-card-body">
           <div class="buttons is-centered">
-            <button v-for="(ficha, index) in this.$store.state.reservaVisible.filter(f => f.revelada)" :key="index" @click="devolverFicha(ficha)" :class="['button', ficha.color]">
-              <i :class="ficha.icon" class="px-1"></i> {{ ficha.tipo }} <i :class="ficha.icon" class="px-1"></i>
+            <button v-for="(ficha, index) in this.$store.state.datosMapa.mythosReserveInPlay.filter(f => f.reveal)" :key="index" class="m-2 p-2"
+              @click="devolverFicha('reset', ficha)">
+              <i class="fa-2x" :class=" [
+              {'has-text-perdicion fas fa-star-of-life':ficha.type == 'doom' },
+              {'has-text-monster fas fa-spider':ficha.type == 'enemies' },
+              {'has-text-success fas fa-search':ficha.type == 'clues' },
+              {'has-text-warning fas fa-scroll':ficha.type == 'newspaper' },
+              {'has-text-link fab fa-sith':ficha.type == 'explosion' },
+              {'has-text-black far fa-circle':ficha.type == 'empty' },
+              {'has-text-danger fab fa-hubspot':ficha.type == 'retribution' }
+              
+              ]" ></i>
+              <p class="subtitle">{{ ficha.type }} </p>
+              
             </button>
           </div>
         </section>
       </div>
     </div>
 
-    <!-- Modal inforacion -->
+    <!-- Modal inforacion 
     <div v-if="modalInformacion" class="modal is-active px-4">
       <div class="modal-background" @click="this.modalInformacion = false"></div>
       <div class="modal-card ">
@@ -131,15 +170,17 @@
         </section>
       </div>
     </div>
+    -->
   </section>
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 export default {
   name: "ReservaDeMitos",
   data() {
     return {
-      reservaMitosLength : this.$store.state.reservaVisible.length,
       modalAgregarAbierto: false,
       modalEliminarAbierto: false,
       modalDevolverAbierto: false,
@@ -232,23 +273,9 @@ export default {
         this.textoInterfaz.botones.elegirMapa = "Select Map";
       }
     },
-    /**
-     * Inicializa la reserva de fichas tomando los datos del store.
-     * Por cada tipo de ficha, crea un array con la cantidad de fichas indicadas
-     * y establece la propiedad 'revelada' en false.
-     */
-    inicializarReserva() {
-      // Obtenemos la reserva de mitos desde Vuex
-      const reserva = this.$store.state.datosMapa.mythosReserve;
-      // Generamos el array de fichas visibles a partir de los tipos y la cantidad indicada
-      this.$store.state.reservaVisible = this.tiposFicha.flatMap(tipo => 
-        Array.from({ length: reserva[tipo.tipo] || 0 }, () => ({ ...tipo, revelada: false }))
-      );
-      console.error(this.$store.state.reservaVisible)
-    },
 
     comprobarFicha(){
-      switch (this.fichaMostrada.tipo) {
+      switch (this.fichaMostrada.type) {
         case "retribution":
         // esneñamos la retribucion ....
         this.$store.commit('toggleModal' , { modal: 'modalNotificacionRetribution', modalState: true });
@@ -282,36 +309,59 @@ export default {
      * Selecciona una ficha al azar de las que no han sido reveladas,
      * la marca como revelada y la asigna a 'fichaMostrada' para mostrarla en grande.
      */
-    revelarFicha() {
-      // Filtramos las fichas que no han sido reveladas
-      const fichasNoReveladas = this.$store.state.reservaVisible.filter(f => !f.revelada);
-      // Si ya se han revelado todas, mostramos una alerta
-      if (fichasNoReveladas.length === 0) {
-        alert("Todas las fichas han sido reveladas. Reinicia la reserva.");
-        return;
-      }
-      // Seleccionamos una ficha aleatoria del grupo de las que aún no se han revelado
-      const indiceAleatorio = Math.floor(Math.random() * fichasNoReveladas.length);
-      const fichaSeleccionada = fichasNoReveladas[indiceAleatorio];
-      // Marcamos la ficha como revelada
-      fichaSeleccionada.revelada = true;
-      // Asignamos la ficha revelada a la propiedad "fichaMostrada" para mostrarla en grande
-      this.fichaMostrada = fichaSeleccionada;
+    async revelarFicha() {
+      try {
+        // llamamos a API para que me de una ficha de mitos
+        const response = await apiService.getMithToken(this.$store.state.datosMapa.id);
+        // la guardamos de forma global
+        this.fichaMostrada = response;
+        this.updateDataMap()
 
-      // Ejecutamos la comprobación después de 5 segundos
-      setTimeout(() => {
-        this.comprobarFicha()
-      }, 3000);
+        // Ejecutamos la comprobación después de 5 segundos
+        setTimeout(() => {
+          this.comprobarFicha()
+        }, 3000);
+      } catch (error) {
+        console.error(`❌ Error al obtener una ficha de la reserva de mitos`, error);
+        alert("No quedan mas fichas de mitos en la reserva")
+        throw error;
+      }
+      
     },
 
+    // actualiza los datos del mapa en el store
+    async updateDataMap(){
+      try {
+        // si no estamos en modo online no seguimos
+        if (!this.$store.state.datosMapa.id) {
+          return
+        }
+
+        // hacer una llamada a api con la id del mapa in play
+        const response = await apiService.getMapInPlayByID(this.$store.state.datosMapa.id);
+        // copiar el resultado en el store "datosMapa" actualizando todos los datos
+        this.$store.commit('setDatosMapa', response);
+      } catch (error) {
+        console.error(`❌ Error al actualizar los datos del mapa`, error);
+        throw error;
+      }
+    },
+    
     /**
      * Reinicia la reserva de fichas:
      * - Marca todas las fichas como no reveladas.
      * - Limpia la ficha que se muestra en grande.
      */
-    restablecerReserva() {
-      this.$store.state.reservaVisible.forEach(ficha => (ficha.revelada = false));
-      this.fichaMostrada = null;
+    async restablecerReserva() {
+      try {
+        const response = await apiService.ressetMithReserve(this.$store.state.datosMapa.id);
+        console.log(response)
+        this.updateDataMap()
+        this.fichaMostrada = null;
+      } catch (error) {
+        console.error(`❌ Error al resetear la reserva de mitos`, error);
+        throw error;
+      }
     },
 
     abrirModalAgregar() { this.modalAgregarAbierto = true; },
@@ -320,10 +370,17 @@ export default {
      * Agrega una nueva ficha a la reserva.
      * @param {Object} tipo - Objeto que contiene el tipo de ficha y sus propiedades.
      */
-    agregarFicha(tipo) {
-       // Añadimos la ficha al array de fichas visibles, marcada como no revelada
-       this.$store.state.reservaVisible.push({ ...tipo, revelada: false });
-      this.cerrarModalAgregar();
+    async agregarFicha(action, tipo) {
+      try {
+        const response = await apiService.modifieMithReserve(this.$store.state.datosMapa.id, action, tipo.tipo);
+        console.log(response)
+        this.updateDataMap()
+        this.cerrarModalAgregar()
+      } catch (error) {
+        console.error(`❌ Error al añadir la ficha a la reserva de mitos`, error);
+        alert("❌ Error al añadir la ficha a la reserva de mitos")
+        throw error;
+      }
     },
 
     abrirModalEliminar() { this.modalEliminarAbierto = true; },
@@ -332,16 +389,17 @@ export default {
      * Elimina la primera ficha encontrada del tipo especificado.
      * @param {Object} tipo - Objeto que contiene el tipo de ficha a eliminar.
      */
-    eliminarFicha(tipo) {
-      // Busca la posición de la ficha del tipo indicado
-      const index = this.$store.state.reservaVisible.findIndex(f => f.tipo === tipo.tipo);
-      if (index !== -1) {
-        // Elimina la ficha del array
-        this.$store.state.reservaVisible.splice(index, 1);
-      } else {
-        alert("No quedan mas fichas de este tipo en la reserva")
+    async eliminarFicha(action, tipo) {
+      try {
+        const response = await apiService.modifieMithReserve(this.$store.state.datosMapa.id, action, tipo.tipo);
+        console.log(response)
+        this.updateDataMap()
+        this.cerrarModalEliminar();
+      } catch (error) {
+        console.error(`❌ Error al eliminar la ficha de la reserva de mitos`, error);
+        alert("❌ Error al eliminar la ficha de la reserva de mitos")
+        throw error;
       }
-      this.cerrarModalEliminar();
     },
 
 
@@ -351,17 +409,20 @@ export default {
      * Devuelve una ficha: la marca como no revelada y cierra el modal.
      * @param {Object} ficha - La ficha a devolver.
      */
-    devolverFicha(ficha) {
-      ficha.revelada = false;
-      this.cerrarModalDevolver();
+    async devolverFicha(action, ficha) {
+      try {
+        const response = await apiService.modifieMithReserve(this.$store.state.datosMapa.id, action, ficha.type);
+        console.log(response)
+        this.updateDataMap()
+        this.cerrarModalDevolver();
+      } catch (error) {
+        console.error(`❌ Error al retornar la ficha a la reserva de mitos`, error);
+        alert("❌ Error al retornar la ficha a la reserva de mitos")
+        throw error;
+      }
     }
   },
   mounted() {
-    if ( this.reservaMitosLength == 0) {
-      this.inicializarReserva();
-    } else {
-      console.error("ya existe una reserva de mitos")
-    }
     this.rellenarTextoSegunIdioma();
   },
 };

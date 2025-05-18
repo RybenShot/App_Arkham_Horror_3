@@ -44,9 +44,9 @@
     <!-- Navegacion -->
     <div class="columns is-mobile has-text-centered has-text-white">
       <!-- Encuentros -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreEncuentros = true)" class="column pt-0">
-        <i v-if="this.$store.state.StoreEncuentros == true" class="has-text-success fa-2x fas fa-house-damage"></i>
-        <i v-if="this.$store.state.StoreEncuentros == false" class="desactivado fa-2x fas fa-house-damage"></i>
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreEncountresPage = true)" class="column pt-0">
+        <i v-if="this.$store.state.StoreEncountresPage == true" class="has-text-success fa-2x fas fa-house-damage"></i>
+        <i v-if="this.$store.state.StoreEncountresPage == false" class="desactivado fa-2x fas fa-house-damage"></i>
       </div> 
       <!-- Fichas de Mitos -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreReservaDeMitos = true)" class="column pt-0">
@@ -124,7 +124,7 @@ export default {
       }
     },
     resetearNavegacion(){
-      this.$store.state.StoreEncuentros = false;
+      this.$store.state.StoreEncountresPage = false;
       this.$store.state.StoreReservaDeMitos = false;
       this.$store.state.StoreAjustesPlay = false;
       this.updateDataMap()
