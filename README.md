@@ -1,9 +1,9 @@
 <p align = "center">
   <a href= "#clerk">> Clerk < </a> |
-  <a href= "#que-hace">Descripcion</a> |
+  <a href= "#descripcion">Descripcion</a> |
   <a href= "#funcionalidades">Funcionalidades</a> |
   <a href= "#api">API</a> |
-  <a href= "#especificaciones-tecnicas">Especificaciones tecnicas</a> |
+  <a href= "#especificaciones-técnicas">Especificaciones tecnicas</a> |
   <a href= "#enlace-a-la-app">Enlace a la app</a> 
 </p>
 
@@ -16,7 +16,7 @@
 Bienvenido a la documentación de App Arkham Horror.
 Esta app es una herramienta diseñada para facilitar la gestión y el seguimiento de partidas del juego de mesa Arkham Horror 3ª Edición, proporcionando una experiencia fluida y enriquecedora para los jugadores.
 
-# Clerk .
+# Clerk
 ### ¿Como usamos Clerk?
 Principalmente para la gestión de los usuarios, estos pueden crear mapas online y gestionar las variables de la partida, como las fichas de perdición y las pistas del escenario, o las fichas de la reserva de mitos. El usuario host (creador de la partida) podrá ver en su perfil privado los mapas online que haya creado gracias a su ID de usuario, que se imprime en el mapa al momento de crearlo.
 
