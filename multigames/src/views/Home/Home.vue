@@ -175,41 +175,41 @@ export default {
         articulos: [
           {id: 4,
             numeroActualizacion: "4.0.4",
-            titulo: "Dispoible modo Online",
+            titulo: "Disponible modo online",
             ENtitulo: "Online mode available",
-            descripcion: "Con la reciende actualizacion de gestion de usuario, podras registrarte y crear un mapa online para gestonar la partida junto con tus compañeros investigadores. Para ello, solo tienes que registrarte y crear un mapa, el cual podras compartir con tus amigos para que ellos puedan unirse a tu partida.",
+            descripcion: "Con la reciente actualización de gestión de usuario, podrás registrarte y crear un mapa online para gestionar la partida junto con tus compañeros investigadores. Para ello, solo tienes que registrarte y crear un mapa, el cual podrás compartir con tus amigos para que ellos puedan unirse a tu partida.",
             ENdescripcion: "With the recent user-management update, you’ll be able to register and create an online map to manage the game alongside your fellow investigators. To do so, simply sign up and create a map, which you can then share with your friends so they can join your game.",
-            fechaActualizacion: "18/05/2025" 
+            fechaActualizacion: "18/05/2025"
           },
-          {id: 4,
+          {id: 5,
             numeroActualizacion: "4.0.3",
-            titulo: "Nuevos investigadores!! , añadido pantalla de carga y Backend completado",
-            ENtitulo: "New Investigators!! Added Loading Screen and Backend Completed",
-            descripcion: "Se ha completado la migracion de datos y ya esta toda la aplicacion reactiva con su respectivo backend, lo que ahora dara paso mas adelante a mas ineracciones con los usuarios, como dar la posibilidad de guardar partida, creacion de personajes o interaccion entre jugadores. Para ello se ha necesitado hacer una pantalla de carga entre pestaña y pestaña y se ha emepzado a añadir personajes nuevos de la comunidad de BGG.",
+            titulo: "¡Nuevos investigadores! Añadida pantalla de carga y backend completado",
+            ENtitulo: "New Investigators! Added Loading Screen and Backend Completed",
+            descripcion: "Se ha completado la migración de datos y ya está toda la aplicación reactiva con su respectivo backend, lo que ahora dará paso más adelante a más interacciones con los usuarios, como la posibilidad de guardar partida, crear personajes o interactuar con otros jugadores. Para ello, se ha añadido una pantalla de carga entre pestañas y se ha empezado a incorporar nuevos investigadores de la comunidad de BGG.",
             ENdescripcion: "Data migration is complete and the entire application is now fully reactive with its backend. This will pave the way for additional user interactions, such as saving games, character creation, and player-to-player interaction. A loading screen between tabs has been implemented, and new community-created investigators from BGG have started to be added.",
-            fechaActualizacion: "25/04/2025" 
+            fechaActualizacion: "25/04/2025"
           },
           {id: 3,
             numeroActualizacion: "4.0.2",
-            titulo: "Mejoras en Enemigos, recordatorios y Gestión de Datos",
+            titulo: "Mejoras en enemigos, recordatorios y gestión de datos",
             ENtitulo: "Improvements in Enemies, Reminders, and Data Management",
-            descripcion: "Añadido indicador de expansion de cada enemigo. Añadido recordatorio para bendición y maldición. Añadido gestion de fichas de concentracón. Corregido algunas traducciones. Añadido gestion de datos por backend.",
+            descripcion: "Añadido indicador de expansión de cada enemigo. Añadido recordatorio para bendición y maldición. Añadida gestión de fichas de concentración. Corregidas algunas traducciones. Añadida gestión de datos por backend.",
             ENdescripcion: "Added expansion indicator for each enemy. Added reminder for Blessing and Curse. Added management of concentration tokens. Fixed some translations. Added data management via backend.",
-            fechaActualizacion: "28/03/2025" 
+            fechaActualizacion: "28/03/2025"
           },
           {id: 2,
             numeroActualizacion: "4.0.1",
-            titulo: "Nueva interfaz de zona de juego de Investigador, reserva de mitos y apartado de noticias.",
-            ENtitulo: "New investigator play area interface, mythos reserve, and news section.",
-            descripcion: 'Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero, restos y añadir el contador de pistas. Además, se ha añadido la sección "Reserva de Mitos", para gestionas las reserva de mitos durante el juego. Se añade apartado de noticias para informar de las nuevas actualizaciones.',
+            titulo: "Nueva interfaz de zona de juego de investigador, reserva de mitos y apartado de noticias",
+            ENtitulo: "New investigator play area interface, mythos reserve, and news section",
+            descripcion: 'Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero y restos, y añadir el contador de pistas. Además, se ha añadido la sección "Reserva de Mitos" para gestionar la reserva de mitos durante el juego. También se incluye un apartado de noticias para informar de las nuevas actualizaciones.',
             ENdescripcion: 'The character page interface has been adjusted to improve the visibility of the health, sanity, money, and clue counters, as well as to add a clue counter. Additionally, the "Mythos Reserve" section has been added to manage the mythos reserve during the game. A news section has also been included to inform about new updates.',
-            fechaActualizacion: "14/03/2025" 
+            fechaActualizacion: "14/03/2025"
           },
           {id: 1,
             numeroActualizacion: "4.0.0",
-            titulo: "Correccion de traducciones y nuevo apartado de versiones.",
-            ENtitulo: "Correction of translations and new versions section.",
-            descripcion: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas. Se incluye control de version en Home.",
+            titulo: "Corrección de traducciones y nuevo apartado de versiones",
+            ENtitulo: "Correction of translations and new versions section",
+            descripcion: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas. Se incluye control de versión en Home.",
             ENdescripcion: "All elements have been fully translated into English, including status cards, interface, investigators, and maps. Version control has been added to the Home page.",
             fechaActualizacion: "24/04/2025"
           }
