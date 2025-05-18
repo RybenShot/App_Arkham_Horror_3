@@ -1,71 +1,126 @@
 <p align = "center">
-  <a href= "#que-hace">Que hace?</a> |
+  <a href= "#clerk">> Clerk < </a> |
+  <a href= "#que-hace">Descripcion</a> |
   <a href= "#funcionalidades">Funcionalidades</a> |
-  <a href= "#guia-de-usuario">Guia de usuario</a> |
+  <a href= "#api">API</a> |
   <a href= "#especificaciones-tecnicas">Especificaciones tecnicas</a> |
   <a href= "#enlace-a-la-app">Enlace a la app</a> 
 </p>
 
 <div align="center">
   <img src="/README_FILES/bannerAH.png" >
-  <h1>Arkham Horror 3 Edicion - Juego de mesa</h1>
+  <h1>App Arkham Horror 3ª Edicion</h1>
 </div>
 
 # Introduccion
-Bienvenido a la documentación de App Arkhma Horror. 
-Esta app es una herramienta diseñada para facilitar la gestión y el seguimiento de partidas del juego de mesa de Arkham Horror Tercera edicion, proporcionando una experiencia fluida y enriquecedora para los jugadores.
+Bienvenido a la documentación de App Arkham Horror.
+Esta app es una herramienta diseñada para facilitar la gestión y el seguimiento de partidas del juego de mesa Arkham Horror 3ª Edición, proporcionando una experiencia fluida y enriquecedora para los jugadores.
 
-# Que hace?
+# Clerk .
+### ¿Como usamos Clerk?
+Principalmente para la gestión de los usuarios, estos pueden crear mapas online y gestionar las variables de la partida, como las fichas de perdición y las pistas del escenario, o las fichas de la reserva de mitos. El usuario host (creador de la partida) podrá ver en su perfil privado los mapas online que haya creado gracias a su ID de usuario, que se imprime en el mapa al momento de crearlo.
 
-Es una herramienta para el juego de mesa "Arkham horror 3ª edicion". 
-Hay un pequeño problema en este juego y es su gran complejidad, pero no seria lo mismo sin esto mismo. Muchas cartas de eventos, cartas de enemigos, cartas de efectos personales de cada personaje, fichas de dinero/restos/daño/terror/cordura, cartas de hechizos, cartas especiales de objetos ... y mucho mucho mas.
-Al final siempre, **SIEMPRE** falta mesa y tienes que pasar mas tiempo en reorganizar el juego para que todo quepa que jugando en si.
-Y por eso nació este proyecto, para solventar ese problema Y AUMENTAR LA EXPERIENCIA DE JUEGO.
+También, un jugador que haya iniciado sesión podrá unirse a un mapa online siempre que tenga el ID del mapa.
 
-Con esta aplicacion no solo podras gestionar todo lo anteriomente dicho en un solo movil, sino que encima, abre la posibilidad de ampliar su juego con nuevas cartas, nuevos personajes, nuevos mapas, nuevos enemigos, INCLUIR UNA NARRATIVA EN VOZ EN OFF, efectos especiales para cuando el personaje pierda vida/cordura, añadir valoraciones de otros usuarios para elegir mapa o personaje, estrategias compartidas por otros usuarios, y mucho MUCHISIMO MAS.
+Gracias a Clerk y su comprobación de sesión, podemos restringir el acceso al perfil privado, a la creación de mapas online o a unirse a ellos según el estado de autenticación.
+
+# Descripcion
+Esta aplicación acompaña el juego de mesa Arkham Horror 3ª Edición, cuya gran complejidad hace necesaria una ayuda digital. El juego incluye muchas cartas (eventos, enemigos, hechizos, objetos especiales), fichas (dinero, daño, terror, cordura, pistas) y mucha narrativa, que a menudo requieren reorganizar componentes en la mesa y pueden causar confusiones durante la partida.
+
+Por ello nació este proyecto: SOLVENTAR esa complejidad y AUMENTAR la experiencia de juego. Con la app podrás:
+
+- Gestionar todo lo anterior desde un único móvil.
+- Ampliar el juego con nuevas cartas, personajes, mapas y enemigos.
+- Incluir narrativa en off (voz en off para descripciones).
+- Aplicar efectos especiales (manchas de sangre, auras de estado).
+- Jugar online con otros investigadores.
+- ¡Y mucho más!
 
 # ¿Por donde vamos?
-Ahoramismo el proyecto sigue en fase de desarrollo, estamos en la 4ª version, actualmente ya es completamente funcional con TODAS LAS EXPANSIONES, con nuevas cartas incluidas y efectos visuales para los personajes, ayuda a la creacion de losetas de mapa, ayuda para crear el mazo de enemigos para el mapa, voz en off que lee la descripciones de mapas e historia de los personajes.
+Actualmente el proyecto sigue en fase de desarrollo porque aún queda mucho por hacer.Estamos en la 4ª versión y ya es funcional con todas las expansiones (tanto oficiales como de la comunidad de BGG), con nuevas cartas y efectos visuales para los personajes.
+También incluye:
 
-Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dudes en contactarme por mi [LinkedIn](https://linkedin.com/in/sebastian-jimenez-roman)
+- Ayuda para la creación de losetas de mapa.
+- Asistente para generar el mazo de enemigos de cada escenario.
+- Voz en off que narra las descripciones de mapas e historias de personajes.
+
+Para cualquier duda o sugerencia más detallada sobre el proyecto, no dudes en contactarme en mi [LinkedIn](https://linkedin.com/in/sebastian-jimenez-roman)
 
 # Funcionalidades
+
+<div align="center"><h2>Interfaces</h2></div>
+
+<table align="center">
+    <td>
+      <h2>Home</h2>
+      <ul>
+        <li>1- Visitas totales de la app desde la creación del back-end.</li>
+        <li>2- Avatar de Clerk. Aquí se pueden gestionar los datos de usuario a través de la interfaz de Clerk.</li>
+        <li>3- Botón para abrir el panel de Perfil privado. Si no está logueado, este botón se transforma en el botón de login.</li>
+        <li>4- Botón que te redirecciona a la lista de mapas o a la de investigadores.</li>
+        <li>5- Botón para abrir la ventana de créditos.</li>
+        <li>6- Botones de redirección a BuyMeACoffee y a Instagram.</li>
+        <li>7- Apartado de noticias sobre la app.</li>
+        <li>8- Botones de cambio de idioma.</li>
+        <li>Para toda la web, entre página y página hay una página de carga.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/Home.jpg" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
+
+<table align="center">
+    <td>
+      <h2>Perfil</h2>
+      <ul>
+        <li>1- Botón de log out.</li>
+        <li>2- Apartado de trofeos. Actualmente no hay trofeos disponibles; vendrán con futuras actualizaciones.</li>
+        <li>3- ID de tu usuario, para poder añadir amigos en el futuro.</li>
+        <li>4- Lista de mapas online creados por el usuario.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="/README_FILES/profile.jpg" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+    </td>
+</table>
 
 <div align="center"><h2>Investigadores</h2></div>
 
 <table align="center">
-    <td>
-      <h2>Lista de personajes</h2>
-      <ul>
-        <li>1- Activar o desactivar las expansiones. El borde de color de cada investigador indica de qué expansión proviene.</li>
-        <li>2- Vida y cordura de cada personaje.</li>
-        <li>3- Hacer tap para ver en detalle al investigador seleccionado.</li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/personajes/Personajes-1.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td>
+    <h2>Lista de personajes</h2>
+    <ul>
+      <li>1- Buscar por expansiones o por arquetipo de personaje.</li>
+      <li>2- Activar o desactivar las expansiones. El borde de color de cada investigador indica de qué expansión proviene.</li>
+      <li>3- Vida y cordura de cada personaje.</li>
+      <li>4- Hacer tap para ver en detalle al investigador seleccionado.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/personajes/listaPersonajes.jpg" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+  </td>
 </table>
 
 <table align="center">
   <tr>
     <td style="max-width: 684px">
-      <h2>Detalle de personaje.</h2>
+      <h2>Detalle de personaje</h2>
       <ul>
         <li>1- Nombre y posición social del personaje.</li>
-        <li>2- Pertenencias iniciales del personaje. Al hacer tap revela una ventana con las pertenencias, cada carta si se le hace tap se ve en grande para facilitar su lectura.</li>
-        <li>3- Historia hasta ahora del investigador. Al hacer tap en el megáfono se reproducirá un audio narrando la historia del personaje. Por supuesto, está la propia historia del personaje. Algunos investigadores tienen una historia más detallada en un video de YouTube.</li>
-        <li>4- Arquetipo de personaje. Aquí se puede ver para lo que es mejor el personaje.</li>
-        <li>5- Salud. Cada personaje tiene 2 vidas, la salud física y salud mental, si en cualquier momento alguna de las 2 llega a 0 el investigador muere o cae preso a la locura.</li>
-        <li>6- Atributos. Cada uno de los 5 atributos se usan durante la partida. Por ejemplo: "Quieres convencer al inspector de policía para que te acompañe, tira de INFLUENCIA" en el caso de Marie Lambeau debería tirar 4 dados de 6 caras (+ los bonificadores que pueda tener).</li>
-        <li>7- Habilidades únicas. Cada personaje empieza con habilidades únicas que te dan bonificaciones para la partida, cada personaje es un mundo y no solo puede tener 1, algunos tienen hasta 2. Algunas veces en este apartado también aparecen condiciones del personaje como es el caso de Rex Murphy y su estado de "Maldición familiar" que solo podrá acertar las tiradas con 5 y 6.</li>
+        <li>2- Pertenencias iniciales del personaje. Al hacer tap se abre una ventana con las pertenencias; cada carta, al tocarla, se ve en grande para facilitar su lectura.</li>
+        <li>3- Historia del investigador. Al hacer tap en el megáfono se reproducirá un audio narrando su trayectoria. Algunos investigadores tienen además un video de YouTube con más detalles.</li>
+        <li>4- Arquetipo de personaje. Aquí se muestra la especialidad principal del investigador.</li>
+        <li>5- Salud. Cada investigador tiene dos barras: vida física y salud mental. Si alguna llega a 0, el investigador muere o enloquece.</li>
+        <li>6- Atributos. Se usan durante la partida para tiradas específicas. Por ejemplo, para convencer al inspector de policía, Marie Lambeau lanzaría dados de INFLUENCIA (+bonificadores correspondientes).</li>
+        <li>7- Habilidades únicas. Cada investigador comienza con hasta dos habilidades especiales que otorgan bonificaciones o condiciones de juego (por ejemplo, "Maldición familiar" de Rex Murphy).</li>
         <li>8- Frase del personaje.</li>
-        <li>9- Límite de concentración. La concentración se usa para aumentar 1 punto temporalmente uno de los atributos del investigador para ayudar a que la tirada pueda ser más favorable.</li>
-        <li>10- Lista - Comenzar. Si haces tap en "Lista" vuelves a la lista de investigadores. Si haces tap en "Comenzar" entrarás en juego con el personaje que estabas viendo en detalle.</li>
+        <li>9- Límite de concentración. Permite aumentar un atributo en 1 punto temporalmente; algunas cartas pueden superar este límite.</li>
+        <li>10- Controles: "Lista" vuelve a la lista de investigadores; "Comenzar" inicia la partida con el investigador seleccionado.</li>
       </ul>
     </td>
     <td>
-      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes">
+      <img src="/README_FILES/personajes/Personajes-2.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
     </td>
   </tr>
 </table>
@@ -76,179 +131,174 @@ Para cualquier duda, sugerencia o explicacion mas detallada del proyecto no dude
     <td><img style="max-width: 100%; max-height: 700px" src="/README_FILES/personajes/Personajes-5.JPG"></td>
 </table>
 
+<div align="center"><h2>In Play</h2></div>
+
 <table align="center">
-    <td style="max-width: 684px">
-      <h2>In play - Tirador de dados</h2>
-      <p>Las tiradas pueden verse afectadas por ajentes externos, por ejemplo: Si el investigador tiene el estado <br> "bendecido" los aciertos pasaran de ser de 5 y 6 a 4, 5 y 6</p>
-      <ul>
-        <li>1- Salud. Estos son contadores de vida (SAlud y cordura), si en algun momento alguno de los 2 llega a 0 el investigador habra muerto.</li>
-        <li>2- Navegacion. El primero es la ventana de tirada de dados, > la segunda es la ventana de estados, > la tercera es la ventana de habilidades unicas y > la ultima es para salir/terminar la partida.</li>
-        <li>3- Atributos. al hacer tap en alguno de los atributos, seleccionas de que quieres tirar, justo abajo a la izquierda aparecera el N de dados que se va a lanzar y a la derecha puedes sumar N de dados. <br> Por ejemplo: tienes un arma que te da +3 de fuerza, y este personaje tiene ya de por si 2 de Fuerza, pues para hacer una tirada de fuerza harias tap al atributo de fuerza y pondrias en dados extras 3, asi se lanzaria 5 dados.</li>
-        <li>4- Tirardor. Simple, un submit para tirar el N de dados que pone arriba a la izquierda.</li>
-        <li>5- Resultados. Aqui apareceran los dados lanzados, se pondran en verde los que sean aciertos, en rojo los que sean pifia (que en este juego no tienen gran importancia, pero que bien) y sin borde que no son aciertos. Por defecto los aciertos suelen ser si se saca 5 o 6, pero si el personaje esta bendecido tambien contara el 4, en cambio si esta Maldito, solo contara el 6.</li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/inplay/play.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td style="max-width: 684px">
+    <p>La parte de juego está dividida en 2.</p>
+    <p><strong>Ventana de Investigador:</strong> aquí cada jugador gestiona su propio investigador; esta parte es offline.</p>
+    <p><strong>Ventana de Mapa:</strong> esta ventana es común para todos los jugadores, ya que es donde se gestionan las fichas de la historia principal donde están todos, por ejemplo la gestión de fichas de perdición o de pistas, o la reserva de mitos. Esta parte es online.</p>
+  </td>
 </table>
 
 <table align="center">
-    <td style="max-width: 684px">
-      <h2>In play - Estados</h2>
-      <p>Todos los estados tienen su propio modal. Como hay muchos con muchas variantes solo hare un pequeño resumen. Todos se consiguen por razones de la partida asi que omitire esa parte.</p>
-      <ul>
-        <li>1- Activos - Todos. En la ventana "Activos" solo aparecen los que el investigador tiene activo, en la de Todos, pues aparecen todos los estados posibles y se pondran en verde (a modo orientativo) los estados que esten activos.</li>
-        <li>2- Pacto siniestro. Cuando tengas este estado, en cierto momento de la partida aparecera una ficha llamada retribucion, en ese momento debes abrir este estado y tirar 1 dado, si sale 1, se debera cumplir con el pacto (se revelara 1 de las 15 cartas que hay guardadas). <br> > Una vez adquirido el estado de pacto, este no desaparecera hasta haberlo cumplido.</li>
-        <li>3- Mancillado. funciona mas o menos como el pacto siniestro, pero cuando salga fichas blancas, se tendra que hacer una cosa y cuando salga la retribucion (sin tirar ningun dado a diferencia de pacto siniestro) se debera cumplir con lo que diga la carta (normalmente algo malo). El castigo de esta carta suele ser mas flojo.</li>
-        <li>4- Maldicion - Bendicion. Con la bencicion los aciertos seran 4, 5 y 6. Con la maldicion sera solo 6. No se pueden tener las 2 cartas a la vez, si una esta activa y quieres activar la otra, la que tenias activa se desactivara automaticamente.</li>
-        <li>5- Fatigado - Determinado - Perseguido. Estados que te dan bonificaciones varias </li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/inplay/play_1.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td style="max-width: 684px">
+    <h2>In play – Player</h2>
+    <p>En la parte de jugador, por ahora es completamente offline. Aquí se gestiona todo lo relativo al personaje: fichas variables como dinero, vida, cordura…, tiradas de atributos y estados del personaje. Junto a esto hay recordatorios, ya que si el personaje tiene un estado como, por ejemplo, “Pacto siniestro”, durante la partida ocurren sucesos (gestionados por la aplicación en la parte de “Map”) que requieren que el jugador realice alguna acción; para evitar que pase desapercibido, hay recordatorios automáticos en la app que aparecerán en forma de modal.</p>
+  </td>
 </table>
 
 <table align="center">
-    <td style="max-width: 684px">
-      <h2>In play - Habilidades</h2>
-      <ul>
-        <li>1- Habilidades unicas. Aqui aparece a modo de recordatorio las habilidades unicas del investigador.</li>
-        <li>2- Limite de concetracion. Aqui aparece hasta cuanto se puede concentrar en sus habilidades.</li>
-        <li>3- Moneda. 2 contadores, uno de dinero y el otro de restos que dejan las criaturas que se pueden usar como moenda de cambio durante la aprtida.</li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/inplay/play_2.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td style="max-width: 684px">
+    <h2>In play – Player – Datos base y tirador de dados</h2>
+    <p>Las tiradas pueden verse afectadas por agentes externos; por ejemplo, si el investigador tiene el estado “bendecido”, los aciertos pasan de ser 5 y 6 a 4, 5 y 6.</p>
+    <ul>
+      <li><strong>1. Imagen y nombre de investigador.</strong> El marco puede cambiar de color según los estados “Bendecido” o “Maldito”.</li>
+      <li><strong>2. Contadores del investigador.</strong> Seleccionando uno y luego pulsando + o –, el contador sube o baja, con la limitación de que no puede ser inferior a 0 ni, en el caso de vida y cordura, superar el máximo inicial.</li>
+      <li><strong>3. Navegación.</strong> El primero es la ventana de tirada de dados; la segunda, la ventana de estados; la tercera, la de habilidades únicas y pertenencias iniciales; y la última, para salir/terminar la partida.</li>
+      <li><strong>4. Atributos.</strong> Al tocar uno de los atributos, seleccionas sobre qué quieres tirar; justo abajo a la derecha aparecerá el número de dados que se lanzará, junto a un campo que permite sumar dados adicionales.<br>Por ejemplo: si tienes un arma que te da +3 de fuerza y el personaje ya tiene 2 de fuerza, para hacer una tirada de fuerza tocarías el atributo de fuerza y pondrías 3 dados extra, de modo que se lanzarían 5 dados.</li>
+      <li><strong>5. Fichas de concentración.</strong> Cada personaje tiene un límite de concentración; estas fichas te permiten tirar 1 dado. Normalmente no se puede superar el máximo, pero durante la partida hay cartas que permiten saltarse este límite. Al tener alguna ficha, si pulsas el botón “Usar 1”, se usará aleatoriamente una ficha para hacer una tirada de 1 dado. Las fichas de concentración se pueden usar para cualquier atributo.</li>
+      <li><strong>6. Resultados.</strong> Aquí aparecerán los dados lanzados: se marcarán en verde los aciertos y sin borde los que no lo son. Por defecto, los aciertos suelen ser 5 o 6, pero si el personaje está “bendecido” también contará el 4; en cambio, si está “maldito”, solo contará el 6.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/personajes/tiradorDados.jpg" alt="Personajes" style="max-width: 100%; max-height: 700px;">
+  </td>
 </table>
 
 <table align="center">
-    <td style="max-width: 684px">
-      <h2>In play - Ajustes</h2>
-      <ul>
-        <li>1- Botones preview. Estos dos botones actualmente no son funcional pero son un preview de lo que hara y se vera.</li>
-        <li>2- Volver a la lista de personajes.</li>
-        <li>3- Termina la partida y vuelve al home.</li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/inplay/play_3.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td style="max-width: 684px">
+    <h2>In play – Player – Estados</h2>
+    <p>Todos los estados tienen su propio modal. Como hay muchos con varias variantes, solo haré un pequeño resumen. Todos se consiguen por motivos de la partida; por ejemplo, el pacto siniestro se obtiene en un encuentro que indica “si quieres conseguir este hechizo tan bueno, tendrás que aceptar un pacto siniestro”. Entonces aceptas el hechizo y activas el estado “pacto siniestro” y, cuando aparezca la ficha de mitos de “Retribución”, automáticamente la aplicación te recordará que debes hacer una tirada por el pacto siniestro que tiene activo tu personaje.</p>
+    <ul>
+      <li><strong>1. Activos – Todos.</strong> En la ventana “Activos” solo aparecen los que el investigador tiene activos; en “Todos” aparecen todos los estados posibles y se marcarán en verde (a modo orientativo) los estados que estén activos.</li>
+      <li><strong>2. Pacto siniestro.</strong> Cuando tengas este estado, en cierto momento de la partida aparecerá una ficha llamada “Retribución”. En ese momento la aplicación abrirá un modal para que hagas la tirada para resolver este pacto y, si el dado resulta un 1, se revelará una de las 15 cartas almacenadas.<br>Una vez adquirido el pacto, este no desaparecerá hasta haberse cumplido.</li>
+      <li><strong>3. Mancillado.</strong> Funciona de forma similar al pacto siniestro, pero actúa cuando sale la ficha “Vacía” o de “Pista 2”: se abrirá un recordatorio al investigador para hacer X cosa, y cuando salga la ficha de “Retribución” deberá revelar la carta; la aplicación seleccionará una de las cartas disponibles. El castigo de esta carta suele ser más leve.</li>
+      <li><strong>4. Maldición – Bendición.</strong> Con la bendición los aciertos serán 4, 5 y 6; con la maldición, solo 6. No se pueden tener ambas a la vez: si una está activa y activas la otra, la que tenías se desactivará automáticamente. Además, al activarse una u otra, la imagen del investigador brillará con un aura verde o roja.</li>
+      <li><strong>5. Fatigado – Determinado – Perseguido.</strong> Estados que otorgan bonificaciones varias.</li>
+      <li><strong>6. Estados secundarios.</strong> Consecuencias de otros estados, creados por la comunidad o por mí mismo; por ejemplo, que el investigador quede manco porque un tentáculo de una cámara fotográfica le rebanó el brazo… en el universo de Lovecraft podría pasar perfectamente.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/personajes/vistaEstados.jpg" alt="Estados del jugador" style="max-width: 100%; max-height: 700px;">
+  </td>
+</table>
+
+<table align="center">
+  <td style="max-width: 684px">
+    <h2>In play – Player – Habilidades</h2>
+    <ul>
+      <li><strong>1. Habilidades únicas.</strong> Aquí aparecen las habilidades únicas del investigador.</li>
+      <li><strong>2. Pertenencias iniciales.</strong> Aquí aparecen las cartas de pertenencias que tiene desde el principio. En un futuro se implantará la opción de añadir cartas, ya que durante la partida se consiguen más objetos.</li>
+      <li>Cada carta se puede ver en detalle si se toca.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/inplay/habilidades.jpg" alt="Habilidades del investigador" style="max-width: 100%; max-height: 700px;">
+  </td>
+</table>
+
+<table align="center">
+  <td style="max-width: 684px">
+    <h2>In play – Ajustes</h2>
+    <ul>
+      <li><strong>1. Botones de preview.</strong> Estos dos botones actualmente no son funcionales, pero muestran un avance de lo que harán y se verá.</li>
+      <li><strong>2. Código de mapa.</strong> Esta parte solo aparece si el mapa en juego es online.</li>
+      <li><strong>3. Volver a la lista de personajes o terminar la partida.</strong> Vuelve al inicio.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/inplay/Ajustes.jpg" alt="Ajustes de la aplicación" style="max-width: 100%; max-height: 700px;">
+  </td>
+</table>
+
+<table align="center">
+  <td>
+    <h2>In play – Mapa</h2>
+    <p>Esta parte es completamente online. Todo lo que se modifique aquí realizará llamadas a la API para cambiar los estados de las variables, de modo que todos los que estén jugando este mismo mapa puedan ver los datos actualizados, ya sean las fichas de perdición y pista del mapa (estas fichas se usan para avanzar en la historia, para bien o para mal) o la reserva de mitos. En la práctica, esto simula una bolsa de fichas de la que, en determinados momentos de la partida, todos los jugadores deben sacar fichas; según lo que saquen, suceden eventos en el mapa y en la historia.</p>
+  </td>
+</table>
+
+<table align="center">
+  <td style="max-width: 684px">
+    <h2>In play – Mapa – Datos base y reserva de mitos</h2>
+    <ul>
+      <li><strong>1. Botones de variables:</strong> control de perdición y pista en el mapa.</li>
+      <li><strong>2. Navegación.</strong></li>
+      <li><strong>3. Botón de resetear la reserva de mitos:</strong> devuelve todas las fichas reveladas a la bolsa.</li>
+      <li><strong>4. Botón para añadir ficha a la reserva:</strong> al hacer clic, se abre un modal para seleccionar el tipo de ficha a añadir.</li>
+      <li><strong>5. Botón para borrar ficha de mitos:</strong> abre un modal para elegir la ficha a eliminar.</li>
+      <li><strong>6. Botón para retornar ficha:</strong> abre un modal con todas las fichas ya reveladas; permite devolver una ficha a la reserva.</li>
+      <li><strong>7. Reserva de mitos:</strong> muestra todas las fichas; las tachadas indican las ya reveladas.</li>
+      <li><strong>8. Botón para pedir ficha de mitos:</strong> al solicitarla, no solo extrae la ficha, sino que también actualiza la reserva en el servidor.</li>
+      <li><strong>9. Ficha de mitos extraída:</strong> muestra en grande la ficha obtenida.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/inplay/MapaInPlay.jpg" alt="Habilidades del investigador" style="max-width: 100%; max-height: 700px;">
+  </td>
 </table>
 
 <div align="center"><h2>Mapas</h2></div>
 
 <table align="center">
-    <td style="max-width: 684px">
-      <h2>Lista de mapas</h2>
-      <ul>
-        <li>1- Activar o desactivar las expansiones. El borde de color de cada mapa indica de qué expansión proviene.</li>
-        <li>2- Mapa. Al hacer tap, va a la pagina de detalle de ese mapa.</li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/mapas/mapas_1.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td style="max-width: 684px">
+    <h2>Lista de mapas</h2>
+    <ul>
+      <li><strong>1. Activar o desactivar expansiones.</strong> El borde de cada mapa indica su expansión.</li>
+      <li><strong>2. Botón de modo online.</strong> Abre el modal para entrar en partidas online.</li>
+      <li><strong>3. Mapa.</strong> Al tocarlo, accedes a la página de detalle de ese mapa.</li>
+      <li>Para acceder al modo online, el usuario debe estar logueado. Aparecerá una barra para introducir la ID de un mapa online ya creado.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/mapas/lista de mapas.jpg" alt="Lista de mapas" style="max-width: 100%; max-height: 700px;">
+  </td>
 </table>
 
 <table align="center">
-    <td style="max-width: 684px">
-      <h2>Detalle de mapas</h2>
-      <p>Actualmente los datos que estan en la parte de Especificaciones (Votos de usuario, dificultad, duracion.), son datos estiumados por jugada propia, proximamente habra sistema de vocacion e interaccion con el usuario para que se haga una media entre todos los usuarios.</p>
-      <ul>
-        <li>1- Datos basicos. Aqui tenemos titulo, descripcion y en algunos mapas, una locucion(si haces tap en el icono del megafono se acivara la locucion, si esta disponible en este mapa).</li>
-        <li>2- Especificaciones. Sin mas, son datos extras para cada mapa, actualmente son estimaciones, proximamente los datos saldran de hacer una media por los mismos usuarios.</li>
-        <li>3- Mapa de losetas. Ayuda para la colocacion de las losetas, al hacer tap se ampliara para verse mejor.</li>
-        <li>4- Enemigos. aqui abre la lista de enmigos de esta historia, porque segun cual haya elegido cambian los enemigos que aparecen. En la lista puedes hacer tap a algun enemigo para verlo mas en detalle.</li>
-        <li>5- Inv. Rec. y Comunidad. La parte de inv. rec. esta aun en proceso, esta pensada para segun el mapa que hayas elegido, hay algunos investigadores que son mas convenientes elegirlos que otros. La comunidad te redirecciona a la pagina de Arkham Horror 3 edicion de BGG.</li>
-        <li>6- Lista. Vuelve al apartado de lista de mapas.</li>
-        <li>7- Contador. Para que el usuario se haga una idea de cuantos mapa hay en total y cual ha selecionado.</li>
-        <li>8- Seleccionar inv. Para saltar directamente a la lista de investigadores.</li>
-      </ul>
-    </td>
-    <td>
-      <img src="/README_FILES/mapas/mapas_2.JPG" alt="Personajes" style="max-width: 100%; max-height: 700px;">
-    </td>
+  <td style="max-width: 684px">
+    <h2>Detalle de mapas</h2>
+    <p>Actualmente los datos en la sección de especificaciones (votos de usuario, dificultad, duración) son estimaciones basadas en partidas propias. Próximamente habrá un sistema de votación e interacción con los usuarios para calcular una media colectiva.</p>
+    <ul>
+      <li><strong>1. Datos básicos.</strong> Incluyen título, descripción y, en algunos mapas, una locución (toca el icono del megáfono para activarla si está disponible).</li>
+      <li><strong>2. Especificaciones.</strong> Datos adicionales del mapa; de momento son estimaciones, pero pronto se obtendrán de la media de todos los usuarios.</li>
+      <li><strong>3. Mapa de losetas.</strong> Guía para colocar las losetas; al tocar se amplía para ver mejor.</li>
+      <li><strong>4. Enemigos.</strong> Muestra la lista de enemigos de la historia; varía según el mapa. Toca un enemigo para ver sus detalles.</li>
+      <li><strong>5. Inv. recomendados y comunidad.</strong> La sección de investigadores recomendados está en desarrollo; mostrará qué investigadores convienen según el mapa. “Comunidad” redirige a la página de BGG de Arkham Horror 3.ª edición.</li>
+      <li><strong>6. Crear mapa online.</strong> Solo visible si el usuario está logueado; crea una partida online con el mapa seleccionado y devuelve la ID para compartir.</li>
+      <li><strong>7. Seleccionar mapa.</strong> Botón para elegir el mapa con el que jugar.</li>
+      <li><strong>8. Volver a la lista.</strong> Regresa a la lista de mapas.</li>
+      <li><strong>9. Contador.</strong> Muestra cuántos mapas hay en total y cuál está seleccionado.</li>
+      <li><strong>10. Seleccionar investigador.</strong> Lleva a la lista de investigadores.</li>
+    </ul>
+  </td>
+  <td>
+    <img src="/README_FILES/mapas/detalleMapa.jpg" alt="Detalle de mapas" style="max-width: 100%; max-height: 700px;">
+  </td>
 </table>
 
-# Guia de usuario
+# API
 
-## Elegir un mapa. 
-Esta funcion es meramente de apollo , aqui tienes todo lo que necesitas para el juego
+<p>Sin entrar en profundidad, esto es lo que gestiona la API:</p>
 <ul>
-  <li>Datos basicos como, titulo descripcion YYYYY (solo en algunos mapas) Locucion de la descripcion del mapa.</li>
-  <li>Datos extras sobre el mapa, actualmente es una estimacion, proximamente sera reactivo segun la media de las votaciones de los usuarios.</li>
-  <li>Losetas de mapas. para no solo saber la colocacion del mapa sino que tambien saber que cartas de que barrio se teienen que coger para la partida.</li>
-  <li><strong>Lista de enemigos, reactiva segun el mapa seleccionado. Lo buenisimo de esta parte (es una de las razones por la que quise hacer esta app) al tener tantos enemigos distintos (aun mas si tienes todas las expansiones), en el juego de mesa solo te dicen el nombre de que criaturas que hay que meter y al final pasas muchisimo rato buscandolas, gracias a esta parte, gracias a ver la imagen es infinitamente mas rapido encontrarlos.</strong></li>
-  <li>Inv. Rec esta en proceso, esta pensada para segun el mapa que hayas elegido, hay algunos investigadores que son mas convenientes elegirlos que otros. </li>
-  <li>La comunidad te redirecciona a la pagina de Arkham Horror 3 edicion de BGG.</li>
+  <li>Bases de datos de investigadores, mapas, mapas online, enemigos y cartas de objetos.</li>
+  <li>Gestión de endpoints basada en modelo ruta–controlador–modelo.</li>
 </ul>
+<p>La API está alojada en Railway.</p>
+<p>Si quieres saber más, el repositorio está público en mi perfil.</p>
 
-## Elegir un Investigador para jugar. 
-Importante! Esta app es una herramienta para el juego de mesa, es decir, es NECESARIO el juego de mesa para jugar.
+# Especificaciones técnicas
 
-Aqui podras ver en detalle a los distintos investigadores y seguir una partida enteramente usando como ficha de personaje el mismo movil con el investigador seleccionado.
-Para llegar a jugar con un investigador es simple, entra en al lista de personajes > selecciona el investigador que mas te guste > click en "comenzar"
-
-Dentro puedes hacer:
-<ul>
-  <li>Tirar los dados para hacer las pruebas durante la partida.</li>
-  <li>Añadirte estados a los personajes, .</li>
-  <ul>
-    <li>Activos - Todos. En la ventana "Activos" solo aparecen los que el investigador tiene activo, en la de Todos, pues aparecen todos los estados posibles y se pondran en verde (a modo orientativo) los estados que esten activos.</li>
-    <li>Pacto siniestro. Si tienes esta carta (por circusntancias de la partida) y sale la ficha de RETRIBUCION debes entrar en el estado y tirar  1 dado, si ese dado sale 1, deberas cumplir con lo que diga la carta.</li>
-    <li>Mancillado. Teniendo esta carta, cuando salga una ficha de Mitos vacia o una aparicion de pista, coloca una ficha de Perdicion en tu espacio. Cuando salga la RETRIBUCION de tiene que ver que te ha tocado.</li>
-    <li>Maldicion - Bendicion. Con la bencicion los aciertos seran 4, 5 y 6. Con la maldicion sera solo 6. No se pueden tener las 2 cartas a la vez, si una esta activa y quieres activar la otra, la que tenias activa se desactivara automaticamente.</li>
-    <li>Fatigado - Determinado - Perseguido. Estados que te dan bonificaciones varias.</li>
-    <li>Agitado, Manco, Al filo, Señalado. Son estados que dependen de lo que pueda ocurrir en otros estados como pacto siciestro o mancillado.</li>
-  </ul>
-  <li>Ventana con recuerdo de las habilidades unicas de cada investigador.</li>
-  <li>Contador de vida, cordura, dinero y destos.</li>
-</ul>
-
-# Especificaciones tecnicas
-
-### Tecnologias usadas
-- **Lenguaje de programación:**: JavaScript HTML CSS
-- **Framewoks y bibliotecas**: Vue, vue-router, vuex, howler
-- **Herramientas de desarrollo**: Bulma
-- **Deploy**: Firebase
-
-### Características Principales
-- Herramienta para el Juego de mesa Arkham Horror 3rd Edition.
-- Interfaz gráfica intuitiva y fácil de usar.
-- Integración de audio para una inmersión total en el mundo de Arkham Horror.
-
-### Caracteristicas internas
-- La gestion de variables. en la mayoria de los casos, se hace a traves del Store, todo se escribe ahi y todo se saca de ahi.
-- Como aun no hay backend, todo esta echo en frontend.
-- Las bases de datos (Todos los datos de los personajes, mapas, enemigos, objetos, etc), estan dispersado en varios sitios:
-  <ul>
-    <li>Datos de los investigadores: src > views > Personajes > ListadePersonajes.vue</li>
-    <li>Datos de los mapas: src > views > Mapas > ListaMapas.vue</li>
-    <li>Datos de los enemigos: ya que hay muchos enemigos, decidi dividirlo en 4 (las 4 expansiones) <br> src > components > mapas > ExpansionesEnemigos > {aqui estan los 4 .vue con sus respectivas lista de enemigos}</li>
-  </ul>
-
+### Tecnologías usadas
+- **Lenguaje de programación:** JavaScript, HTML, CSS, Node.js, Express  
+- **Frameworks y bibliotecas:** Vue, Vue Router, Vuex, Howler  
+- **Herramientas de desarrollo:** Bulma, Buefy, Clerk  
+- **Despliegue:** Firebase para el front y Railway para el back  
 
 # Enlace a la app
 
 Pruebala! -> [Click aqui](https://arkhamhorror-39297.web.app/#/) <-
 
-OJO! La aplicacion no es responsive aun, se esta trabajando en ello pero por ahora es unicamente con vista movil.
-Si estan en PC puedes hacer lo siguiente:
-
-- Cick derecho > Inspeccionar. Se abre una ventana a la derecha de la pantalla.
-
-<div align="center" style="width: 400px"><img src="/README_FILES/1.JPG"></div>
-
-- Clicamos en el icono de cambio de vista.
-
-<div align="center" style="width: 400px"><img src="/README_FILES/2.JPG"></div>
-
-- Ajustamos la anchura de la pantalla. Recomendacion propia, poner las dimensiones de Iphone 12 Pro.
-
-<div align="center" style="width: 400px"><img src="/README_FILES/3.JPG"></div>
 
 
