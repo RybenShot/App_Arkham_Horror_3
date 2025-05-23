@@ -34,14 +34,50 @@
       return {
         articles: [
           {
+            id: 0,
+            title: "Hidden Character",
+            description: "Can you find this playable character? Send us a screenshot on our Instagram if you manage to!",
+            img: "/img/1-inv/57-Nameless.jpg",
+            translations: {
+              es: {
+                title: "Personaje oculto.",
+                description: "¿Eres capaz de encontrar este personaje jugable? Mandanos a nuestro Instagram una captura si lo has logrado!",
+              }
+            }
+          },
+          {
+            id: 1,
+            title: "In the next update ...",
+            description: "Online interaction with other players will be added.",
+            img: "/img/5-otros/articulosPaginaDeCarga/grupoDeJugadores.png",
+            translations: {
+              es: {
+                title: "En la siguiente actualizacion...",
+                description: "Se añadirá interaccion online con otros jugadores.",
+              }
+            }
+          },
+          {
             id: 2,
             title: "Do you want to collaborate on the project?",
             description: "Message us on Instagram and we'll see what we can do!",
             img: "/img/5-otros/articulosPaginaDeCarga/RexMurphy-te-busca.png",
             translations: {
               es: {
-                title: "¿Quieres colaborar en el proyecto?",
+                title: "Quieres colavorar en el proyecto?",
                 description: "Hablanos por instagram y veremos que podemos hacer!",
+              }
+            }
+          },
+          {
+            id: 3,
+            title: "Investigator quote ...",
+            description: "Sometimes death is not the end.",
+            img: "/img/1-inv/57-Nameless.jpg",
+            translations: {
+              es: {
+                title: "Frase investigador ...",
+                description: "A veces, la muerte no es el final.",
               }
             }
           },
@@ -58,6 +94,18 @@
             }
           },
           {
+            id: 5,
+            title: "Share your game on Instagram!",
+            description: "Upload screenshots of your most epic encounters and gain recognition in the community.",
+            img: "/img/5-otros/articulosPaginaDeCarga/megafono.jpg",
+            translations: {
+              es: {
+                title: "Comparte tu partida en Instagram!",
+                description: "Sube capturas de tus encuentros más épicos y gana reconocimiento entre la comunidad.",
+              }
+            }
+          },
+          {
             id: 6,
             title: "Design a scenario",
             description: "Submit your own adventure or encounter and we might add it as an official fan-made scenario.",
@@ -65,19 +113,58 @@
             translations: {
               es: {
                 title: "Diseña un escenario",
-                description: "Envía tu propia aventura o encuentro y podríamos añadirlo como fan-made de comunidad.",
+                description: "Envía tu propia aventura o encuentro y podríamos añadirlo como fan-made oficial.",
               }
             }
           },
           {
-            id: 11,
+            id: 7,
+            title: "Direct feedback",
+            description: "Tell us what improvements you’d like to see or report any bugs: your voice matters in every update.",
+            img: "/img/5-otros/articulosPaginaDeCarga/megafono.jpg",
+            translations: {
+              es: {
+                title: "Feedback directo",
+                description: "Cuéntanos qué mejoras quieres ver o reporta cualquier error: tu voz importa en cada actualización.",
+              }
+            }
+          },
+          {
+            id: 8,
             title: "Special thanks …",
-            description: "@miduDev, for all your videos, none of this would be possible without your knowledge.",
-            img: "/img/5-otros/articulosPaginaDeCarga/MiduPhoto.png",
+            description: "@eugenia1715, for collaborating many times via Buy Me a Coffee.",
+            img: "/img/5-otros/articulosPaginaDeCarga/agradecimiento.jpg",
             translations: {
               es: {
                 title: "Agradecimiento especial ...",
-                description: "@miduDev, por todos tus videos, nada de esto sería posible sin tus conocimientos. ",
+                description: "@eugenia1715, por colavorar varias veces desde buy Me a Coffee. ",
+                loQueEnRealidadMeGustariaDecir: "Gracias por ser mi amiga, hermana, amante y mujer. Gracias por ser todo lo que siempre soñe, por ser la luz de ilusion que ilumina mi corazon. Por ser como eres."
+              }
+            }
+          },
+          {
+            id: 9,
+            title: "Special thanks …",
+            description: "@gioff101, for collaborating via Buy Me a Coffee.",
+            img: "/img/5-otros/articulosPaginaDeCarga/agradecimiento.jpg",
+            translations: {
+              es: {
+                title: "Agradecimiento especial ...",
+                description: "@gioff101, por colavorar desde buy Me a Coffee. ",
+                loQueEnRealidadMeGustariaDecir: "Gracias por ser mi amigo, pocos quedan que sean tan honorables y honestos como tu. Te respeto por la persona que eres y me alegra poder decirte amigo."
+              }
+            }
+          },
+          {
+            id: 10,
+            title: "Special thanks …",
+            description: "@arkhamhorrormemes, for collaborating via Buy Me a Coffee.",
+            img: "/img/5-otros/articulosPaginaDeCarga/agradecimiento.jpg",
+            translations: {
+              es: {
+                title: "Agradecimiento especial ...",
+                description: "@arkhamhorrormemes, por colavorar desde buy Me a Coffee. ",
+                loQueEnRealidadMeGustariaDecir: "Gracias por ser mi amigo, pocos quedan que sean tan honorables y honestos como tu. Te respeto por la persona que eres y me alegra poder decirte amigo."
               }
             }
           },
