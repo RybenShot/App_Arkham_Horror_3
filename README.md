@@ -9,7 +9,7 @@
 
 <div align="center">
   <img src="/README_FILES/bannerAH.png" >
-  <h1>App Arkham Horror 3ª Edicion</h1>
+  <h1>App Arkham Horror 3ª Edición</h1>
 </div>
 
 # Introduccion
