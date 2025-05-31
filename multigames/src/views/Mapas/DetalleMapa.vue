@@ -7,6 +7,9 @@
       <div class="column is-3 p-0" style="text-align: center;"><router-link to="/"><i class="fa-2x fas fa-home has-text-white"></i></router-link></div>
     </nav>
 
+    <!-- pop up notificacion -->
+    <PopUpNotificaciones/>
+
     <!-- Crear Mapa On-Line -->
     <div v-if="this.$store.state.modalCrearMapaOnLine == true"><ModalPostOnLineMap/></div>
 
@@ -29,6 +32,7 @@ import RolloHistoriaMapa from "@/components/mapas/RolloHistoriaMapa.vue";
 import EspecificacionesMapas from "@/components/mapas/EspecificacionesMapa.vue";
 import LosetasYBotones from "@/components/mapas/LosetasYBotones.vue";
 
+import PopUpNotificaciones from "@/components/helpers/popUp/notificaciones.vue";
 import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
 import ModalLosetaMapa from "@/components/mapas/DetalleLosetaMapa.vue";
 import ModalPostOnLineMap from "@/components/mapas/modalPostOnLineMap.vue";
@@ -45,6 +49,7 @@ export default {
       EspecificacionesMapas,
       LosetasYBotones,
 
+      PopUpNotificaciones,
       ModalEnemigos,
       ModalLosetaMapa,
       ModalPostOnLineMap

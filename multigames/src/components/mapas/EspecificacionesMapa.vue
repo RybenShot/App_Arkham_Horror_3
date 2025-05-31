@@ -1,7 +1,9 @@
 <template>
   <div class="mt-2 mx-6">
+
     <div class="has-text-centered has-text-white">
 
+      <!-- Barra para copiar la id del mapa onLine -->
       <div v-if="this.$store.state.datosMapa.id">
         <b-field >
           <b-input placeholder="1234-1234-1234"
@@ -17,13 +19,34 @@
       
 
       <div class="columns mt-2 is-mobile">
-        <div class="column p-0 py-1" id="barraDerechaAbajo" >
+        <!-- Likes -->
+        <div class="column p-0" id="barraDerechaAbajo" >
           <p>{{ textoInterfaz.votosUsuarios }}</p>
-          <p>{{ this.$store.state.datosMapa.userVotes }}/5</p>
+          
+          <div class="vote-container">
+            <!-- Botón Like a la izquierda fuera de la barra -->
+            <SignedOut><button class="btn like" @click="activeNotification()">👍</button></SignedOut>
+            <SignedIn><button class="btn like" @click="postLikeDislike(1)">👍</button></SignedIn>
+
+            <!-- Barra central con proporción reactiva y contadores dentro -->
+            <div class="bar">
+              <div class="fill like-fill" :style="{ width: likePercent + '%' }">
+                <span v-if="likes > 0" class="count">{{ likes }}</span>
+              </div>
+              <div class="fill dislike-fill" :style="{ width: dislikePercent + '%' }">
+                <span v-if="dislikes > 0" class="count">{{ dislikes }}</span>
+              </div>
+            </div>
+
+            <!-- Botón Dislike a la derecha fuera de la barra -->
+            <SignedOut><button class="btn dislike" @click="activeNotification()">👎</button></SignedOut>
+            <SignedIn><button class="btn dislike" @click="postLikeDislike(-1)">👎</button></SignedIn>
+          </div>
         </div>
+
         <div class="column p-0 py-1" >
           <p>{{ textoInterfaz.duracion }}</p>
-          <p>{{ this.$store.state.datosMapa.duration }} min</p>
+          <p>{{ timeEstimated }} min</p>
         </div>
       </div>
 
@@ -42,11 +65,19 @@
 </template>
 
 <script>
+import { SignedIn, SignedOut} from '@clerk/vue'
+import { apiService } from '@/services/api.js';
+
 export default {
   name: "Especificaciones de mapas",
+  components: {
+    SignedIn,
+    SignedOut
+  },
   data(){
     return{
       textoInterfaz: {
+        textVote: "",
         votosUsuarios: "",
         duracion: "",
         cajaNecesaria: "",
@@ -83,7 +114,61 @@ export default {
       document.body.removeChild(textarea);
 
       alert(copied ? 'Código copiado 😊' : 'No se pudo copiar');
+    },
+    activeNotification() {
+      if (this.$store.state.lenguaje == "español") {
+        this.$store.state.FlashPopUP_notifications.text = "Haz Login para poder votar";
+      } else {
+        this.$store.state.FlashPopUP_notifications.text = "Log in to vote";
+      }
+      this.$store.state.FlashPopUP_notifications.state = true;
+      setTimeout(() => {
+        this.$store.state.FlashPopUP_notifications.state = false;
+      }, 3000);
+    },
+
+    // metodo para pedir likes y dislike del mapa
+    async postLikeDislike(value){
+      try {
+        const idMap = this.$store.state.datosMapa.idMap;
+        const idUser = this.$store.state.IDUserHost
+        
+        const response = await apiService.postLikeDislike(idMap, idUser, value);
+
+        // Actualizar los datos del mapa en el store
+        const { likes, dislikes, NVotesLikeDislike } = response.extraData;
+
+        console.log("Likes:", likes, "Dislikes:", dislikes, "NVotesLikeDislike:", NVotesLikeDislike);
+
+        this.$store.state.datosMapa.extraData.likes = likes;
+        this.$store.state.datosMapa.extraData.dislikes = dislikes;
+        this.$store.state.datosMapa.extraData.NVotesLikeDislike = NVotesLikeDislike;
+
+      } catch (error) {
+        console.error("Error fetching likes/dislikes:", error);
+      }
     }
+  },
+  computed: {
+    // Lectura desde extraData
+    likes() {
+      return this.$store.state.datosMapa.extraData.likes || 0;
+    },
+    dislikes() {
+      return this.$store.state.datosMapa.extraData.dislikes || 0;
+    },
+    likePercent() {
+      const total = this.likes + this.dislikes;
+      return total > 0 ? (this.likes / total) * 100 : 0;
+    },
+    dislikePercent() {
+      const total = this.likes + this.dislikes;
+      return total > 0 ? (this.dislikes / total) * 100 : 0;
+    },
+
+    timeEstimated() {
+      return this.$store.state.datosMapa.extraData.timeEstimated || 0;
+    },
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
@@ -107,4 +192,57 @@ p{
   padding: 1px;
   text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.733);
 }
-</style>s
+
+/* Estilos para la barra de votos */
+
+.vote-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+.btn.like { color: #28a745; }
+.btn.dislike { color: #dc3545; }
+
+.bar {
+  flex: 50%;
+  height: 1.5rem;
+  margin: 0 0.5rem;
+  background: #ffffff;
+  border: 1px solid #000;
+  border-radius: 0.75rem;
+  display: flex;
+  overflow: hidden;
+}
+
+.fill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.like-fill {
+  background: #28a745;
+}
+.dislike-fill {
+  background: #dc3545;
+}
+
+.count {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+  padding: 0 0.25rem;
+  white-space: nowrap;
+}
+</style>

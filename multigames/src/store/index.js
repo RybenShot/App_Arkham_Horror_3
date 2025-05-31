@@ -103,7 +103,7 @@ export default createStore({
     // aqui se almacenarán todos los objetos que tengan in play
     modalJoinMapInPlay: false,
     modalCrearMapaOnLine: false,
-    IDUserHost: 666, // dejo este valor por defecto para trabajar con la creacion de mapas in play
+    IDUserHost: null,
     responseObjectsInPlay:[],
 
     //PLAY
@@ -183,6 +183,15 @@ export default createStore({
         explosion: 1,
         retribution: 1,
         empty: 3
+      },
+      extraData: {
+        likes: 0,
+        dislikes: 0,
+        NVotesLikeDislike: 48,
+        timeEstimated: 0,
+        NVotestime: 0,
+        difficulty: 1,
+        NVotesDifficulty: 12
       },
       variables:{
         doom: 6,
@@ -326,6 +335,7 @@ export default createStore({
     toggleExpansion(state, { key, value }) {
       state[key] = value;
     },
+
     ejecutarFlashPopUp(state, message) {
       state.FlashPopUP_notifications.text = message;
       state.FlashPopUP_notifications.state = true;
@@ -364,11 +374,26 @@ export default createStore({
     clearResponseObjectsInPlay(state) {
       state.responseObjectsInPlay = [];
     },
+
     addResponseObjectInPlay(state, obj) {
       state.responseObjectsInPlay.push(obj);
     },
+
     setOptionalText(state, text) {
       state.optionalTextForObjects = text;
+    },
+
+    // funciones para cambiar el estado de los likes y dislikes de los mapas
+    updateLikes(state, value) {
+      state.datosMapa.extraData.likes = value;
+    },
+
+    updateDislikes(state, value) {
+      state.datosMapa.extraData.dislikes = value;
+    },
+
+    setUserHost(state, id) {
+      state.IDUserHost = id;
     }
     
   },
