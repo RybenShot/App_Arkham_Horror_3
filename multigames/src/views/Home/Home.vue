@@ -128,7 +128,9 @@
 import { apiService } from '@/services/api.js';
 
 // importamos clear para la gestion de usuarios
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/vue'
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser, useAuth } from '@clerk/vue'
+import { onMounted } from 'vue'
+import { useStore } from 'vuex' // importamos esto para poder usar el store en el setup
 
 import ModalBienvenida from '@/components/home/modalBienvenida.vue';
 import ModalDonacion from '@/components/home/modalDonacion.vue';
@@ -149,8 +151,22 @@ export default {
     ModalDonacion,
   },
   setup() {
+    const { isSignedIn } = useAuth()
     const { user } = useUser()
+    const store = useStore()
+    // importamos store
     // Exponemos user
+
+    onMounted(async () => {
+      if (isSignedIn.value) {
+        try {
+          const idUser = user.value.id;
+          store.commit('setUserHost', idUser) 
+        } catch (e) {
+          console.error('Error al cargar los mapas del usuario:', e)
+        } 
+      }
+    })
     return { user }
   },
   data() {

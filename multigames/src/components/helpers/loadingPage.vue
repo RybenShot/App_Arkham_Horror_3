@@ -64,7 +64,7 @@
             img: "/img/5-otros/articulosPaginaDeCarga/RexMurphy-te-busca.png",
             translations: {
               es: {
-                title: "Quieres colavorar en el proyecto?",
+                title: "Quieres colaborar en el proyecto?",
                 description: "Hablanos por instagram y veremos que podemos hacer!",
               }
             }
@@ -137,7 +137,7 @@
             translations: {
               es: {
                 title: "Agradecimiento especial ...",
-                description: "@eugenia1715, por colavorar varias veces desde buy Me a Coffee. ",
+                description: "@eugenia1715, por colaborar varias veces desde buy Me a Coffee. ",
                 loQueEnRealidadMeGustariaDecir: "Gracias por ser mi amiga, hermana, amante y mujer. Gracias por ser todo lo que siempre soñe, por ser la luz de ilusion que ilumina mi corazon. Por ser como eres."
               }
             }
@@ -150,7 +150,7 @@
             translations: {
               es: {
                 title: "Agradecimiento especial ...",
-                description: "@gioff101, por colavorar desde buy Me a Coffee. ",
+                description: "@gioff101, por colaborar desde buy Me a Coffee. ",
                 loQueEnRealidadMeGustariaDecir: "Gracias por ser mi amigo, pocos quedan que sean tan honorables y honestos como tu. Te respeto por la persona que eres y me alegra poder decirte amigo."
               }
             }
@@ -163,7 +163,7 @@
             translations: {
               es: {
                 title: "Agradecimiento especial ...",
-                description: "@arkhamhorrormemes, por colavorar desde buy Me a Coffee. ",
+                description: "@arkhamhorrormemes, por colaborar desde buy Me a Coffee. ",
                 loQueEnRealidadMeGustariaDecir: "Gracias por ser mi amigo, pocos quedan que sean tan honorables y honestos como tu. Te respeto por la persona que eres y me alegra poder decirte amigo."
               }
             }

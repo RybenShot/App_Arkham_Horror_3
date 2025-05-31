@@ -1,7 +1,8 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+import { useUser } from '@clerk/vue'
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
 //const API_URL = process.env.VUE_APP_API_URL_DEV;
-const API_URL = process.env.VUE_APP_API_URL_PROD ;
+//const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
 export const apiService = {
@@ -206,8 +207,152 @@ export const apiService = {
     }
   },
 
-  // votaciones
+  // VOTACIONES
+  // votaciones de like y dislike
+  async getLikeDislike (idMap){
+    try {
+      console.log('🔍 --- getLikeDislike --- idMap:', idMap)
+      const response = await axios.get(`${API_URL}/maps/likeDislike/${idMap}`)
+
+      const { likes, dislikes, NVotesLikeDislike } = response.data;
+
+      console.log('🔍 --- getLikeDislike --- recibid:', response.data)
+
+      // Actualizamos el store de un solo golpe:
+      this.$store.state.datosMapa.extraData.likes = likes;
+      this.$store.state.datosMapa.extraData.dislikes = dislikes;
+      this.$store.state.datosMapa.extraData.NVotesLikeDislike = NVotesLikeDislike;
+
+      console.log('🔍 --- getLikeDislike --- datos actualizados en el store:', this.$store.state.datosMapa.extraData);
+      
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener las votaciones`, error);
+      if (error.response) {
+        console.error('   Status:', error.response.status);
+        console.error('   Data:', error.response.data);
+      }
+      throw error;
+    }
+  },
+
+  // post like o dislike
+  async postLikeDislike (idMap, idUser, value){
+    try {
+      const payload = {idMap, idUser, value}
+      const response = await axios.post(`${API_URL}/maps/likeDislike`, payload)
+
+      console.log('🔍 --- postLikeDislike --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al añadir una votacion`, error);
+      throw error;
+    }
+  },
   
+  // get tiempo estimado
+  async getTimeEstimated (idMap){
+    try {
+      const response = await axios.get(`${API_URL}/maps/timeEstimated/${idMap}`)
+      console.log('🔍 --- getTimeEstimated --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener el tiempo estimado`, error);
+      throw error;
+    }
+  },
+
+  // post tiempo estimado
+  async postTimeEstimated (idMap, idUser, value){
+    try {
+      const payload = {idMap, idUser, value}
+      const response = await axios.post(`${API_URL}/maps/timeEstimated`, payload)
+
+      console.log('🔍 --- postTimeEstimated --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al añadir el tiempo estimado`, error);
+      throw error;
+    }
+  },
+
+  // get dificultad
+  async getDifficultyMap (idMap){
+    try {
+      const response = await axios.get(`${API_URL}/maps/difficultyMap/${idMap}`)
+      console.log('🔍 --- getDifficultyMap --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener la dificultad`, error);
+      throw error;
+    }
+  },
+
+  // post dificultad
+  async postDifficultyMap (idMap, idUser, value){
+    try {
+      const payload = {idMap, idUser, value}
+      const response = await axios.post(`${API_URL}/maps/difficultyMap`, payload)
+
+      console.log('🔍 --- postDifficultyMap --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al añadir la dificultad`, error);
+      throw error;
+    }
+  },
+
+  // get investigadores recomendados
+  async getRecInv (idMap){
+    try {
+      const response = await axios.get(`${API_URL}/maps/invRecommended/${idMap}`)
+      console.log('🔍 --- getRecInv --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener los investigadores recomendados`, error);
+      throw error;
+    }
+  },
+
+  // post investigadores recomendados
+  async postRecInv (idMap, idUser, idInv, comment){
+    try {
+      const payload = {idMap, idUser, idInv, comment}
+      const response = await axios.post(`${API_URL}/maps/invRecommended`, payload)
+
+      console.log('🔍 --- postRecInv --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al añadir los investigadores recomendados`, error);
+      throw error;
+    }
+  },
+  
+  // get comentarios
+  async getComments (idMap){
+    try {
+      const response = await axios.get(`${API_URL}/maps/comments/${idMap}`)
+      console.log('🔍 --- getComments --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener los comentarios`, error);
+      throw error;
+    }
+  },
+
+  // post comentarios
+  async postComment (idMap, idUser, comment){
+    try {
+      const payload = {idMap, idUser, comment}
+      const response = await axios.post(`${API_URL}/maps/comments`, payload)
+
+      console.log('🔍 --- postComment --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al añadir un comentario`, error);
+      throw error;
+    }
+  }
   
   
 };
