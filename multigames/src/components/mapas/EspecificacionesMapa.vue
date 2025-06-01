@@ -55,9 +55,20 @@
           <p>{{ textoInterfaz.cajaNecesaria }}</p>
           <p>{{ this.$store.state.datosMapa.expansion }}</p>
         </div>
-        <div class="column p-0 py-1" id="barraIzquierdaArriba">
-          <p>{{ textoInterfaz.dificultad }}</p>
-          <p>{{ this.$store.state.datosMapa.difficulty }}/5</p>
+
+        <div class="difficulty-section column p-0 py-1" id="barraIzquierdaArriba">
+          <!-- Etiqueta traducible -->
+          <p class="label has-text-white">{{ textoInterfaz.dificultad }}</p>
+
+          <div class="icons-container" >
+            <!-- Iteramos de 1 a 5 -->
+            <i
+              v-for="n in 5"
+              :key="n"
+              class="fas fa-skull"
+              :class="n <= difficulty ? 'filled' : 'empty'"
+            ></i>
+          </div>
         </div>
       </div>
     </div>
@@ -169,6 +180,10 @@ export default {
     timeEstimated() {
       return this.$store.state.datosMapa.extraData.timeEstimated || 0;
     },
+
+    difficulty() {
+      return this.$store.state.datosMapa.extraData.difficulty || 0;
+    }
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
@@ -245,4 +260,40 @@ p{
   padding: 0 0.25rem;
   white-space: nowrap;
 }
+
+.difficulty-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiqueta “Dificultad” */
+.label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Contenedor de las 5 calaveras */
+.icons-container {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+
+}
+
+/* Por defecto, la calavera es gris muy clarito (casi transparente) */
+.empty {
+  color: #bbbbbb;      /* gris claro */
+  opacity: 0.4;        /* un poco transparente */
+  font-size: 1.5rem;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+/* Si está “filled” (n <= difficulty), la calavera se pinta blanca y opaca */
+.filled {
+  color: #ffffff;     /* blanca pura */
+  opacity: 1;         /* totalmente visible */
+  font-size: 1.5rem;
+  transition: opacity 0.15s, color 0.15s;
+}
+
 </style>
