@@ -10,6 +10,10 @@
     <!-- pop up notificacion -->
     <PopUpNotificaciones/>
 
+    <!-- modals para datos de comunidad -->
+    <div v-if="this.$store.state.modalInvRec == true"><ModalInvRec/></div>
+    <div v-if="this.$store.state.modalComunityMap == true"><ModalComunityMap/></div>
+
     <!-- Crear Mapa On-Line -->
     <div v-if="this.$store.state.modalCrearMapaOnLine == true"><ModalPostOnLineMap/></div>
 
@@ -32,10 +36,14 @@ import RolloHistoriaMapa from "@/components/mapas/RolloHistoriaMapa.vue";
 import EspecificacionesMapas from "@/components/mapas/EspecificacionesMapa.vue";
 import LosetasYBotones from "@/components/mapas/LosetasYBotones.vue";
 
+import ModalInvRec from "@/components/mapas/modals/modalInvRec.vue";
+import ModalComunityMap from "@/components/mapas/modals/modalComunityMap.vue";
+
 import PopUpNotificaciones from "@/components/helpers/popUp/notificaciones.vue";
 import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
 import ModalLosetaMapa from "@/components/mapas/DetalleLosetaMapa.vue";
 import ModalPostOnLineMap from "@/components/mapas/modalPostOnLineMap.vue";
+import { onMounted } from "vue";
 
 export default {
   name:"DetalleMapa",
@@ -48,6 +56,9 @@ export default {
       RolloHistoriaMapa,
       EspecificacionesMapas,
       LosetasYBotones,
+
+      ModalInvRec,
+      ModalComunityMap,
 
       PopUpNotificaciones,
       ModalEnemigos,
