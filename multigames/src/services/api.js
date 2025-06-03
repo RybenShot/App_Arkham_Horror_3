@@ -100,7 +100,7 @@ export const apiService = {
   async obtainInvByID(idInv){
     try {
       const response = await axios.get(`${API_URL}/inv/${idInv}`);
-      console.log(response.data)
+      // console.log(response.data)
       return response.data
     } catch (error) {
       console.error(`❌ Error al obtener la lista de investigadores`, error);
@@ -163,7 +163,7 @@ export const apiService = {
   async getMapsInPlayByIDUser(idUser){
     try {
       const response = await axios.get(`${API_URL}/mapInPlay/users/${idUser}`)
-      console.log(response.data)
+      // console.log(response.data)
       return response.data
     } catch (error) {
       console.error(`❌ Error al obtener los mapas in play del usuario solicitado`, error);
@@ -306,7 +306,11 @@ export const apiService = {
   async getRecInv (idMap){
     try {
       const response = await axios.get(`${API_URL}/maps/invRecommended/${idMap}`)
-      console.log('🔍 --- getRecInv --- recibid:', response.data)
+      // console.log('🔍 --- getRecInv --- recibid:', response.data)
+      if (!response.data || response.data.length === 0) {
+        console.warn(`⚠️ No hay investigadores recomendados para el mapa con ID ${idMap}`);
+        return [];
+      }
       return response.data
     } catch (error) {
       console.error(`❌ Error al obtener los investigadores recomendados`, error);
@@ -315,9 +319,16 @@ export const apiService = {
   },
 
   // post investigadores recomendados
-  async postRecInv (idMap, idUser, idInv, comment){
+  async postRecInv (idMap, idUser, nameUser,  invData, comment){
     try {
-      const payload = {idMap, idUser, idInv, comment}
+      console.log('🔍 --- postRecInv --- invData:', idMap, idUser, nameUser,  invData, comment)
+      const idInv = invData.idInv
+      const nameInv = invData.name
+      const expansionInv = invData.expansion
+      const imgInv = invData.imgInv
+
+      const payload = {idMap, idUser, nameUser,  idInv, nameInv,expansionInv, imgInv, comment}
+      console.log('🔍 --- postRecInv --- payload:', payload)
       const response = await axios.post(`${API_URL}/maps/invRecommended`, payload)
 
       console.log('🔍 --- postRecInv --- recibid:', response.data)

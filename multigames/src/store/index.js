@@ -104,6 +104,7 @@ export default createStore({
     modalJoinMapInPlay: false,
     modalCrearMapaOnLine: false,
     IDUserHost: null,
+    nameUserHost: null,
     responseObjectsInPlay:[],
 
     //PLAY
@@ -210,6 +211,9 @@ export default createStore({
         }
       }
     },
+    modalComunityMap: false,
+    modalInvRec: false,
+
     enemyList: [],
     // RESERVA DE MITOS
     reservaVisible: [],
@@ -394,7 +398,11 @@ export default createStore({
 
     setUserHost(state, id) {
       state.IDUserHost = id;
-    }
+    },
+
+    setUserName(state, name) {
+      state.nameUserHost = name;
+    },
     
   },
   actions: {

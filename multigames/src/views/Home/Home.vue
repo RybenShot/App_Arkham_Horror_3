@@ -161,9 +161,11 @@ export default {
       if (isSignedIn.value) {
         try {
           const idUser = user.value.id;
-          store.commit('setUserHost', idUser) 
+          const nameUser = user.value.username;
+          store.commit('setUserHost', idUser);
+          store.commit('setUserName', nameUser);
         } catch (e) {
-          console.error('Error al cargar los mapas del usuario:', e)
+          console.error('Error al cargar los datos del usuario:', e)
         } 
       }
     })

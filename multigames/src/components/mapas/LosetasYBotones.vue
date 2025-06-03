@@ -13,17 +13,14 @@
           <p class="has-text-white subtitle is-6" @click="openEnemyList()">{{ textoBotones.enemigos }}</p>
         </div>
         <!-- "Inv Recomendados" -->
-        <router-link to="/enproceso">
-          <div id="BG-boton-inv-rec" class="helperbotones p-4 ">
-            <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">{{ textoBotones.invRec }}</p>
-          </div>
-        </router-link>
+        <div id="BG-boton-inv-rec" class="helperbotones p-4 " @click="this.$store.state.modalInvRec = true">
+          <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">{{ textoBotones.invRec }}</p>
+        </div>
         <!-- Comunidad -->
-        <a href="https://boardgamegeek.com/boardgame/257499/arkham-horror-third-edition/forums/0?pageid=1&sort=recent" target="_blank">
-          <div id="BG-boton-comunidad" class="helperbotones my-2 p-4">
-            <p class="has-text-white subtitle is-7 has-text-left">{{ textoBotones.comunidad }}</p>
-          </div>
-        </a>
+        
+        <div id="BG-boton-comunidad" class="helperbotones my-2 p-4" @click="this.$store.state.modalComunityMap = true">
+          <p class="has-text-white subtitle is-7 has-text-left">{{ textoBotones.comunidad }}</p>
+        </div>
       </div>
     </div>
 

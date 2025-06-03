@@ -18,6 +18,7 @@
       </div>
       
 
+      <p>Tu opinión importa:</p>
       <div class="columns mt-2 is-mobile">
         <!-- Likes -->
         <div class="column p-0" id="barraDerechaAbajo" >
@@ -156,7 +157,7 @@ export default {
         this.$store.state.datosMapa.extraData.NVotesLikeDislike = NVotesLikeDislike;
 
       } catch (error) {
-        console.error("Error fetching likes/dislikes:", error);
+        console.error("❌ Error fetching likes/dislikes:", error);
       }
     }
   },
