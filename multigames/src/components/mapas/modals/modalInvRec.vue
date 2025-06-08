@@ -44,7 +44,7 @@
 
                           <!-- Botón para mostrar/ocultar comentarios -->
                           <div class=" columns is-mobile mt-2">
-                            <button class="button column is-small p-1 m-1" @click="selectInv()">
+                            <button class="button column is-small p-1 m-1" @click="selectInv(group.idInv)">
                               <span >Seleccionar</span>
                             </button>
 
@@ -219,17 +219,16 @@ export default {
     // Enviar la recomendación del usuario
     async sendRecommendation() {
       // si no se ha seleccionado ningun investigador o no se ha escrito nada en el comentario, no hacemos nada
-      if (!this.selectedInvId || this.newComment.trim() === '') return;
+      if (this.selectedInvId == null || this.newComment.trim() === '') return;
       try {
-        console.log(this.$store.state.nameUserHost)
         // capturamos valores
-        const idMapa = this.$store.state.datosMapa.idMap;
+        const idMap = this.$store.state.datosMapa.idMap;
         const idUser = this.$store.state.IDUserHost;
         const nameUser = this.$store.state.nameUserHost;
         const comment = this.newComment.trim();
         const invData = this.invData;
 
-        await apiService.postRecInv(idMapa, idUser ,nameUser ,invData ,comment);
+        await apiService.postRecInv(idMap, idUser ,nameUser ,invData ,comment);
 
         // Al enviar, refrescamos la pestaña “Lista” y limpiamos el formulario
         await this.getListInvRec();
@@ -244,9 +243,15 @@ export default {
     },
 
     // seleccionar a un investigador de la lista de recomendados
-    async selectInv() {
-
-    },
+    async selectInv(idInv) {
+      try {
+        const response = await apiService.obtainInvByID(idInv);
+        await this.$store.commit('setDatosInvestigator', response);
+        this.$router.push('/DetallePersonaje');
+      } catch (error) {
+        console.error("❌ selectInv(.vue) - No se pudo obtener el investigador", error);
+      }
+      },
 
     closeModal() {
       this.$store.state.modalInvRec = false;

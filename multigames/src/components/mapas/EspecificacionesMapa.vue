@@ -45,30 +45,25 @@
           </div>
         </div>
 
-        <div class="column p-0 py-1" >
+        <div class="column p-0 py-1" @click="$store.state.modalDifficultyTime = true">
           <p>{{ textoInterfaz.duracion }}</p>
           <p>{{ timeEstimated }} min</p>
         </div>
       </div>
 
       <div class="columns is-mobile" >
-        <div class="column p-0 py-1">
+        <div class="column p-0 py-1" >
           <p>{{ textoInterfaz.cajaNecesaria }}</p>
           <p>{{ this.$store.state.datosMapa.expansion }}</p>
         </div>
 
-        <div class="difficulty-section column p-0 py-1" id="barraIzquierdaArriba">
+        <div class="difficulty-section column p-0 py-1" id="barraIzquierdaArriba" @click="$store.state.modalDifficultyTime = true">
           <!-- Etiqueta traducible -->
           <p class="label has-text-white">{{ textoInterfaz.dificultad }}</p>
 
           <div class="icons-container" >
             <!-- Iteramos de 1 a 5 -->
-            <i
-              v-for="n in 5"
-              :key="n"
-              class="fas fa-skull"
-              :class="n <= difficulty ? 'filled' : 'empty'"
-            ></i>
+            <i v-for="n in 5" :key="n" class="fas fa-skull" :class="n <= difficulty ? 'filled' : 'empty'" ></i>
           </div>
         </div>
       </div>

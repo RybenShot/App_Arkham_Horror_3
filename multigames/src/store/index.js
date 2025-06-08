@@ -213,6 +213,7 @@ export default createStore({
     },
     modalComunityMap: false,
     modalInvRec: false,
+    modalDifficultyTime: true,
 
     enemyList: [],
     // RESERVA DE MITOS
