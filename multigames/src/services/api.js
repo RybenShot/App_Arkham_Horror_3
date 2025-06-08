@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useUser } from '@clerk/vue'
 const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
 //const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
@@ -271,7 +270,7 @@ export const apiService = {
       console.log('🔍 --- postTimeEstimated --- recibid:', response.data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al añadir el tiempo estimado`, error);
+      console.error(`❌ postTimeEstimated(api.js) - Error al añadir el tiempo estimado`, error);
       throw error;
     }
   },
@@ -283,7 +282,7 @@ export const apiService = {
       console.log('🔍 --- getDifficultyMap --- recibid:', response.data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al obtener la dificultad`, error);
+      console.error(`❌ getDifficultyMap(api.js) - Error al obtener la dificultad`, error);
       throw error;
     }
   },
@@ -297,7 +296,7 @@ export const apiService = {
       console.log('🔍 --- postDifficultyMap --- recibid:', response.data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al añadir la dificultad`, error);
+      console.error(`❌ postDifficultyMap(api.js) - Error al añadir la dificultad`, error);
       throw error;
     }
   },
@@ -346,15 +345,15 @@ export const apiService = {
       console.log('🔍 --- getComments --- recibid:', response.data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al obtener los comentarios`, error);
+      console.error(`❌ getComments - Error al obtener los comentarios`, error);
       throw error;
     }
   },
 
   // post comentarios
-  async postComment (idMap, idUser, comment){
+  async postComment (idMap, idUser, nameUser, comment){
     try {
-      const payload = {idMap, idUser, comment}
+      const payload = {idMap, idUser, nameUser, comment}
       const response = await axios.post(`${API_URL}/maps/comments`, payload)
 
       console.log('🔍 --- postComment --- recibid:', response.data)

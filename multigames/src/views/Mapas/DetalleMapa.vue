@@ -13,6 +13,7 @@
     <!-- modals para datos de comunidad -->
     <div v-if="this.$store.state.modalInvRec == true"><ModalInvRec/></div>
     <div v-if="this.$store.state.modalComunityMap == true"><ModalComunityMap/></div>
+    <div v-if="this.$store.state.modalDifficultyTime == true"><ModalDifficultyTime/></div>
 
     <!-- Crear Mapa On-Line -->
     <div v-if="this.$store.state.modalCrearMapaOnLine == true"><ModalPostOnLineMap/></div>
@@ -38,6 +39,7 @@ import LosetasYBotones from "@/components/mapas/LosetasYBotones.vue";
 
 import ModalInvRec from "@/components/mapas/modals/modalInvRec.vue";
 import ModalComunityMap from "@/components/mapas/modals/modalComunityMap.vue";
+import ModalDifficultyTime from "@/components/mapas/modals/modalDifficulty&Time.vue"
 
 import PopUpNotificaciones from "@/components/helpers/popUp/notificaciones.vue";
 import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
@@ -59,6 +61,7 @@ export default {
 
       ModalInvRec,
       ModalComunityMap,
+      ModalDifficultyTime,
 
       PopUpNotificaciones,
       ModalEnemigos,

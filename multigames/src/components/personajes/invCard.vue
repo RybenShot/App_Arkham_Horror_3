@@ -39,16 +39,13 @@ export default {
     },
     methods:{
         async selectInv(idInv){
-            console.log(idInv)
-
+          try {
             const response = await apiService.obtainInvByID(idInv);
-
-            if (response) {
-               await this.$store.commit('setDatosInvestigator', response);
-              this.$router.push('/DetallePersonaje');
-            } else {
-              console.error("No se pudo obtener el investigador");
-            }
+            await this.$store.commit('setDatosInvestigator', response);
+            this.$router.push('/DetallePersonaje');
+          } catch (error) {
+            console.error("❌ selectInv(.vue) - No se pudo obtener el investigador", error);
+          }
         }
     }
 };
