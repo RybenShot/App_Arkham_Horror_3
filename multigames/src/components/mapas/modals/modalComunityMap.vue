@@ -4,7 +4,7 @@
     <div class="mr-6">
       <div class="modal-card">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
-          <p class="modal-card-title has-text-weight-bold">Community</p>
+          <p class="modal-card-title has-text-weight-bold">{{ textoInterfaz.headTitle }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="$store.state.modalComunityMap = false"></i>
         </header>
 
@@ -13,17 +13,17 @@
             <!-- Comentarios -->
             <b-tab-item>
               <template #header>
-                <span>Lista</span>
+                <span>{{ textoInterfaz.nav.title1 }}</span>
               </template>
 
-              <div v-if="allComments.length === 0" class="has-text-centered has-text-grey"> Sé el primero en comentar! </div>
+              <div v-if="allComments.length === 0" class="has-text-centered has-text-grey"> {{ textoInterfaz.noComments }} </div>
               <div v-else class="comments-container mt-2">
                 <hr class="mt-2 mb-2" />
-                <div v-for="(c, idx) in allComments" :key="idx" class="mb-4">
-                  <p class="is-size-7 has-text-weight-semibold mb-0"> {{ c.nameUser }} 
-                    <span class="has-text-grey-light">– {{ formatDate(c.dateCreated) }}</span>
+                <div v-for="(comment, idx) in allComments" :key="idx" class="mb-4">
+                  <p class="is-size-7 has-text-weight-semibold mb-0"> {{ comment.nameUser }} 
+                    <span class="has-text-grey-light">– {{ formatDate(comment.dateCreated) }}</span>
                   </p>
-                  <p class="is-size-7">{{ c.comment }}</p>
+                  <p class="is-size-7">{{ comment.comment }}</p>
                 </div>
               </div>
             </b-tab-item>
@@ -31,19 +31,19 @@
             <!-- Votación -->
             <b-tab-item>
               <template #header>
-                <span>Votación</span>
+                <span>{{ textoInterfaz.nav.title2 }}</span>
               </template>
 
               <SignedOut>
                 <div class="has-text-centered">
-                  <p class="title">Para poder votar, debes iniciar sesión</p>
-                  <router-link to="/">Ir a Home</router-link>
+                  <p class="title">{{ textoInterfaz.noLogingText }}</p>
+                  <router-link to="/">{{ textoInterfaz.goHome }}</router-link>
                 </div>
               </SignedOut>
 
               <SignedIn>
                 <div>
-                  <p class="title is-4 has-text-centered mb-4">Comenta algo!</p>
+                  <p class="title is-4 has-text-centered mb-4">{{ textoInterfaz.nav.title2 }}</p>
 
                   <b-field>
                     <b-input v-model="newComment" maxlength="100" type="textarea" placeholder="Escribe tu comentario aquí..." ></b-input>
@@ -52,7 +52,7 @@
                   <div class="field">
                     <div class="control">
                       <button class="button is-primary is-fullwidth" :disabled="newComment.trim() === ''" @click="postNewComment()">
-                        Enviar comentario
+                        {{ textoInterfaz.sendbutton }}
                       </button>
                     </div>
                   </div>
@@ -62,7 +62,7 @@
           </b-tabs>
 
           <a href="https://boardgamegeek.com/boardgame/257499/arkham-horror-third-edition/forums/0?pageid=1&sort=recent" target="_blank">
-            <p>Comunidad de BGG</p>
+            <p>{{ this.textoInterfaz.linkToBGG }}</p>
           </a>
         </section>
 
@@ -70,7 +70,7 @@
           <div class="field has-addons columns is-mobile is-gapless">
             <p class="control column">
               <button @click="$store.state.modalComunityMap = false" class="button is-danger is-fullwidth">
-                <p>Cerrar</p>
+                <p>{{ this.textoInterfaz.closeModal }}</p>
               </button>
             </p>
           </div>
@@ -92,6 +92,21 @@ export default {
       activeTab: 0,
       allComments: [],
       newComment: '',
+      textoInterfaz: {
+        headTitle: '',
+        nav: {
+          title1: '',
+          title2: ''
+        },
+        noComments: '',
+        noLogingText: '',
+        goHome: '',
+
+        sendbutton: '',
+        closeModal: '',
+
+        linkToBGG: ''
+      },
     };
   },
   methods: {
@@ -125,13 +140,46 @@ export default {
         // Después de publicar, recargar lista de comentarios
         this.newComment = '';
         await this.getAllComments();
+
+        this.$buefy.toast.open({ message: 'Comentario enviado!', type: 'is-success', duration: 2000 });
+        this.activeTab = 0;
       } catch (error) {
         console.error(`❌ postNewComment(.vue) - Error al enviar el comentario`, error);
         throw error;
       }
     },
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.headTitle = "Comunidad";
+        this.textoInterfaz.nav.title1 = "Comentarios";
+        this.textoInterfaz.noComments = "Sé el primero en comentar!";
+
+        this.textoInterfaz.nav.title2 = "Comenta algo!";
+        this.textoInterfaz.noLogingText = "Para poder comentar, debes iniciar sesión";
+        this.textoInterfaz.goHome = "Ir a Home";
+
+        this.textoInterfaz.sendbutton = "Enviar comentario";
+        this.textoInterfaz.closeModal = "Cerrar";
+
+        this.textoInterfaz.linkToBGG = "Comunidad de BGG"
+      } else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.headTitle = "Comunity",
+        this.textoInterfaz.nav.title1 = "Coments",
+        this.textoInterfaz.noComments = "Be the first to comment!",
+
+        this.textoInterfaz.nav.title2 = "Coment something!",
+        this.textoInterfaz.noLogingText = "To comment, you must log in.";
+        this.textoInterfaz.goHome = "Go Home";
+
+        this.textoInterfaz.sendbutton = "Send Comment";
+        this.textoInterfaz.closeModal = "Close";
+
+        this.textoInterfaz.linkToBGG = "BGG Comunity"
+      }
+    }
   },
   mounted() {
+    this.rellenarTextoSegunIdioma();
     this.getAllComments();
   },
 };

@@ -17,11 +17,11 @@
             <b-tab-item>
               <template #header>
                   <i class="fa-1x fas fa-box pr-2"></i>
-                  <span> Expansiones </span>
+                  <span> {{ textoInterfaz.botones.expansion }} </span>
               </template>
 
               <!-- Botones de expansión -->
-              <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
+              <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2 has-text-centered">
                 <button v-for="btn in expansionButtons" class="button" :key="btn.key" :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
                   @click="handleToggle(btn.key)">
                   {{ btn.text }}
@@ -33,7 +33,7 @@
             <b-tab-item>
               <template #header>
                   <i class="fa-1x fas fa-user-tag pr-2"></i>
-                  <span> Arquetipos </span>
+                  <span> {{ textoInterfaz.botones.archetype }} </span>
               </template>
 
               <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
@@ -101,6 +101,9 @@ export default {
         sinExpansion: "",
         seleccionaExpansion: "",
         botones: {
+          expansion: '',
+          archetype: '',
+
           base: "",
           mareas: "",
           noche: "",
@@ -160,6 +163,9 @@ export default {
         this.textoInterfaz.sinExpansion = "Sin expansiones seleccionadas";
         this.textoInterfaz.seleccionaExpansion = "Por favor selecciona alguna expansion para ver los personajes.";
 
+        this.textoInterfaz.botones.expansion = "Expansiones";
+        this.textoInterfaz.botones.archetype = "Arquetipos";
+
         this.textoInterfaz.botones.base = "Base";
         this.textoInterfaz.botones.mareas = "Mareas";
         this.textoInterfaz.botones.noche = "Noche";
@@ -179,6 +185,9 @@ export default {
         this.textoInterfaz.descripcion = "Click to add or remove the expansion you want and then choose a investigator to view it in detail.";
         this.textoInterfaz.sinExpansion = "No expansions selected";
         this.textoInterfaz.seleccionaExpansion = "Please select an expansion to view the characters."
+
+        this.textoInterfaz.botones.expansion = "Expansions";
+        this.textoInterfaz.botones.archetype = "Archetypes";
 
         this.textoInterfaz.botones.base = "Base";
         this.textoInterfaz.botones.mareas = "Waves";
@@ -212,11 +221,16 @@ export default {
       // ejecutamos el sonido de las teclas
       this.SonidoTecla();
       // guardamos el mensaje que meteremos en el store segun si la expansion ya esta activa o no
-      const message = this.$store.state[expansionKey]? "expansion desactivada": "expansion activada";
+      const activada = this.$store.state[expansionKey]
       //cambiamos el estado de la variable de la expansion
-      this.$store.commit('toggleExpansion', { key: expansionKey, value: !this.$store.state[expansionKey] });
-      //mandamos a enseñar el mensaje activado desactivado
-      this.$store.dispatch('ejecutarFlashPopUp_Action', message);
+      this.$store.commit('toggleExpansion', { key: expansionKey, value: !activada });
+
+      if (!activada) {
+        this.$buefy.toast.open({ message: 'Expansión activada', type: 'is-success', duration: 2000 });
+      } else{
+        this.$buefy.toast.open({ message: 'Expansión desactivada', type: 'is-danger', duration: 2000 });
+      }
+
       // refrescamos la lista de investigadores
       this.updateInvListForExpansion();
     },

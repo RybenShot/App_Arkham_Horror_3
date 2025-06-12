@@ -34,7 +34,7 @@ export default {
       if (this.$store.state.lenguaje == "español") {
         this.textoInterfaz.titulo = "Detalle enemigo";
         this.textoInterfaz.botonVolver= "Volver";
-      } else if (is.$store.state.lenguaje == "ingles") {
+      } else if (this.$store.state.lenguaje == "ingles") {
         this.textoInterfaz.titulo = "Enemy detail";
         this.textoInterfaz.botonVolver= "Go back";
       }

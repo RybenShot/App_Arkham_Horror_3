@@ -5,68 +5,71 @@
 
       <!-- Barra para copiar la id del mapa onLine -->
       <div v-if="this.$store.state.datosMapa.id">
+        <p>{{ textoInterfaz.textMapOnline }}</p>
         <b-field >
           <b-input placeholder="1234-1234-1234"
               type="search"
               icon="magnify"
-              v-model="this.$store.state.datosMapa.id ">
+              v-model="codeIDMapInPlay ">
           </b-input>
           <p class="control">
               <b-button type="is-primary" label="Copiar" @click="copyCode()" />
           </p>
         </b-field>
-      </div>
+      </div>      
       
+      <div v-if="!this.$store.state.datosMapa.id">
+        <p>{{ textoInterfaz.title }}</p>
+        <div class="columns mt-2 is-mobile">
+          <!-- Likes -->
+          <div class="column p-0" id="barraDerechaAbajo" >
+            <p>{{ textoInterfaz.votosUsuarios }}</p>
+            
+            <div class="vote-container">
+              <!-- Botón Like a la izquierda fuera de la barra -->
+              <SignedOut><button class="btn like" @click="activeNotification()">👍</button></SignedOut>
+              <SignedIn><button class="btn like" @click="postLikeDislike(1)">👍</button></SignedIn>
 
-      <p>Tu opinión importa:</p>
-      <div class="columns mt-2 is-mobile">
-        <!-- Likes -->
-        <div class="column p-0" id="barraDerechaAbajo" >
-          <p>{{ textoInterfaz.votosUsuarios }}</p>
-          
-          <div class="vote-container">
-            <!-- Botón Like a la izquierda fuera de la barra -->
-            <SignedOut><button class="btn like" @click="activeNotification()">👍</button></SignedOut>
-            <SignedIn><button class="btn like" @click="postLikeDislike(1)">👍</button></SignedIn>
+              <!-- Barra central con proporción reactiva y contadores dentro -->
+              <div class="bar">
+                <div class="fill like-fill" :style="{ width: likePercent + '%' }">
+                  <span v-if="likes > 0" class="count">{{ likes }}</span>
+                </div>
+                <div class="fill dislike-fill" :style="{ width: dislikePercent + '%' }">
+                  <span v-if="dislikes > 0" class="count">{{ dislikes }}</span>
+                </div>
+              </div>
 
-            <!-- Barra central con proporción reactiva y contadores dentro -->
-            <div class="bar">
-              <div class="fill like-fill" :style="{ width: likePercent + '%' }">
-                <span v-if="likes > 0" class="count">{{ likes }}</span>
-              </div>
-              <div class="fill dislike-fill" :style="{ width: dislikePercent + '%' }">
-                <span v-if="dislikes > 0" class="count">{{ dislikes }}</span>
-              </div>
+              <!-- Botón Dislike a la derecha fuera de la barra -->
+              <SignedOut><button class="btn dislike" @click="activeNotification()">👎</button></SignedOut>
+              <SignedIn><button class="btn dislike" @click="postLikeDislike(-1)">👎</button></SignedIn>
             </div>
+          </div>
 
-            <!-- Botón Dislike a la derecha fuera de la barra -->
-            <SignedOut><button class="btn dislike" @click="activeNotification()">👎</button></SignedOut>
-            <SignedIn><button class="btn dislike" @click="postLikeDislike(-1)">👎</button></SignedIn>
+          <div class="column p-0 py-1" @click="$store.state.modalDifficultyTime = true">
+            <p>{{ textoInterfaz.duracion }}</p>
+            <p>{{ timeEstimated }} min</p>
           </div>
         </div>
+      
+        <div class="columns is-mobile" >
+          <div class="column p-0 py-1" >
+            <p>{{ textoInterfaz.cajaNecesaria }}</p>
+            <p>{{ this.$store.state.datosMapa.expansion }}</p>
+          </div>
 
-        <div class="column p-0 py-1" @click="$store.state.modalDifficultyTime = true">
-          <p>{{ textoInterfaz.duracion }}</p>
-          <p>{{ timeEstimated }} min</p>
-        </div>
-      </div>
+          <div class="difficulty-section column p-0 py-1" id="barraIzquierdaArriba" @click="$store.state.modalDifficultyTime = true">
+            <!-- Etiqueta traducible -->
+            <p class="label has-text-white">{{ textoInterfaz.dificultad }}</p>
 
-      <div class="columns is-mobile" >
-        <div class="column p-0 py-1" >
-          <p>{{ textoInterfaz.cajaNecesaria }}</p>
-          <p>{{ this.$store.state.datosMapa.expansion }}</p>
-        </div>
-
-        <div class="difficulty-section column p-0 py-1" id="barraIzquierdaArriba" @click="$store.state.modalDifficultyTime = true">
-          <!-- Etiqueta traducible -->
-          <p class="label has-text-white">{{ textoInterfaz.dificultad }}</p>
-
-          <div class="icons-container" >
-            <!-- Iteramos de 1 a 5 -->
-            <i v-for="n in 5" :key="n" class="fas fa-skull" :class="n <= difficulty ? 'filled' : 'empty'" ></i>
+            <div class="icons-container" >
+              <!-- Iteramos de 1 a 5 -->
+              <i v-for="n in 5" :key="n" class="fas fa-skull" :class="n <= difficulty ? 'filled' : 'empty'" ></i>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -84,54 +87,60 @@ export default {
   data(){
     return{
       textoInterfaz: {
+        title: "",
         textVote: "",
         votosUsuarios: "",
         duracion: "",
         cajaNecesaria: "",
-        dificultad: ""
+        dificultad: "",
+        textMapOnline: ""
       },
-      barCode: this.$store.state.datosMapa.id 
+      barCode: this.$store.state.datosMapa.id
     }
   },
+  
   methods:{
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.title = "Tu opinión importa"
         this.textoInterfaz.votosUsuarios = "Votos de Usuarios";
         this.textoInterfaz.duracion = "Duracion";
         this.textoInterfaz.cajaNecesaria = "Caja necesaria";
         this.textoInterfaz.dificultad = "Dificultad";
+        this.textoInterfaz.textMapOnline = "Mapa On-Line";
       }else{
+        this.textoInterfaz.title = "Your opinion matters"
         this.textoInterfaz.votosUsuarios = "User Votes";
         this.textoInterfaz.duracion = "Duration";
         this.textoInterfaz.cajaNecesaria = "Required Box";
         this.textoInterfaz.dificultad = "Difficulty";
+        this.textoInterfaz.textMapOnline = "On-Line Map";
       }
     },
-    async copyCode(){
-      if (!this.barCode) return alert('Nada que copiar');
-      // estructura para copiar a porta papeles
-      const textarea = document.createElement('textarea');
-      textarea.value = this.barCode;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'absolute';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      const copied = document.execCommand('copy');
-      document.body.removeChild(textarea);
+    async copyCode() {
+      try {
+        await navigator.clipboard.writeText(this.$store.state.datosMapa.id);
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === "español" ? "Código copiado 😊" : "Code copied 😊",
+          type: 'is-success',
+          duration: 2000,
+        });
+      } catch (err) {
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === "español" ? "Error al copiar 😢" : "Copy failed 😢",
+          type: 'is-danger',
+          duration: 2000,
+        });
+      }
+    },
 
-      alert(copied ? 'Código copiado 😊' : 'No se pudo copiar');
-    },
     activeNotification() {
-      if (this.$store.state.lenguaje == "español") {
-        this.$store.state.FlashPopUP_notifications.text = "Haz Login para poder votar";
-      } else {
-        this.$store.state.FlashPopUP_notifications.text = "Log in to vote";
-      }
-      this.$store.state.FlashPopUP_notifications.state = true;
-      setTimeout(() => {
-        this.$store.state.FlashPopUP_notifications.state = false;
-      }, 3000);
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === "español" ? "Haz Login para poder votar 😢" : "Log in to vote 😢",
+        type: 'is-danger',
+        duration: 2000,
+      });
+     
     },
 
     // metodo para pedir likes y dislike del mapa
@@ -145,11 +154,11 @@ export default {
         // Actualizar los datos del mapa en el store
         const { likes, dislikes, NVotesLikeDislike } = response.extraData;
 
-        console.log("Likes:", likes, "Dislikes:", dislikes, "NVotesLikeDislike:", NVotesLikeDislike);
-
         this.$store.state.datosMapa.extraData.likes = likes;
         this.$store.state.datosMapa.extraData.dislikes = dislikes;
         this.$store.state.datosMapa.extraData.NVotesLikeDislike = NVotesLikeDislike;
+
+        this.$buefy.toast.open({ message: 'Voto enviado', type: 'is-success', duration: 2000 });
 
       } catch (error) {
         console.error("❌ Error fetching likes/dislikes:", error);
@@ -179,6 +188,9 @@ export default {
 
     difficulty() {
       return this.$store.state.datosMapa.extraData.difficulty || 0;
+    },
+    codeIDMapInPlay(){
+      return this.$store.state.datosMapa.id
     }
   },
   mounted(){

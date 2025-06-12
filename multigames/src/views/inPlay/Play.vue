@@ -16,8 +16,11 @@
           <viewPlayer/>
         </b-tab-item>
         <b-tab-item label="Map">
-          <p v-if="!this.$store.state.datosMapa.id" class="title has-text-white has-text-centered">Por favor, para usar correctamente estas funcionalidades, crea un mapa OnLine</p>
-          <viewMap/>
+          <div v-if="!this.$store.state.datosMapa.id" class="has-text-centered">
+            <p class="title has-text-white pt-6">{{ textoInterfaz.textNoLogin }}</p>
+            <router-link to="/"> {{ textoInterfaz.goHome }} </router-link>
+          </div>
+          <div v-else><viewMap/></div>
         </b-tab-item>
     </b-tabs>
 
@@ -50,7 +53,24 @@ export default {
     ModalConfirmacion,
     ModalsEstadosPlay
   },
+  data(){
+    return{
+      textoInterfaz: {
+        textNoLogin: '',
+        goHome: '',
+      }
+    }
+  },
   methods:{
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.textNoLogin = "Para poder usar esta parte debes iniciar sesion y crear un mapa.";
+        this.textoInterfaz.goHome = "Ir a Home";
+      } else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.textNoLogin = "To use this section, you must log in and create a map.";
+        this.textoInterfaz.goHome = "Go Home";
+      }
+    },
     async serchInitialObjectsInv(){
       try {
         let idInv = this.$store.state.datosPJactual.idInv;
@@ -72,6 +92,7 @@ export default {
   },
   mounted(){
     this.serchInitialObjectsInv();
+    this.rellenarTextoSegunIdioma()
   },
 }
 </script>

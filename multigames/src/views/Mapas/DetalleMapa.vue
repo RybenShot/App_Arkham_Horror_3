@@ -83,8 +83,6 @@ export default {
     }
   },
   mounted(){
-    // quitar este console
-    console.log(this.$store.state.datosMapa);
     this.rellenarTextoSegunIdioma();
   }
 }

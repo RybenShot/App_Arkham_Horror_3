@@ -184,7 +184,6 @@ export default {
       } else {
         console.error("No se puede sumar más vida o cordura");
         this.mostrarNotificacionDesactivar("Vida Maxima alcanzada", "Max life reached");
-
       }
     },
     buscarPropiedadActiva(){
@@ -205,14 +204,14 @@ export default {
       
       if(signo == '+'){
         if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-          console.log("Vamos a sumar a la propiedad " + propiedad)
+          // console.log("Vamos a sumar a la propiedad " + propiedad)
           this.atributos[propiedad]++;
           return
         }
         this.sumarRestarVidaCordura(signo, propiedad);
       } else if(signo == '-'){
         if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-          console.log("Vamos a restar a la propiedad " + propiedad)
+          // console.log("Vamos a restar a la propiedad " + propiedad)
           this.atributos[propiedad]--;
           return
         }

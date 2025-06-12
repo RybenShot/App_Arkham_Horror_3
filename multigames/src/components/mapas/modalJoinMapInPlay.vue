@@ -1,66 +1,66 @@
 <template>
     <div class="modal is-active">
-          <div class="modal-background" @click="this.$store.state.modalJoinMapInPlay = false"></div>
-          <div class="mr-6">
-            <div class="modal-card">
-              <header class="columns is-mobile modal-card-head BGBendicion m-0">
-                <p class="modal-card-title has-text-weight-bold" >{{ textoInterfaz.titulo }}</p>
-                <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalJoinMapInPlay = false"></i>
-              </header>
+      <div class="modal-background" @click="this.$store.state.modalJoinMapInPlay = false"></div>
+      <div class="mr-6">
+        <div class="modal-card">
+          <header class="columns is-mobile modal-card-head BGBendicion m-0">
+            <p class="modal-card-title has-text-weight-bold" >{{ textoInterfaz.titulo }}</p>
+            <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalJoinMapInPlay = false"></i>
+          </header>
 
-              <SignedOut>
-                <section class="modal-card-body hero is-large py-2">
-                  <p class="subtitle has-text-centered">{{ textoInterfaz.textoError }}</p>
-                  <SignInButton class="button" />
-                </section>                
-              </SignedOut>
-  
-              <SignedIn>
-                <section class="modal-card-body hero is-large py-2">
-                  <div>
-                    <h1 class="title">{{ textoInterfaz.titleSearchInterface }}</h1>
-                    <p class="subtitle">{{ textoInterfaz.descripcion }}</p>
-                    <section>
-                        <b-field >
-                            <b-input placeholder="ej: 1234-1234-1234"
-                                type="search"
-                                icon="magnify"
-                                v-model="searchId">
-                            </b-input>
-                            <p class="control">
-                                <b-button type="is-primary" label="Buscar" @click="searchMapInPlay()" />
-                            </p>
-                        </b-field>
-                    </section>
-                  </div>
+          <SignedOut>
+            <section class="modal-card-body hero is-large py-2">
+              <p class="subtitle has-text-centered">{{ textoInterfaz.textoError }}</p>
+              <SignInButton class="button" />
+            </section>                
+          </SignedOut>
 
-                  <div v-if="!mapFound">
-                    <hr>
-                    <h1 class="title">{{ textoInterfaz.postParty.title }}</h1>
-                    <p class="subtitle">{{ textoInterfaz.postParty.description }}</p>
-                  </div>
-
-                  <!-- Resultado de busqueda -->
-                  <div v-if="mapFound">
-                      <MapCard :map="mapFound" />
-                  </div>
+          <SignedIn>
+            <section class="modal-card-body hero is-large py-2">
+              <div>
+                <h1 class="title">{{ textoInterfaz.titleSearchInterface }}</h1>
+                <p class="subtitle">{{ textoInterfaz.descripcion }}</p>
+                <section>
+                    <b-field >
+                        <b-input placeholder="ej: 1234-1234-1234"
+                            type="search"
+                            icon="magnify"
+                            v-model="searchId">
+                        </b-input>
+                        <p class="control">
+                            <b-button type="is-primary" label="Buscar" @click="searchMapInPlay()" />
+                        </p>
+                    </b-field>
                 </section>
-              </SignedIn>
-  
-              <footer class="">
-                <div class="field has-addons columns is-mobile is-gapless">
-  
-                  <p class="control column ">
-                    <button @click="(this.$store.state.modalJoinMapInPlay = false)" class="button is-link is-fullwidth">
-                      <p>{{ textoInterfaz.botones.cerrar }}</p>
-                    </button>
-                  </p>
-                </div>
-              </footer>
-  
+              </div>
+
+              <div v-if="!mapFound">
+                <hr>
+                <h1 class="title">{{ textoInterfaz.postParty.title }}</h1>
+                <p class="subtitle">{{ textoInterfaz.postParty.description }}</p>
+              </div>
+
+              <!-- Resultado de busqueda -->
+              <div v-if="mapFound">
+                  <MapCard :map="mapFound" />
+              </div>
+            </section>
+          </SignedIn>
+
+          <footer class="">
+            <div class="field has-addons columns is-mobile is-gapless">
+
+              <p class="control column ">
+                <button @click="(this.$store.state.modalJoinMapInPlay = false)" class="button is-link is-fullwidth">
+                  <p>{{ textoInterfaz.botones.cerrar }}</p>
+                </button>
+              </p>
             </div>
-          </div>
+          </footer>
+
         </div>
+      </div>
+    </div>
   </template>
   
 <script>
@@ -130,7 +130,7 @@
           this.mapFound = findMap;
           console.log(this.mapFound)
         } catch (error) {
-          console.error("❌ Error al encontrar el mapa:", error);
+          console.error("❌ searchMapInPlay(.vue) - Error al encontrar el mapa:", error);
         }
       },
     },

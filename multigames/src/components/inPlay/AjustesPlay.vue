@@ -26,7 +26,7 @@
           <b-input placeholder="1234-1234-1234"
               type="search"
               icon="magnify"
-              v-model="this.$store.state.datosMapa.id ">
+              v-model="codeIDMapInPlay">
           </b-input>
           <p class="control">
               <b-button type="is-primary" label="Copiar" @click="copyCode()" />
@@ -83,20 +83,26 @@ export default {
         this.textoInterfaz.botones.terminarPartida = "End game";
       }
     },
-    async copyCode(){
-      if (!this.barCode) return alert('Nada que copiar');
-      // estructura para copiar a porta papeles
-      const textarea = document.createElement('textarea');
-      textarea.value = this.barCode;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'absolute';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      const copied = document.execCommand('copy');
-      document.body.removeChild(textarea);
-
-      alert(copied ? 'Código copiado 😊' : 'No se pudo copiar');
+    async copyCode() {
+      try {
+        await navigator.clipboard.writeText(this.$store.state.datosMapa.id);
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === "español" ? "Código copiado 😊" : "Code copied 😊",
+          type: 'is-success',
+          duration: 2000,
+        });
+      } catch (err) {
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === "español" ? "Error al copiar 😢" : "Copy failed 😢",
+          type: 'is-danger',
+          duration: 2000,
+        });
+      }
+    },
+  },
+  computed: {
+    codeIDMapInPlay(){
+      return this.$store.state.datosMapa.id
     }
   },
   mounted(){

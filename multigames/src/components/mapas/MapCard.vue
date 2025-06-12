@@ -1,22 +1,24 @@
 <template>
-  <div class="map-wrapper">
+  <div class="map-wrapper my-1">
     <div class="card" :class="{
       'cajaDePersonajesBase': map.expansion === 'AHBase', 
       'cajaDePersonajesMareasTenebrosas': map.expansion === 'AHWaves', 
       'cajaDePersonajesNocheCerrada': map.expansion === 'AHNigth', 
-      'cajaDePersonajesSecretosDeLaOrden': map.expansion === 'AHSecrets'}"
-      @click="selectMap()">
-          
-      <div class="card-image-wrapper">
-              <img :src="map.BGMap" :alt="map.title" class="card-image" />
-          </div>
-          <div class="card-overlay has-text-centered">
-              <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">
-                  {{ map.translations.es.title }}
-              </p>
-              <p v-else class="title is-7 tipografiaElegante">{{ map.title }}</p>
-          </div>
+      'cajaDePersonajesSecretosDeLaOrden': map.expansion === 'AHSecrets'}">
+      
+
+      <i v-if="this.map.id" class="fa-1x fas fa-times-circle has-text-danger cruzeta" @click="deleteMapInPlay()"></i>
+
+      <div @click="selectMap()">
+        <div class="card-image-wrapper">
+          <img :src="map.BGMap" :alt="map.title" class="card-image" />
+        </div>
+        <div class="has-text-centered caja-texto">
+          <p v-if="$store.state.lenguaje === 'español'" class="title is-7 tipografiaElegante">{{ map.translations.es.title }}</p>
+          <p v-else class="title is-7 tipografiaElegante">{{ map.title }}</p>
+        </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -24,12 +26,11 @@
 import { apiService } from '@/services/api.js';
 
 export default {
-name: 'MapCard',
-props: {
-    map: { type: Object, required: true }
-},
-methods: {
-
+  name: 'MapCard',
+  props: {
+      map: { type: Object, required: true }
+  },
+  methods: {
     async selectMap() {
       // cogemos la id del mapa
       const idMap = this.map.idMap;
@@ -51,12 +52,37 @@ methods: {
       } else {
         console.error("No se pudo obtener el mapa");
       }
+    },
+    async deleteMapInPlay() {
+      const confirmDelete = window.confirm("¿Estás seguro de que quieres borrar este mapa?");
+      if (!confirmDelete) return; // No hacer nada si el usuario cancela
+
+      try {
+        const idMapInPlay = this.map.id;
+        const IDUserHost = this.$store.state.IDUserHost;
+
+        const response = await apiService.deleteMapInPlay(idMapInPlay, IDUserHost);
+        console.log("Mapa borrado:", response);
+
+        // Recargar la página actual
+        location.reload();
+      } catch (error) {
+        console.error("Error al borrar el mapa:", error);
+      }
     }
-}
+
+  }
 };
 </script>
 
-<style>
+<style scoped>
+.cruzeta{
+  position: absolute;
+  top:2px;
+  right: 2px;
+  z-index: 99;
+}
+
 .cajaDePersonajesBase{
   border: 2px solid #48c78e;
   border-radius: 3px;
@@ -73,10 +99,6 @@ methods: {
   border: 2px solid #485fc7;
   border-radius: 3px;
 }
-.cajaimg{
-  object-fit: cover;
-  min-height: 80px;
-}
 
 .card-overlay {
   position: absolute;
@@ -89,5 +111,18 @@ methods: {
 }
 .tipografiaElegante{
   font-family: "Cinzel";
+}
+.card-image{
+  max-height: 130px;
+}
+
+.caja-texto{
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  z-index: 2;
 }
 </style>

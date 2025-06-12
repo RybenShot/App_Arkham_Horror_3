@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-//const API_URL = process.env.VUE_APP_API_URL_DEV;
+//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -129,8 +129,22 @@ export const apiService = {
       const response = await axios.post(`${API_URL}/mapInPlay`, payload)
       return response.data
     } catch (error) {
-      console.error('❌ error al crear el mapa in play :', error);
+      console.error('❌ postNewMapInPlay(.js) error al crear el mapa in play :', error);
       throw error
+    }
+  },
+
+  // BORRAR un mapa in play
+  async deleteMapInPlay(id, IDUserHost){
+    try {
+      const payload = {id, IDUserHost}
+      const response = await axios.post(`${API_URL}/mapInPlay/deleteMapInPlay`, payload)
+
+      // console.log('🔍 --- deleteMapInPlay --- recibid:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(`❌ deleteMapInPlay(.js) - Error al intentazr borrar un mapa in play`, error);
+      throw error;
     }
   },
 
@@ -210,19 +224,19 @@ export const apiService = {
   // votaciones de like y dislike
   async getLikeDislike (idMap){
     try {
-      console.log('🔍 --- getLikeDislike --- idMap:', idMap)
+      // console.log('🔍 --- getLikeDislike --- idMap:', idMap)
       const response = await axios.get(`${API_URL}/maps/likeDislike/${idMap}`)
 
       const { likes, dislikes, NVotesLikeDislike } = response.data;
 
-      console.log('🔍 --- getLikeDislike --- recibid:', response.data)
+      // console.log('🔍 --- getLikeDislike --- recibid:', response.data)
 
       // Actualizamos el store de un solo golpe:
       this.$store.state.datosMapa.extraData.likes = likes;
       this.$store.state.datosMapa.extraData.dislikes = dislikes;
       this.$store.state.datosMapa.extraData.NVotesLikeDislike = NVotesLikeDislike;
 
-      console.log('🔍 --- getLikeDislike --- datos actualizados en el store:', this.$store.state.datosMapa.extraData);
+      // console.log('🔍 --- getLikeDislike --- datos actualizados en el store:', this.$store.state.datosMapa.extraData);
       
       return response.data
     } catch (error) {
@@ -241,7 +255,7 @@ export const apiService = {
       const payload = {idMap, idUser, value}
       const response = await axios.post(`${API_URL}/maps/likeDislike`, payload)
 
-      console.log('🔍 --- postLikeDislike --- recibid:', response.data)
+      // console.log('🔍 --- postLikeDislike --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ Error al añadir una votacion`, error);
@@ -253,7 +267,7 @@ export const apiService = {
   async getTimeEstimated (idMap){
     try {
       const response = await axios.get(`${API_URL}/maps/timeEstimated/${idMap}`)
-      console.log('🔍 --- getTimeEstimated --- recibid:', response.data)
+      // console.log('🔍 --- getTimeEstimated --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ Error al obtener el tiempo estimado`, error);
@@ -267,7 +281,7 @@ export const apiService = {
       const payload = {idMap, idUser, value}
       const response = await axios.post(`${API_URL}/maps/timeEstimated`, payload)
 
-      console.log('🔍 --- postTimeEstimated --- recibid:', response.data)
+      // console.log('🔍 --- postTimeEstimated --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ postTimeEstimated(api.js) - Error al añadir el tiempo estimado`, error);
@@ -279,7 +293,7 @@ export const apiService = {
   async getDifficultyMap (idMap){
     try {
       const response = await axios.get(`${API_URL}/maps/difficultyMap/${idMap}`)
-      console.log('🔍 --- getDifficultyMap --- recibid:', response.data)
+      // console.log('🔍 --- getDifficultyMap --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ getDifficultyMap(api.js) - Error al obtener la dificultad`, error);
@@ -293,7 +307,7 @@ export const apiService = {
       const payload = {idMap, idUser, value}
       const response = await axios.post(`${API_URL}/maps/difficultyMap`, payload)
 
-      console.log('🔍 --- postDifficultyMap --- recibid:', response.data)
+      // console.log('🔍 --- postDifficultyMap --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ postDifficultyMap(api.js) - Error al añadir la dificultad`, error);
@@ -307,7 +321,7 @@ export const apiService = {
       const response = await axios.get(`${API_URL}/maps/invRecommended/${idMap}`)
       // console.log('🔍 --- getRecInv --- recibid:', response.data)
       if (!response.data || response.data.length === 0) {
-        console.warn(`⚠️ No hay investigadores recomendados para el mapa con ID ${idMap}`);
+        // console.warn(`⚠️ No hay investigadores recomendados para el mapa con ID ${idMap}`);
         return [];
       }
       return response.data
@@ -320,17 +334,17 @@ export const apiService = {
   // post investigadores recomendados
   async postRecInv (idMap, idUser, nameUser,  invData, comment){
     try {
-      console.log('🔍 --- postRecInv --- invData:', idMap, idUser, nameUser,  invData, comment)
+      // console.log('🔍 --- postRecInv --- invData:', idMap, idUser, nameUser,  invData, comment)
       const idInv = invData.idInv
       const nameInv = invData.name
       const expansionInv = invData.expansion
       const imgInv = invData.imgInv
 
       const payload = {idMap, idUser, nameUser,  idInv, nameInv,expansionInv, imgInv, comment}
-      console.log('🔍 --- postRecInv --- payload:', payload)
+      // console.log('🔍 --- postRecInv --- payload:', payload)
       const response = await axios.post(`${API_URL}/maps/invRecommended`, payload)
 
-      console.log('🔍 --- postRecInv --- recibid:', response.data)
+      // console.log('🔍 --- postRecInv --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ Error al añadir los investigadores recomendados`, error);
@@ -342,10 +356,10 @@ export const apiService = {
   async getComments (idMap){
     try {
       const response = await axios.get(`${API_URL}/maps/comments/${idMap}`)
-      console.log('🔍 --- getComments --- recibid:', response.data)
+      // console.log('🔍 --- getComments --- recibid:', response.data)
       return response.data
     } catch (error) {
-      console.error(`❌ getComments - Error al obtener los comentarios`, error);
+      console.error(`❌ getComments(.js) - Error al obtener los comentarios`, error);
       throw error;
     }
   },
@@ -356,13 +370,11 @@ export const apiService = {
       const payload = {idMap, idUser, nameUser, comment}
       const response = await axios.post(`${API_URL}/maps/comments`, payload)
 
-      console.log('🔍 --- postComment --- recibid:', response.data)
+      // console.log('🔍 --- postComment --- recibid:', response.data)
       return response.data
     } catch (error) {
       console.error(`❌ Error al añadir un comentario`, error);
       throw error;
     }
   }
-  
-  
 };

@@ -116,19 +116,17 @@
           const idMap = this.$store.state.datosMapa.idMap
           const IDUserHost = this.user.id
 
-
-          console.log(idMap, IDUserHost)
-
           const postNewMap = await apiService.postNewMapInPlay(idMap, IDUserHost);
           // añadir el mapa que venga al store para jugarlo
-          this.$store.state.datosMapa = postNewMap
+          this.$store.state.datosMapa = await postNewMap
           // volcamos el código para que aparezca en el input
           this.barCode = postNewMap.id
+          this.$store.state.datosMapa.id = postNewMap.id
           // meter en el input la id del mapa para copiarlo y pasarlo a otras personas
-          console.log(postNewMap)
+          // console.log(postNewMap)
           this.beforeCreateMap = false
         } catch (error) {
-          console.error("❌ Error al crear el nuevo mapa:", error);
+          console.error("❌ postNewMapInPlay(.vue) - Error al crear el nuevo mapa:", error);
         }
       },
       async copyCode(){

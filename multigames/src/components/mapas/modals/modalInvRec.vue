@@ -6,13 +6,13 @@
     <div class="modal-card">
       <!-- Cabecera -->
       <header class="columns is-mobile modal-card-head BGBendicion m-0">
-        <p class="modal-card-title has-text-weight-bold m-0">Comunidad</p>
+        <p class="modal-card-title has-text-weight-bold m-0">{{ textoInterfaz.headTitle }}</p>
         <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
       </header>
 
       <!-- Cuerpo del modal -->
       <section class="modal-card-body p-1">
-        <h2 class="title is-5 has-text-centered mb-2">Investigadores recomendados</h2>
+        <h2 class="title is-5 has-text-centered mb-2">{{ textoInterfaz.titleInvRec }}</h2>
         <hr class="mt-0 mb-2" />
 
         <!-- selectores de expansion o arquetipo -->
@@ -20,12 +20,12 @@
           <b-tabs size="is-medium" position="is-centered" v-model="activeTab">
               <b-tab-item>
                 <template #header>
-                    <span> Lista </span>
+                    <span> {{ textoInterfaz.nav.list }} </span>
                 </template>
 
                   <!-- Container donde listamos cada investigador agrupado -->
                   <div v-if="invGroups.length === 0" class="has-text-centered has-text-grey">
-                    Sin investigadores recomendados aún.
+                    {{ textoInterfaz.noDates }}
                   </div>
                   <div v-else>
                     <div class="box mb-2" v-for="group in invGroups" :key="group.idInv">
@@ -39,18 +39,18 @@
                         <!-- Datos principales: nombre, expansión, número de votos -->
                         <div class="column is-9-mobile is-10-tablet">
                           <p class="is-size-6 mb-1">{{ group.name }}</p>
-                          <p class="is-size-7 mb-1"><strong>Expansión:</strong> {{ group.expansion }}</p>
-                          <p class="is-size-7"><strong>Votos:</strong> {{ group.voteCount }}</p>
+                          <p class="is-size-7 mb-1"><strong>Expansion:</strong> {{ group.expansion }}</p>
+                          <p class="is-size-7"><strong>{{ textoInterfaz.textVotes }}:</strong> {{ group.voteCount }}</p>
 
                           <!-- Botón para mostrar/ocultar comentarios -->
                           <div class=" columns is-mobile mt-2">
                             <button class="button column is-small p-1 m-1" @click="selectInv(group.idInv)">
-                              <span >Seleccionar</span>
+                              <span >{{ textoInterfaz.selectButton }}</span>
                             </button>
 
                             <button class="button column is-small p-1 m-1" @click="toggleComments(group.idInv)">
-                              <span v-if="!openComments[group.idInv]">Ver comentarios</span>
-                              <span v-else>Ocultar comentarios</span>
+                              <span v-if="!openComments[group.idInv]">{{ textoInterfaz.seeCommentButton }}</span>
+                              <span v-else>{{ textoInterfaz.closeComment }}</span>
                             </button>
                           </div>
                         </div>
@@ -74,20 +74,20 @@
               <!-- Sistema de votacion -->
               <b-tab-item>
                 <template #header>
-                    <span> Votación </span>
+                    <span> {{ textoInterfaz.nav.votes }} </span>
                 </template>
 
                 <SignedOut>
                   <div class="has-text-centered ">
-                    <p class="title has-text centered"> Para poder votar, debes iniciar sesión</p>
-                    <router-link to="/"> Ir a Home </router-link>
+                    <p class="title has-text centered"> {{ textoInterfaz.noLogingText }}</p>
+                    <router-link to="/"> {{ textoInterfaz.goHome }} </router-link>
                   </div>
                 </SignedOut>
 
                 <SignedIn>
                   <div>
-                    <p class="title is-4 has-text-centered mb-4">¡Mándanos tu recomendación!</p>
-                    <p class="subtitle is-6 mb-1 has-text-centered">Selecciona investigador:</p>
+                    <p class="title is-4 has-text-centered mb-4">{{ textoInterfaz.sendRecommendation }}</p>
+                    <p class="subtitle is-6 mb-1 has-text-centered">{{ textoInterfaz.selectInv }}</p>
                     <hr class="mt-0 mb-2" />
                     <div class="columns is-multiline is-mobile thumbnail-grid">
                       <div class="column is-4-mobile p-1" v-for="inv in allInvestigators" :key="inv.idInv">
@@ -108,7 +108,7 @@
                     <div class="field">
                       <div class="control">
                         <button class="button is-primary is-fullwidth" :disabled="!selectedInvId || newComment.trim() === ''" @click="sendRecommendation">
-                          Enviar recomendación
+                          {{ textoInterfaz.sendButton }}
                         </button>
                       </div>
                     </div>
@@ -122,7 +122,7 @@
 
       <!-- Pie del modal con botón Cerrar -->
       <footer class="modal-card-foot p-2">
-        <button @click="closeModal" class="button is-danger is-fullwidth"> Cerrar </button>
+        <button @click="closeModal" class="button is-danger is-fullwidth"> {{ textoInterfaz.closeButton }} </button>
       </footer>
     </div>
   </div>
@@ -149,9 +149,72 @@ export default {
       selectedInvId: null,     // ID del investigador elegido por el usuario
       invData: null,     // Nombre del investigador elegido por el usuario
       newComment: '',          // Texto del comentario que ingresa el usuario
+      textoInterfaz: {
+        headTitle: '',
+        titleInvRec: '',
+        nav: {
+          list: '',
+          votes: ''
+        },
+        noDates: '',
+        textVotes: '',
+        selectButton: '',
+        seeCommentButton: '',
+        closeComment: '',
+        closeButton: '',
+
+        noLogingText: '',
+        goHome: '',
+        sendButton: '',
+        sendRecommendation: '',
+        selectInv: ''
+      }
     };
   },
   methods: {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == 'español'){
+        this.textoInterfaz.headTitle = "Comunidad";
+        this.textoInterfaz.titleInvRec = "Investigadores recomendados";
+        this.textoInterfaz.nav.list = "Lista";
+        this.textoInterfaz.nav.votes = "Votación";
+
+        this.textoInterfaz.noDates = "Sin investigadores recomendados aún";
+        this.textoInterfaz.textVotes = "Votos";
+
+        this.textoInterfaz.selectButton = "Seleccionar";
+        this.textoInterfaz.seeCommentButton = "Ver comentarios";
+        this.textoInterfaz.closeComment = "Ocultar comentarios";
+        this.textoInterfaz.closeButton = "Cerrar";
+
+        this.textoInterfaz.noLogingText = "Para poder comentar, debes iniciar sesión";
+        this.textoInterfaz.goHome = "Ir a Home";
+        this.textoInterfaz.sendButton = "Enviar";
+        this.textoInterfaz.sendRecommendation = "¡Mándanos tu recomendación!";
+        this.textoInterfaz.selectInv = "Selecciona investigador";
+
+      } else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.headTitle = "Community";
+        this.textoInterfaz.titleInvRec = "Recommended Investigators";
+        this.textoInterfaz.nav.list = "List";
+        this.textoInterfaz.nav.votes = "Votes";
+
+        this.textoInterfaz.noDates = "No recommended investigators yet";
+        this.textoInterfaz.textVotes = "Votes"; 
+
+        this.textoInterfaz.selectButton = "Select";
+        this.textoInterfaz.seeCommentButton = "See Comments";
+        this.textoInterfaz.closeComment = "Hide Comments";
+        this.textoInterfaz.closeButton = "Close";
+
+        this.textoInterfaz.noLogingText = "To comment, you must log in.";
+        this.textoInterfaz.goHome = "Go Home";
+        this.textoInterfaz.sendButton = "Send";
+        this.textoInterfaz.sendRecommendation = "Send us your recommendation!";
+        this.textoInterfaz.selectInv = "Select investigator";
+      }
+    },
+
     // Traer lista de recomendaciones agrupada (misma lógica que antes)
     async getListInvRec() {
       try {
@@ -188,7 +251,7 @@ export default {
         }));
 
       } catch (error) {
-        console.error("❌ Error al obtener la lista de investigadores recomendados:", error);
+        console.error("❌ getListInvRec(.vue) - Error al obtener la lista de investigadores recomendados:", error);
       }
     },
 
@@ -212,7 +275,7 @@ export default {
         const response = await apiService.obtainPreviewInv();
         this.allInvestigators = response;
       } catch (error) {
-        console.error("❌ Error al obtener la lista de investigadores:", error);
+        console.error("❌ getAllPrevInvestigators(.vue) - Error al obtener la lista de investigadores:", error);
       }
     },
 
@@ -238,7 +301,7 @@ export default {
         // volver a la pestaña “Lista”
         this.activeTab = 0;
       } catch (error) {
-        console.error("❌ Error al enviar la recomendación:", error);
+        console.error("❌ sendRecommendation(.vue) - Error al enviar la recomendación:", error);
       }
     },
 
@@ -261,6 +324,7 @@ export default {
     // Al montar, cargamos ambas listas
     this.getListInvRec();
     this.getAllPrevInvestigators();
+    this.rellenarTextoSegunIdioma()
   },
 };
 </script>

@@ -213,7 +213,7 @@ export default createStore({
     },
     modalComunityMap: false,
     modalInvRec: false,
-    modalDifficultyTime: true,
+    modalDifficultyTime: false,
 
     enemyList: [],
     // RESERVA DE MITOS
@@ -325,6 +325,10 @@ export default createStore({
     // funcion para ver en que estado estan algunos modales
     getModalState: (state) => (modalKey) => {
       return state[modalKey];
+    },
+
+    getMapInPlay(state){
+      return state.datosMapa.id
     }
     
   },

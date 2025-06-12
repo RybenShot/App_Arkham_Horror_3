@@ -38,7 +38,6 @@
       <hr class="m-1 mx-4 linea-separacion">
 
     </div>
-    <br>
 
     <!-- Cartas de mapas filtradas -->
     <div class="PersonajesList">
@@ -99,13 +98,18 @@ export default {
   methods: {
     handleToggle(expansionKey) {
       this.SonidoTecla();
-      const message = this.$store.state[expansionKey]
-        ? "expansion desactivada"
-        : "expansion activada";
-      this.$store.commit('toggleExpansion', { key: expansionKey, value: !this.$store.state[expansionKey] });
-      this.$store.dispatch('ejecutarFlashPopUp_Action', message);
+      const activada = !this.$store.state[expansionKey];
+      this.$store.commit('toggleExpansion', { key: expansionKey, value: activada });
+
+      if (activada) {
+        this.$buefy.toast.open({ message: 'Expansión activada', type: 'is-success', duration: 2000 });
+      } else{
+        this.$buefy.toast.open({ message: 'Expansión desactivada', type: 'is-danger', duration: 2000 });
+      }
+
       this.updateMapsList();
     },
+
     // Filtra mapsListAll según el estado de las expansiones activadas
     updateMapsList() {
       const all = this.normalizeMapsList();

@@ -88,13 +88,13 @@
             <div class="box">
               <ul>
                 <li v-for="(articulo, index) in noticias.articulos" :key="index" class="noticia-item">
-                  <p><strong> {{ textoInterfaz.textoActualizacion }} {{ articulo.numeroActualizacion }}</strong></p>
+                  <p><strong> {{ textoInterfaz.textoActualizacion }} {{ articulo.numberUpdate }}</strong></p>
 
-                  <h4 v-if="this.$store.state.lenguaje == 'español'">{{ articulo.titulo }}</h4>
-                  <h4 v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.ENtitulo }}</h4>
+                  <h4 v-if="this.$store.state.lenguaje == 'español'">{{ articulo.translations.es.title }}</h4>
+                  <h4 v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.translations.en.title }}</h4>
 
-                  <p v-if="this.$store.state.lenguaje == 'español'">{{ articulo.descripcion }}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.ENdescripcion }}</p>
+                  <p v-if="this.$store.state.lenguaje == 'español'">{{ articulo.translations.es.description }}</p>
+                  <p v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.translations.en.description }}</p>
                   <hr class="my-2">
                 </li>
               </ul>
@@ -176,9 +176,9 @@ export default {
       contadorVisitas: null,
       textoInterfaz: {
         wellcome: "",
-        versionApp: "Beta 4.0.4",
+        versionApp: "Beta 4.0.5",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "18/05/2025",
+        fechaUltimaActualizacion: "10/06/2025",
         textoVisitas: "",
         textoActualizacion: "",
         botones: {
@@ -191,47 +191,91 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
-          {id: 4,
-            numeroActualizacion: "4.0.4",
-            titulo: "Disponible modo online",
-            ENtitulo: "Online mode available",
-            descripcion: "Con la reciente actualización de gestión de usuario, podrás registrarte y crear un mapa online para gestionar la partida junto con tus compañeros investigadores. Para ello, solo tienes que registrarte y crear un mapa, el cual podrás compartir con tus amigos para que ellos puedan unirse a tu partida.",
-            ENdescripcion: "With the recent user-management update, you’ll be able to register and create an online map to manage the game alongside your fellow investigators. To do so, simply sign up and create a map, which you can then share with your friends so they can join your game.",
-            fechaActualizacion: "18/05/2025"
+          {id: 6,
+            numberUpdate: "4.0.5",
+            dateUpdate: "10/06/2025",
+            translations: {
+              es: {
+                title: "La comunidad opina!",
+                description: "Ahora puedes participar en las votaciones de mapas y descubrir qué opinan otros jugadores. Qué mapas son los favoritos de la comunidad, investigadores más recomendados para cada mapa, comentarios con estrategias útiles, nivel de dificultad y tiempo medio estimado. Toda esta información se basa en la experiencia real de otros jugadores. ¡Tu voto también cuenta!"
+              },
+              en: {
+                title: "The community speaks!",
+                description: "You can now vote on maps and see what other players think! Discover the community's favorite maps, the most recommended investigators for each one, strategy tips, difficulty level, and average play time — all based on real player feedback. Your vote matters too!"
+              }
+            }
           },
           {id: 5,
-            numeroActualizacion: "4.0.3",
-            titulo: "¡Nuevos investigadores! Añadida pantalla de carga y backend completado",
-            ENtitulo: "New Investigators! Added Loading Screen and Backend Completed",
-            descripcion: "Se ha completado la migración de datos y ya está toda la aplicación reactiva con su respectivo backend, lo que ahora dará paso más adelante a más interacciones con los usuarios, como la posibilidad de guardar partida, crear personajes o interactuar con otros jugadores. Para ello, se ha añadido una pantalla de carga entre pestañas y se ha empezado a incorporar nuevos investigadores de la comunidad de BGG.",
-            ENdescripcion: "Data migration is complete and the entire application is now fully reactive with its backend. This will pave the way for additional user interactions, such as saving games, character creation, and player-to-player interaction. A loading screen between tabs has been implemented, and new community-created investigators from BGG have started to be added.",
-            fechaActualizacion: "25/04/2025"
+            numberUpdate: "4.0.4",
+            dateUpdate: "18/05/2025",
+            translations: {
+              es: {
+                title: "Disponible modo online",
+                description: "Con la reciente actualización de gestión de usuario, podrás registrarte y crear un mapa online para gestionar la partida junto con tus compañeros investigadores. Para ello, solo tienes que registrarte y crear un mapa, el cual podrás compartir con tus amigos para que ellos puedan unirse a tu partida."
+              },
+              en: {
+                title: "Online mode available",
+                description: "With the recent user-management update, you’ll be able to register and create an online map to manage the game alongside your fellow investigators. To do so, simply sign up and create a map, which you can then share with your friends so they can join your game."
+              }
+            }
+          },
+          {id: 4,
+            numberUpdate: "4.0.3",
+            dateUpdate: "25/04/2025",
+            translations: {
+              es: {
+                title: "¡Nuevos investigadores! Añadida pantalla de carga y backend completado",
+                description: "Se ha completado la migración de datos y ya está toda la aplicación reactiva con su respectivo backend, lo que ahora dará paso más adelante a más interacciones con los usuarios, como la posibilidad de guardar partida, crear personajes o interactuar con otros jugadores. Para ello, se ha añadido una pantalla de carga entre pestañas y se ha empezado a incorporar nuevos investigadores de la comunidad de BGG."
+              },
+              en: {
+                title: "New Investigators! Added Loading Screen and Backend Completed",
+                description: "Data migration is complete and the entire application is now fully reactive with its backend. This will pave the way for additional user interactions, such as saving games, character creation, and player-to-player interaction. A loading screen between tabs has been implemented, and new community-created investigators from BGG have started to be added."
+              }
+            }
           },
           {id: 3,
-            numeroActualizacion: "4.0.2",
-            titulo: "Mejoras en enemigos, recordatorios y gestión de datos",
-            ENtitulo: "Improvements in Enemies, Reminders, and Data Management",
-            descripcion: "Añadido indicador de expansión de cada enemigo. Añadido recordatorio para bendición y maldición. Añadida gestión de fichas de concentración. Corregidas algunas traducciones. Añadida gestión de datos por backend.",
-            ENdescripcion: "Added expansion indicator for each enemy. Added reminder for Blessing and Curse. Added management of concentration tokens. Fixed some translations. Added data management via backend.",
-            fechaActualizacion: "28/03/2025"
+            numberUpdate: "4.0.2",
+            dateUpdate: "28/03/2025",
+            translations: {
+              es: {
+                title: "Mejoras en enemigos, recordatorios y gestión de datos",
+                description: "Añadido indicador de expansión de cada enemigo. Añadido recordatorio para bendición y maldición. Añadida gestión de fichas de concentración. Corregidas algunas traducciones. Añadida gestión de datos por backend."
+              },
+              en: {
+                title: "Improvements in Enemies, Reminders, and Data Management",
+                description: "Added expansion indicator for each enemy. Added reminder for Blessing and Curse. Added management of concentration tokens. Fixed some translations. Added data management via backend."
+              }
+            }
           },
           {id: 2,
-            numeroActualizacion: "4.0.1",
-            titulo: "Nueva interfaz de zona de juego de investigador, reserva de mitos y apartado de noticias",
-            ENtitulo: "New investigator play area interface, mythos reserve, and news section",
-            descripcion: 'Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero y restos, y añadir el contador de pistas. Además, se ha añadido la sección "Reserva de Mitos" para gestionar la reserva de mitos durante el juego. También se incluye un apartado de noticias para informar de las nuevas actualizaciones.',
-            ENdescripcion: 'The character page interface has been adjusted to improve the visibility of the health, sanity, money, and clue counters, as well as to add a clue counter. Additionally, the "Mythos Reserve" section has been added to manage the mythos reserve during the game. A news section has also been included to inform about new updates.',
-            fechaActualizacion: "14/03/2025"
+            numberUpdate: "4.0.1",
+            dateUpdate: "14/03/2025",
+            translations: {
+              es: {
+                title: "Nueva interfaz de zona de juego de investigador, reserva de mitos y apartado de noticias",
+                description: "Se ha reajustado la interfaz de la página de personaje para mejorar la visibilidad de los contadores de vida, cordura, dinero y restos, y añadir el contador de pistas. Además, se ha añadido la sección 'Reserva de Mitos' para gestionar la reserva de mitos durante el juego. También se incluye un apartado de noticias para informar de las nuevas actualizaciones."
+              },
+              en: {
+                title: "New investigator play area interface, mythos reserve, and news section",
+                description: "The character page interface has been adjusted to improve the visibility of the health, sanity, money, and clue counters, as well as to add a clue counter. Additionally, the 'Mythos Reserve' section has been added to manage the mythos reserve during the game. A news section has also been included to inform about new updates."
+              }
+            }
           },
           {id: 1,
-            numeroActualizacion: "4.0.0",
-            titulo: "Corrección de traducciones y nuevo apartado de versiones",
-            ENtitulo: "Correction of translations and new versions section",
-            descripcion: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas. Se incluye control de versión en Home.",
-            ENdescripcion: "All elements have been fully translated into English, including status cards, interface, investigators, and maps. Version control has been added to the Home page.",
-            fechaActualizacion: "24/04/2025"
+            numberUpdate: "4.0.0",
+            dateUpdate: "24/04/2025",
+            translations: {
+              es: {
+                title: "Corrección de traducciones y nuevo apartado de versiones",
+                description: "Se han completado las traducciones al inglés de todos los elementos, incluyendo cartas de estados, interfaz, investigadores y mapas. Se incluye control de versión en Home.",
+
+              },
+              en:{
+                title: "Correction of translations and new versions section",
+                description: "All elements have been fully translated into English, including status cards, interface, investigators, and maps. Version control has been added to the Home page."
+              }
+            }
           }
-          
         ],
       },
       resultadoAnuncio: 0,
@@ -239,6 +283,7 @@ export default {
   },
   methods: {
     SonidoTecla() {sound.play();},
+    
     rellenarTextosegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.botones.textBotonMapa = "Mapas";
@@ -267,7 +312,7 @@ export default {
   async mounted(){
     //Esta función tonta es una manera de que salga o no el anuncion al principio
     this.resultadoAnuncio = Math.floor(Math.random() * (1, 3)) + 1;
-    console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
+    // console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
     this.rellenarTextosegunIdioma();
   },
   updated(){

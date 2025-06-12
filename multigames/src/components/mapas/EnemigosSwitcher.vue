@@ -129,7 +129,7 @@ export default {
     },
     async getEnemiesList(){
       this.monstersList = await this.$store.getters.getEnemysList;
-      console.log(this.monstersList) // aqui me aparecen los enemigos en un array
+      // console.log(this.monstersList) // aqui me aparecen los enemigos en un array
     },
     closeEnemiesModal(){
       this.$store.state.viewDetalleMapa = true

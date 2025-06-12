@@ -103,7 +103,7 @@ export default {
         const objects = await apiService.obtainPertenencesInv(idInv);
         this.responseObjects = objects;
         this.$store.state.responseObjectsInPlay = objects;
-        console.log("Objetos principales del investigador", this.responseObjects);
+        // console.log("Objetos principales del investigador", this.responseObjects);
       } catch (error) {
         console.error("Error al cargar los objetos principales del investigador", error);
       }
@@ -111,7 +111,7 @@ export default {
     seeCard( url){
       this.$store.state.SeleccionarURLPertenencia = url;
       this.$store.state.verDetallePertenencia = true;
-      console.log("URL de la carta seleccionada", this.$store.state.SeleccionarURLPertenencia);
+      // console.log("URL de la carta seleccionada", this.$store.state.SeleccionarURLPertenencia);
     }
   },
   async mounted(){

@@ -4,7 +4,7 @@
     <div class="mr-6">
       <div class="modal-card">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
-          <p class="modal-card-title has-text-weight-bold">Community</p>
+          <p class="modal-card-title has-text-weight-bold">{{ textoInterfaz.headTitle }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="$store.state.modalDifficultyTime = false"></i>
         </header>
 
@@ -13,19 +13,19 @@
             <!-- tiempo estimado -->
             <b-tab-item>
               <template #header>
-                <span>Tiempo</span>
+                <span>{{ textoInterfaz.nav.time }}</span>
               </template>
 
               <SignedOut>
                 <div class="has-text-centered">
-                  <p class="title">Para poder votar, debes iniciar sesión</p>
-                  <router-link to="/">Ir a Home</router-link>
+                  <p class="title">{{ textoInterfaz.noLogingText }}</p>
+                  <router-link to="/">{{ textoInterfaz.goHome }}</router-link>
                 </div>
               </SignedOut>
 
               <SignedIn>
                 <div class="has-text-centered">
-                  <p class="title is-4 mb-4">Tiempo estimado</p>
+                  <p class="title is-4 mb-4">{{ textoInterfaz.titleTime }}</p>
 
                   <!-- Input numérico centrado -->
                   <div class="field is-grouped is-grouped-centered">
@@ -41,7 +41,7 @@
                   <div class="field mt-4">
                     <div class="control">
                       <button class="button is-primary is-fullwidth" :disabled="!valueTime || valueTime > 360" @click="submitTime" >
-                        Enviar Tiempo
+                        {{ textoInterfaz.sendButton }}
                       </button>
                     </div>
                   </div>
@@ -52,19 +52,19 @@
             <!-- dificultad -->
             <b-tab-item>
               <template #header>
-                <span>Dificultad</span>
+                <span>{{ textoInterfaz.nav.difficulty }}</span>
               </template>
 
               <SignedOut>
                 <div class="has-text-centered">
-                  <p class="title">Para poder votar, debes iniciar sesión</p>
-                  <router-link to="/">Ir a Home</router-link>
+                  <p class="title">{{ textoInterfaz.noLogingText }}</p>
+                  <router-link to="/">{{ textoInterfaz.goHome }}</router-link>
                 </div>
               </SignedOut>
 
               <SignedIn>
                 <div class="has-text-centered">
-                  <p class="title is-4 mb-4">Dificultad</p>
+                  <p class="title is-4 mb-4">{{ textoInterfaz.titleDifficulty }}</p>
 
                   <!-- Selector de dificultad con calaveras -->
                   <div class="skull-selector">
@@ -74,7 +74,7 @@
                   <div class="field mt-4">
                     <div class="control">
                       <button class="button is-primary is-fullwidth" :disabled="!valueDifficulty" @click="submitDifficulty">
-                        Enviar Dificultad
+                        {{ textoInterfaz.sendButton }}
                       </button>
                     </div>
                   </div>
@@ -84,7 +84,7 @@
           </b-tabs>
 
           <a href="https://boardgamegeek.com/boardgame/257499/arkham-horror-third-edition/forums/0?pageid=1&sort=recent" target="_blank">
-            <p>Comunidad de BGG</p>
+            <p>{{ this.textoInterfaz.linkToBGG }}</p>
           </a>
         </section>
 
@@ -92,7 +92,7 @@
           <div class="field has-addons columns is-mobile is-gapless">
             <p class="control column">
               <button @click="$store.state.modalDifficultyTime = false" class="button is-danger is-fullwidth">
-                Cerrar
+                {{ textoInterfaz.closeButton }}
               </button>
             </p>
           </div>
@@ -114,16 +114,64 @@ export default {
       activeTab: 0,
       valueTime: null,
       valueDifficulty: null,
+      textoInterfaz: {
+        headTitle: '',
+        nav: {
+          time: '',
+          difficulty: ''
+        },
+        titleTime: '',
+        titleDifficulty: '',
+        sendButton: '',
+        closeButton: '',
+
+        noLogingText: '',
+        goHome: '',
+
+        linkToBGG: ''
+      }
     };
   },
   methods: {
+    rellenarTextoSegunIdioma(){
+      if(this.$store.state.lenguaje == "español"){
+        this.textoInterfaz.headTitle = "Comunidad";
+        this.textoInterfaz.nav.time = "Tiempo";
+        this.textoInterfaz.nav.difficulty = "Dificultad";
+
+        this.textoInterfaz.titleTime = "Tiempo estimado";
+        this.textoInterfaz.titleDifficulty = "Dificultad";
+        this.textoInterfaz.sendButton = "Enviar";
+        this.textoInterfaz.closeButton = "Cerrar";
+
+        this.textoInterfaz.noLogingText = "Para poder votar, debes iniciar sesión";
+        this.textoInterfaz.goHome = "Ir a Home";
+
+        this.textoInterfaz.linkToBGG = "Comunidad de BGG"
+      }else if(this.$store.state.lenguaje == 'ingles'){
+        this.textoInterfaz.headTitle = "Comunity";
+        this.textoInterfaz.nav.time = "Time";
+        this.textoInterfaz.nav.difficulty = "Difficulty";
+
+        this.textoInterfaz.titleTime = "Time estimated";
+        this.textoInterfaz.titleDifficulty = "Dificulty";
+        this.textoInterfaz.sendButton = "Send";
+        this.textoInterfaz.closeButton = "Close";
+
+        this.textoInterfaz.noLogingText = "To vote, you must log in.";
+        this.textoInterfaz.goHome = "Go Home";
+
+        this.textoInterfaz.linkToBGG = "BGG Comunity"
+      }
+    },
     async submitTime() {
       if (this.valueTime > 360) return;
       try {
         const idMap = this.$store.state.datosMapa.idMap;
         const idUser = this.$store.state.IDUserHost;
         await apiService.postTimeEstimated(idMap, idUser, this.valueTime);
-        this.$buefy.toast.open('Tiempo estimado enviado correctamente.');
+        this.$buefy.toast.open({ message: 'Tiempo estimado enviado correctamente.', type: 'is-success', duration: 2000 });
+        this.$store.state.modalDifficultyTime = false
       } catch (error) {
         console.error('❌ submitTime(.vue) - Error al enviar tiempo:', error);
       }
@@ -133,12 +181,17 @@ export default {
         const idMap = this.$store.state.datosMapa.idMap;
         const idUser = this.$store.state.IDUserHost;
         await apiService.postDifficultyMap(idMap, idUser, this.valueDifficulty);
-        this.$buefy.toast.open('Dificultad enviada correctamente.');
+        this.$buefy.toast.open({ message: 'Dificultad enviada correctamente.', type: 'is-success', duration: 2000 });
+        this.$store.state.modalDifficultyTime = false
       } catch (error) {
         console.error('❌ submitDifficulty(.vue) - Error al enviar dificultad:', error);
       }
     },
   },
+  mounted() {
+    this.rellenarTextoSegunIdioma();
+  }
+
 };
 </script>
 

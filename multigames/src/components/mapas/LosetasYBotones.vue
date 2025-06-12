@@ -31,7 +31,7 @@
         <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
       </button>
 
-      <div class=" has-text-centered">
+      <div class=" has-text-centered" v-if="this.$store.state.datosMapa.id">
         <button v-if="this.$store.state.mapaSeleccionado == false" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success is-outlined " :class="{'boxShadowGreen': !this.$store.state.mapaSeleccionado}"><strong>{{ textoBotones.seleccionarMapa }}</strong></button>
         <button v-if="this.$store.state.mapaSeleccionado == true" @click="this.$store.state.mapaSeleccionado = !this.$store.state.mapaSeleccionado" class="button is-success "><strong>{{ textoBotones.mapaSeleccionado }}</strong></button>
       </div>
@@ -77,7 +77,8 @@ export default {
         mapaOLHabilitado: "",
 
         selecInv: "",
-        lista: ""
+        lista: "",
+        onLineButton: ""
       }
     }
   },
@@ -110,6 +111,7 @@ export default {
 
         this.textoBotones.selecInv = "Seleccionar investigador";
         this.textoBotones.lista = "Lista";
+        this.textoBotones.onLineButton = "Crear Mapa On-Line";
       }else{
         this.textoBotones.enemigos = "Enemies";
         this.textoBotones.invRec = "Recommended Investigators";
@@ -118,6 +120,7 @@ export default {
         this.textoBotones.mapaSeleccionado = "Map Selected";
         this.textoBotones.selecInv = "Select Investigator";
         this.textoBotones.lista = "List";
+        this.textoBotones.onLineButton = "Create On-Line Map";
       }
     },
     async openEnemyList(){
