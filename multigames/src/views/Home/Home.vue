@@ -178,7 +178,7 @@ export default {
         wellcome: "",
         versionApp: "Beta 4.0.5",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "10/06/2025",
+        fechaUltimaActualizacion: "13/06/2025",
         textoVisitas: "",
         textoActualizacion: "",
         botones: {
@@ -193,7 +193,7 @@ export default {
         articulos: [
           {id: 6,
             numberUpdate: "4.0.5",
-            dateUpdate: "10/06/2025",
+            dateUpdate: "13/06/2025",
             translations: {
               es: {
                 title: "La comunidad opina!",
