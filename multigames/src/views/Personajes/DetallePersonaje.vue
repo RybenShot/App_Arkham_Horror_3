@@ -76,10 +76,7 @@ export default {
     },
 
     // funciones para la gestion de objetos del investigador
-    iniciarSeleccionObjetos() {
-      // Limpiar posesiones anteriores
-      this.$store.commit('clearPossessionsInPlay');
-      
+    iniciarSeleccionObjetos() {      
       // Abrir modal de selección de objetos
       this.$store.state.modalSeleccionObjetosIniciales = true;
     },

@@ -6,15 +6,31 @@
       </div>
     </transition>
 
+    <br>
+
     <!-- Parte datos -->
     <div class="columns is-mobile">
       <!-- foto y nombre -->
-      <div class="column is-half image">
-        <img class="is-rounded image bordeImagen " :class="{ bordeImagenBendecido: this.$store.state.EstadoBendicion, bordeImagenMaldito: this.$store.state.EstadoMaldito } " 
-        :src="this.$store.state.datosPJactual.imgInv" >
-        <div class="nombrePosicion">
-          <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ this.$store.state.datosPJactual.name }}</p>
-          <p class="has-background-dark subtitle is-6 has-text-white posicion">{{ textoInterfaz.posicion }}</p>
+      <div class="image-container">
+        <!-- Marco ornamental -->
+        <div class="ornamental-frame">
+          <div class="corner-diamond tl">◆</div>
+          <div class="corner-diamond tr">◆</div>
+          <div class="corner-diamond bl">◆</div>
+          <div class="corner-diamond br">◆</div>
+          <div class="frame-line top"></div>
+          <div class="frame-line bottom"></div>
+          <div class="frame-line left"></div>
+          <div class="frame-line right"></div>
+        </div>
+        
+        <!-- Imagen SIN el borde original -->
+        <img :src="this.$store.state.datosPJactual.imgInv" class=" investigator-image">
+        
+        <!-- Texto superpuesto en la parte inferior -->
+        <div class="text-overlay">
+          <p class="investigator-name">{{ this.$store.state.datosPJactual.name }}</p>
+          <p class="investigator-position">{{ textoInterfaz.posicion }}</p>
         </div>
       </div>
       
@@ -61,6 +77,8 @@
 
       </div>
     </div>
+
+    <br>
 
     <!-- Navegacion -->
     <div class="columns is-mobile has-text-centered has-text-white">
@@ -228,6 +246,133 @@ export default {
 </script>
 
 <style scoped>
+/* estilos para marco de foto */
+.image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.corner-diamond {
+  position: absolute;
+  font-size: 1.2rem;
+  color: #F2C94C;
+  text-shadow: 0 0 8px rgba(242, 201, 76, 0.8);
+  z-index: 3;
+  animation: diamond-glow 2s ease-in-out infinite alternate;
+  
+}
+
+.corner-diamond.tl {
+  top: -14px;
+  left: -6px;
+}
+
+.corner-diamond.tr {
+  top: -14px;
+  right: -8px;
+}
+
+.corner-diamond.bl {
+  bottom: -14px;
+  left: -6px;
+}
+
+.corner-diamond.br {
+  bottom: -14px;
+  right: -6px;
+}
+
+.frame-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, #F2C94C, transparent);
+  animation: line-pulse 3s ease-in-out infinite;
+}
+
+.frame-line.top,
+.frame-line.bottom {
+  height: 2px;
+  left: 10px;
+  right: 10px;
+}
+
+.frame-line.top {
+  top: 0;
+}
+
+.frame-line.bottom {
+  bottom: 0;
+}
+
+.frame-line.left,
+.frame-line.right {
+  width: 2px;
+  top: 10px;
+  bottom: 10px;
+  background: linear-gradient(180deg, transparent, #F2C94C, transparent);
+}
+
+.frame-line.left {
+  left: 0;
+}
+
+.frame-line.right {
+  right: 0;
+}
+
+/* Animaciones del marco */
+@keyframes diamond-glow {
+  0% {
+    text-shadow: 0 0 8px rgba(242, 201, 76, 0.8);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(242, 201, 76, 1);
+  }
+}
+
+@keyframes line-pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(242, 201, 76, 0.5);
+  }
+}
+
+/* Imagen */
+.investigator-image {
+  position: relative;
+}
+
+/* Texto superpuesto */
+.text-overlay {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding-bottom: 1rem;
+}
+
+.investigator-name {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 0.25rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  line-height: 1.1;
+}
+
+.investigator-position {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8rem;
+  margin: 0;
+  font-style: italic;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+}
+
 /* selector de corazon cordura */
 .espacioVidaCordura{
   height: 100px;
