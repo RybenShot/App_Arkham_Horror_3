@@ -13,7 +13,7 @@ export default createStore({
     //Detalle Personaje
     modalPertenenciasDetalle: false,
     verDetallePertenencia: false,
-    SeleccionarURLPertenencia: null,
+    detalleCartaObjeto: null,
     modalHistoriaDetalle: false,
     modalArquetipoDetalle: false,
 

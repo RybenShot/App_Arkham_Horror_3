@@ -27,7 +27,10 @@
               <div class="columns is-mobile">
                 <!-- Per. 1 -->
                  <div v-for="object in responseObjects.objects" :key="object.id" class="column">
-                    <img @click="seeCard(object.img)" :src="object.img" :alt="object.name" class="imageObject has-text-centered">
+                    <CardObject 
+                      :object="object" 
+                      @card-clicked="seeCard(object)"
+                    />
                  </div>
               </div>
               <br>
@@ -44,7 +47,10 @@
               <div class="columns is-mobile">
                 <!-- Per opcionales -->
                 <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="column">
-                    <img @click="seeCard(object.img)" :src="object.img" :alt="object.name" class="imageObject has-text-centered">
+                    <CardObject 
+                      :object="object" 
+                      @card-clicked="seeCard(object)"
+                    />
                  </div>
               </div>
             </section>
@@ -65,6 +71,7 @@
 
 <script>
 import  ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePersonaje/ModalVerDetallePertenencia.vue";
+import CardObject from "./CardObject.vue"
 import { apiService } from '@/services/api.js';
 export default {
   name: "Lista Pertenencias",
@@ -79,7 +86,8 @@ export default {
     }
   },
   components:{
-    ModalVerDetallePertenencia
+    ModalVerDetallePertenencia,
+    CardObject
   },
   methods:{
     closeModal(){
@@ -108,10 +116,11 @@ export default {
         console.error("Error al cargar los objetos principales del investigador", error);
       }
     },
-    seeCard( url){
-      this.$store.state.SeleccionarURLPertenencia = url;
+    seeCard( object ){
+      this.$store.state.detalleCartaObjeto = object;
+      // console.log(this.$store.state.detalleCartaObjeto)
       this.$store.state.verDetallePertenencia = true;
-      // console.log("URL de la carta seleccionada", this.$store.state.SeleccionarURLPertenencia);
+      // console.log("URL de la carta seleccionada", this.$store.state.detalleCartaObjeto);
     }
   },
   async mounted(){
@@ -135,10 +144,6 @@ export default {
 .cajaCartas{
 height: 30vh;
 overflow: hidden;
-}
-
-.imageObject{
-  max-width: 140px;
 }
 
 .lineaSeparatoria{
