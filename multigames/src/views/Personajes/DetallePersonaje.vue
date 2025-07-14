@@ -10,13 +10,18 @@
     <div v-if="this.$store.state.modalPertenenciasDetalle == true"><Pertenencias/></div>
     <div v-if="this.$store.state.modalHistoriaDetalle == true"><Historia/></div>
     <div v-if="this.$store.state.modalArquetipoDetalle == true"><Arquetipo/></div>
+    <!-- Modal de selección de objetos -->
+    <div v-if="$store.state.modalSeleccionObjetosIniciales"><ModalSeleccionObjetosIniciales/></div>
+  
 
     <footer class="columns is-mobile has-text-centered has-text-white">
       <div @click="goBack" class="column">
         <i class="title is-4 has-text-white fas fa-bars"> <p>{{ textoInterfaz.lista }}</p></i>
       </div>
       <div class="column">
-        <router-link to="/PlayAH"><button class="button is-success my-2">{{ textoInterfaz.comenzar }}</button></router-link>
+         <button @click="iniciarSeleccionObjetos" class="button is-success is-fullwidth is-large">
+          <i class="fas fa-play mr-2"></i>{{ textoInterfaz.comenzar }}
+        </button>
       </div>
     </footer>
   </div>
@@ -32,6 +37,7 @@ import HabilidadesDetalle from "@/components/personajes/habilidadesDetalle.vue";
 import Pertenencias from "@/components/personajes/ModalsDetallePersonaje/ModalPertenenciaDetalle.vue";
 import Historia from "@/components/personajes/ModalsDetallePersonaje/ModalHistoriaDetalle.vue";
 import Arquetipo from "@/components/personajes/ModalsDetallePersonaje/ModalArquetipoDetalle.vue";
+import ModalSeleccionObjetosIniciales from "@/components/personajes/ModalsDetallePersonaje/ModalSeleccionObjetosIniciales.vue";
 
 export default {
   name:"Detalle de Personajes",
@@ -44,7 +50,8 @@ export default {
     // modals
     Pertenencias,
     Historia,
-    Arquetipo
+    Arquetipo,
+    ModalSeleccionObjetosIniciales
   },
   data(){
     return{
@@ -66,7 +73,16 @@ export default {
         this.textoInterfaz.lista = "List";
         this.textoInterfaz.comenzar = "Start";
       }
-    }
+    },
+
+    // funciones para la gestion de objetos del investigador
+    iniciarSeleccionObjetos() {
+      // Limpiar posesiones anteriores
+      this.$store.commit('clearPossessionsInPlay');
+      
+      // Abrir modal de selección de objetos
+      this.$store.state.modalSeleccionObjetosIniciales = true;
+    },
   },
   mounted(){
     this.rellenarTextoSegunIdioma();

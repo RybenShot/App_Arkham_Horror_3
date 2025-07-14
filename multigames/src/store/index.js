@@ -17,6 +17,9 @@ export default createStore({
     modalHistoriaDetalle: false,
     modalArquetipoDetalle: false,
 
+    modalSeleccionObjetosIniciales: false,
+    possessionsInPlay: [], // Array de objetos completos seleccionados por el jugador
+
     //EXPANSIONES - Estasdos usados para activar o descativar expansiones, usado en lista de mapas o lista de investigadores
     stateExpansionBase: false,
     stateExpansionWaves: false,
@@ -329,8 +332,33 @@ export default createStore({
 
     getMapInPlay(state){
       return state.datosMapa.id
-    }
+    },
     
+    // funciones para la gestion del investario del investigador
+    getPossessionsInPlay(state) {
+      return state.possessionsInPlay;
+    },
+
+    getPossessionById: (state) => (id) => {
+      return state.possessionsInPlay.find(possession => possession.id === id);
+    },
+
+    // Nuevos getters para possessions del investigador
+    getInvestigatorPossessions(state) {
+    // Si possessions es un array (objetos completos), devolverlo
+    if (Array.isArray(state.datosPJactual.possessions)) {
+      return state.datosPJactual.possessions;
+    }
+    // Si no, devolver array vacío
+    return [];
+  },
+
+  getPossessionById: (state) => (id) => {
+    const possessions = Array.isArray(state.datosPJactual.possessions) 
+      ? state.datosPJactual.possessions 
+      : [];
+    return possessions.find(possession => possession.id === id);
+  }
   },
 
   mutations: {
@@ -421,6 +449,8 @@ export default createStore({
     ejecutarFlashPopUp_Action({commit}, message){
       commit('ejecutarFlashPopUp', message)
     },
+
+    //funciones para la gestion del investario del investigador
   },
   modules: {}
 })

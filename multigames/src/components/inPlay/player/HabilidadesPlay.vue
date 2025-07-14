@@ -8,26 +8,38 @@
     </div>
     <hr>
 
-    <h1 class="title has-text-white has-text-centered">Pertenencias Iniciales</h1>
+    <h1 class="title has-text-white has-text-centered">{{ textoInterfaz.pertenenciasIniciales }}</h1>
 
-    <div class="columns is-mobile mx-3">
-      <!-- Pertenencias -->
-          <b-carousel-list v-model="test" :data="this.$store.state.responseObjectsInPlay" :items-to-show="3">
-            <template #item="object">
-              <div class="card-image">
-                  <figure class="image mx-1" @click="seeCard(object.img)">
-                    <img :src="object.img" >
-                  </figure>
-              </div>
-            </template>
-          </b-carousel-list>
-
+    <!-- Verificar si hay posesiones -->
+    <div v-if="investigatorPossessions.length > 0" class="columns is-mobile mx-3">
+      <!-- Pertenencias usando los datos del investigador directamente -->
+      <b-carousel-list v-model="test" :data="investigatorPossessions" :items-to-show="3">
+        <template #item="object">
+          <div class="card-image">
+            <figure class="image mx-1" @click="seeCard(object)">
+              <img :src="object.img" :alt="getObjectName(object)">
+            </figure>
+            <p class="has-text-centered is-size-7 mt-2 object-name">
+              {{ getObjectName(object) }}
+            </p>
+          </div>
+        </template>
+      </b-carousel-list>
     </div>
+
+    <!-- Mensaje si no hay posesiones -->
+    <div v-else class="has-text-centered">
+      <p class="subtitle has-text-white">{{ textoInterfaz.noPertenencias }}</p>
+    </div>
+
     <br>
+
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "HabilidadesPlay",
   data(){
@@ -35,50 +47,90 @@ export default {
       textoInterfaz:{
         titulo: "",
         tituloSeg:"",
-        limConcentracion: "",
-
+        pertenenciasIniciales: "",
+        noPertenencias: "",
         efecto1: "",
         efecto2: "",
       },
       
       test: 0,
-
     }
   },
+  computed: {
+    ...mapGetters(['getInvestigatorPossessions']),
+    investigatorPossessions() {
+      return this.getInvestigatorPossessions;
+    },
+  },
   methods:{
-    seeCard(url){
-      this.$store.state.SeleccionarURLPertenencia = url;
+    seeCard(object){
+      // Pasar el objeto completo al store para ver detalles
+      this.$store.state.detalleCartaObjeto = object;
       this.$store.state.verDetallePertenencia = true;
-      console.log("URL de la carta seleccionada", this.$store.state.SeleccionarURLPertenencia);
     },
-    info(value) {
-        this.test = value
+    
+    getObjectName(object) {
+      const language = this.$store.state.lenguaje;
+      if (language === "español") {
+        return object.translations.es.name || "";
+      } else if (language === "ingles") {
+        return object.translations.en.name || "";
+      }
+      return object.translations.es.name || "";
     },
+    
     rellenarTextoSegunIdioma(){
-      if(this.$store.state.lenguaje == 'español'){
+      if(this.$store.state.lenguaje === 'español'){
         this.textoInterfaz.titulo = "Habilidades";
         this.textoInterfaz.tituloSeg = "Dinero y Restos";
-        this.textoInterfaz.limConcentracion = "Limite de concentración :";
-        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.translations.es.effect1;
-        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.translations.es.effect2;
+        this.textoInterfaz.pertenenciasIniciales = "Pertenencias Iniciales";
+        this.textoInterfaz.noPertenencias = "No tienes pertenencias seleccionadas";
+        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.translations?.es?.effect1 || "";
+        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.translations?.es?.effect2 || "";
 
-      }else if(this.$store.state.lenguaje == 'ingles'){
+      }else if(this.$store.state.lenguaje === 'ingles'){
         this.textoInterfaz.titulo = "Skills";
         this.textoInterfaz.tituloSeg = "Money and Rests";
-        this.textoInterfaz.limConcentracion = "Concentration limit :";
-        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.effect1;
-        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.effect2;
+        this.textoInterfaz.pertenenciasIniciales = "Initial Belongings";
+        this.textoInterfaz.noPertenencias = "You have no selected belongings";
+        this.textoInterfaz.efecto1 = this.$store.state.datosPJactual.effect1 || "";
+        this.textoInterfaz.efecto2 = this.$store.state.datosPJactual.effect2 || "";
       }
     }
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
+    
+    // Verificar si hay posesiones
+    if (this.investigatorPossessions.length === 0) {
+      console.warn("No hay posesiones cargadas. El jugador debe seleccionar objetos primero.");
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .CartasPertenencias{
   border-radius: 10px;
 }
+
+.object-name {
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.button.is-warning {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.button.is-warning:hover {
+  background: linear-gradient(135deg, #e67e22, #f39c12);
+  transform: translateY(-1px);
+}
+
 </style>
