@@ -104,9 +104,19 @@
       </section>
 
       <footer class="modal-card-foot">
-        <button @click="closeModal" class="button is-link is-fullwidth">
-          {{ textoInterfaz.volver }}
-        </button>
+        <div class="buttons is-fullwidth">
+          <button @click="closeModal" class="button is-link">
+            {{ textoInterfaz.volver }}
+          </button>
+          <button 
+            @click="borrarObjeto" 
+            class="button is-danger"
+            :class="{ 'is-loading': borrando }"
+          >
+            <i class="fas fa-trash mr-2"></i>
+            {{ textoInterfaz.borrar }}
+          </button>
+        </div>
       </footer>
     </div>
   </div>
@@ -120,12 +130,14 @@ export default {
       textoInterfaz: {
         titulo: "",
         volver: "",
+        borrar: "",
         manos: "",
         salud: "",
         costo: "",
         precio: ""
       },
-      isZoomed: false
+      isZoomed: false,
+      borrando: false
     }
   },
   computed: {
@@ -140,6 +152,37 @@ export default {
     },
     toggleZoom() {
       this.isZoomed = !this.isZoomed;
+    },
+    
+    async borrarObjeto() {
+      this.borrando = true;
+      
+      try {
+        // Obtener possessions actuales
+        const possessionsActuales = this.$store.getters.getInvestigatorPossessions;
+        
+        // Filtrar el objeto a borrar
+        const nuevasPossessions = possessionsActuales.filter(obj => obj.id !== this.cardObject.id);
+        
+        // Actualizar investigador
+        const investigadorActualizado = { ...this.$store.state.datosPJactual };
+        investigadorActualizado.possessions = nuevasPossessions;
+        
+        // Guardar en store
+        this.$store.commit('setDatosInvestigator', investigadorActualizado);
+        
+        // Notificar éxito
+        this.$store.commit('ejecutarFlashPopUp', 'Objeto eliminado correctamente');
+        
+        // Cerrar modal
+        this.closeModal();
+        
+      } catch (error) {
+        console.error("Error al borrar objeto:", error);
+        this.$store.commit('ejecutarFlashPopUp', 'Error al eliminar el objeto');
+      } finally {
+        this.borrando = false;
+      }
     },
     getCardName() {
       const language = this.$store.state.lenguaje;
@@ -175,6 +218,7 @@ export default {
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.titulo = "Detalle de Pertenencia";
         this.textoInterfaz.volver = "Volver";
+        this.textoInterfaz.borrar = "Eliminar";
         this.textoInterfaz.manos = "Manos";
         this.textoInterfaz.salud = "Salud";
         this.textoInterfaz.costo = "Costo";
@@ -182,6 +226,7 @@ export default {
       }else if(this.$store.state.lenguaje == "ingles"){
         this.textoInterfaz.titulo = "Belonging Detail";
         this.textoInterfaz.volver = "Go back";
+        this.textoInterfaz.borrar = "Delete";
         this.textoInterfaz.manos = "Hands";
         this.textoInterfaz.salud = "Health";
         this.textoInterfaz.costo = "Cost";
@@ -211,7 +256,7 @@ export default {
 }
 
 .card-detail-image {
-  max-width: 200px;
+  max-width: 100px;
   width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -343,28 +388,19 @@ export default {
   font-size: 0.8rem;
 }
 
-/* Responsive para móvil */
-@media (max-width: 768px) {
-  .modal-card {
-    margin: 1rem;
-    max-height: 90vh;
-  }
-  
-  .card-detail-image {
-    max-width: 150px;
-  }
-  
-  .card-name {
-    font-size: 1.2rem;
-  }
-  
-  .card-description {
-    padding: 0.75rem;
-  }
-  
-  .health-stats, .cost-stats {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+.buttons {
+  gap: 0.5rem;
+}
+
+.button.is-danger {
+  background: linear-gradient(135deg, #f14668, #ff3860);
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.button.is-danger:hover {
+  background: linear-gradient(135deg, #ff3860, #f14668);
+  transform: translateY(-1px);
 }
 </style>

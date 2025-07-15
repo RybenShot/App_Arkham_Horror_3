@@ -117,6 +117,17 @@ export const apiService = {
     }
   },
 
+  // pedir una carta de objeto por la ID
+  async obtainOneCardByID(idCard){
+    try {
+      const response = await axios.get(`${API_URL}/objects/${idCard}`);
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener la carta indicada`, error);
+      return null;
+    }
+  },
+
   // MAPAS IN PLAY
   async postNewMapInPlay(idMap, IDUserHost){
     try {

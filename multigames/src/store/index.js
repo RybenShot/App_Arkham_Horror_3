@@ -109,6 +109,8 @@ export default createStore({
     IDUserHost: null,
     nameUserHost: null,
     responseObjectsInPlay:[],
+    // variable para mostrar el modal de busqueda de objetos
+    modalBuscarObjeto: false,
 
     //PLAY
     viewPlayer: true,
