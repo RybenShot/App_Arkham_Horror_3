@@ -128,6 +128,18 @@ export const apiService = {
     }
   },
 
+  // buscar un objeto segun filtros
+  async obtainCardsFiltered(name, expansion, types){
+    try {
+      const payload = { name, expansion, types }
+      const response = await axios.post(`${API_URL}/objects`, payload)
+      return response.data
+    } catch (error) {
+      console.error('❌ obtainCardsFiltered(.js) error al pedir una carta de objeto por filtro :', error);
+      throw error
+    }
+  },
+
   // MAPAS IN PLAY
   async postNewMapInPlay(idMap, IDUserHost){
     try {
