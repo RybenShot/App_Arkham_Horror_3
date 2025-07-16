@@ -105,6 +105,7 @@ export default createStore({
 
     // aqui se almacenarán todos los objetos que tengan in play
     modalJoinMapInPlay: false,
+    modalInvOnLine: false,
     modalCrearMapaOnLine: false,
     IDUserHost: null,
     nameUserHost: null,

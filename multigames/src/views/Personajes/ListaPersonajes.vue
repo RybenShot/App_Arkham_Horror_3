@@ -3,6 +3,8 @@
     <!-- notificacion de activar o desactivar -->
     <popUp_Notificaciones/>
 
+    <div v-if="this.$store.state.modalInvOnLine"><ModalInvOnLine/></div>
+
     <div>
       <!-- Seleccionar Investigador -->
       <div class="columns is-mobile mb-0 pt-3 centrarHero" >
@@ -26,6 +28,11 @@
                   @click="handleToggle(btn.key)">
                   {{ btn.text }}
                 </button>
+                <button class=" py-0 join-btn column button" @click="this.$store.state.modalInvOnLine = true">
+                  <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+                  On-Line 
+                  <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+                </button>
               </div>
 
             </b-tab-item>
@@ -36,6 +43,7 @@
                   <span> {{ textoInterfaz.botones.archetype }} </span>
               </template>
 
+              <!-- Botones de arquetipos -->
               <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
                 <button v-for="btn in rolButtons" class="button"
                   :key="btn.key"
@@ -75,6 +83,7 @@ import { Howl } from 'howler';
 import { apiService } from '@/services/api.js';
 import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import InvestigatorCard from '@/components/personajes/invCard.vue'
+import ModalInvOnLine from '@/components/personajes/modalInvOnLine.vue';
 
 const sonidoTecla = new Howl({
   src: require('@/assets/sound/SonidoTecla.mp3'),
@@ -84,7 +93,8 @@ export default {
   name: "listaDePersonajes",
   components:{
     popUp_Notificaciones,
-    InvestigatorCard
+    InvestigatorCard,
+    ModalInvOnLine
   },
 
   data() {
@@ -318,4 +328,30 @@ export default {
   margin-right: 10px;
 }
 
+/* Estilos para boton de onLine */
+.join-btn {
+  display: block;
+  width: 80%;
+  max-width: 260px;
+  margin: 0.5rem auto;
+  padding: 0.75rem 1rem;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  /* Animación de pulso */
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);     }
+  50%  { transform: scale(1.05);  }
+  100% { transform: scale(1);     }
+}
+.gifIMG{
+  width: 30px;
+}
 </style>

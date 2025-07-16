@@ -6,11 +6,11 @@
       <div class="stats-container">
         <div class="stat-badge life-stat">
           <i class="fas fa-heart stat-icon"></i>
-          <span class="stat-value">{{ investigator.baseData.life }}</span>
+          <span class="stat-value">{{ investigator.baseData?.life || investigator.atributes.life }}</span>
         </div>
         <div class="stat-badge sanity-stat">
           <i class="fas fa-brain stat-icon"></i>
-          <span class="stat-value">{{ investigator.baseData.sanity }}</span>
+          <span class="stat-value">{{ investigator.baseData?.sanity || investigator.atributes.sanity }}</span>
         </div>
       </div>
 

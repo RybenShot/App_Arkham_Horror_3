@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-const API_URL = process.env.VUE_APP_API_URL_DEV;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+//const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -397,6 +397,19 @@ export const apiService = {
       return response.data
     } catch (error) {
       console.error(`❌ Error al añadir un comentario`, error);
+      throw error;
+    }
+  },
+
+  // get lista de invOnLine
+  async getListInvOnLine(idUser){
+    try {
+      const response = await axios.get(`${API_URL}/invInPlay/users/${idUser}`)
+      console.log('🔍 --- getListInvOnLine --- recibid:', response.data)
+      return response.data
+      
+    } catch (error) {
+      console.error(`❌ al obtener la lista de investigadores onLine`, error);
       throw error;
     }
   }
