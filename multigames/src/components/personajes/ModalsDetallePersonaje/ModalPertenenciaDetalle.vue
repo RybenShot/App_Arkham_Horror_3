@@ -10,11 +10,9 @@
             </header>
 
             <!-- ModalDetalle -->
-            <div v-if="this.$store.state.verDetallePertenencia == true">
-              <ModalVerDetallePertenencia/>
-            </div>
+            <div v-if="this.$store.state.verDetallePertenencia == true"><ModalVerDetallePertenencia/></div>
 
-            <section class="modal-card-body hero is-large pt-2 pb-6">
+            <section  class="modal-card-body hero is-large pt-2 pb-6">
               <p class="has-text-centered title is-italic mb-0">{{ this.$store.state.datosPJactual.name }}</p>
               <div class="lineaSeparatoria mx-6">
                 <div class="columns is-mobile" style="position: relative; top: 4px">
@@ -24,34 +22,41 @@
               </div>
               <br>
               
-              <div class="columns is-mobile">
-                <!-- Per. 1 -->
-                 <div v-for="object in responseObjects.objects" :key="object.id" class="column">
-                    <CardObject 
-                      :object="object" 
-                      @card-clicked="seeCard(object)"
-                    />
-                 </div>
-              </div>
-              <br>
+              <!-- Pertenencias iniciales -->
+              <div v-if="pertenenciasIniciales">
+                <div class="columns is-mobile">
+                  <!-- Per. 1 -->
+                  <div v-for="object in responseObjects.objects" :key="object.id" class="column">
+                      <CardObject :object="object" @card-clicked="seeCard(object)"/>
+                  </div>
+                </div>
+                <br>
 
-              <p class="has-text-centered title mb-0">{{ textoInterfaz.elije }}</p>
+                <p class="has-text-centered title mb-0">{{ textoInterfaz.elije }}</p>
 
-              <div class="lineaSeparatoria mx-6">
-                <div class="columns is-mobile" style="position: relative; top: 4px">
-                  <i class=" has-text-left fas fa-dot-circle column p-0"></i>
-                  <i class=" has-text-right fas fa-dot-circle column p-0"></i>
+                <div class="lineaSeparatoria mx-6">
+                  <div class="columns is-mobile" style="position: relative; top: 4px">
+                    <i class=" has-text-left fas fa-dot-circle column p-0"></i>
+                    <i class=" has-text-right fas fa-dot-circle column p-0"></i>
+                  </div>
+                </div>
+                <br>
+                <div class="columns is-mobile">
+                  <!-- Per opcionales -->
+                  <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="column">
+                      <CardObject :object="object" @card-clicked="seeCard(object)"/>
+                  </div>
                 </div>
               </div>
-              <br>
-              <div class="columns is-mobile">
-                <!-- Per opcionales -->
-                <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="column">
-                    <CardObject 
-                      :object="object" 
-                      @card-clicked="seeCard(object)"
-                    />
-                 </div>
+
+              <!-- Pertenencias ya construidas de invOnLine -->
+              <div v-else class="has-text-centered">
+                <div class="columns is-mobile">
+                  <!-- Per. 1 -->
+                  <div v-for="object in this.$store.state.datosPJactual.possessions" :key="object.id" class="column">
+                      <CardObject :object="object" @card-clicked="seeCard(object)"/>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -105,6 +110,17 @@ export default {
         this.textoInterfaz.volver = "Go back";
       }
     },
+
+    // si el investigador ya tiene objetos cargados, los mostramos, sino, llamamos a back para cargarlos
+    async comprobacionObjetos(){
+      if (this.$store.state.datosPJactual.id) {
+        // enseñamos los objetos ya cargados
+      } else {
+        await this.serchInitialObjectsInv();
+      }
+    },
+
+    // funcion para cargar objetos iniciales
     async serchInitialObjectsInv(){
       try {
         let idInv = this.$store.state.datosPJactual.idInv;
@@ -124,7 +140,7 @@ export default {
     }
   },
   async mounted(){
-    await this.serchInitialObjectsInv();
+    await this.comprobacionObjetos();
     this.rellenarTextoSegunIdioma();
     
   }

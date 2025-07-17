@@ -224,6 +224,7 @@ export default {
         if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
           // console.log("Vamos a sumar a la propiedad " + propiedad)
           this.atributos[propiedad]++;
+          console.log("datos actuales del investigador:", this.$store.state.datosPJactual)
           return
         }
         this.sumarRestarVidaCordura(signo, propiedad);

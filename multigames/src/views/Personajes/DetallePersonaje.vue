@@ -76,9 +76,16 @@ export default {
     },
 
     // funciones para la gestion de objetos del investigador
-    iniciarSeleccionObjetos() {      
-      // Abrir modal de selección de objetos
+    iniciarSeleccionObjetos() {  
+      // Si el investigador ya tiene una id, significa que es un investigador OnLine y no necesita seleccionar objetos
+      if (this.$store.state.datosPJactual.id) {
+        // Redirigimos a la zona de juego
+        this.$router.push('/PlayAH');
+      }
+      else{
+        // Abrir modal de selección de objetos
       this.$store.state.modalSeleccionObjetosIniciales = true;
+      }
     },
   },
   mounted(){

@@ -1,6 +1,6 @@
 <template>
   <div class="inv-card-container">
-    <div class="cosmic-inv-card" :class="getExpansionClass()" @click="selectInv(investigator.idInv)">
+    <div class="cosmic-inv-card" :class="getExpansionClass()" @click="selectInv(investigator)">
       
       <!-- Stats superiores -->
       <div class="stats-container">
@@ -58,9 +58,15 @@ export default {
     investigator: { type: Object, required: true }
   },
   methods: {
-    async selectInv(idInv) {
+    async selectInv(investigator) {
       try {
-        const response = await apiService.obtainInvByID(idInv);
+        // si existe una id, esque es un investigador OnLine, por lo cual no hace falta que hagamos ninguna llamada a back
+        if (investigator.id) {
+          this.$store.commit('setDatosInvestigator', investigator);
+          this.$router.push('/DetallePersonaje');
+          return;
+        }
+        const response = await apiService.obtainInvByID(investigator.idInv);
         await this.$store.commit('setDatosInvestigator', response);
         this.$router.push('/DetallePersonaje');
       } catch (error) {

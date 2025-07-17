@@ -1,10 +1,6 @@
 <template>
   <div class="card-object" @click="handleClick">
-    <img 
-      :src="object.img" 
-      :alt="getObjectName()" 
-      class="card-image"
-    >
+    <img :src="object.img" :alt="getObjectName()" class="card-image">
     <div class="card-title">
       <p class="has-text-centered is-size-7">{{ getObjectName() }}</p>
     </div>

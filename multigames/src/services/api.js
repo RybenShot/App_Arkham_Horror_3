@@ -412,5 +412,10 @@ export const apiService = {
       console.error(`❌ al obtener la lista de investigadores onLine`, error);
       throw error;
     }
+  },
+
+  // POST de investigador OnLine
+  async postInvOnLine(idUser, idMapInPlay ){
+
   }
 };
