@@ -45,12 +45,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ModalBuscarObjeto from './ModalBuscarObjetos.vue'; // Añadir esta línea
+import ModalBuscarObjeto from './ModalBuscarObjetos.vue';
 
 export default {
   name: "HabilidadesPlay",
   components: {
-    ModalBuscarObjeto // Añadir aquí
+    ModalBuscarObjeto
   },
   data(){
     return{

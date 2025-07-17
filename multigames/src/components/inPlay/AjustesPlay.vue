@@ -20,6 +20,7 @@
         </div>
       </div>
 
+      <!-- id de Mapa onLine -->
       <div v-if="this.$store.state.datosMapa.id">
         <p class="subtitle has-text-white mb-0">{{ textoInterfaz.mapCode }}</p>
         <b-field >
@@ -33,6 +34,14 @@
           </p>
         </b-field>
       </div>
+
+      <!-- boton para guardar perdonaje OnLine -->
+       <div>
+        <button @click="safeinvOnLine()" class="button is-fullwidth  is-warning">
+          <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.safeInv || "guardar investigador" }}
+        </button>
+       </div>
+
     </div>
     
 
@@ -48,6 +57,8 @@
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+
 export default {
   name: "AjustesPlay",
   data(){
@@ -83,6 +94,7 @@ export default {
         this.textoInterfaz.botones.terminarPartida = "End game";
       }
     },
+    // Método para copiar el código del mapa al portapapeles
     async copyCode() {
       try {
         await navigator.clipboard.writeText(this.$store.state.datosMapa.id);
@@ -99,7 +111,88 @@ export default {
         });
       }
     },
+
+    // Método para preparar los datos del investigador con los campos adicionales
+      prepareInvestigatorData() {
+        // Obtener los datos del investigador actual del store
+        const investigatorData = { ...this.$store.state.datosPJactual };
+        
+        // Añadir idUser si no existe
+        if (!investigatorData.idUser) {
+          investigatorData.idUser = this.$store.state.IDUserHost;
+        }
+        
+        // Añadir idMapOnLine si no existe, ahoramismo no usamos este dato, pero lo usaremos para enlazar invOnLine con mapaOnLine
+        if (!investigatorData.idMapOnLine) {
+          investigatorData.idMapOnLine = this.$store.state.datosMapa.id;
+        }
+        // la idOnLine, si no está, se crea en back y si está, se manda para que back la actualice
+        // si el lastUpdate no esta, igual que arriba, se crea en back
+        
+        return investigatorData;
+      },
+
+    // metodo para guardar el investigador
+    safeinvOnLine(){
+      // 1- vemos si el usuario esta logeado: sino le mandamos mensajito de loguearse
+      if (!this.$store.state.IDUserHost) {
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === "español" ? 
+            "Debes estar logueado para guardar tu investigador" : 
+            "You must be logged in to save your investigator",
+          type: 'is-warning',
+          duration: 3000,
+        });
+        return;
+      }
+
+      // Preparar los datos del investigador antes de enviar
+      const investigatorData = this.prepareInvestigatorData();
+
+      // 2- Miramos si este investigador ya tiene la idOnLine, de ser asi significa que tiene ya el investigador guardado de antes, por ende, tiene espacio y guardamos()
+      if (investigatorData.id) {
+        console.warn("el investigador ya tiene una idOnLine, estos son sus datos:", investigatorData)
+        // El investigador ya existe, mandamos a back
+        this.guardarInvestigador(investigatorData);
+      } else {
+        // 3- [investigador nuevo a guardar] comprovamos si ya tiene 3 investigadores guardados
+        this.verificarEspacioYGuardar(investigatorData);
+      }
+    },
+
+    // Método principal para guardar el investigador
+    async guardarInvestigador(investigatorData) {
+      try {
+        
+        console.error("se van a guardar estos datos a backend: ", investigatorData)
+        const response = await apiService.postInvOnLine(investigatorData);
+        console.log("Respuesta del servidor al guardar investigador:", response);
+        
+        if (response.message) {
+          
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === "español" ? 
+              "Investigador guardado correctamente 😊" : 
+              "Investigator saved successfully 😊",
+            type: 'is-success',
+            duration: 3000,
+          });
+        } else {
+          throw new Error('Error en la respuesta del servidor');
+        }
+      } catch (error) {
+        console.error('Error al guardar investigador:', error);
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === "español" ? 
+            "Error al guardar el investigador 😢" : 
+            "Error saving investigator 😢",
+          type: 'is-danger',
+          duration: 3000,
+        });
+      }
+    }
   },
+  
   computed: {
     codeIDMapInPlay(){
       return this.$store.state.datosMapa.id

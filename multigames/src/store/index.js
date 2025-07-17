@@ -51,6 +51,9 @@ export default createStore({
       theStory: "Many in Arkham would yet fall victim to dark plots, but this lost soul was one of the first. The life they once lived was stipped both physically and mentally from them when reality started to fracture. Those who might have saved them came too late, at least to save their first life. Inexplicably caught between the land of the living and the cold void of the afterlife, they started searching for answers. Who were they? Why had they been killed? Was there a path back to life? Just what was happening in Arkham? The limitations of their incorporeal from became apparent quickly, but a solution would present itself during one of many attempts to communicate with a living being. Flowing into the body of an unsuspecting bystander, sensation and purpose returned with vengance. Some or something had killed them, and they were determined to get to the borrom of it no matter how many lives they had to live.",
       locutionURL: "___",
       imgInv: "/img/1-inv/57-Nameless.jpg",
+      estadosActivos: [
+        
+      ],
       atributes:{
         life: 0,
         sanity: 0,

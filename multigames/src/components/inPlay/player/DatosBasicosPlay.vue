@@ -221,21 +221,35 @@ export default {
       }
       
       if(signo == '+'){
-        if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-          // console.log("Vamos a sumar a la propiedad " + propiedad)
-          this.atributos[propiedad]++;
-          console.log("datos actuales del investigador:", this.$store.state.datosPJactual)
-          return
-        }
-        this.sumarRestarVidaCordura(signo, propiedad);
+          if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
+            this.atributos[propiedad]++;
+          }
+          else{
+            this.sumarRestarVidaCordura(signo, propiedad);
+          }
       } else if(signo == '-'){
-        if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-          // console.log("Vamos a restar a la propiedad " + propiedad)
-          this.atributos[propiedad]--;
-          return
-        }
-        this.sumarRestarVidaCordura(signo, propiedad);
+          if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
+            this.atributos[propiedad]--;
+          }
+          else{
+            this.sumarRestarVidaCordura(signo, propiedad);
+          }
       } 
+
+      // Actualizar el store con los nuevos valores
+      if (propiedad == "pistas") {
+        this.$store.state.datosPJactual.atributes.clue = this.atributos[propiedad];
+      } else if (propiedad == "restos") {
+        this.$store.state.datosPJactual.atributes.remnant = this.atributos[propiedad];
+      } else if (propiedad == "dinero") {
+        this.$store.state.datosPJactual.atributes.money = this.atributos[propiedad];
+      } else if (propiedad == "vida"){
+        this.$store.state.datosPJactual.atributes.life = this.atributos[propiedad];
+      } else if (propiedad == "cordura"){
+        this.$store.state.datosPJactual.atributes.sanity = this.atributos[propiedad];
+      }
+
+      // console.log("datos actuales del investigador:", this.$store.state.datosPJactual)
     }
   },
   mounted(){

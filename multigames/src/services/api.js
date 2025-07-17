@@ -415,7 +415,16 @@ export const apiService = {
   },
 
   // POST de investigador OnLine
-  async postInvOnLine(idUser, idMapInPlay ){
+  async postInvOnLine(payload){
+    try {
+      const response = await axios.post(`${API_URL}/invInPlay`, payload)
+      console.log('🔍 --- postInvOnLine --- recibid:', response.data)
+      return response.data
+      
+    } catch (error) {
+      console.error(`❌ Error al añadir un investigador onLine`, error);
+      throw error;
+    }
 
   }
 };
