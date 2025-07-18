@@ -20,8 +20,8 @@
                 <div class="PersonajesList " v-if="listInvFound.length > 0">
                     <InvestigatorCard v-for="investigator in listInvFound" :key="investigator.id" :investigator="investigator" />
                 </div>
-                <div v-if="listInvFound.length === 0" class="has-text-centered">
-                    <p class="subtitle">{{ textoInterfaz.textoError }}</p>
+                <div v-if="listInvFound.length === 0" class="has-text-centered py-5">
+                    <p class="subtitle">{{ textoInterfaz.textoErrorNoInv }}</p>
 
                 </div>
             </section>
@@ -55,6 +55,9 @@
     data(){
         return{
             textoInterfaz:{
+              titulo:"",
+              textoErrorNoInv: "",
+              textoError: "",
                 botones: {
                     cerrar: ""
                 },
@@ -82,13 +85,13 @@
         
         rellenarTextoSegunIdioma() {
             if (this.$store.state.lenguaje == 'español') {
-
-
+            this.textoInterfaz.titulo = "Investigadores OnLine";
+            this.textoInterfaz.textoErrorNoInv = "No tienens ningun investigador OnLine guardado, selecciona un investigador, juega y luego guarda el investigador.";
             this.textoInterfaz.textoError = "Para ver los investigadores onLine primero debes iniciar sesion";
             this.textoInterfaz.botones.cerrar = "Cerrar";
             } else if (this.$store.state.lenguaje == 'ingles') {
-
-
+            this.textoInterfaz.titulo = "Online Investigators";
+            this.textoInterfaz.textoErrorNoInv = "You don't have any online investigators saved, select an investigator, game and then save the investigator.";
             this.textoInterfaz.textoError = "To see the online investigators, you must first sign in";
             this.textoInterfaz.botones.cerrar = "Close";
             }
