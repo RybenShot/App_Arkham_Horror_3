@@ -23,7 +23,7 @@
               </template>
 
               <!-- Botones de expansión -->
-              <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2 has-text-centered">
+              <div class="columns is-mobile pt-5 mx-1 buttons pl-4 pr-2 has-text-centered">
                 <button v-for="btn in expansionButtons" class="button" :key="btn.key" :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
                   @click="handleToggle(btn.key)">
                   {{ btn.text }}
@@ -44,7 +44,7 @@
               </template>
 
               <!-- Botones de arquetipos -->
-              <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2">
+              <div class="columns is-mobile pt-5 mx-1 buttons pl-4 pr-2">
                 <button v-for="btn in rolButtons" class="button"
                   :key="btn.key"
                   :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"

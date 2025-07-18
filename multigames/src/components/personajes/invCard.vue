@@ -133,8 +133,7 @@ export default {
 .cosmic-inv-card {
   position: relative;
   width: 120px;
-  height: 160px;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  max-height: 160px;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
@@ -146,34 +145,15 @@ export default {
   margin: 0 auto;
 }
 
-.cosmic-inv-card:active {
-  transform: scale(0.98);
-}
+.cosmic-inv-card:active {transform: scale(0.98);}
 
 /* Colores por expansión */
-.expansion-base {
-  border-color: #48c78e;
-}
-
-.expansion-waves {
-  border-color: #3e8ed0;
-}
-
-.expansion-night {
-  border-color: #ffdc7d;
-}
-
-.expansion-secrets {
-  border-color: #f14668;
-}
-
-.expansion-original {
-  border-color: #7957d5;
-}
-
-.expansion-community {
-  border-color: #ff6b35;
-}
+.expansion-base {border-color: #48c78e;}
+.expansion-waves {border-color: #3e8ed0;}
+.expansion-night {border-color: #ffdc7d;}
+.expansion-secrets {border-color: #f14668;}
+.expansion-original {border-color: #7957d5;}
+.expansion-community {border-color: #ff6b35;}
 
 /* Stats superiores */
 .stats-container {
@@ -198,25 +178,11 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-.life-stat {
-  border-color: rgba(220, 53, 69, 0.5);
-}
-
-.sanity-stat {
-  border-color: rgba(52, 144, 220, 0.5);
-}
-
-.stat-icon {
-  font-size: 0.8rem;
-}
-
-.life-stat .stat-icon {
-  color: #dc3545;
-}
-
-.sanity-stat .stat-icon {
-  color: #3490dc;
-}
+.life-stat {border-color: rgba(220, 53, 69, 0.5);}
+.sanity-stat {border-color: rgba(52, 144, 220, 0.5);}
+.stat-icon {font-size: 0.8rem;}
+.life-stat .stat-icon {color: #dc3545;}
+.sanity-stat .stat-icon {color: #3490dc;}
 
 .stat-value {
   font-size: 0.9rem;
@@ -247,8 +213,10 @@ export default {
 }
 
 .investigator-image {
-  width: 100%;
-  height: 100%;
+  max-width: 98%;
+  max-height: 98%;
+  top: 3px;
+  left: 3px;
   object-fit: cover;
   filter: brightness(0.85) contrast(1.1) saturate(0.9);
   transition: all 0.3s ease;
@@ -325,29 +293,12 @@ export default {
 }
 
 /* Colores de expansión para indicadores */
-.expansion-indicator.expansion-base {
-  color: #48c78e;
-}
-
-.expansion-indicator.expansion-waves {
-  color: #3e8ed0;
-}
-
-.expansion-indicator.expansion-night {
-  color: #ffdc7d;
-}
-
-.expansion-indicator.expansion-secrets {
-  color: #f14668;
-}
-
-.expansion-indicator.expansion-original {
-  color: #7957d5;
-}
-
-.expansion-indicator.expansion-community {
-  color: #ff6b35;
-}
+.expansion-indicator.expansion-base {color: #48c78e;}
+.expansion-indicator.expansion-waves {color: #3e8ed0;}
+.expansion-indicator.expansion-night {color: #ffdc7d;}
+.expansion-indicator.expansion-secrets {color: #f14668;}
+.expansion-indicator.expansion-original {color: #7957d5;}
+.expansion-indicator.expansion-community {color: #ff6b35;}
 
 /* Partículas místicas */
 .mystic-particles {
@@ -420,55 +371,12 @@ export default {
   z-index: 1;
 }
 
-.cosmic-inv-card:hover .expansion-aura {
-  opacity: 1;
-}
+.cosmic-inv-card:hover .expansion-aura {opacity: 1;}
+.expansion-aura.expansion-base {background: radial-gradient(circle at center, rgba(72, 199, 142, 0.15) 0%, transparent 70%);}
+.expansion-aura.expansion-waves {background: radial-gradient(circle at center, rgba(62, 142, 208, 0.15) 0%, transparent 70%);}
+.expansion-aura.expansion-night {background: radial-gradient(circle at center, rgba(255, 220, 125, 0.15) 0%, transparent 70%);}
+.expansion-aura.expansion-secrets {background: radial-gradient(circle at center, rgba(241, 70, 104, 0.15) 0%, transparent 70%);}
+.expansion-aura.expansion-original {background: radial-gradient(circle at center, rgba(121, 87, 213, 0.15) 0%, transparent 70%);}
+.expansion-aura.expansion-community {background: radial-gradient(circle at center, rgba(255, 107, 53, 0.15) 0%, transparent 70%);}
 
-.expansion-aura.expansion-base {
-  background: radial-gradient(circle at center, rgba(72, 199, 142, 0.15) 0%, transparent 70%);
-}
-
-.expansion-aura.expansion-waves {
-  background: radial-gradient(circle at center, rgba(62, 142, 208, 0.15) 0%, transparent 70%);
-}
-
-.expansion-aura.expansion-night {
-  background: radial-gradient(circle at center, rgba(255, 220, 125, 0.15) 0%, transparent 70%);
-}
-
-.expansion-aura.expansion-secrets {
-  background: radial-gradient(circle at center, rgba(241, 70, 104, 0.15) 0%, transparent 70%);
-}
-
-.expansion-aura.expansion-original {
-  background: radial-gradient(circle at center, rgba(121, 87, 213, 0.15) 0%, transparent 70%);
-}
-
-.expansion-aura.expansion-community {
-  background: radial-gradient(circle at center, rgba(255, 107, 53, 0.15) 0%, transparent 70%);
-}
-
-/* Responsive */
-@media (max-width: 360px) {
-  .cosmic-inv-card {
-    width: 110px;
-    height: 150px;
-  }
-  
-  .investigator-name {
-    font-size: 0.75rem;
-  }
-  
-  .investigator-position {
-    font-size: 0.6rem;
-  }
-  
-  .stat-badge {
-    padding: 0.15rem 0.3rem;
-  }
-  
-  .stat-value {
-    font-size: 0.8rem;
-  }
-}
 </style>

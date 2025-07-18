@@ -25,7 +25,7 @@
           <!-- Objetos requeridos -->
           <div v-if="objetosRequeridos.length > 0" class="mb-5">
             <div class="columns is-mobile is-multiline">
-              <div v-for="objeto in objetosRequeridos" :key="objeto.id" class="column is-half-mobile is-one-third-tablet">
+              <div v-for="objeto in objetosRequeridos" :key="objeto.id" class="column is-half-mobile">
                 <div class="objeto-requerido">
                   <CardObjectSelection 
                     :object="objeto" 
@@ -43,7 +43,7 @@
             <p class="has-text-centered subtitle is-6 mb-4">{{ textoInterfaz.textObjectOptional }}</p>
             
             <div class="columns is-mobile is-multiline">
-              <div v-for="objeto in objetosOpcionales" :key="objeto.id" class="column is-half-mobile is-one-third-tablet">
+              <div v-for="objeto in objetosOpcionales" :key="objeto.id" class="column is-half-mobile">
                 <CardObjectSelection 
                     :object="objeto" 
                     :is-selected="isObjectSelected(objeto.id)"

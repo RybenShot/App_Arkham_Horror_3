@@ -224,6 +224,10 @@ export default {
 /* Imagen */
 .investigator-image {
   position: relative;
+  max-width: 98%;
+  max-height: 98%;
+  top: 3px;
+  left: 3px;
 }
 
 /* Texto superpuesto */

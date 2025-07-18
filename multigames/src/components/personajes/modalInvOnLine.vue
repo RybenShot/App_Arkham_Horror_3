@@ -16,7 +16,7 @@
           </SignedOut>
 
           <SignedIn>
-            <section class="modal-card-body hero is-large py-2">
+            <section class="modal-card-body hero is-large py-2 px-0">
                 <div class="PersonajesList " v-if="listInvFound.length > 0">
                     <InvestigatorCard v-for="investigator in listInvFound" :key="investigator.id" :investigator="investigator" />
                 </div>
@@ -110,13 +110,13 @@
     background-size: cover;
   }
   
-  .PersonajesList {
+.PersonajesList {
   display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 10px;
-  row-gap: 10px;
+  grid-template-columns: auto auto auto;
+  column-gap: 3px;
+  row-gap: 5px;
   justify-items: center;
-  margin-left: 10px;
-  margin-right: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 </style>

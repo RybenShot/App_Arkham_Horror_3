@@ -418,13 +418,22 @@ export const apiService = {
   async postInvOnLine(payload){
     try {
       const response = await axios.post(`${API_URL}/invInPlay`, payload)
-      console.log('🔍 --- postInvOnLine --- recibid:', response.data)
       return response.data
-      
     } catch (error) {
       console.error(`❌ Error al añadir un investigador onLine`, error);
       throw error;
     }
+  },
 
+  // Endpoint para borrar un investigador onLine
+  async deleteInvOnLine(id, idUser){
+    try {
+      const payload = {id, idUser}
+      const response = await axios.post(`${API_URL}/invInPlay/deleteInvOnLine`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al borrar un investigador onLine`, error);
+      throw error;
+    }
   }
 };
