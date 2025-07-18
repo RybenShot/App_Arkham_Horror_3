@@ -68,6 +68,7 @@ export default {
         }
         const response = await apiService.obtainInvByID(investigator.idInv);
         await this.$store.commit('setDatosInvestigator', response);
+        this.$store.state.modalInvOnLine = false;
         this.$router.push('/DetallePersonaje');
       } catch (error) {
         console.error("❌ selectInv(.vue) - No se pudo obtener el investigador", error);

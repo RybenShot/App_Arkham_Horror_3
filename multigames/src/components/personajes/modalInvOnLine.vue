@@ -1,8 +1,8 @@
 <template>
     <div class="modal is-active">
       <div class="modal-background" @click="this.$store.state.modalInvOnLine = false"></div>
-      <div class="mr-6">
-        <div class="modal-card">
+      <div>
+        <div class="modal-card mx-1">
           <header class="columns is-mobile modal-card-head BGBendicion m-0">
             <p class="modal-card-title has-text-weight-bold" >{{ textoInterfaz.titulo }}</p>
             <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="this.$store.state.modalInvOnLine = false"></i>
@@ -112,7 +112,7 @@
   
   .PersonajesList {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   column-gap: 10px;
   row-gap: 10px;
   justify-items: center;

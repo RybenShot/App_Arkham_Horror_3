@@ -2,12 +2,11 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-container">
-      <div class="modal-card">
+      <div class="modal-card mx-1">
         <!-- HEADER -->
         <header class="modal-card-head BGPertenencias">
-          <p class="modal-card-title has-text-white title is-5 pt-2 m-0">
-            {{ textoInterfaz.titulo }}
-          </p>
+          <p class="modal-card-title has-text-white title is-5 pt-2 m-0">{{ textoInterfaz.titulo }}</p>
+          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="cancelar"></i>
         </header>
 
         <section class="modal-card-body p-4">
@@ -56,8 +55,8 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="modal-card-foot">
-          <div class="buttons is-fullwidth">
+        <footer class="p-1 has-background-white">
+          <div class="field has-addons columns is-mobile is-gapless">
             <button 
               @click="confirmarSeleccion" 
                 class="button is-success is-fullwidth" 
@@ -176,13 +175,13 @@ export default {
     
     rellenarTextoSegunIdioma() {
       if (this.$store.state.lenguaje === "español") {
-        this.textoInterfaz.titulo = "Selecciona tus Pertenencias Iniciales";
+        this.textoInterfaz.titulo = "Pertenencias Iniciales";
         this.textoInterfaz.requerido = "Requerido";
         this.textoInterfaz.comenzarPartida = "Comenzar Partida";
         this.textoInterfaz.cancelar = "Cancelar";
         this.textoInterfaz.textObjectOptional = this.$store.state.datosPJactual.possessions.optionalText;
       } else if (this.$store.state.lenguaje === "ingles") {
-        this.textoInterfaz.titulo = "Select your Initial Belongings";
+        this.textoInterfaz.titulo = "Initial Belongings";
         this.textoInterfaz.requerido = "Required";
         this.textoInterfaz.comenzarPartida = "Start Game";
         this.textoInterfaz.cancelar = "Cancel";
@@ -236,10 +235,6 @@ export default {
 
 .required-badge i {
   margin-right: 0.25rem;
-}
-
-.buttons {
-  gap: 0.5rem;
 }
 
 /* Responsive */

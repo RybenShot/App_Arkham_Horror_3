@@ -1,8 +1,8 @@
 <template>
     <div class="modal is-active">
         <div class="modal-background" @click=" closeModal()"></div>
-        <div class="mr-6">
-          <div class="modal-card">
+        <div>
+          <div class="modal-card py-6 mx-0">
             <!-- TITULO -->
             <header class="modal-card-head BGPertenencias ">
               <p class="modal-card-title has-text-white title is-4 pt-2 m-0">{{ textoInterfaz.pertenencias }}</p>
@@ -24,9 +24,9 @@
               
               <!-- Pertenencias iniciales -->
               <div v-if="pertenenciasIniciales">
-                <div class="columns is-mobile">
+                <div class="columns is-mobile mb-0">
                   <!-- Per. 1 -->
-                  <div v-for="object in responseObjects.objects" :key="object.id" class="column">
+                  <div v-for="object in responseObjects.objects" :key="object.id" class="column p-0">
                       <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
