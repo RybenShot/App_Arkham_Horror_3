@@ -149,14 +149,11 @@ export default {
       // Preparar los datos del investigador antes de enviar
       const investigatorData = this.prepareInvestigatorData();
 
-      // 2- Miramos si este investigador ya tiene la idOnLine, de ser asi significa que tiene ya el investigador guardado de antes, por ende, tiene espacio y guardamos()
-      if (investigatorData.id) {
-        console.warn("el investigador ya tiene una idOnLine, estos son sus datos:", investigatorData)
-        // El investigador ya existe, mandamos a back
+      try {
+        // mandamos a guardar a back, el ya se encargará de mirar si la memoria del usuario esta llena o si el investigador ya esta creado
         this.guardarInvestigador(investigatorData);
-      } else {
-        // 3- [investigador nuevo a guardar] comprovamos si ya tiene 3 investigadores guardados
-        this.verificarEspacioYGuardar(investigatorData);
+      } catch (error) {
+        console.error("error al guardar el investigador:", error)
       }
     },
 
@@ -184,7 +181,7 @@ export default {
         console.error('Error al guardar investigador:', error);
         this.$buefy.toast.open({
           message: this.$store.state.lenguaje === "español" ? 
-            "Error al guardar el investigador 😢" : 
+            "Error al guardar el investigador 😢, limite de 5 investigadores excedido" : 
             "Error saving investigator 😢",
           type: 'is-danger',
           duration: 3000,
@@ -192,7 +189,7 @@ export default {
       }
     }
   },
-  
+
   computed: {
     codeIDMapInPlay(){
       return this.$store.state.datosMapa.id

@@ -87,7 +87,8 @@ export default {
         elije: "",
         volver: ""
       },
-      responseObjects:{}
+      responseObjects:{},
+      pertenenciasIniciales: true // Variable para saber si mostramos las pertenencias iniciales o las ya construidas
     }
   },
   components:{
@@ -115,6 +116,7 @@ export default {
     async comprobacionObjetos(){
       if (this.$store.state.datosPJactual.id) {
         // enseñamos los objetos ya cargados
+        this.pertenenciasIniciales = false;
       } else {
         await this.serchInitialObjectsInv();
       }
