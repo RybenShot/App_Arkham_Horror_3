@@ -49,13 +49,7 @@
       <div class="has-text-centered has-text-white user-id-section is-vcentered">
         <p class="id-title">{{ textoInterfaz.isAuth.titleIDUsuario }}</p>
         <b-field class="id-field">
-          <b-input
-            type="search"
-            icon="magnify"
-            v-model="user.id"
-            readonly
-            class="user-id-input">
-          </b-input>
+          <b-input type="search" icon="magnify" v-model="user.id" readonly class="user-id-input"></b-input>
           <p class="control">
             <b-button type="is-primary" label="Copiar" @click="copyCode()" class="copy-btn" />
           </p>

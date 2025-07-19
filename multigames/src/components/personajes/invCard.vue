@@ -1,6 +1,11 @@
 <template>
   <div class="inv-card-container">
     <div class="cosmic-inv-card" :class="getExpansionClass()" @click="selectInv(investigator)">
+
+      <!-- Botón de eliminar para mapas online -->
+      <button v-if="this.$route.path === '/profile'" class="delete-btn" @click.stop="deleteInvInPlay()">
+        <i class="fas fa-times"></i>
+      </button>
       
       <!-- Stats superiores -->
       <div class="stats-container">
@@ -88,6 +93,22 @@ export default {
         default: return 'expansion-base';
       }
     },
+
+    async deleteInvInPlay(){
+      const confirmDelete = window.confirm("¿Estás seguro de que quieres borrar este investigador?");
+      if (!confirmDelete) return;
+
+      try {
+        const idInvInPlay = this.investigator.id;
+        const IDUserHost = this.$store.state.IDUserHost;
+
+        const response = await apiService.deleteInvOnLine(idInvInPlay, IDUserHost);
+        console.log("Investigador borrado:", response);
+        location.reload();
+      } catch (error) {
+        console.error("Error al borrar el investigador:", error);
+      }
+    },
     
     getInvestigatorName() {
       if (!this.investigator) return 'Investigador';
@@ -154,6 +175,27 @@ export default {
 .expansion-secrets {border-color: #f14668;}
 .expansion-original {border-color: #7957d5;}
 .expansion-community {border-color: #ff6b35;}
+
+/* Botón de eliminar */
+.delete-btn {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: rgba(220, 53, 69, 0.8);
+  border: 1px solid #dc3545;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+}
 
 /* Stats superiores */
 .stats-container {

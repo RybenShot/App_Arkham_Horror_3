@@ -3,7 +3,7 @@
     <div class="cosmic-card" :class="getExpansionClass()" @click="selectMap()">
       
       <!-- Botón de eliminar para mapas online -->
-      <button v-if="map.id" class="delete-btn" @click.stop="deleteMapInPlay()">
+      <button v-if="map.id && this.$route.path === '/profile'" class="delete-btn" @click.stop="deleteMapInPlay()">
         <i class="fas fa-times"></i>
       </button>
 
