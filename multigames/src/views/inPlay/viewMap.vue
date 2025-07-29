@@ -4,6 +4,7 @@
     <hr class="my-2">
 
     <div v-if="this.$store.state.StoreEncountresPage == true"><EncountresPage/></div>
+    <div v-if="this.$store.state.StoreShopPage == true"><StorePage/></div>
     <div v-if="this.$store.state.StoreReservaDeMitos == true"><ReservaDeMitos/></div>
     <div v-if="this.$store.state.StoreAjustesPlay == true"><AjustesPlay/></div>
 </template>
@@ -12,6 +13,7 @@
 import basicDataMap from "@/components/inPlay/map/basicDataMap.vue";
 
 import EncountresPage from "@/components/inPlay/map/encountresPage.vue";
+import StorePage from "@/components/inPlay/map/gameShop.vue"
 import ReservaDeMitos from "@/components/inPlay/map/ReservaDeMitosPlay.vue";
 import AjustesPlay from "@/components/inPlay/AjustesPlay.vue";
 
@@ -25,6 +27,7 @@ export default {
         basicDataMap,
 
         EncountresPage,
+        StorePage,
         ReservaDeMitos,
         AjustesPlay,
     },

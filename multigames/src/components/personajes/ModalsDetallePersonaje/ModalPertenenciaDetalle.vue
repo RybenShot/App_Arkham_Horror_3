@@ -24,10 +24,15 @@
               
               <!-- Pertenencias iniciales -->
               <div v-if="pertenenciasIniciales">
-                <div class="columns is-mobile mb-0">
-                  <!-- Per. 1 -->
-                  <div v-for="object in responseObjects.objects" :key="object.id" class="column p-0">
-                      <CardObject :object="object" @card-clicked="seeCard(object)"/>
+                <!-- Objetos requeridos -->
+                <div class="objects-container">
+                  <div 
+                    v-for="object in responseObjects.objects" 
+                    :key="object.id" 
+                    class="object-item"
+                    @click="seeCard(object)"
+                  >
+                    <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
                 <br>
@@ -41,20 +46,30 @@
                   </div>
                 </div>
                 <br>
-                <div class="columns is-mobile">
-                  <!-- Per opcionales -->
-                  <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="column">
-                      <CardObject :object="object" @card-clicked="seeCard(object)"/>
+                
+                <!-- Objetos opcionales -->
+                <div class="objects-container">
+                  <div 
+                    v-for="object in responseObjects.optionalObjects" 
+                    :key="object.id" 
+                    class="object-item"
+                    @click="seeCard(object)"
+                  >
+                    <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
               </div>
 
               <!-- Pertenencias ya construidas de invOnLine -->
               <div v-else class="has-text-centered">
-                <div class="columns is-mobile">
-                  <!-- Per. 1 -->
-                  <div v-for="object in this.$store.state.datosPJactual.possessions" :key="object.id" class="column">
-                      <CardObject :object="object" @card-clicked="seeCard(object)"/>
+                <div class="objects-container">
+                  <div 
+                    v-for="object in this.$store.state.datosPJactual.possessions" 
+                    :key="object.id" 
+                    class="object-item"
+                    @click="seeCard(object)"
+                  >
+                    <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
               </div>
@@ -149,7 +164,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .BGPertenencias{
   background-image: url("@/assets/img/2-Pertenencias/IMGModalPertenencias.jpg");
   background-position: center;
@@ -168,5 +183,19 @@ overflow: hidden;
   max-height: 1px;
   border: solid 1px black;
   padding: 0;
+}
+
+.objects-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.object-item {
+  width: 25%;
+  text-align: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
 }
 </style>

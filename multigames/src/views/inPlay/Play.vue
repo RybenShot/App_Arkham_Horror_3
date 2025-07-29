@@ -16,10 +16,12 @@
           <viewPlayer/>
         </b-tab-item>
         <b-tab-item label="Map">
+          <!-- No mapa OnLine -->
           <div v-if="!this.$store.state.datosMapa.id" class="has-text-centered">
             <p class="title has-text-white pt-6">{{ textoInterfaz.textNoLogin }}</p>
             <router-link to="/"> {{ textoInterfaz.goHome }} </router-link>
           </div>
+          <!-- Si es un mapa OnLine -->
           <div v-else><viewMap/></div>
         </b-tab-item>
     </b-tabs>

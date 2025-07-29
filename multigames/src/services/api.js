@@ -435,5 +435,36 @@ export const apiService = {
       console.error(`❌ Error al borrar un investigador onLine`, error);
       throw error;
     }
+  },
+
+  // Get tienda de Mapa On Line
+  async getShopItems(idMapInPlay){
+    try {
+      const response = await axios.get(`${API_URL}/mapInPlay/${idMapInPlay}/shop`)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener la tienda del mapa On Line`, error);
+      throw error;
+    }
+  },
+
+  // gestionar Tienda de Mapa on Line tanto para eliminar de la tienda como para añadir
+  async manageShopItems(idMapInPlay, action, expansion = null, types = null, idObject = null){
+    try {
+      const payload = { action, idMapInPlay, expansion, types, idObject }
+      
+      // Limpiamos valores null del payload para no enviar datos innecesarios
+      Object.keys(payload).forEach(key => {
+        if (payload[key] === null || payload[key] === undefined) {
+          delete payload[key];
+        }
+      });
+
+      const response = await axios.post(`${API_URL}/mapInPlay/shop`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al gestionar la tienda del mapa On Line`, error);
+      throw error;
+    }
   }
 };

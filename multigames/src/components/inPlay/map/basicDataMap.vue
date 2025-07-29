@@ -48,6 +48,13 @@
         <i v-if="this.$store.state.StoreEncountresPage == true" class="has-text-success fa-2x fas fa-house-damage"></i>
         <i v-if="this.$store.state.StoreEncountresPage == false" class="desactivado fa-2x fas fa-house-damage"></i>
       </div> 
+
+      <!-- Tienda -->
+      <div @click="(resetearNavegacion()), (this.$store.state.StoreShopPage = true)" class="column pt-0">
+        <i v-if="this.$store.state.StoreShopPage == true" class="has-text-success fa-2x fas fa-store"></i>
+        <i v-if="this.$store.state.StoreShopPage == false" class="desactivado fa-2x fas fa-store"></i>
+      </div> 
+
       <!-- Fichas de Mitos -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreReservaDeMitos = true)" class="column pt-0">
         <i v-if="!this.$store.state.datosMapa.title" class="has-text-danger fa-2x fas fa-skull"></i>
@@ -125,6 +132,7 @@ export default {
     },
     resetearNavegacion(){
       this.$store.state.StoreEncountresPage = false;
+      this.$store.state.StoreShopPage = false;
       this.$store.state.StoreReservaDeMitos = false;
       this.$store.state.StoreAjustesPlay = false;
       this.updateDataMap()

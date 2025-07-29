@@ -55,7 +55,7 @@
         <div class="columns is-mobile has-text-centered pt-2">
           <div @click="selectProperty('dinero')" class="column p-0 selector-item" >
             <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ boxShadowYellow: atributos.marcado.dinero }"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.dinero }}</p>
+            <p class="contadorVidaCorduraPeques title has-text-white">{{ actualMoney }}</p>
           </div>
 
           <div @click="selectProperty('pistas')" class="column p-0 selector-item" >
@@ -128,7 +128,6 @@ export default {
 
         vida: this.$store.state.datosPJactual.atributes.life,
         cordura: this.$store.state.datosPJactual.atributes.sanity,
-        dinero: this.$store.state.datosPJactual.atributes.money,
         pistas: this.$store.state.datosPJactual.atributes.clue,
         restos: this.$store.state.datosPJactual.atributes.remnant,
         marcado: {
@@ -144,6 +143,13 @@ export default {
         posicion: "",
         textoVariables: ""
       }
+    }
+  },
+  computed: {
+    // Recupera las fichas desde Vuex usando el getter
+    //! ESTA FUNCION SE USA COMO VARIABLE
+    actualMoney() {
+      return this.$store.getters.getMoneyInv;
     }
   },
   
@@ -221,29 +227,29 @@ export default {
       }
       
       if(signo == '+'){
-          if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-            this.atributos[propiedad]++;
-          }
-          else{
-            this.sumarRestarVidaCordura(signo, propiedad);
-          }
+        if (propiedad == "dinero") {
+          this.$store.commit('sumarDinero', 1); // ✅ Usar mutation
+        } else if (propiedad == "pistas" || propiedad == "restos") {
+          this.atributos[propiedad]++;
+        } else {
+          this.sumarRestarVidaCordura(signo, propiedad);
+        }
       } else if(signo == '-'){
-          if (propiedad == "dinero" || propiedad == "pistas" || propiedad == "restos") {
-            this.atributos[propiedad]--;
-          }
-          else{
-            this.sumarRestarVidaCordura(signo, propiedad);
-          }
-      } 
+        if (propiedad == "dinero") {
+          this.$store.commit('restarDinero', 1); // ✅ Usar mutation
+        } else if (propiedad == "pistas" || propiedad == "restos") {
+          this.atributos[propiedad]--;
+        } else {
+          this.sumarRestarVidaCordura(signo, propiedad);
+        }
+      }
 
       // Actualizar el store con los nuevos valores
       if (propiedad == "pistas") {
         this.$store.state.datosPJactual.atributes.clue = this.atributos[propiedad];
       } else if (propiedad == "restos") {
         this.$store.state.datosPJactual.atributes.remnant = this.atributos[propiedad];
-      } else if (propiedad == "dinero") {
-        this.$store.state.datosPJactual.atributes.money = this.atributos[propiedad];
-      } else if (propiedad == "vida"){
+      }  else if (propiedad == "vida"){
         this.$store.state.datosPJactual.atributes.life = this.atributos[propiedad];
       } else if (propiedad == "cordura"){
         this.$store.state.datosPJactual.atributes.sanity = this.atributos[propiedad];
@@ -410,7 +416,7 @@ export default {
 .boxShadowYellow{
   border-radius: 100%;
   border: 0px;
-  animation: glowing 1s linear infinite;
+  animation: glowing 1s linear;
 }
 @keyframes glowing{
   0% {

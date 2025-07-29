@@ -123,6 +123,7 @@ export default createStore({
     //map
     StoreEncountresPage: true,
     StoreReservaDeMitos:false,
+    StoreShopPage: false,
 
     //player
     StoreTiradorDados: true,
@@ -324,6 +325,11 @@ export default createStore({
     fichasConcentracion: [],
   },
   getters: {
+    // funcion para obtener el dinero actual del investigador
+    getMoneyInv(state){
+      return state.datosPJactual.atributes.money 
+    },
+
     getConcentrationInPlay(state){
       return state.fichasConcentracion
     },
@@ -368,6 +374,21 @@ export default createStore({
   },
 
   mutations: {
+    // Mutation para modificar el dinero (sumar o restar)
+    updateMoney(state, cantidad) {
+      state.datosPJactual.atributes.money += cantidad;
+    },
+
+    // Mutation específica para restar dinero (más clara para compras)
+    restarDinero(state, cantidad) {
+      state.datosPJactual.atributes.money -= cantidad;
+    },
+
+    // Mutation específica para sumar dinero
+    sumarDinero(state, cantidad) {
+      state.datosPJactual.atributes.money += cantidad;
+    },
+
     addConcentrationToken(state, token){
       state.fichasConcentracion.push(token)
     },

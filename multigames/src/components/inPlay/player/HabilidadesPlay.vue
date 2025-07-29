@@ -4,41 +4,30 @@
     <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
     <div class="container mx-3 has-text-white">
       <p>>> {{ textoInterfaz.efecto1 }}</p>
-      <br>
       <p v-if="textoInterfaz.efecto2">>> {{ textoInterfaz.efecto2 }}</p>
     </div>
     <hr>
 
-    <h1 class="title has-text-white has-text-centered">{{ textoInterfaz.pertenenciasIniciales }} <button class="button" @click="$store.state.modalBuscarObjeto = true">+</button></h1>
+    <h1 class="title has-text-white has-text-centered">
+      {{ textoInterfaz.pertenenciasIniciales }} 
+      <button class="button" @click="$store.state.modalBuscarObjeto = true">+</button>
+    </h1>
     
-
     <!-- Verificar si hay posesiones -->
-    <div v-if="investigatorPossessions.length > 0" class="columns is-mobile mx-3">
-      <!-- Pertenencias usando los datos del investigador directamente -->
-       <b-carousel-list v-model="test" :data="investigatorPossessions" :items-to-show="4">
-          <template #item="object">
-            <div class="card-image">
-              <figure class="image mx-1" @click="seeCard(object)">
-                <img :src="object.img" :alt="getObjectName(object)">
-              </figure>
-              <p class="has-text-centered is-size-7 mt-2 object-name">
-                {{ getObjectName(object) }}
-              </p>
-            </div>
-          </template>
-        </b-carousel-list>
+    <div v-if="investigatorPossessions.length > 0" class="objects-container">
+      <div class="object-item" v-for="object in investigatorPossessions" :key="object.id" @click="seeCard(object)">
+        <img :src="object.img" :alt="getObjectName(object)">
+        <p>{{ getObjectName(object) }}</p>
+      </div>
     </div>
 
     <!-- Mensaje si no hay posesiones -->
     <div v-else class="has-text-centered">
       <p class="subtitle has-text-white">{{ textoInterfaz.noPertenencias }}</p>
       <button @click="volverASeleccionar" class="button is-warning">
-        <i class="fas fa-redo mr-2"></i>
-        {{ textoInterfaz.seleccionarObjetos }}
+        <i class="fas fa-redo mr-2"></i> {{ textoInterfaz.seleccionarObjetos }}
       </button>
     </div>
-
-    <br>
 
   </section>
 </template>
@@ -63,22 +52,16 @@ export default {
         efecto1: "",
         efecto2: "",
       },
-      
-      test: 0,
     }
   },
   computed: {
     ...mapGetters(['getInvestigatorPossessions']),
     investigatorPossessions() {
       return this.getInvestigatorPossessions;
-    },
-    focusLimit() {
-      return this.$store.state.datosPJactual.focusLimit || 0;
     }
   },
   methods:{
     seeCard(object){
-      // Pasar el objeto completo al store para ver detalles
       this.$store.state.detalleCartaObjeto = object;
       this.$store.state.verDetallePertenencia = true;
     },
@@ -94,12 +77,7 @@ export default {
     },
     
     volverASeleccionar() {
-      // Abrir modal de selección de objetos
       this.$store.state.modalSeleccionObjetosIniciales = true;
-    },
-    
-    info(value) {
-      this.test = value;
     },
     
     rellenarTextoSegunIdioma(){
@@ -126,7 +104,6 @@ export default {
   mounted(){
     this.rellenarTextoSegunIdioma();
     
-    // Verificar si hay posesiones
     if (this.investigatorPossessions.length === 0) {
       console.warn("No hay posesiones cargadas. El jugador debe seleccionar objetos primero.");
     }
@@ -135,15 +112,29 @@ export default {
 </script>
 
 <style scoped>
-.CartasPertenencias{
-  border-radius: 10px;
+.objects-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
 }
 
-.object-name {
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  font-weight: 500;
-  line-height: 1.2;
+.object-item {
+  width: 25%;
+  text-align: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.object-item img {
+  width: 77px;
+  height: 129px;
+  object-fit: cover;
+}
+
+.object-item p {
+  color: white;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
 }
 
 .button.is-warning {
@@ -151,21 +142,5 @@ export default {
   border: none;
   color: white;
   font-weight: bold;
-}
-
-.button.is-warning:hover {
-  background: linear-gradient(135deg, #e67e22, #f39c12);
-  transform: translateY(-1px);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .container {
-    margin: 0 1rem;
-  }
-  
-  .object-name {
-    font-size: 0.7rem;
-  }
 }
 </style>

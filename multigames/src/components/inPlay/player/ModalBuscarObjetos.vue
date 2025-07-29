@@ -353,6 +353,7 @@ export default {
         this.textoInterfaz.yaLoTienes = "Ya lo tienes";
         this.textoInterfaz.noEncontrado = "No se encontraron objetos";
         this.textoInterfaz.cerrar = "Cerrar";
+        
       } else if (this.$store.state.lenguaje === "ingles") {
         this.textoInterfaz.titulo = "Search Objects";
         this.textoInterfaz.buscarPorId = "By ID";
