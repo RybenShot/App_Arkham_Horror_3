@@ -106,6 +106,8 @@ export default createStore({
       }
     },
 
+    // variable para el momento que quieras ver un objeto in play
+    pertenenciaInPlay: false,
     // aqui se almacenarán todos los objetos que tengan in play
     modalJoinMapInPlay: false,
     modalInvOnLine: false,

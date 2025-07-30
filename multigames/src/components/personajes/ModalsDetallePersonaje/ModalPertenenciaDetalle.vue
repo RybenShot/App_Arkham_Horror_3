@@ -26,12 +26,7 @@
               <div v-if="pertenenciasIniciales">
                 <!-- Objetos requeridos -->
                 <div class="objects-container">
-                  <div 
-                    v-for="object in responseObjects.objects" 
-                    :key="object.id" 
-                    class="object-item"
-                    @click="seeCard(object)"
-                  >
+                  <div v-for="object in responseObjects.objects" :key="object.id" class="object-item" @click="seeCard(object)">
                     <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
@@ -49,26 +44,16 @@
                 
                 <!-- Objetos opcionales -->
                 <div class="objects-container">
-                  <div 
-                    v-for="object in responseObjects.optionalObjects" 
-                    :key="object.id" 
-                    class="object-item"
-                    @click="seeCard(object)"
-                  >
+                  <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="object-item" @click="seeCard(object)">
                     <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
               </div>
 
               <!-- Pertenencias ya construidas de invOnLine -->
-              <div v-else class="has-text-centered">
+              <div v-else class="has-text-centered"> 
                 <div class="objects-container">
-                  <div 
-                    v-for="object in this.$store.state.datosPJactual.possessions" 
-                    :key="object.id" 
-                    class="object-item"
-                    @click="seeCard(object)"
-                  >
+                  <div v-for="object in this.$store.state.datosPJactual.possessions" :key="object.id" class="object-item" @click="seeCard(object)">
                     <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>

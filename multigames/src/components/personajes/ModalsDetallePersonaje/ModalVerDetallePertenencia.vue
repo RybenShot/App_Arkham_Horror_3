@@ -11,26 +11,14 @@
         <div class="card-detail-container">
           <!-- Imagen de la carta -->
           <div class="card-image-container">
-            <img 
-              :src="cardObject.img" 
-              :alt="getCardName()" 
-              class="card-detail-image" 
-              @click="toggleZoom"
-              :class="{ 'zoomed': isZoomed }"
-            />
+            <img :src="cardObject.img" :alt="getCardName()" class="card-detail-image" @click="toggleZoom" :class="{ 'zoomed': isZoomed }"/>
           </div>
 
           <!-- Overlay para zoom con transición -->
           <transition name="zoom-fade">
             <div v-if="isZoomed" class="zoom-overlay" @click="toggleZoom">
               <transition name="zoom-scale" appear>
-                <img 
-                  v-if="isZoomed"
-                  :src="cardObject.img" 
-                  :alt="getCardName()" 
-                  class="zoomed-image" 
-                  @click.stop
-                />
+                <img v-if="isZoomed" :src="cardObject.img" :alt="getCardName()" class="zoomed-image" @click.stop/>
               </transition>
             </div>
           </transition>
@@ -42,12 +30,7 @@
 
             <!-- Tags de tipo -->
             <div class="card-types mb-3">
-              <span 
-                v-for="type in cardObject.types" 
-                :key="type"
-                :class="getTypeClass(type)"
-                class="tag is-small mr-1 mb-1"
-              >
+              <span v-for="type in cardObject.types" :key="type" :class="getTypeClass(type)" class="tag is-small mr-1 mb-1">
                 {{ type }}
               </span>
             </div>
@@ -105,16 +88,9 @@
 
       <footer class="modal-card-foot">
         <div class="buttons is-fullwidth">
-          <button @click="closeModal" class="button is-link">
-            {{ textoInterfaz.volver }}
-          </button>
-          <button 
-            @click="borrarObjeto" 
-            class="button is-danger"
-            :class="{ 'is-loading': borrando }"
-          >
-            <i class="fas fa-trash mr-2"></i>
-            {{ textoInterfaz.borrar }}
+          <button @click="closeModal" class="button is-link"> {{ textoInterfaz.volver }} </button>
+          <button v-if="this.$store.state.pertenenciaInPlay" @click="borrarObjeto" class="button is-danger" :class="{ 'is-loading': borrando }" >
+            <i class="fas fa-trash mr-2"></i> {{ textoInterfaz.borrar }}
           </button>
         </div>
       </footer>
@@ -148,6 +124,7 @@ export default {
   methods:{
     closeModal() {
       this.$store.state.verDetallePertenencia = false;
+      this.$store.state.pertenenciaInPlay = false
       this.isZoomed = false;
     },
     toggleZoom() {
@@ -156,33 +133,49 @@ export default {
     
     async borrarObjeto() {
       this.borrando = true;
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' 
+        ? `¿Estas seguro de eliminar este objeto de tu inventario?`
+        : `___`;
       
-      try {
-        // Obtener possessions actuales
-        const possessionsActuales = this.$store.getters.getInvestigatorPossessions;
-        
-        // Filtrar el objeto a borrar
-        const nuevasPossessions = possessionsActuales.filter(obj => obj.id !== this.cardObject.id);
-        
-        // Actualizar investigador
-        const investigadorActualizado = { ...this.$store.state.datosPJactual };
-        investigadorActualizado.possessions = nuevasPossessions;
-        
-        // Guardar en store
-        this.$store.commit('setDatosInvestigator', investigadorActualizado);
-        
-        // Notificar éxito
-        this.$store.commit('ejecutarFlashPopUp', 'Objeto eliminado correctamente');
-        
-        // Cerrar modal
-        this.closeModal();
-        
-      } catch (error) {
-        console.error("Error al borrar objeto:", error);
-        this.$store.commit('ejecutarFlashPopUp', 'Error al eliminar el objeto');
-      } finally {
-        this.borrando = false;
-      }
+      this.$buefy.dialog.confirm({
+        title: this.$store.state.lenguaje === 'español' ? 'Confirmar eliminarion' : 'Confirm ___',
+        message: textoConfirmacion,
+        confirmText: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Buy',
+        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+        type: 'is-info',
+        hasIcon: true,
+
+        onConfirm: async () => {
+          try {
+            // Obtener possessions actuales
+            const possessionsActuales = this.$store.getters.getInvestigatorPossessions;
+            
+            // Filtrar el objeto a borrar
+            const nuevasPossessions = possessionsActuales.filter(obj => obj.id !== this.cardObject.id);
+            
+            // Actualizar investigador
+            const investigadorActualizado = { ...this.$store.state.datosPJactual };
+            investigadorActualizado.possessions = nuevasPossessions;
+            
+            // Guardar en store
+            this.$store.commit('setDatosInvestigator', investigadorActualizado);
+            
+            // Notificar éxito
+            this.$store.commit('ejecutarFlashPopUp', 'Objeto eliminado correctamente');
+            
+            // Cerrar modal
+            this.closeModal();
+            
+          } catch (error) {
+            console.error("Error al borrar objeto:", error);
+            this.$store.commit('ejecutarFlashPopUp', 'Error al eliminar el objeto');
+          } finally {
+            this.borrando = false;
+          }
+        }
+      })
+      
+      
     },
     getCardName() {
       const language = this.$store.state.lenguaje;

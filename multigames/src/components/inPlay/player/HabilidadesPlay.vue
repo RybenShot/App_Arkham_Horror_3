@@ -62,6 +62,7 @@ export default {
   },
   methods:{
     seeCard(object){
+      this.$store.state.pertenenciaInPlay = true
       this.$store.state.detalleCartaObjeto = object;
       this.$store.state.verDetallePertenencia = true;
     },
