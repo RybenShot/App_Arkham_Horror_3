@@ -176,9 +176,9 @@ export default {
       contadorVisitas: null,
       textoInterfaz: {
         wellcome: "",
-        versionApp: "Beta 4.0.5",
+        versionApp: "Beta 4.0.6",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "13/06/2025",
+        fechaUltimaActualizacion: "13/08/2025",
         textoVisitas: "",
         textoActualizacion: "",
         botones: {
@@ -191,6 +191,20 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
+          {id: 7,
+            numberUpdate: "4.0.6",
+            dateUpdate: "13/08/2025",
+            translations: {
+              es: {
+                title: "Gestión completa de cartas y tienda online centralizada",
+                description: "Ahora puedes gestionar todas tus cartas: objetos, aliados, hechizos y especiales. Nueva tienda online centralizada para partidas con mapa online y sistema de guardado de investigador. Próximamente: gestión de ubicaciones en mapa y eventos por pares (usuario - usuario)."
+              },
+              en: {
+                title: "Complete card management and centralized online store",
+                description: "You can now manage all your cards: items, allies, spells, and special cards. New centralized online store for games with online maps and investigator save system. Coming soon: location management and peer-to-peer event creation."
+              }
+            }
+          },
           {id: 6,
             numberUpdate: "4.0.5",
             dateUpdate: "13/06/2025",
