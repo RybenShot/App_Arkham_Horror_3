@@ -4,25 +4,17 @@
     <div class="column is-6 px-5">
       <div class="map-container" :style="losetaStyle">
         <!-- Puntos clicables desde la base de datos -->
-        <div 
-          v-for="point in clickablePoints" 
-          :key="point.id"
-          class="clickable-point"
+        <div v-for="point in clickablePoints" :key="point.id" class="clickable-point"
           :style="{
             left: point.x + '%',
             top: point.y + '%',
             width: (point.size || 12) + 'vh',
             height: (point.size || 12) + 'vh'
           }"
-          @click="handlePointClick(point)"
-          :title="point.name"
-        ></div>
+          @click="handlePointClick(point)">
+        </div>
+        <div v-if="this.$store.state.StoreModalInteractionsOnLine == true"><modalInteractionsOnLine/></div>
         
-        <!-- Overlay para mostrar el modal del mapa completo -->
-        <div 
-          class="map-overlay" 
-          @click="$store.state.modalVerLosetaMapa = true"
-        ></div>
       </div>
     </div>
   </div>
@@ -30,10 +22,12 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import modalInteractionsOnLine from "@/components/inPlay/modals/interactionsOnLine.vue";
 
 export default {
   name: "ViewInPlayMap",
   components: {
+    modalInteractionsOnLine
   },
   
   computed: {
@@ -48,21 +42,64 @@ export default {
       };
     },
     
-    // ✅ AÑADIR: Obtener puntos desde el store
     clickablePoints() {
       return this.$store.state.datosMapa?.clickablePoints || [];
     }
   },
   
   methods: {
+    // Fase 1 - Busqueda emparejamiento
+    async getRandomInv(available, idZone, idUser){
+      if (available == true) {
+        const result2 = await apiService.getRandomInvOnLine(idZone, idUser)
+        console.log(result2)
+      }
+    },
+
     handlePointClick(point) {
-      console.log('Punto clicado:', point);
-      this.$buefy.toast.open({
-          message: `Has clicado: ${point.name}`,
-          type: 'is-success',
-          duration: 2000,
-        });
-      // Tu lógica existente
+      // Mostrar confirmación de compra
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' 
+        ? `¿Estás seguro de ir a "${point.name}"?`
+        : `Are you sure you want to go to "${point}"?`;
+
+      this.$buefy.dialog.confirm({
+        title: this.$store.state.lenguaje === 'español' ? 'ubicacion' : 'ubication',
+        message: textoConfirmacion,
+        confirmText: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
+        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+        type: 'is-info',
+        hasIcon: true,
+        onConfirm: async () => {
+          const idZone = point.id;
+          const idUser = this.$store.state.IDUserHost;
+          const invData = this.$store.state.datosPJactual
+          const available = this.$store.state.isUserAvailable
+          
+          try {
+            // funcion para añadir carta comprada al inventario del investigador
+            const result = await apiService.postLocationInMap(idZone, idUser, invData, available)
+            console.log(result)
+            
+            this.$buefy.toast.open({
+              message: this.$store.state.lenguaje === 'español' ? `movido a ${point.name}` : `moved to ${point.name}`,
+              type: 'is-success',
+              duration: 3000
+            });
+            
+          } catch (error) {
+            console.log("Error al mandar la ubicacion del investigador", error);
+            this.$buefy.toast.open({
+              message: this.$store.state.lenguaje === 'español' ? 'Error al mandar la ubicacion del investigador' : 'Error sending investigator locations',
+              type: 'is-danger'
+            });
+          } finally {
+            setTimeout(async () => {
+              this.getRandomInv(available, idZone, idUser); // Llamar a la función para obtener un investigador aleatorio
+            }, 2000);
+          }
+        }
+      });
+      // Logica para mover a investigador de forma Local
       //this.$store.commit('updatePlayerLocation', point);
     }
   },
@@ -98,12 +135,4 @@ export default {
   transition: all 0.2s ease;
 }
 
-.map-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
 </style>

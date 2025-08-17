@@ -112,7 +112,10 @@ export default createStore({
     modalJoinMapInPlay: false,
     modalInvOnLine: false,
     modalCrearMapaOnLine: false,
+    StoreModalInteractionsOnLine: false,
     IDUserHost: null,
+    // variable para comprovar si el usuario quiere ser emparejado o no
+    isUserAvailable: true,
     nameUserHost: null,
     responseObjectsInPlay:[],
     // variable para mostrar el modal de busqueda de objetos

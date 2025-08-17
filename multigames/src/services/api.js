@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-const API_URL = process.env.VUE_APP_API_URL_DEV;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+//const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -464,6 +464,31 @@ export const apiService = {
       return response.data
     } catch (error) {
       console.error(`❌ Error al gestionar la tienda del mapa On Line`, error);
+      throw error;
+    }
+  },
+
+  // INTERACCIONES ONLINE
+  async postLocationInMap(idZone, idUser, invData, available){
+    try {
+      const payload = {idZone, idUser, invData, available}
+      console.log(`Vamos a mandar la lozacalizacion de un investigador con estos valores: ${payload.idZone}, ${payload.idUser}, ${payload.invData}, ${payload.available}`)
+
+      const response = await axios.post(`${API_URL}/losetasOnLine/newInvZone`, payload)
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Error mandar la localizacion de un investigador`, error);
+      throw error;
+    }
+  },
+
+  // Get random inv de una zona concreta
+  async getRandomInvOnLine(idZone, idUser){
+    try {
+      const response = await axios.get(`${API_URL}/losetasOnLine/randomInvInZone/${idZone}/${idUser}`)
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Error al buscar un investigador en una zona random para encuentro onLine`, error);
       throw error;
     }
   }

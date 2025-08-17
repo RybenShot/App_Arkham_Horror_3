@@ -291,9 +291,9 @@ export default {
             });
           } finally {
             setTimeout(() => {
-            this.loadingBuy = null;
-            this.obtainShop();
-          }, 2000);
+              this.loadingBuy = null;
+              this.obtainShop();
+            }, 2000);
           }
         }
       });
