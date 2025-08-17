@@ -1,7 +1,7 @@
 import axios from "axios";
 //const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-//const API_URL = process.env.VUE_APP_API_URL_DEV;
-const API_URL = process.env.VUE_APP_API_URL_PROD ;
+const API_URL = process.env.VUE_APP_API_URL_DEV;
+//const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
 export const apiService = {
