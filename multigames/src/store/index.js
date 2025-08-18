@@ -114,6 +114,9 @@ export default createStore({
     modalCrearMapaOnLine: false,
     StoreModalInteractionsOnLine: false,
     IDUserHost: null,
+    // estados referente a interaccionesOnLine
+    pendingInvitation: null,
+    showGuestInvitationModal: false,
     // variable para comprovar si el usuario quiere ser emparejado o no
     isUserAvailable: true,
     nameUserHost: null,

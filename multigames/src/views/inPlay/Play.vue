@@ -10,6 +10,20 @@
     <!-- Modals de los estados para verlos -->
     <div><ModalsEstadosPlay/></div>
 
+    <!-- Modal para responder invitación (GUEST) -->
+    <div v-if="$store.state.showGuestInvitationModal">
+      <modalGuestResponse :pendingInvitation="$store.state.pendingInvitation" :canSeeHost="canSeeHostInvestigator"
+        @response-sent="onGlobalResponseSent" />
+    </div>
+    <!-- Modal cuando HOST es rechazado -->
+    <div v-if="showHostRejectedModal">
+      <hostRejectedModal @modal-closed="onHostRejectedClosed" />
+    </div>
+    <!-- Modal cuando HOST es aceptado -->
+    <div v-if="showHostAcceptedModal">
+      <hostAcceptedModal :interactionData="hostInteractionData" @modal-closed="onHostAcceptedClosed" />
+    </div>
+
     <!-- Navegacion -->
     <b-tabs position="is-centered" class="block mb-0">
         <b-tab-item label="Player">
@@ -40,6 +54,12 @@ import ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePe
 import ModalConfirmacion from "@/components/inPlay/ModalConfirmacion.vue";
 import ModalsEstadosPlay from "@/components/inPlay/ModalsEstadosPlay.vue";
 
+import modalGuestResponse from "@/components/inPlay/modals/guestResponse.vue";
+import hostRejectedModal from "@/components/inPlay/modals/hostRejectedModal.vue";
+import hostAcceptedModal from "@/components/inPlay/modals/hostAcceptedModal.vue";
+
+import { invitationService } from '@/services/invitationService.js';
+import { hostPollingService } from '@/services/hostPollingService.js';
 import { apiService } from '@/services/api.js';
 
 
@@ -53,10 +73,19 @@ export default {
     ModalVerDetallePertenencia,
 
     ModalConfirmacion,
-    ModalsEstadosPlay
+    ModalsEstadosPlay,
+
+    modalGuestResponse,
+    hostRejectedModal,
+    hostAcceptedModal 
   },
   data(){
     return{
+      canSeeHostInvestigator: false,
+      showHostRejectedModal: false,
+      showHostAcceptedModal: false,
+      hostInteractionData: null,
+
       textoInterfaz: {
         textNoLogin: '',
         goHome: '',
@@ -91,11 +120,123 @@ export default {
         console.error("Error al cargar los objetos principales del investigador", error);
       }
     },
+
+    // Callbacks para el polling del HOST
+    onHostInteractionAccepted(interactionData) {
+      console.log('🎉 HOST: Interacción aceptada!', interactionData);
+      this.hostInteractionData = interactionData;
+      this.showHostAcceptedModal = true;
+    },
+
+    onHostInteractionRejected(interactionData) {
+      console.log('😔 HOST: Interacción rechazada', interactionData);
+      this.showHostRejectedModal = true;
+    },
+
+    // Añadir información del contador en el toast
+    onHostInteractionPending(interactionData, attemptCount, maxAttempts) {
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === 'español' 
+          ? `Esperando respuesta... (${attemptCount}/${maxAttempts})`
+          : `Waiting for response... (${attemptCount}/${maxAttempts})`,
+        type: 'is-info',
+        duration: 2000
+      });
+    },
+
+    // Callback cuando se agota el tiempo
+    onHostInteractionTimeout(totalAttempts) {
+      console.log(`⏰ Timeout después de ${totalAttempts} intentos`);
+      
+      // Mostrar modal preguntando si quiere extender
+      this.$buefy.dialog.confirm({
+        title: this.$store.state.lenguaje === 'español' ? 'Tiempo Agotado' : 'Time Out',
+        message: this.$store.state.lenguaje === 'español' 
+          ? `No hemos recibido respuesta después de ${totalAttempts} intentos (${totalAttempts * 5} segundos). ¿Quieres esperar 10 intentos más?`
+          : `No response received after ${totalAttempts} attempts (${totalAttempts * 5} seconds). Do you want to wait 10 more attempts?`,
+        confirmText: this.$store.state.lenguaje === 'español' ? 'Esperar más' : 'Wait more',
+        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+        type: 'is-warning',
+        hasIcon: true,
+        onConfirm: () => {
+          // Extender polling por 10 intentos más
+          if (hostPollingService.extendPolling(10)) {
+            this.$buefy.toast.open({
+              message: this.$store.state.lenguaje === 'español' ? 'Esperando 10 intentos más...' : 'Waiting 10 more attempts...',
+              type: 'is-info',
+              duration: 3000
+            });
+          }
+        },
+        onCancel: () => {
+          // Cancelar completamente
+          hostPollingService.cancelPolling();
+          invitationService.resume(); // Volver al polling general
+          
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? 'Encuentro cancelado' : 'Encounter cancelled',
+            type: 'is-warning',
+            duration: 3000
+          });
+        }
+      });
+    },
+
+    // Cerrar modal de rechazo
+    onHostRejectedClosed() {
+      this.showHostRejectedModal = false;
+      // Volver al polling general de invitaciones
+      invitationService.resume();
+    },
+
+    // Cerrar modal de aceptación
+    onHostAcceptedClosed() {
+      this.showHostAcceptedModal = false;
+      this.hostInteractionData = null;
+      // Aquí podremos iniciar la fase 3 de la interacción
+      // Por ahora volvemos al polling general
+      invitationService.resume();
+    },
+
+    // Manejar respuesta de invitación
+    onGlobalResponseSent(response) {
+      console.log('Respuesta global enviada:', response);
+      invitationService.resume();
+      
+      const message = response.action === 'accepted' 
+        ? (this.$store.state.lenguaje === 'español' ? '¡Encuentro aceptado!' : 'Encounter accepted!')
+        : (this.$store.state.lenguaje === 'español' ? 'Encuentro rechazado' : 'Encounter rejected');
+      
+      this.$buefy.toast.open({
+        message: message,
+        type: response.action === 'accepted' ? 'is-success' : 'is-warning',
+        duration: 3000
+      });
+    },
   },
   mounted(){
+    // Iniciar polling
+    invitationService.init(this.$store);
+    invitationService.start();
+
+    // Configurar callbacks del HOST polling
+    hostPollingService.init(this.$store);
+    hostPollingService.setCallbacks(
+      this.onHostInteractionAccepted,
+      this.onHostInteractionRejected,
+      this.onHostInteractionPending,
+      this.onHostInteractionTimeout
+    );
+
     this.serchInitialObjectsInv();
     this.rellenarTextoSegunIdioma()
   },
+
+  beforeUnmount() {
+    // Limpiar polling
+    invitationService.stop();
+    hostPollingService.stopPolling(); 
+  }
 }
 </script>
 

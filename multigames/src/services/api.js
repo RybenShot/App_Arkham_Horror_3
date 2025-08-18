@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-//const API_URL = process.env.VUE_APP_API_URL_DEV;
+//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -491,5 +491,63 @@ export const apiService = {
       console.error(`❌ Error al buscar un investigador en una zona random para encuentro onLine`, error);
       throw error;
     }
+  },
+
+  // Inicio de Fase 2 Creacion de primera interaccion por parte de Host
+  async createInteraction(idUserHost, idUserGuest, invData, type, idLocationMap){
+    try {
+      const payload = { idUserHost, idUserGuest, invData, type, idLocationMap }
+      console.log(`Vamos a crear la invitacion OnLine con estos valores: ${payload}`)
+
+      const response = await axios.post(`${API_URL}/interactions`, payload)
+      console.log(`🔍 --- createInteraction --- recibid:`, response.data)
+      return response.data
+
+    } catch (error) {
+      console.error(`❌ Error al crear la invitacion para encuentro onLine`, error);
+      throw error;
+    }
+  },
+
+  // Responder a invitación (GUEST)
+  async respondToInteraction(idInteraction, idUser, response, invData){
+    try {
+      const payload = { idUser, response, invData }
+      console.log(`Respondiendo a invitación ${idInteraction}:`, payload)
+
+      const responseApi = await axios.put(`${API_URL}/interactions/respond/${idInteraction}`, payload)
+      console.log(`🔍 --- respondToInteraction --- recibido:`, responseApi.data)
+      return responseApi.data
+
+    } catch (error) {
+      console.error(`❌ Error al responder a la invitación`, error);
+      throw error;
+    }
+  },
+
+  // Obtener invitaciones pendientes (GUEST)
+  async getPendingInvitations(idUser){
+    try {
+      const response = await axios.get(`${API_URL}/interactions/pending/${idUser}`)
+      console.log(`🔍 --- getPendingInvitations --- recibido:`, response.data)
+      return response.data
+
+    } catch (error) {
+      console.error(`❌ Error al obtener invitaciones pendientes`, error);
+      throw error;
+    }
+  },
+
+  // Polling para estado de interacción (HOST y GUEST)
+  async pollInteractionStatus(idInteraction, idUser){
+  try {
+    const response = await axios.get(`${API_URL}/interactions/poll/${idInteraction}?idUser=${idUser}`)
+    console.log(`🔍 --- pollInteractionStatus --- recibido:`, response.data)
+    return response.data
+
+  } catch (error) {
+    console.error(`❌ Error al verificar estado de interacción`, error);
+    throw error;
   }
+}
 };

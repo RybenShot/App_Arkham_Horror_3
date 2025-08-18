@@ -13,7 +13,15 @@
           }"
           @click="handlePointClick(point)">
         </div>
-        <div v-if="this.$store.state.StoreModalInteractionsOnLine == true"><modalInteractionsOnLine/></div>
+        
+        <!-- Modal de interacciones online (HOST) -->
+        <div v-if="this.$store.state.StoreModalInteractionsOnLine == true">
+          <modalInteractionsOnLine 
+            :foundUser="foundUserData" 
+            :currentZone="currentZoneData"
+            @interaction-created="onInteractionCreated"
+          />
+        </div>
         
       </div>
     </div>
@@ -22,12 +30,20 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import { hostPollingService } from '@/services/hostPollingService.js';
 import modalInteractionsOnLine from "@/components/inPlay/modals/interactionsOnLine.vue";
 
 export default {
   name: "ViewInPlayMap",
   components: {
     modalInteractionsOnLine
+  },
+  
+  data() {
+    return {
+      foundUserData: null,
+      currentZoneData: null,
+    };
   },
   
   computed: {
@@ -48,22 +64,61 @@ export default {
   },
   
   methods: {
-    // Fase 1 - Busqueda emparejamiento
-    async getRandomInv(available, idZone, idUser){
+
+    // Fase 1 - Búsqueda emparejamiento (HOST)
+    async getRandomInv(available, idZone, idUser) {
       if (available == true) {
-        const result2 = await apiService.getRandomInvOnLine(idZone, idUser)
-        console.log(result2)
+        try {
+          const result = await apiService.getRandomInvOnLine(idZone, idUser);
+          console.log('Resultado búsqueda:', result);
+          
+          if (result.user) {
+            // Si encuentra un usuario, preparar datos y mostrar modal
+            this.foundUserData = result.user;
+            this.currentZoneData = idZone;
+            this.$store.state.StoreModalInteractionsOnLine = true;
+          } else {
+            // Si no encuentra usuario, mostrar mensaje
+            this.$buefy.toast.open({
+              message: this.$store.state.lenguaje === 'español' ? 'No hay otros investigadores en esta zona' : 'No other investigators in this area',
+              type: 'is-info',
+              duration: 3000
+            });
+          }
+        } catch (error) {
+          console.error('Error en búsqueda de usuario:', error);
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? 'Error al buscar otros investigadores' : 'Error searching for other investigators',
+            type: 'is-danger',
+            duration: 3000
+          });
+        }
       }
     },
 
+    // Callback cuando se crea una interacción desde el modal (HOST)
+    onInteractionCreated(interactionResult) {
+      console.log('Interacción creada:', interactionResult);
+      
+      // Iniciar polling para esperar respuesta del GUEST
+      const interactionId = interactionResult.idInteraction;
+      const userId = this.$store.state.IDUserHost;
+      
+      hostPollingService.startPolling(interactionId, userId);
+      
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === 'español' ? 'Invitación enviada. Esperando respuesta...' : 'Invitation sent. Waiting for response...',
+        type: 'is-info',
+        duration: 5000
+      });
+    },
+
     handlePointClick(point) {
-      // Mostrar confirmación de compra
-      const textoConfirmacion = this.$store.state.lenguaje === 'español' 
-        ? `¿Estás seguro de ir a "${point.name}"?`
-        : `Are you sure you want to go to "${point}"?`;
+      // Mostrar confirmación de ubicación
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' ? `¿Estás seguro de ir a "${point.name}"?` : `Are you sure you want to go to "${point.name}"?`;
 
       this.$buefy.dialog.confirm({
-        title: this.$store.state.lenguaje === 'español' ? 'ubicacion' : 'ubication',
+        title: this.$store.state.lenguaje === 'español' ? 'Ubicación' : 'Location',
         message: textoConfirmacion,
         confirmText: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
         cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
@@ -72,40 +127,36 @@ export default {
         onConfirm: async () => {
           const idZone = point.id;
           const idUser = this.$store.state.IDUserHost;
-          const invData = this.$store.state.datosPJactual
-          const available = this.$store.state.isUserAvailable
+          const invData = this.$store.state.datosPJactual;
+          const available = this.$store.state.isUserAvailable;
           
           try {
-            // funcion para añadir carta comprada al inventario del investigador
-            const result = await apiService.postLocationInMap(idZone, idUser, invData, available)
-            console.log(result)
+            // función para mover al investigador
+            const result = await apiService.postLocationInMap(idZone, idUser, invData, available);
+            console.log('Movimiento realizado:', result);
             
             this.$buefy.toast.open({
-              message: this.$store.state.lenguaje === 'español' ? `movido a ${point.name}` : `moved to ${point.name}`,
+              message: this.$store.state.lenguaje === 'español' ? `Movido a ${point.name}` : `Moved to ${point.name}`,
               type: 'is-success',
               duration: 3000
             });
             
           } catch (error) {
-            console.log("Error al mandar la ubicacion del investigador", error);
+            console.log("Error al mandar la ubicación del investigador", error);
             this.$buefy.toast.open({
-              message: this.$store.state.lenguaje === 'español' ? 'Error al mandar la ubicacion del investigador' : 'Error sending investigator locations',
+              message: this.$store.state.lenguaje === 'español' ? 'Error al mandar la ubicación del investigador' : 'Error sending investigator locations',
               type: 'is-danger'
             });
           } finally {
             setTimeout(async () => {
-              this.getRandomInv(available, idZone, idUser); // Llamar a la función para obtener un investigador aleatorio
+              // Llamada a la función para obtener un investigador aleatorio
+              this.getRandomInv(available, idZone, idUser); 
             }, 2000);
           }
         }
       });
-      // Logica para mover a investigador de forma Local
-      //this.$store.commit('updatePlayerLocation', point);
     }
   },
-  
-  mounted() {
-  }
 };
 </script>
 
@@ -121,7 +172,7 @@ export default {
   cursor: pointer;
   z-index: 2;
 
-/* Eliminar tap highlight en móviles */
+  /* Eliminar tap highlight en móviles */
   -webkit-tap-highlight-color: transparent;
   
   /* Para debugging */
@@ -134,5 +185,4 @@ export default {
   transform: scale(1.2);
   transition: all 0.2s ease;
 }
-
 </style>
