@@ -115,7 +115,7 @@ export default createStore({
     StoreModalInteractionsOnLine: false,
     IDUserHost: null,
     // estados referente a interaccionesOnLine
-    pendingInvitation: null,
+    pendingInvitation: null,            // Aqui se guardan los datos de la interaccion
     showGuestInvitationModal: false,
     // variable para comprovar si el usuario quiere ser emparejado o no
     isUserAvailable: true,

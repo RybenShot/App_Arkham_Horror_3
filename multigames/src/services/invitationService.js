@@ -4,7 +4,7 @@ import { apiService } from '@/services/api.js';
 class InvitationService {
   constructor() {
     this.pollingInterval = null;
-    this.isActive = false;
+    this.pollingGeneralisRunning = false;
     this.store = null;
   }
 
@@ -15,14 +15,11 @@ class InvitationService {
   }
 
   // Iniciar polling
-  start() {
-    if (this.isActive) return;
+  startPollingGeneral() {
+    if (this.pollingGeneralisRunning) return;
     
     console.log('🚀 Iniciando polling de invitaciones cada 60 segundos');
-    this.isActive = true;
-    
-    // Primera verificación inmediata
-    this.checkInvitations();
+    this.pollingGeneralisRunning = true;
     
     // Configurar interval
     this.pollingInterval = setInterval(() => {
@@ -31,12 +28,12 @@ class InvitationService {
   }
 
   // Parar polling
-  stop() {
+  stopPollingGeneral() {
     if (this.pollingInterval) {
       clearInterval(this.pollingInterval);
       this.pollingInterval = null;
     }
-    this.isActive = false;
+    this.pollingGeneralisRunning = false;
     console.log('⏹️ Polling detenido');
   }
 
@@ -55,11 +52,11 @@ class InvitationService {
         console.log('📩 Invitación recibida:', result);
         
         // Parar polling temporalmente
-        this.pause();
+        this.stopPollingGeneral(); // antes usabamos pause()
         
         // Guardar en el store
         this.store.state.pendingInvitation = result;
-        this.store.state.showGuestInvitationModal = true;
+        this.store.state.showGuestInvitationModal = true; 
       }
     } catch (error) {
       console.error('❌ Error verificando invitaciones:', error);
@@ -67,17 +64,18 @@ class InvitationService {
   }
 
   // Pausar temporalmente
+  // Funcion en Deshhuso
   pause() {
     if (this.pollingInterval) {
       clearInterval(this.pollingInterval);
       this.pollingInterval = null;
     }
-    this.isActive = false;
+    this.pollingGeneralisRunning = false;
     console.log('⏸️ Polling pausado');
   }
 
   // Reanudar después de manejar invitación
-  resume() {
+  resumePollingGeneral() {
     if (this.store) {
       // Limpiar store
       this.store.state.pendingInvitation = null;
@@ -86,7 +84,7 @@ class InvitationService {
     
     // Reanudar después de 2 segundos
     setTimeout(() => {
-      this.start();
+      this.startPollingGeneral();
     }, 2000);
   }
 }

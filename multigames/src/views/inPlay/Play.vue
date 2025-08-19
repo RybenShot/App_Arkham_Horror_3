@@ -17,11 +17,11 @@
     </div>
     <!-- Modal cuando HOST es rechazado -->
     <div v-if="showHostRejectedModal">
-      <hostRejectedModal @modal-closed="onHostRejectedClosed" />
+      <hostRejectedModal @modal-closed="onHostRejectedCloseModal" />
     </div>
     <!-- Modal cuando HOST es aceptado -->
     <div v-if="showHostAcceptedModal">
-      <hostAcceptedModal :interactionData="hostInteractionData" @modal-closed="onHostAcceptedClosed" />
+      <hostAcceptedModal :interactionData="hostInteractionData" @modal-closed="onHostAcceptedCloseModal" />
     </div>
 
     <!-- Navegacion -->
@@ -84,7 +84,7 @@ export default {
       canSeeHostInvestigator: false,
       showHostRejectedModal: false,
       showHostAcceptedModal: false,
-      hostInteractionData: null,
+      hostInteractionData: null, // variable donde se guardará todos los datos de la interaccion al aceptar
 
       textoInterfaz: {
         textNoLogin: '',
@@ -127,82 +127,60 @@ export default {
       this.hostInteractionData = interactionData;
       this.showHostAcceptedModal = true;
     },
-
     onHostInteractionRejected(interactionData) {
       console.log('😔 HOST: Interacción rechazada', interactionData);
       this.showHostRejectedModal = true;
     },
-
     // Añadir información del contador en el toast
     onHostInteractionPending(interactionData, attemptCount, maxAttempts) {
       this.$buefy.toast.open({
-        message: this.$store.state.lenguaje === 'español' 
-          ? `Esperando respuesta... (${attemptCount}/${maxAttempts})`
-          : `Waiting for response... (${attemptCount}/${maxAttempts})`,
+        message: this.$store.state.lenguaje === 'español' ? `Esperando respuesta... (${attemptCount}/${maxAttempts})` : `Waiting for response... (${attemptCount}/${maxAttempts})`,
         type: 'is-info',
         duration: 2000
       });
     },
-
     // Callback cuando se agota el tiempo
-    onHostInteractionTimeout(totalAttempts) {
-      console.log(`⏰ Timeout después de ${totalAttempts} intentos`);
-      
-      // Mostrar modal preguntando si quiere extender
-      this.$buefy.dialog.confirm({
-        title: this.$store.state.lenguaje === 'español' ? 'Tiempo Agotado' : 'Time Out',
+    onHostInteractionTimeout() {
+      console.log(`⏰ Timeout agotado después de 30 intentos`);
+      this.$buefy.toast.open({
         message: this.$store.state.lenguaje === 'español' 
-          ? `No hemos recibido respuesta después de ${totalAttempts} intentos (${totalAttempts * 5} segundos). ¿Quieres esperar 10 intentos más?`
-          : `No response received after ${totalAttempts} attempts (${totalAttempts * 5} seconds). Do you want to wait 10 more attempts?`,
-        confirmText: this.$store.state.lenguaje === 'español' ? 'Esperar más' : 'Wait more',
-        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+          ? `No se recibió respuesta. El encuentro se ha cancelado automáticamente.`
+          : `No response received. The encounter has been automatically cancelled.`,
         type: 'is-warning',
-        hasIcon: true,
-        onConfirm: () => {
-          // Extender polling por 10 intentos más
-          if (hostPollingService.extendPolling(10)) {
-            this.$buefy.toast.open({
-              message: this.$store.state.lenguaje === 'español' ? 'Esperando 10 intentos más...' : 'Waiting 10 more attempts...',
-              type: 'is-info',
-              duration: 3000
-            });
-          }
-        },
-        onCancel: () => {
-          // Cancelar completamente
-          hostPollingService.cancelPolling();
-          invitationService.resume(); // Volver al polling general
-          
-          this.$buefy.toast.open({
-            message: this.$store.state.lenguaje === 'español' ? 'Encuentro cancelado' : 'Encounter cancelled',
-            type: 'is-warning',
-            duration: 3000
-          });
-        }
+        duration: 5000
       });
+
+      // -------------------- Aqui hay que hacer una llamada a Back para que cierre la interaccion
+
+      // Volver al polling general de invitaciones después de un breve delay
+      setTimeout(() => {
+        invitationService.resume();
+      }, 2000);
     },
 
     // Cerrar modal de rechazo
-    onHostRejectedClosed() {
+    onHostRejectedCloseModal() {
       this.showHostRejectedModal = false;
       // Volver al polling general de invitaciones
       invitationService.resume();
     },
 
     // Cerrar modal de aceptación
-    onHostAcceptedClosed() {
+    onHostAcceptedCloseModal() {
       this.showHostAcceptedModal = false;
-      this.hostInteractionData = null;
       // Aquí podremos iniciar la fase 3 de la interacción
-      // Por ahora volvemos al polling general
-      invitationService.resume();
+
+      this.hostInteractionData = null; // esta linea habrá que borrarla cuando se implemente la fase 3 ya que necesito estos datos para la fase 3
+      invitationService.resume(); // Por ahora volvemos al polling general
     },
 
     // Manejar respuesta de invitación
     onGlobalResponseSent(response) {
       console.log('Respuesta global enviada:', response);
-      invitationService.resume();
-      
+      invitationService.resume();// esto habra que quitarlo, para dejar paso al modal de la interaccion que haya que hacer, por ejemplo abrir el modal de pelea
+      // no queremnos volver a el polling General
+
+      // se aqui en adelante es provisional
       const message = response.action === 'accepted' 
         ? (this.$store.state.lenguaje === 'español' ? '¡Encuentro aceptado!' : 'Encounter accepted!')
         : (this.$store.state.lenguaje === 'español' ? 'Encuentro rechazado' : 'Encounter rejected');

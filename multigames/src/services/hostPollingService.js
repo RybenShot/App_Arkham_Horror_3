@@ -6,13 +6,10 @@ class HostPollingService {
     // IMPORTANTE: pollingInterval guarda el "ID" del temporizador que crea setInterval()
     // Es como un "ticket" que nos permite cancelar el temporizador después
     this.pollingInterval = null;
-    
     // Indica si el servicio está haciendo polling actualmente
     this.pollingIsRunning = false;
-    
     // Referencia al store de Vuex (se asigna en init())
     this.store = null;
-    
     // Datos de la interacción actual que estamos monitoreando
     this.currentInteraction = null;
     
@@ -26,8 +23,7 @@ class HostPollingService {
 
     // NUEVO: Sistema de conteo
     this.attemptCount = 0;      // Contador de intentos actuales
-    this.maxAttempts = 20;      // Máximo de intentos por defecto
-    this.totalAttempts = 0;     // Total de intentos realizados (incluyendo extensiones)
+    this.maxAttempts = 30;      // Máximo de intentos por defecto
   }
 
   // Inicializar el servicio con el store de Vuex
@@ -55,13 +51,7 @@ class HostPollingService {
     this.pollingIsRunning = true;
     // Guardar los datos de la interacción que vamos a monitorear
     this.currentInteraction = { id: interactionId, userId: userId };
-
-    // Resetear contadores antes de empezar el nuevo polling
     this.attemptCount = 0;
-    this.totalAttempts = 0;
-
-    // Hacer la primera verificación inmediatamente (sin esperar 5 segundos)
-    //!  this.checkInteractionStatus();
 
     // AQUÍ ES DONDE SE CREA EL TEMPORIZADOR:
     // setInterval() ejecuta la función cada 5000ms (5 segundos)
@@ -75,8 +65,6 @@ class HostPollingService {
   async checkInteractionStatus() {
     // Incrementar contador
     this.attemptCount++;
-    this.totalAttempts++;
-    
     console.log(`📊 Intento ${this.attemptCount}/${this.maxAttempts} (Total: ${this.totalAttempts})`);
 
     if (!this.currentInteraction) {
@@ -88,7 +76,6 @@ class HostPollingService {
     try {
       // llamamos a la API para verificar el estado actual de la interaccion
       const result = await apiService.pollInteractionStatus(this.currentInteraction.id, this.currentInteraction.userId );
-
       console.log(`📊 Estado de interacción (intento ${this.attemptCount}):`, result.status);
 
       // Según el estado ...
@@ -96,11 +83,13 @@ class HostPollingService {
         case 'pending':
             // Verificamos si se agotaron los intentos
             if (this.attemptCount >= this.maxAttempts) {
-              console.log('⏰ Se agotaron los intentos, ofreciendo extensión...');
+              console.log('⏰ Se agotaron los intentos, cancelando interaccion ...');
               this.stopPolling();
               if (this.callbacks.onTimeout) {
                 this.callbacks.onTimeout(this.totalAttempts);
               }
+
+              //TODO hayq ue hacer una llamada a back para cerar la interaccion
             } else {
               // Continuar esperando
               if (this.callbacks.onPending) {
@@ -140,31 +129,9 @@ class HostPollingService {
     }
   }
 
-  // Extender el polling con más intentos
-  extendPolling(additionalAttempts = 10) {
-    if (!this.pollingIsRunning) {
-      console.log('⚠️ No se puede extender: polling no está activo');
-      return false;
-    }
-
-    this.maxAttempts += additionalAttempts;
-    this.attemptCount = 0; // reseteamos contador para la extensión
-    
-    console.log(`⏰ Polling extendido por ${additionalAttempts} intentos más (nuevo máximo: ${this.maxAttempts})`);
-    
-    // Reiniciar el polling
-    this.checkInteractionStatus();
-    
-    this.pollingInterval = setInterval(() => {
-      this.checkInteractionStatus();
-    }, 5000);
-
-    return true;
-  }
-
   // Cancelar completamente sin más extensiones
   cancelPolling() {
-    console.log('🚫 Polling cancelado por el usuario');
+    console.log('🚫 Polling Focus cancelado');
     this.stopPolling();
   }
 
@@ -183,12 +150,11 @@ class HostPollingService {
     
     // Marcar como inactivo
     this.pollingIsRunning = false;
-    
     // Limpiar datos de la interacción actual
     this.currentInteraction = null;
-    
+
     // Mantener contadores para historial
-    console.log(`⏹️ Polling HOST detenido (Total intentos realizados: ${this.totalAttempts})`);
+    console.log(`⏹️ Polling HOST detenido después de ${this.attemptCount} intentos`);
   }
 
   // Getter para obtener estadísticas
@@ -197,7 +163,6 @@ class HostPollingService {
       isPolling: this.pollingIsRunning,
       attemptCount: this.attemptCount,
       maxAttempts: this.maxAttempts,
-      totalAttempts: this.totalAttempts,
       timeElapsed: this.totalAttempts * 5 // segundos transcurridos
     };
   }
