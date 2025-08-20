@@ -3,18 +3,15 @@
     <!-- Transición suave entre loader y contenido -->
     <transition name="fade" mode="out-in">
       <!-- Loader con key para animación -->
-      <LoadingPage
-        v-if="$store.state.loadingPageState"
-        key="loader"
-      />
+      <LoadingPage v-if="$store.state.loadingPageState" key="loader" />
 
       <!-- Contenido principal con key único por ruta -->
       <div v-else key="content">
         <div id="VistaMovil">
           <router-view />
         </div>
-
       </div>
+      
     </transition>
   </div>
 </template>

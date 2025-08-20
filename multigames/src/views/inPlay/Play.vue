@@ -195,7 +195,7 @@ export default {
   mounted(){
     // Iniciar polling
     invitationService.init(this.$store);
-    invitationService.start();
+    invitationService.startPollingGeneral();
 
     // Configurar callbacks del HOST polling
     hostPollingService.init(this.$store);
