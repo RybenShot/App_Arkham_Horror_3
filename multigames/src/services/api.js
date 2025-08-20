@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-const API_URL = process.env.VUE_APP_API_URL_DEV;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+//const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -174,8 +174,13 @@ export const apiService = {
   async getMapInPlayByID(idMapInPlay){
     try {
       const response = await axios.get(`${API_URL}/mapInPlay/${idMapInPlay}`);
+      // console.log('🔍 --- getMapInPlayByID --- recibid:', response.data)
       return response.data
     } catch (error) {
+      if (error.response?.status === 404) {
+        return null // Devolver array vacío en lugar de error
+      }
+      
       console.error(`❌ Error al obtener el mapa in play solicitado`, error);
       throw error;
     }
@@ -401,14 +406,19 @@ export const apiService = {
     }
   },
 
+
   // get lista de invOnLine
   async getListInvOnLine(idUser){
     try {
       const response = await axios.get(`${API_URL}/invInPlay/users/${idUser}`)
-      console.log('🔍 --- getListInvOnLine --- recibid:', response.data)
+      // console.log('🔍 --- getListInvOnLine --- recibid:', response.data)
       return response.data
       
     } catch (error) {
+      if (error.response?.status === 404) {
+        return [] // Devolver array vacío en lugar de error
+      }
+
       console.error(`❌ al obtener la lista de investigadores onLine`, error);
       throw error;
     }

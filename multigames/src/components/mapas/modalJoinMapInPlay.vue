@@ -127,8 +127,18 @@
         try {
           const idMap = this.searchId
           const findMap = await apiService.getMapInPlayByID(idMap);
-          this.mapFound = findMap;
-          console.log(this.mapFound)
+
+          if (findMap == null) {
+            this.searchId = "";
+            this.$buefy.toast.open({
+              message: this.$store.state.lenguaje === 'español' ? 'No se ha encontrado nada' : 'No results found',
+              type: 'is-danger',
+              duration: 3000
+            });
+            return;
+          } else {
+            this.mapFound = findMap;
+          }
         } catch (error) {
           console.error("❌ searchMapInPlay(.vue) - Error al encontrar el mapa:", error);
         }

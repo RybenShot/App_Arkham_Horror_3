@@ -24,11 +24,7 @@
               <div class="has-text-centered" v-else>
                 <h2 class="subtitle">{{ textoInterfaz.textLogged }}</h2>
                 <b-field >
-                    <b-input placeholder="ej: 1234-1234-1234"
-                        type="search"
-                        icon="magnify"
-                        v-model="barCode">
-                    </b-input>
+                    <b-input placeholder="ej: 1234-1234-1234" type="search" icon="magnify" v-model="barCode"> </b-input>
                     <p class="control">
                         <b-button type="is-primary" label="Copiar" @click="copyCode()" />
                     </p>
@@ -125,24 +121,32 @@
           // meter en el input la id del mapa para copiarlo y pasarlo a otras personas
           // console.log(postNewMap)
           this.beforeCreateMap = false
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? 'Mapa OnLine creado!' : 'Online map created!',
+            type: 'is-success',
+            duration: 3000
+          });
         } catch (error) {
           console.error("❌ postNewMapInPlay(.vue) - Error al crear el nuevo mapa:", error);
         }
       },
       async copyCode(){
         if (!this.barCode) return alert('Nada que copiar');
-        // estructura para copiar a porta papeles
-        const textarea = document.createElement('textarea');
-        textarea.value = this.barCode;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        const copied = document.execCommand('copy');
-        document.body.removeChild(textarea);
 
-        alert(copied ? 'Código copiado 😊' : 'No se pudo copiar');
+        try {
+          await navigator.clipboard.writeText(this.barCode);
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === "español" ? "Código copiado 😊" : "Code copied 😊",
+            type: 'is-success',
+            duration: 2000,
+          });
+        } catch (error) {
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === "español" ? "Error al copiar 😢" : "Copy failed 😢",
+            type: 'is-danger',
+            duration: 2000,
+          });
+        }
       }
     },
     mounted(){

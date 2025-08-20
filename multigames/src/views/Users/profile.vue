@@ -89,10 +89,6 @@
                   </section>
               </b-tab-item>
           </b-tabs>
-
-        <!-- seccion de mapas OnLine -->
-        
-
         <!-- seccion de investigadores OnLine -->
       </section>        
     </div>
@@ -137,12 +133,12 @@ export default {
           store.commit('setUserHost', idUser);
 
           userMaps.value = await apiService.getMapsInPlayByIDUser(idUser)
-          console.log("✅ ProfileView.vue - Mapas del usuario:", userMaps.value);
+          // console.log("✅ ProfileView.vue - Mapas del usuario:", userMaps.value);
 
           userInv.value = await apiService.getListInvOnLine(idUser);
-          console.log("✅ ProfileView.vue - Investigadores del usuario:", userInv.value[0].investigadoresOnLine);
+          // console.log("✅ ProfileView.vue - Investigadores del usuario:", userInv.value[0].investigadoresOnLine);
         } catch (e) {
-          console.error('Error al cargar los mapas del usuario:', e)
+          console.error('❌ Error al cargar los mapas del usuario:', e)
         } 
       }
     })
@@ -228,9 +224,19 @@ export default {
       navigator.clipboard.writeText(this.user.id)
         .then(() => {
           console.log('ID copiado al portapapeles');
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? 'ID copiado al portapapeles' : 'ID copied to clipboard',
+            type: 'is-success',
+            duration: 5000
+          });
         })
         .catch(err => {
           console.error('Error al copiar el ID: ', err);
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? 'Error al copiar el ID' : 'Error copying ID',
+            type: 'is-danger',
+            duration: 5000
+          });
         });
     },
     getMapsLength() {

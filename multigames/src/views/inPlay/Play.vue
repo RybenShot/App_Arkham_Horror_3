@@ -212,7 +212,7 @@ export default {
 
   beforeUnmount() {
     // Limpiar polling
-    invitationService.stop();
+    invitationService.stopPollingGeneral();
     hostPollingService.stopPolling(); 
   }
 }
