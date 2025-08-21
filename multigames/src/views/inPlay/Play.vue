@@ -154,7 +154,7 @@ export default {
 
       // Volver al polling general de invitaciones después de un breve delay
       setTimeout(() => {
-        invitationService.resume();
+        invitationService.resumePollingGeneral();
       }, 2000);
     },
 
@@ -162,7 +162,7 @@ export default {
     onHostRejectedCloseModal() {
       this.showHostRejectedModal = false;
       // Volver al polling general de invitaciones
-      invitationService.resume();
+      invitationService.resumePollingGeneral();
     },
 
     // Cerrar modal de aceptación
@@ -171,13 +171,13 @@ export default {
       // Aquí podremos iniciar la fase 3 de la interacción
 
       this.hostInteractionData = null; // esta linea habrá que borrarla cuando se implemente la fase 3 ya que necesito estos datos para la fase 3
-      invitationService.resume(); // Por ahora volvemos al polling general
+      invitationService.resumePollingGeneral(); // Por ahora volvemos al polling general
     },
 
     // Manejar respuesta de invitación
     onGlobalResponseSent(response) {
       console.log('Respuesta global enviada:', response);
-      invitationService.resume();// esto habra que quitarlo, para dejar paso al modal de la interaccion que haya que hacer, por ejemplo abrir el modal de pelea
+      invitationService.resumePollingGeneral();// esto habra que quitarlo, para dejar paso al modal de la interaccion que haya que hacer, por ejemplo abrir el modal de pelea
       // no queremnos volver a el polling General
 
       // se aqui en adelante es provisional

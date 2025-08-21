@@ -42,13 +42,13 @@
         <footer class="">
           <div class="field has-addons columns is-mobile is-gapless">
             <p class="control column is-half">
-              <button @click="rejectInvitation" class="button is-danger is-fullwidth">
+              <button @click="respondInvitation('rejected')" class="button is-danger is-fullwidth">
                 <p>{{ textoInterfaz.botones.rechazar }}</p>
               </button>
             </p>
 
             <p class="control column is-half">
-              <button @click="acceptInvitation" class="button is-success is-fullwidth">
+              <button @click="respondInvitation('accepted')" class="button is-success is-fullwidth">
                 <p>{{ textoInterfaz.botones.aceptar }}</p>
               </button>
             </p>
@@ -171,69 +171,63 @@ export default {
       this.$emit('response-sent', { action: 'closed' });
     },
 
-    async rejectInvitation() {
+    async respondInvitation(userResponse){
       try {
         const idInteraction = this.pendingInvitation.idInteraccionOnLine;
         const idUser = this.$store.state.IDUserHost;
-        const response = "rejected";
+        const response = userResponse || null;
         const invData = [this.$store.state.datosPJactual];
 
-        console.log('Rechazando invitación:', { idInteraction, idUser, response });
+        console.log('invitacion respondida con:', { idInteraction, idUser, response });
         const result = await apiService.respondToInteraction(idInteraction, idUser, response, invData);
-        
-        this.$buefy.toast.open({
-          message: this.$store.state.lenguaje === 'español' 
-            ? 'Has rechazado el encuentro. La presencia se desvanece...' 
-            : 'You rejected the encounter. The presence fades away...',
-          type: 'is-warning',
-          duration: 3000
-        });
 
-        this.$emit('response-sent', { action: 'rejected', result });
-        
+        if (userResponse == 'rejected') {
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' 
+              ? 'Has rechazado el encuentro. La presencia se desvanece...' 
+              : 'You rejected the encounter. The presence fades away...',
+            type: 'is-warning',
+            duration: 3000
+          });
+          this.$emit('response-sent', { action: 'rejected', result });
+        } else if  (userResponse == 'accepted') {
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' 
+              ? '¡Has aceptado el encuentro! Preparándote para la experiencia...' 
+              : 'You accepted the encounter! Preparing for the experience...',
+            type: 'is-success',
+            duration: 4000
+          });
+          this.$emit('response-sent', { action: 'accepted', result });
+        } else if  (userResponse == 'timeout') {
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' 
+              ? 'Se cierra el evcuentro por exceder el tiempo de espera.' 
+              : 'Encounter closed due to timeout.',
+            type: 'is-success',
+            duration: 4000
+          });
+          //  this.$emit('response-sent', { action: 'accepted', result });
+        } else {
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' 
+              ? 'Respuesta inesperada.' 
+              : 'Unexpected response.',
+            type: 'is-success',
+            duration: 4000
+          });
+        }
       } catch (error) {
-        console.error('Error rechazando invitación:', error);
+        console.error('Error al mandar respuesta de la invitación:', error);
         this.$buefy.toast.open({
           message: this.$store.state.lenguaje === 'español' 
-            ? 'Error al rechazar el encuentro' 
-            : 'Error rejecting the encounter',
+            ? 'Error al mandar respuesta de la invitación' 
+            : 'Error sending invitation response',
           type: 'is-danger',
           duration: 3000
         });
       }
     },
-
-    async acceptInvitation() {
-      try {
-        const idInteraction = this.pendingInvitation.idInteraccionOnLine;
-        const idUser = this.$store.state.IDUserHost;
-        const response = "accepted";
-        const invData = [this.$store.state.datosPJactual];
-
-        console.log('Aceptando invitación:', { idInteraction, idUser, response });
-        const result = await apiService.respondToInteraction(idInteraction, idUser, response, invData);
-        
-        this.$buefy.toast.open({
-          message: this.$store.state.lenguaje === 'español' 
-            ? '¡Has aceptado el encuentro! Preparándote para la experiencia...' 
-            : 'You accepted the encounter! Preparing for the experience...',
-          type: 'is-success',
-          duration: 4000
-        });
-
-        this.$emit('response-sent', { action: 'accepted', result });
-        
-      } catch (error) {
-        console.error('Error aceptando invitación:', error);
-        this.$buefy.toast.open({
-          message: this.$store.state.lenguaje === 'español' 
-            ? 'Error al aceptar el encuentro' 
-            : 'Error accepting the encounter',
-          type: 'is-danger',
-          duration: 3000
-        });
-      }
-    }
   },
 
   mounted() {
