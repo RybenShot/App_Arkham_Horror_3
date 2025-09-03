@@ -7,15 +7,26 @@
         <div class="column has-text-right ">
           <p class="title is-6 has-text-white mb-3 pt-2">{{ textoInterfaz.musicaAmb }}</p>
           <p class="title is-6 has-text-white">{{ textoInterfaz.efectoInmersion }}</p>
+          <p class="title is-6 has-text-white">{{ textoInterfaz.modoOnLine }}</p>
         </div>
         <div class="column has-text-left">
           <div class="buttons has-addons m-0">
-            <button :class="{'is-outlined': $store.state.PistasAudio.EfectoInmersion == false }" @click="$store.state.PistasAudio.EfectoInmersion = true" class="button is-success is-small is-selected">ON</button>
-            <button :class="{'is-outlined': $store.state.PistasAudio.EfectoInmersion == true }" @click="$store.state.PistasAudio.EfectoInmersion = false" class="button is-danger is-small">OFF</button>
+            <button :class="{'is-outlined': $store.state.PistasAudio.EfectoInmersion == false }" 
+              @click="$store.state.PistasAudio.EfectoInmersion = true" class="button is-success is-small is-selected">ON</button>
+            <button :class="{'is-outlined': $store.state.PistasAudio.EfectoInmersion == true }" 
+              @click="$store.state.PistasAudio.EfectoInmersion = false" class="button is-danger is-small">OFF</button>
+          </div>
+          <div class="buttons has-addons m-0">
+            <button :class="{'is-outlined': $store.state.PistasAudio.MusicaHambiental == false }" 
+              @click="$store.state.PistasAudio.MusicaHambiental = true" class="button is-success is-small is-selected">ON</button>
+            <button :class="{'is-outlined': $store.state.PistasAudio.MusicaHambiental == true }" 
+              @click="$store.state.PistasAudio.MusicaHambiental = false" class="button is-danger is-small">OFF</button>
           </div>
           <div class="buttons has-addons">
-            <button :class="{'is-outlined': $store.state.PistasAudio.MusicaHambiental == false }" @click="$store.state.PistasAudio.MusicaHambiental = true" class="button is-success is-small is-selected">ON</button>
-            <button :class="{'is-outlined': $store.state.PistasAudio.MusicaHambiental == true }" @click="$store.state.PistasAudio.MusicaHambiental = false" class="button is-danger is-small">OFF</button>
+            <button :class="{'is-outlined': $store.state.ModoOnLine == false }" 
+              @click="reactivarModoOnLine()" class="button is-success is-small is-selected">ON</button>
+            <button :class="{'is-outlined': $store.state.ModoOnLine == true }" 
+              @click="cancelarModoOnLine()" class="button is-danger is-small">OFF</button>
           </div>
         </div>
       </div>
@@ -62,6 +73,8 @@ import { useUser, useAuth } from '@clerk/vue'
 import { onMounted } from 'vue'
 import { useStore } from 'vuex' // importamos esto para poder usar el store en el setup
 
+import { invitationService } from '@/services/invitationService.js';
+
 export default {
   name: "AjustesPlay",
   data(){
@@ -70,6 +83,7 @@ export default {
         titulo: "",
         musicaAmb:"",
         efectoInmersion: "",
+        modoOnLine:"",
         mapCode: "",
         botones: {
           seleccionPersonaje: "",
@@ -104,6 +118,7 @@ export default {
         this.textoInterfaz.titulo = "Ajustes";
         this.textoInterfaz.musicaAmb = "Musica Ambiental";
         this.textoInterfaz.efectoInmersion = "Efecto Inmersión";
+        this.textoInterfaz.modoOnLine = "Modo OnLine";
         this.textoInterfaz.mapCode = "Codigo de mapa:";
         this.textoInterfaz.botones.seleccionPersonaje = "Volver a selección de personaje";
         this.textoInterfaz.botones.terminarPartida = "Terminar partida";
@@ -112,6 +127,7 @@ export default {
         this.textoInterfaz.titulo = "Settings";
         this.textoInterfaz.musicaAmb = "Background Music";
         this.textoInterfaz.efectoInmersion = "Immersion Effect";
+        this.textoInterfaz.modoOnLine = "OnLine Mode";
         this.textoInterfaz.mapCode = "Map code:";
         this.textoInterfaz.botones.seleccionPersonaje = "Back to character selection";
         this.textoInterfaz.botones.terminarPartida = "End game";
@@ -136,24 +152,24 @@ export default {
     },
 
     // Método para preparar los datos del investigador con los campos adicionales
-      prepareInvestigatorData() {
-        // Obtener los datos del investigador actual del store
-        const investigatorData = { ...this.$store.state.datosPJactual };
-        
-        // Añadir idUser si no existe
-        if (!investigatorData.idUser) {
-          investigatorData.idUser = this.$store.state.IDUserHost;
-        }
-        
-        // Añadir idMapOnLine si no existe, ahoramismo no usamos este dato, pero lo usaremos para enlazar invOnLine con mapaOnLine
-        if (!investigatorData.idMapOnLine) {
-          investigatorData.idMapOnLine = this.$store.state.datosMapa.id;
-        }
-        // la idOnLine, si no está, se crea en back y si está, se manda para que back la actualice
-        // si el lastUpdate no esta, igual que arriba, se crea en back
-        
-        return investigatorData;
-      },
+    prepareInvestigatorData() {
+      // Obtener los datos del investigador actual del store
+      const investigatorData = { ...this.$store.state.datosPJactual };
+      
+      // Añadir idUser si no existe
+      if (!investigatorData.idUser) {
+        investigatorData.idUser = this.$store.state.IDUserHost;
+      }
+      
+      // Añadir idMapOnLine si no existe, ahoramismo no usamos este dato, pero lo usaremos para enlazar invOnLine con mapaOnLine
+      if (!investigatorData.idMapOnLine) {
+        investigatorData.idMapOnLine = this.$store.state.datosMapa.id;
+      }
+      // la idOnLine, si no está, se crea en back y si está, se manda para que back la actualice
+      // si el lastUpdate no esta, igual que arriba, se crea en back
+      
+      return investigatorData;
+    },
 
     // metodo para guardar el investigador
     safeinvOnLine(){
@@ -210,6 +226,34 @@ export default {
           duration: 3000,
         });
       }
+    },
+
+    // Cancelar Modo OnLine
+    async cancelarModoOnLine(){
+      invitationService.stopPollingGeneral();
+      this.$store.state.ModoOnLine = false
+      let idUser = this.$store.state.IDUserHost;
+      let invData = null;
+      let idZone = 1;
+      let available = false;
+
+      await apiService.postLocationInMap(idZone , idUser, invData, available );
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === "español" ? "Modo OnLine OFF" : "OnLine Mode OFF",
+        type: 'is-danger',
+        duration: 2000,
+      });
+    },
+
+    // Reractivar Modo OnLine
+    async reactivarModoOnLine(){
+      invitationService.init(this.$store);
+      this.$store.state.ModoOnLine = true
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === "español" ? "Modo OnLine ON" : "OnLine Mode ON",
+        type: 'is-success',
+        duration: 2000,
+      });
     }
   },
 

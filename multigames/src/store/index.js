@@ -175,6 +175,7 @@ export default createStore({
     },
     // Ajustes
     ModalConfirmacion: false,
+    ModoOnLine: true,
     Terminarpartida: null, //false = cambio de personaje  true = terminar partida
 
     // MAPAS
