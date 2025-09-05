@@ -482,7 +482,7 @@ export const apiService = {
   async postLocationInMap(idZone, idUser, invData, available){
     try {
       const payload = {idZone, idUser, invData, available}
-      console.log(`Vamos a mandar la lozacalizacion de un investigador con estos valores: ${payload.idZone}, ${payload.idUser}, ${payload.invData}, ${payload.available}`)
+      // console.log(`Vamos a mandar la lozacalizacion de un investigador con estos valores: ${payload.idZone}, ${payload.idUser}, ${payload.invData}, ${payload.available}`)
 
       const response = await axios.post(`${API_URL}/losetasOnLine/newInvZone`, payload)
       return response.data;
@@ -507,7 +507,7 @@ export const apiService = {
   async createInteraction(idUserHost, idUserGuest, invData, type, idLocationMap){
     try {
       const payload = { idUserHost, idUserGuest, invData, type, idLocationMap }
-      console.log(`Vamos a crear la invitacion OnLine con estos valores: ${payload}`)
+      // console.log(`Vamos a crear la invitacion OnLine con estos valores: ${payload}`)
 
       const response = await axios.post(`${API_URL}/interactions`, payload)
       console.log(`🔍 --- createInteraction --- recibid:`, response.data)
@@ -552,7 +552,7 @@ export const apiService = {
   async pollInteractionStatus(idInteraction, idUser){
   try {
     const response = await axios.get(`${API_URL}/interactions/poll/${idInteraction}?idUser=${idUser}`)
-    console.log(`🔍 --- pollInteractionStatus --- recibido:`, response.data)
+    //  console.log(`🔍 --- pollInteractionStatus --- recibido:`, response.data)
     return response.data
 
   } catch (error) {

@@ -3,6 +3,9 @@
     <div class="modal-background" @click="closeModal"></div>
     <div class="mr-6">
       <div class="modal-card">
+        <!-- Switcher tipos eventos -->
+
+        <!-- interaccion si es pelea -->
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
           <p class="modal-card-title has-text-weight-bold has-text-white">{{ textoInterfaz.titulo }}</p>
           <i class="fa-2x fas fa-times-circle has-text-success cruzeta" @click="closeModal"></i>
@@ -19,8 +22,8 @@
           
           <div class="box mt-3">
             <p><strong>Tipo de encuentro:</strong> {{ getInteractionType() }}</p>
-            <p><strong>Estado:</strong> {{ interactionData?.status }}</p>
-            <p><strong>ID Interacción:</strong> {{ interactionData?.idInteraccionOnLine }}</p>
+            <p><strong>Estado:</strong> {{ this.$store.state.interactionData?.status }}</p>
+            <p><strong>ID Interacción:</strong> {{ this.$store.state.interactionData?.idInteraccionOnLine }}</p>
           </div>
           
           <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
@@ -45,10 +48,7 @@
 export default {
   name: "HostAcceptedModal",
   props: {
-    interactionData: {
-      type: Object,
-      default: null
-    }
+
   },
   data() {
     return {
@@ -77,7 +77,7 @@ export default {
     },
 
     getInteractionType() {
-      const type = this.interactionData?.event?.type;
+      const type = this.$store.state.interactionData?.event?.type;
       if (this.$store.state.lenguaje === 'español') {
         const types = { fight: 'Combate', trade: 'Intercambio', resonance: 'Resonancia' };
         return types[type] || type;
@@ -88,7 +88,29 @@ export default {
     },
 
     closeModal() {
-      this.$emit('modal-closed');
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' 
+        ? `Si cierras la interaccion ahora, vas a perder automaticamente el encuentro, estas seguro de seguir?`
+        : `If you close the interaction now, you will automatically lose the encounter, are you sure you want to proceed?`;
+
+      this.$buefy.dialog.confirm({
+        title: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
+        message: textoConfirmacion,
+        confirmText: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
+        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+        type: 'is-info',
+        hasIcon: true,
+        onConfirm: async () => {
+          this.$store.state.showInteractionEventModal= false
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? `tu veras ...` : `as you wish...`,
+            type: 'is-danger',
+            duration: 2000
+          });
+          //TODO hayq ue mandar a back confirmacion de abandono para poner como ganador al otro jugador
+          //TODO Aqui debemos poner el modal del objeto perdido
+        }
+      });
+
     }
   },
 

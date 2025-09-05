@@ -12,7 +12,7 @@
           <h2 class="has-text-centered">{{ textoInterfaz.descripcion }}</h2>
           
           <!-- Solo mostrar investigador HOST si tiene el objeto especial -->
-          <div v-if="canSeeHost && pendingInvitation" class="box mt-4">
+          <div v-if="canSeeHost && interactionData" class="box mt-4">
             <p class="has-text-centered">
               <strong>{{ textoInterfaz.investigadorHost }}</strong>
             </p>
@@ -62,17 +62,18 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import { invitationService } from '@/services/invitationService.js';
 
 export default {
   name: "GuestResponse",
   props: {
-    pendingInvitation: {
+    interactionData: {
       type: Object,
       default: null
     },
     canSeeHost: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {
@@ -116,23 +117,23 @@ export default {
     },
 
     getHostInvestigatorName() {
-      if (!this.pendingInvitation?.event?.invDataHost?.[0]) return "";
-      const invData = this.pendingInvitation.event.invDataHost[0];
+      if (!this.interactionData?.event?.invDataHost?.[0]) return "";
+      const invData = this.interactionData.event.invDataHost[0];
       return this.$store.state.lenguaje === 'español' 
         ? invData.translations?.es?.name || invData.name
         : invData.name;
     },
 
     getHostInvestigatorPosition() {
-      if (!this.pendingInvitation?.event?.invDataHost?.[0]) return "";
-      const invData = this.pendingInvitation.event.invDataHost[0];
+      if (!this.interactionData?.event?.invDataHost?.[0]) return "";
+      const invData = this.interactionData.event.invDataHost[0];
       return this.$store.state.lenguaje === 'español' 
         ? invData.translations?.es?.position || invData.position
         : invData.position;
     },
 
     getIntentionText() {
-      const type = this.pendingInvitation?.event?.type;
+      const type = this.interactionData?.event?.type;
       if (this.$store.state.lenguaje === 'español') {
         const intentions = {
           fight: 'Combate',
@@ -151,7 +152,7 @@ export default {
     },
 
     getIntentionClass() {
-      const type = this.pendingInvitation?.event?.type;
+      const type = this.interactionData?.event?.type;
       const classes = {
         fight: 'is-danger',
         trade: 'is-info',
@@ -161,25 +162,58 @@ export default {
     },
 
     getLocationName() {
-      const locationId = this.pendingInvitation?.idLocationMap;
+      const locationId = this.interactionData?.idLocationMap;
       // Aquí podrías mapear el ID con el nombre real de la ubicación
       // Por ahora devolvemos el ID
       return `Zona ${locationId}`;
     },
 
+    // Funcion para responder a la invitacion
+    async respondInteractionToAPI(idInteraction, idUser, response, invData){
+      const result = await apiService.respondToInteraction(idInteraction, idUser, response, invData);
+      return result;
+    },
+
     closeModal() {
-      this.$emit('response-sent', { action: 'closed' });
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' 
+        ? `Se va a rechazar la invitacion ¿estas seguro?`
+        : `The invitation will be rejected. Are you sure?`;
+
+      this.$buefy.dialog.confirm({
+        title: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
+        message: textoConfirmacion,
+        confirmText: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
+        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+        type: 'is-info',
+        hasIcon: true,
+        onConfirm: async () => {
+          const idInteraction = this.interactionData.idInteraccionOnLine;
+          const idUser = this.$store.state.IDUserHost;
+          const response = "rejected";
+          const invData = null;
+          this.respondInteractionToAPI(idInteraction, idUser, response, invData)
+
+          this.$store.state.showGuestInvitationModal= false
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? `encuentro rechazado` : `encounter rejected`,
+            type: 'is-danger',
+            duration: 2000
+          });
+
+          invitationService.resumePollingGeneral();; // volvemos al polling General
+        }
+      });
     },
 
     async respondInvitation(userResponse){
       try {
-        const idInteraction = this.pendingInvitation.idInteraccionOnLine;
+        const idInteraction = this.interactionData.idInteraccionOnLine;
         const idUser = this.$store.state.IDUserHost;
         const response = userResponse || null;
         const invData = [this.$store.state.datosPJactual];
 
         console.log('invitacion respondida con:', { idInteraction, idUser, response });
-        const result = await apiService.respondToInteraction(idInteraction, idUser, response, invData);
+        const result = this.respondInteractionToAPI(idInteraction, idUser, response, invData);
 
         if (userResponse == 'rejected') {
           this.$buefy.toast.open({

@@ -12,19 +12,16 @@
 
     <!-- Modal para responder invitación (GUEST) -->
     <div v-if="$store.state.showGuestInvitationModal">
-      <modalGuestResponse :pendingInvitation="$store.state.pendingInvitation" :canSeeHost="canSeeHostInvestigator"
+      <modalGuestResponse :interactionData="$store.state.interactionData"
         @response-sent="onGlobalResponseSent" />
     </div>
-    <!-- Modal cuando HOST es rechazado -->
-    <div v-if="showHostRejectedModal">
-      <hostRejectedModal @modal-closed="onHostRejectedCloseModal" />
-    </div>
+
     <!-- Modal cuando HOST es aceptado -->
-    <div v-if="showHostAcceptedModal">
-      <hostAcceptedModal :interactionData="hostInteractionData" @modal-closed="onHostAcceptedCloseModal" />
+    <div v-if="this.$store.state.showInteractionEventModal">
+      <hostAcceptedModal/>
     </div>
 
-    <!-- Navegacion -->
+    <!-- Navegacion Player - Map -->
     <b-tabs position="is-centered" class="block mb-0">
         <b-tab-item label="Player">
           <viewPlayer/>
@@ -81,10 +78,7 @@ export default {
   },
   data(){
     return{
-      canSeeHostInvestigator: false,
-      showHostRejectedModal: false,
-      showHostAcceptedModal: false,
-      hostInteractionData: null, // variable donde se guardará todos los datos de la interaccion al aceptar
+      // hostInteractionData: null, // variable donde se guardará todos los datos de la interaccion al aceptar
 
       textoInterfaz: {
         textNoLogin: '',
@@ -121,16 +115,21 @@ export default {
       }
     },
 
-    // Callbacks para el polling del HOST
+    // ESTA es la buena
     onHostInteractionAccepted(interactionData) {
       console.log('🎉 HOST: Interacción aceptada!', interactionData);
-      this.hostInteractionData = interactionData;
-      this.showHostAcceptedModal = true;
+      this.$store.commit('setInteractionData', interactionData);
+      this.$store.state.showInteractionEventModal = true;
     },
-    onHostInteractionRejected(interactionData) {
-      console.log('😔 HOST: Interacción rechazada', interactionData);
-      this.showHostRejectedModal = true;
+
+    onHostInteractionRejected() {
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === 'español' ? `Interaccion rechazada` : `Interaction rejected`,
+        type: 'is-danger',
+        duration: 2000
+      });
     },
+
     // Añadir información del contador en el toast
     onHostInteractionPending(interactionData, attemptCount, maxAttempts) {
       this.$buefy.toast.open({
@@ -139,6 +138,7 @@ export default {
         duration: 2000
       });
     },
+    
     // Callback cuando se agota el tiempo
     onHostInteractionTimeout() {
       console.log(`⏰ Timeout agotado después de 30 intentos`);
@@ -156,22 +156,6 @@ export default {
       setTimeout(() => {
         invitationService.resumePollingGeneral();
       }, 2000);
-    },
-
-    // Cerrar modal de rechazo
-    onHostRejectedCloseModal() {
-      this.showHostRejectedModal = false;
-      // Volver al polling general de invitaciones
-      invitationService.resumePollingGeneral();
-    },
-
-    // Cerrar modal de aceptación
-    onHostAcceptedCloseModal() {
-      this.showHostAcceptedModal = false;
-      // Aquí podremos iniciar la fase 3 de la interacción
-
-      this.hostInteractionData = null; // esta linea habrá que borrarla cuando se implemente la fase 3 ya que necesito estos datos para la fase 3
-      invitationService.resumePollingGeneral(); // Por ahora volvemos al polling general
     },
 
     // Manejar respuesta de invitación

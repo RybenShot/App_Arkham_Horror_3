@@ -247,7 +247,7 @@ export default {
 
     // Reractivar Modo OnLine
     async reactivarModoOnLine(){
-      invitationService.init(this.$store);
+      invitationService.resumePollingGeneral();;
       this.$store.state.ModoOnLine = true
       this.$buefy.toast.open({
         message: this.$store.state.lenguaje === "español" ? "Modo OnLine ON" : "OnLine Mode ON",

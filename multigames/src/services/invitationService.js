@@ -55,8 +55,9 @@ class InvitationService {
         this.stopPollingGeneral(); // antes usabamos pause()
         
         // Guardar en el store
-        this.store.state.pendingInvitation = result;
+        this.store.commit('setInteractionData', result);
         this.store.state.showGuestInvitationModal = true; 
+        console.log(this.store.state.pendingInvitation)
       }
     } catch (error) {
       console.error('❌ Error verificando invitaciones:', error);
@@ -78,7 +79,7 @@ class InvitationService {
   resumePollingGeneral() {
     if (this.store) {
       // Limpiar store
-      this.store.state.pendingInvitation = null;
+      this.store.commit('clearInteractionData');
       this.store.state.showGuestInvitationModal = false;
     }
     

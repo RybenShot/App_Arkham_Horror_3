@@ -114,11 +114,6 @@ export default createStore({
     modalCrearMapaOnLine: false,
     StoreModalInteractionsOnLine: false,
     IDUserHost: null,
-    // estados referente a interaccionesOnLine
-    pendingInvitation: null,            // Aqui se guardan los datos de la interaccion
-    showGuestInvitationModal: false,
-    // variable para comprovar si el usuario quiere ser emparejado o no
-    isUserAvailable: true,
     nameUserHost: null,
     responseObjectsInPlay:[],
     // variable para mostrar el modal de busqueda de objetos
@@ -127,6 +122,13 @@ export default createStore({
     //PLAY
     viewPlayer: true,
     viewMap : false,
+    // Variable relacionados con MODO ONLINE
+    interactionData: null,            // Aqui se guardan los datos de la interaccion
+
+    showInteractionEventModal: true,
+    showGuestInvitationModal: false,
+    // variable para comprovar si el usuario quiere ser emparejado o no
+    isUserAvailable: true,
 
     //map
     StoreEncountresPage: true,
@@ -471,6 +473,15 @@ export default createStore({
 
     setUserName(state, name) {
       state.nameUserHost = name;
+    },
+
+    // manejar los datos de interacción
+    setInteractionData(state, payload) {
+      state.interactionData = payload;
+    },
+
+    clearInteractionData(state) {
+      state.interactionData = null;
     },
     
   },
