@@ -12,8 +12,7 @@
 
     <!-- Modal para responder invitación (GUEST) -->
     <div v-if="$store.state.showGuestInvitationModal">
-      <modalGuestResponse :interactionData="$store.state.interactionData"
-        @response-sent="onGlobalResponseSent" />
+      <modalGuestResponse :interactionData="$store.state.interactionData"/>
     </div>
 
     <!-- Modal cuando HOST es aceptado -->
@@ -158,23 +157,6 @@ export default {
       }, 2000);
     },
 
-    // Manejar respuesta de invitación
-    onGlobalResponseSent(response) {
-      console.log('Respuesta global enviada:', response);
-      invitationService.resumePollingGeneral();// esto habra que quitarlo, para dejar paso al modal de la interaccion que haya que hacer, por ejemplo abrir el modal de pelea
-      // no queremnos volver a el polling General
-
-      // se aqui en adelante es provisional
-      const message = response.action === 'accepted' 
-        ? (this.$store.state.lenguaje === 'español' ? '¡Encuentro aceptado!' : 'Encounter accepted!')
-        : (this.$store.state.lenguaje === 'español' ? 'Encuentro rechazado' : 'Encounter rejected');
-      
-      this.$buefy.toast.open({
-        message: message,
-        type: response.action === 'accepted' ? 'is-success' : 'is-warning',
-        duration: 3000
-      });
-    },
   },
   mounted(){
     // Iniciar polling

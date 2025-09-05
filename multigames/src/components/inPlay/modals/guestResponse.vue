@@ -232,7 +232,11 @@ export default {
             type: 'is-success',
             duration: 4000
           });
-          this.$emit('response-sent', { action: 'accepted', result });
+          this.$store.commit('setInteractionData', this.interactionData);
+          setTimeout(() => {
+            this.$store.state.showInteractionEventModal = true
+            this.$store.state.showGuestInvitationModal= false
+          }, 2000);
         } else if  (userResponse == 'timeout') {
           this.$buefy.toast.open({
             message: this.$store.state.lenguaje === 'español' 

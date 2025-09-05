@@ -57,7 +57,6 @@ class InvitationService {
         // Guardar en el store
         this.store.commit('setInteractionData', result);
         this.store.state.showGuestInvitationModal = true; 
-        console.log(this.store.state.pendingInvitation)
       }
     } catch (error) {
       console.error('❌ Error verificando invitaciones:', error);
