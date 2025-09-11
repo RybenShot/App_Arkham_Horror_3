@@ -122,13 +122,6 @@ export default createStore({
     //PLAY
     viewPlayer: true,
     viewMap : false,
-    // Variable relacionados con MODO ONLINE
-    interactionData: null,            // Aqui se guardan los datos de la interaccion
-
-    showInteractionEventModal: true,
-    showGuestInvitationModal: false,
-    // variable para comprovar si el usuario quiere ser emparejado o no
-    isUserAvailable: true,
 
     //map
     StoreEncountresPage: true,
@@ -177,8 +170,16 @@ export default createStore({
     },
     // Ajustes
     ModalConfirmacion: false,
-    ModoOnLine: true,
     Terminarpartida: null, //false = cambio de personaje  true = terminar partida
+      // Variable relacionados con MODO ONLINE
+    interactionData: null,            // Aqui se guardan los datos de la interaccion
+
+    showInteractionEventModal: false,
+    showGuestInvitationModal: false,
+
+    showSwithcherEventsOnLine: false,
+    // variable para comprovar si el usuario quiere ser emparejado o no
+    ModoOnLine: true,
 
     // MAPAS
     contadorMapa: 0,

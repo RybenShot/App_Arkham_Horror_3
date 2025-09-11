@@ -129,7 +129,15 @@ export default {
           const idZone = point.id;
           const idUser = this.$store.state.IDUserHost;
           const invData = this.$store.state.datosPJactual;
-          const available = this.$store.state.isUserAvailable;
+          const available = this.$store.state.ModoOnLine;
+
+          if (!idZone || !idUser || !invData) {
+            this.$buefy.toast.open({
+              message: this.$store.state.lenguaje === 'español' ? 'Faltan datos para mover al investigador' : 'Missing data to move investigator',
+              type: 'is-danger'
+            });
+            return;
+          }
           
           try {
             // función para mover al investigador
@@ -141,6 +149,10 @@ export default {
               type: 'is-success',
               duration: 3000
             });
+
+            if (result.message == "OK") {
+              console.error("se ah movido bbien el investigador")
+            }
             
           } catch (error) {
             console.log("Error al mandar la ubicación del investigador", error);

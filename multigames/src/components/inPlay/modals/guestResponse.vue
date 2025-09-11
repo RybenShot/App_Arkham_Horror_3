@@ -210,7 +210,7 @@ export default {
         const idInteraction = this.interactionData.idInteraccionOnLine;
         const idUser = this.$store.state.IDUserHost;
         const response = userResponse || null;
-        const invData = [this.$store.state.datosPJactual];
+        const invData = this.$store.state.datosPJactual;
 
         console.log('invitacion respondida con:', { idInteraction, idUser, response });
         const result = this.respondInteractionToAPI(idInteraction, idUser, response, invData);
@@ -224,6 +224,10 @@ export default {
             duration: 3000
           });
           this.$emit('response-sent', { action: 'rejected', result });
+          setTimeout(() => {
+            this.$store.state.showGuestInvitationModal= false
+          }, 2000);
+
         } else if  (userResponse == 'accepted') {
           this.$buefy.toast.open({
             message: this.$store.state.lenguaje === 'español' 
@@ -237,6 +241,7 @@ export default {
             this.$store.state.showInteractionEventModal = true
             this.$store.state.showGuestInvitationModal= false
           }, 2000);
+
         } else if  (userResponse == 'timeout') {
           this.$buefy.toast.open({
             message: this.$store.state.lenguaje === 'español' 

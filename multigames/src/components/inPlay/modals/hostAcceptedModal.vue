@@ -15,7 +15,7 @@
           
           <!-- Contenedor del dado -->
           <div class="dice-scene" @click="rollDice()">
-            <div class="dice" :class="animationClass">
+            <div class="dice" :class="[animationClass, desvanecerDado]">
               <div class="face face-1">
                 <div class="dot"></div>
               </div>
@@ -42,15 +42,12 @@
                 <div class="dot"></div>
               </div>
               <div class="face face-6">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+                <img src="@/assets/img/ZZOtros/LogoSimple.png" alt="cara en dado del logo">
               </div>
             </div>
           </div>
+
+          <p v-if="this.isRolling == false" class="title has-text-centered">Resultado: {{ this.result }}</p>
 
         </section>
 
@@ -73,20 +70,29 @@ export default {
     return {
       result: 0,
       isRolling: false,
-      animationClass: ''
+      animationClass: '',
+      desvanecerDado: null
     }
   },
   methods: {
     rollDice() {
       if (this.isRolling) return;
-      
       this.isRolling = true;
-      this.result = Math.floor(Math.random() * 6) + 1;
-      this.animationClass = `roll-${this.result}`;
-      
+      this.desvanecerDado = 'desvanecerDado';
+
       setTimeout(() => {
-        this.isRolling = false;
-      }, 3000);
+        // Fase 2: Generar número y aplicar animación de lanzamiento
+        this.result = Math.floor(Math.random() * 6) + 1;
+        this.desvanecerDado = null; // Quitar fade
+        this.animationClass = `roll-${this.result}`;
+        
+        setTimeout(() => {
+          // Fase 3: Resetear todo
+          this.isRolling = false;
+          console.log(`Resultado del dado: ${this.result}`);
+        }, 3000);
+        
+      }, 1000); // Esperar 1 segundo para el fade
     },
     closeModal() {
       this.$store.state.showInteractionEventModal = false;
@@ -123,6 +129,26 @@ export default {
   position: relative;
   transform-style: preserve-3d;
   transform: rotateX(-15deg) rotateY(-15deg);
+}
+
+/* animacion para cuando esté a la espera */
+.dice:not([class*="roll"]):not(.desvanecerDado) {
+  animation: idleFloat 3s ease-in-out infinite;
+}
+
+@keyframes idleFloat {
+  0%, 100% { transform: rotateX(710deg) rotateY(890deg); }
+  50% { transform: rotateX(720deg) rotateY(900deg) translateY(-10px); }
+}
+
+/* Animación simple de fade out */
+.desvanecerDado{
+  animation: simpleFade 1s ease-in !important;
+}
+@keyframes simpleFade {
+  0% { opacity: 1; transform: rotateX(710deg) rotateY(890deg); }
+  50% { opacity: 0,5; transform: rotateX(720deg) rotateY(900deg) translateY(-10px); }
+  100% { opacity: 0; transform: rotateX(710deg) rotateY(890deg) }
 }
 
 .face {
@@ -171,14 +197,8 @@ export default {
 .face-5 .dot:nth-child(4) { bottom: 12px; left: 12px; }
 .face-5 .dot:nth-child(5) { bottom: 12px; right: 12px; }
 
-.face-6 .dot:nth-child(1) { top: 12px; left: 12px; }
-.face-6 .dot:nth-child(2) { top: 12px; right: 12px; }
-.face-6 .dot:nth-child(3) { top: 50%; left: 12px; transform: translateY(-50%); }
-.face-6 .dot:nth-child(4) { top: 50%; right: 12px; transform: translateY(-50%); }
-.face-6 .dot:nth-child(5) { bottom: 12px; left: 12px; }
-.face-6 .dot:nth-child(6) { bottom: 12px; right: 12px; }
 
-/* 6 Animaciones de caída específicas - estilo simple y efectivo */
+/* Animaciones para cada lado */
 
 .roll-1 { animation: diceThrow1 3s ease-out forwards; }
 @keyframes diceThrow1 {
@@ -188,7 +208,7 @@ export default {
   65% { transform: translateY(30px) translateX(-10px) rotateX(1080deg) rotateY(1080deg) rotateZ(540deg); }
   80% { transform: translateY(5px) translateX(5px) rotateX(1260deg) rotateY(1260deg) rotateZ(630deg); }
   90% { transform: translateY(15px) translateX(-2px) rotateX(1350deg) rotateY(1350deg) rotateZ(675deg); }
-  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1440deg) rotateZ(720deg); } /* = 0deg, 0deg - CARA 1 */
+  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1440deg) rotateZ(720deg); }
 }
 
 .roll-2 { animation: diceThrow2 3s ease-out forwards; }
@@ -199,18 +219,18 @@ export default {
   65% { transform: translateY(30px) translateX(-10px) rotateX(990deg) rotateY(1170deg) rotateZ(540deg); }
   80% { transform: translateY(5px) translateX(5px) rotateX(1170deg) rotateY(1350deg) rotateZ(630deg); }
   90% { transform: translateY(15px) translateX(-2px) rotateX(1260deg) rotateY(1440deg) rotateZ(675deg); }
-  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1530deg) rotateZ(720deg); } /* = 0deg, 90deg - CARA 2 */
+  100% { transform: translateY(0px) translateX(0px) rotateX(810deg) rotateY(990deg) rotateZ(450deg); }
 }
 
 .roll-3 { animation: diceThrow3 3s ease-out forwards; }
 @keyframes diceThrow3 {
   0% { transform: translateY(-300px) translateX(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  35% { transform: translateY(50px) translateX(20px) rotateX(540deg) rotateY(720deg) rotateZ(360deg); }
-  50% { transform: translateY(10px) translateX(10px) rotateX(720deg) rotateY(900deg) rotateZ(450deg); }
-  65% { transform: translateY(30px) translateX(-10px) rotateX(900deg) rotateY(1080deg) rotateZ(540deg); }
-  80% { transform: translateY(5px) translateX(5px) rotateX(1080deg) rotateY(1260deg) rotateZ(630deg); }
-  90% { transform: translateY(15px) translateX(-2px) rotateX(1170deg) rotateY(1350deg) rotateZ(675deg); }
-  100% { transform: translateY(0px) translateX(0px) rotateX(1530deg) rotateY(1440deg) rotateZ(720deg); } /* = 90deg, 0deg - CARA 3 */
+  35% { transform: translateY(50px) translateX(20px) rotateX(720deg) rotateY(720deg) rotateZ(360deg); }
+  50% { transform: translateY(10px) translateX(10px) rotateX(900deg) rotateY(720deg) rotateZ(450deg); }
+  65% { transform: translateY(30px) translateX(-10px) rotateX(1080deg) rotateY(900deg) rotateZ(540deg); }
+  80% { transform: translateY(5px) translateX(5px) rotateX(1260deg) rotateY(1080deg) rotateZ(630deg); }
+  90% { transform: translateY(15px) translateX(-2px) rotateX(1350deg) rotateY(1170deg) rotateZ(675deg); }
+  100% { transform: translateY(0px) translateX(0px) rotateX(1170deg) rotateY(990deg) rotateZ(540deg); }
 }
 
 .roll-4 { animation: diceThrow4 3s ease-out forwards; }
@@ -221,7 +241,7 @@ export default {
   65% { transform: translateY(30px) translateX(-10px) rotateX(1170deg) rotateY(990deg) rotateZ(540deg); }
   80% { transform: translateY(5px) translateX(5px) rotateX(1350deg) rotateY(1170deg) rotateZ(630deg); }
   90% { transform: translateY(15px) translateX(-2px) rotateX(1440deg) rotateY(1260deg) rotateZ(675deg); }
-  100% { transform: translateY(0px) translateX(0px) rotateX(1170deg) rotateY(1440deg) rotateZ(720deg); } /* = -90deg, 0deg - CARA 4 */
+  100% { transform: translateY(0px) translateX(0px) rotateX(1170deg) rotateY(1440deg) rotateZ(720deg); }
 }
 
 .roll-5 { animation: diceThrow5 3s ease-out forwards; }
@@ -232,7 +252,7 @@ export default {
   65% { transform: translateY(30px) translateX(-10px) rotateX(1080deg) rotateY(900deg) rotateZ(540deg); }
   80% { transform: translateY(5px) translateX(5px) rotateX(1260deg) rotateY(1080deg) rotateZ(630deg); }
   90% { transform: translateY(15px) translateX(-2px) rotateX(1350deg) rotateY(1170deg) rotateZ(675deg); }
-  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1170deg) rotateZ(720deg); } /* = 0deg, -90deg - CARA 5 */
+  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1170deg) rotateZ(720deg); }
 }
 
 .roll-6 { animation: diceThrow6 3s ease-out forwards; }
@@ -243,7 +263,7 @@ export default {
   65% { transform: translateY(30px) translateX(-10px) rotateX(1260deg) rotateY(1260deg) rotateZ(540deg); }
   80% { transform: translateY(5px) translateX(5px) rotateX(1440deg) rotateY(1440deg) rotateZ(630deg); }
   90% { transform: translateY(15px) translateX(-2px) rotateX(1530deg) rotateY(1530deg) rotateZ(675deg); }
-  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1620deg) rotateZ(720deg); } /* = 0deg, 180deg - CARA 6 */
+  100% { transform: translateY(0px) translateX(0px) rotateX(1440deg) rotateY(1620deg) rotateZ(720deg); }
 }
 
 .roll-button {

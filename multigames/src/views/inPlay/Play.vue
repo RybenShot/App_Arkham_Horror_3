@@ -15,9 +15,9 @@
       <modalGuestResponse :interactionData="$store.state.interactionData"/>
     </div>
 
-    <!-- Modal cuando HOST es aceptado -->
-    <div v-if="this.$store.state.showInteractionEventModal">
-      <hostAcceptedModal/>
+    <!-- Modal cuando evento es aceptado -->
+    <div v-if="this.$store.state.showSwithcherEventsOnLine">
+      <switcherEventsOnLine/>
     </div>
 
     <!-- Navegacion Player - Map -->
@@ -50,6 +50,7 @@ import ModalVerDetallePertenencia  from "@/components/personajes/ModalsDetallePe
 import ModalConfirmacion from "@/components/inPlay/ModalConfirmacion.vue";
 import ModalsEstadosPlay from "@/components/inPlay/ModalsEstadosPlay.vue";
 
+import switcherEventsOnLine from "@/components/inPlay/modals/switcherEventsOnLine.vue";
 import modalGuestResponse from "@/components/inPlay/modals/guestResponse.vue";
 import hostRejectedModal from "@/components/inPlay/modals/hostRejectedModal.vue";
 import hostAcceptedModal from "@/components/inPlay/modals/hostAcceptedModal.vue";
@@ -71,6 +72,7 @@ export default {
     ModalConfirmacion,
     ModalsEstadosPlay,
 
+    switcherEventsOnLine,
     modalGuestResponse,
     hostRejectedModal,
     hostAcceptedModal 
@@ -116,9 +118,14 @@ export default {
 
     // ESTA es la buena
     onHostInteractionAccepted(interactionData) {
-      console.log('🎉 HOST: Interacción aceptada!', interactionData);
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === 'español' ? `Interaccion aceptada!` : `Interaction accepted!`,
+        type: 'is-success',
+        duration: 2000
+      });
+      //console.log('🎉 HOST: Interacción aceptada!', interactionData);
       this.$store.commit('setInteractionData', interactionData);
-      this.$store.state.showInteractionEventModal = true;
+      this.$store.state.showSwithcherEventsOnLine = true;
     },
 
     onHostInteractionRejected() {
@@ -149,9 +156,9 @@ export default {
         duration: 5000
       });
 
-      // -------------------- Aqui hay que hacer una llamada a Back para que cierre la interaccion
+      // ----------TODO---------- Aqui hay que hacer una llamada a Back para que cierre la interaccion
 
-      // Volver al polling general de invitaciones después de un breve delay
+      // Volver al polling general de invitaciones
       setTimeout(() => {
         invitationService.resumePollingGeneral();
       }, 2000);
