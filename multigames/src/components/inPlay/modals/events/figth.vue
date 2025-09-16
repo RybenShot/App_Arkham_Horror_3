@@ -95,7 +95,36 @@ export default {
       }, 1000); // Esperar 1 segundo para el fade
     },
     closeModal() {
-      this.$store.state.showInteractionEventModal = false;
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' ? `Estas seguro de cancelar evento?` : `___`;
+
+      this.$buefy.dialog.confirm({
+        title: this.$store.state.lenguaje === 'español' ? 'Evento' : '___',
+        message: textoConfirmacion,
+        confirmText: this.$store.state.lenguaje === 'español' ? 'Confirmar' : 'Confirm',
+        cancelText: this.$store.state.lenguaje === 'español' ? 'Cancelar' : 'Cancel',
+        type: 'is-info',
+        hasIcon: true,
+        onConfirm: async () => {
+          this.$store.state.showSwithcherEventsOnLine = false
+
+          // llamada a backend para cancelar el evento
+          const idInteraction = this.interactionData.idInteraccionOnLine;
+          const idUser = this.$store.state.IDUserHost;
+          const response = "abandoned";
+          const invData = null;
+          this.respondInteractionToAPI(idInteraction, idUser, response, invData)
+
+          this.$store.state.showGuestInvitationModal= false
+          this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? `encuentro rechazado` : `encounter rejected`,
+            type: 'is-danger',
+            duration: 2000
+          });
+
+          invitationService.resumePollingGeneral();; // volvemos al polling General
+        }
+      });
+
     }
   }
 }

@@ -1,0 +1,1 @@
+esto es el template de la fractura temporal
