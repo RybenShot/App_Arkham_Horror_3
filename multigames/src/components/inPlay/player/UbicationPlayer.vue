@@ -151,7 +151,7 @@ export default {
             });
 
             if (result.message == "OK") {
-              console.error("se ah movido bbien el investigador")
+              // console.log("desde back nos dan un OK")
             }
             
           } catch (error) {

@@ -237,6 +237,7 @@ export default {
       let idZone = 1;
       let available = false;
 
+      // decimos a back que no estamos disponibles y paramos el polling General
       await apiService.postLocationInMap(idZone , idUser, invData, available );
       this.$buefy.toast.open({
         message: this.$store.state.lenguaje === "español" ? "Modo OnLine OFF" : "OnLine Mode OFF",

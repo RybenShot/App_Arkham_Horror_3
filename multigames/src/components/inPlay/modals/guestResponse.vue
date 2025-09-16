@@ -117,16 +117,16 @@ export default {
     },
 
     getHostInvestigatorName() {
-      if (!this.interactionData?.event?.invDataHost?.[0]) return "";
-      const invData = this.interactionData.event.invDataHost[0];
+      if (!this.interactionData?.event?.invDataHost) return "";
+      const invData = this.interactionData.event.invDataHost;
       return this.$store.state.lenguaje === 'español' 
         ? invData.translations?.es?.name || invData.name
         : invData.name;
     },
 
     getHostInvestigatorPosition() {
-      if (!this.interactionData?.event?.invDataHost?.[0]) return "";
-      const invData = this.interactionData.event.invDataHost[0];
+      if (!this.interactionData?.event?.invDataHost) return "";
+      const invData = this.interactionData.event.invDataHost;
       return this.$store.state.lenguaje === 'español' 
         ? invData.translations?.es?.position || invData.position
         : invData.position;

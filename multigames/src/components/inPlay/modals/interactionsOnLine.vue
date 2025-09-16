@@ -76,6 +76,7 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import { invitationService } from '@/services/invitationService.js';
 
 export default {
   name: "InteractionsOnLine",
@@ -149,7 +150,7 @@ export default {
       try {
         const idUserHost = this.$store.state.IDUserHost;
         const idUserGuest = this.foundUser.idUser;
-        const invData = [this.$store.state.datosPJactual];
+        const invData = this.$store.state.datosPJactual;
         const type = this.selectedIntention; // Usar la intención seleccionada
         const idLocationMap = this.currentZone;
 
@@ -184,6 +185,17 @@ export default {
 
         // Disparar evento con el resultado
         this.$emit('interaction-created', result);
+
+        // cancelamos las peticiones de invitaciones
+        invitationService.stopPollingGeneral();
+        // TODO este toast se debera borrar para prod
+        this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' 
+              ? 'Se deja de buscar encuentros ...' 
+              : 'Stopping encounter search ...',
+            type: 'is-warning',
+            duration: 3000
+          });
         
       } catch (error) {
         console.error('Error creando interacción:', error);

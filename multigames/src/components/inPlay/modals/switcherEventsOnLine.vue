@@ -28,8 +28,8 @@ export default {
 
   methods:{},
   mounted(){
-    console.error("se ha aceptado al invitacion")
-    console.error(this.$store.state.interactionData)
+    // console.error("se ha aceptado la invitacion")
+    // console.error(this.$store.state.interactionData)
   }
 }
 </script>
