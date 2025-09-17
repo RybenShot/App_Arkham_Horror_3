@@ -32,6 +32,7 @@
 <script>
 import { apiService } from '@/services/api.js';
 import { hostPollingService } from '@/services/hostPollingService.js';
+import { invitationService } from '@/services/invitationService.js';
 import modalInteractionsOnLine from "@/components/inPlay/modals/interactionsOnLine.vue";
 
 export default {
@@ -74,6 +75,8 @@ export default {
           console.log('Resultado búsqueda:', result);
           
           if (result.user) {
+            // detenemos el polling general
+            invitationService.stopPollingGeneral()
             // Si encuentra un usuario, preparar datos y mostrar modal
             this.foundUserData = result.user;
             this.currentZoneData = idZone;

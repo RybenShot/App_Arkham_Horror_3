@@ -237,8 +237,9 @@ export default {
             duration: 4000
           });
           this.$store.commit('setInteractionData', this.interactionData);
+          console.log(this.interactionData)
           setTimeout(() => {
-            this.$store.state.showInteractionEventModal = true
+            this.$store.state.showSwithcherEventsOnLine = true
             this.$store.state.showGuestInvitationModal= false
           }, 2000);
 

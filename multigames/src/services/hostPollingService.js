@@ -65,7 +65,7 @@ class HostPollingService {
   async checkInteractionStatus() {
     // Incrementar contador
     this.attemptCount++;
-    console.log(`📊 Intento ${this.attemptCount}/${this.maxAttempts} (Total: ${this.totalAttempts})`);
+    // console.log(`📊 Intento ${this.attemptCount}/${this.maxAttempts} (Total: ${this.totalAttempts})`);
 
     if (!this.currentInteraction) {
       console.warn('⚠️ No hay interacción actual, detengo el polling Focus');

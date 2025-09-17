@@ -1,60 +1,65 @@
 <template>
-  <div class="modal is-active">
+  <div class="modal is-active ">
     <div class="modal-background" @click="closeModal"></div>
-    <div class="mr-6">
-      <div class="modal-card">
+    <div>
+      <div class="modal-card m-1">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
           <p class="modal-card-title has-text-weight-bold has-text-white">Pelea</p>
-          <i class="fa-2x fas fa-times-circle has-text-success cruzeta" @click="closeModal"></i>
+          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
         </header>
 
         <section class="modal-card-body hero is-large py-2">
-          <p class="subtitle has-text-gray has-text-centered is-6">
-            {{ isRolling ? '' : (result ? `` : 'Tap en el dado para lanzar') }}
-          </p>
-          
-          <!-- Contenedor del dado -->
-          <div class="dice-scene" @click="rollDice()">
-            <div class="dice" :class="[animationClass, desvanecerDado]">
-              <div class="face face-1">
-                <div class="dot"></div>
-              </div>
-              <div class="face face-2">
-                <div class="dot"></div>
-                <div class="dot"></div>
-              </div>
-              <div class="face face-3">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-              </div>
-              <div class="face face-4">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-              </div>
-              <div class="face face-5">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-              </div>
-              <div class="face face-6">
-                <img src="@/assets/img/ZZOtros/LogoSimple.png" alt="cara en dado del logo">
+
+          <section v-if="scene == 'firstRoll'">
+            <p class="subtitle has-text-gray has-text-centered is-6">
+              {{ isRolling ? '' : (result ? `` : 'Tap en el dado para lanzar') }}
+            </p>
+            <!-- Contenedor del dado -->
+            <div class="dice-scene" @click="rollDice()">
+              <div class="dice" :class="[animationClass, desvanecerDado]">
+                <div class="face face-1">
+                  <div class="dot"></div>
+                </div>
+                <div class="face face-2">
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="face face-3">
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="face face-4">
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="face face-5">
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="face face-6">
+                  <img src="@/assets/img/ZZOtros/LogoSimple.png" alt="cara en dado del logo">
+                </div>
               </div>
             </div>
-          </div>
-
-          <p v-if="this.isRolling == false" class="title has-text-centered">Resultado: {{ this.result }}</p>
+            <p v-if="isRolling == false  && result != 0" class="title has-text-centered">Resultado: {{ this.result }}</p>
+          </section>
+          
+          <section v-if="scene == 'rules'">
+            <rules_figth/>
+          </section>
 
         </section>
 
         <footer class="">
-          <div class="field">
+          <div v-if="this.isRolling == false" class="field">
             <p class="control">
-              <button @click="closeModal" class="button is-success is-fullwidth"> Cerrar </button>
+              <button @click="" class="button is-info is-fullwidth"> Siguiente </button>
             </p>
           </div>
         </footer>
@@ -64,19 +69,50 @@
 </template>
 
 <script>
+import { apiService } from '@/services/api.js';
+import { invitationService } from '@/services/invitationService.js';
+
+import rules_figth from "@/components/inPlay/modals/events/rules/rulesFigth.vue";
+
 export default {
   name: "HostAcceptedModal",
+  components:{
+    rules_figth
+  },
   data() {
     return {
       result: 0,
       isRolling: false,
       animationClass: '',
-      desvanecerDado: null
+      desvanecerDado: null,
+      scene: "firstRoll"
     }
   },
   methods: {
+    // funcion para envir a backend el resultado del dado
+    async enviarResultadoInicio(resultado){
+      const idInteraction = this.$store.state.interactionData.idInteraccionOnLine;
+      const idUser = this.$store.state.IDUserHost;
+      const diceResult = resultado; // resultado del dado
+      try {
+        const response = await apiService.rollInitialDice(idInteraction, idUser, diceResult);
+        console.log('Resultado enviado al backend:', response);
+        // Aquí puedes manejar la respuesta del backend si es necesario
+      } catch (error) {
+        console.error('Error al enviar el resultado al backend:', error);
+      }
+    },
+
     rollDice() {
       if (this.isRolling) return;
+      if (this.result) {
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? `No puedes volver a tirar` : `You can't roll again`,
+          type: 'is-danger',
+          duration: 2000
+        });
+        return
+      }
       this.isRolling = true;
       this.desvanecerDado = 'desvanecerDado';
 
@@ -90,12 +126,21 @@ export default {
           // Fase 3: Resetear todo
           this.isRolling = false;
           console.log(`Resultado del dado: ${this.result}`);
+          this.enviarResultadoInicio(this.result); // Llamada a función para enviar resultado
+
+          setTimeout(() => {
+            this.scene = "rules" // cambiar escena a enseñar las reglas
+          }, 3000);
+
         }, 3000);
+
+        
         
       }, 1000); // Esperar 1 segundo para el fade
     },
     closeModal() {
-      const textoConfirmacion = this.$store.state.lenguaje === 'español' ? `Estas seguro de cancelar evento?` : `___`;
+      const textoConfirmacion = this.$store.state.lenguaje === 'español' ? `Estas seguro? Se tomara como una derrota y perderás algo de tu equipo.` : `___`;
+      // console.warn(this.$store.state.interactionData)
 
       this.$buefy.dialog.confirm({
         title: this.$store.state.lenguaje === 'español' ? 'Evento' : '___',
@@ -108,19 +153,14 @@ export default {
           this.$store.state.showSwithcherEventsOnLine = false
 
           // llamada a backend para cancelar el evento
-          const idInteraction = this.interactionData.idInteraccionOnLine;
+          const idInteraction = this.$store.state.interactionData.idInteraccionOnLine;
           const idUser = this.$store.state.IDUserHost;
           const response = "abandoned";
           const invData = null;
-          this.respondInteractionToAPI(idInteraction, idUser, response, invData)
+          // this.respondInteractionToAPI(idInteraction, idUser, response, invData) // TODO -- falta implementar
+          console.warn("TODO queda implementar la llamada a back para abandonar el evento")
 
           this.$store.state.showGuestInvitationModal= false
-          this.$buefy.toast.open({
-            message: this.$store.state.lenguaje === 'español' ? `encuentro rechazado` : `encounter rejected`,
-            type: 'is-danger',
-            duration: 2000
-          });
-
           invitationService.resumePollingGeneral();; // volvemos al polling General
         }
       });
@@ -135,6 +175,11 @@ export default {
   background-image: url(@/assets/img/Estados/Bendicion.jpg);
   background-position: center;
   background-size: cover;
+}
+
+.cajaModal{
+    width: 30lvh;
+    height: 70lvh;
 }
 
 .cruzeta {

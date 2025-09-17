@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-const API_URL = process.env.VUE_APP_API_URL_DEV;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+//const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -523,10 +523,10 @@ export const apiService = {
   async respondToInteraction(idInteraction, idUser, response, invData){
     try {
       const payload = { idUser, response, invData }
-      console.log(`Respondiendo a invitación ${idInteraction}:`, payload)
+      // console.log(`Respondiendo a invitación ${idInteraction}:`, payload)
 
       const responseApi = await axios.put(`${API_URL}/interactions/respond/${idInteraction}`, payload)
-      console.log(`🔍 --- respondToInteraction --- recibido:`, responseApi.data)
+      // console.log(`🔍 --- respondToInteraction --- recibido:`, responseApi.data)
       return responseApi.data
 
     } catch (error) {
@@ -550,14 +550,29 @@ export const apiService = {
 
   // Polling para estado de interacción (HOST y GUEST)
   async pollInteractionStatus(idInteraction, idUser){
-  try {
-    const response = await axios.get(`${API_URL}/interactions/poll/${idInteraction}?idUser=${idUser}`)
-    //  console.log(`🔍 --- pollInteractionStatus --- recibido:`, response.data)
-    return response.data
+    try {
+      const response = await axios.get(`${API_URL}/interactions/poll/${idInteraction}?idUser=${idUser}`)
+      //  console.log(`🔍 --- pollInteractionStatus --- recibido:`, response.data)
+      return response.data
 
-  } catch (error) {
-    console.error(`❌ Error al verificar estado de interacción`, error);
-    throw error;
+    } catch (error) {
+      console.error(`❌ Error al verificar estado de interacción`, error);
+      throw error;
+    }
+  },
+
+  // Tirada inicial de dado
+  async rollInitialDice(idInteraction, idUser, diceResult){
+    const payload =  { idUser, diceResult }
+    try {
+      //console.log(`Enviando tirada inicial de ${idUser} con el resultado: ${diceResult}`)
+      const responseApi = await axios.put(`${API_URL}/interactions/initialRoll/${idInteraction}`, payload)
+
+      //console.log(`🔍 --- rollInitialDice --- recibido:`, responseApi.data)
+      return responseApi.data
+    } catch (error) {
+      console.error(`❌ Error al enviar la tirada inicial:`, error);
+      throw error;
+    }
   }
-}
 };
