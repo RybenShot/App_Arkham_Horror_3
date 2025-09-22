@@ -1,0 +1,374 @@
+<template>
+  <div class="dice-roller" :class="`size-${size}`">
+    <div class="dice-scene" @click="rollDice">
+      <div class="dice" :class="animationClass">
+        <!-- Cara 1 - Un punto central -->
+        <div class="face front face-1">
+          <div class="dot center"></div>
+        </div>
+        
+        <!-- Cara 6 - Seis puntos -->
+        <div class="face back face-6">
+          <img src="@/assets/img/ZZOtros/LogoSimple.png" alt="cara en dado del logo">
+        </div>
+        
+        <!-- Cara 2 - Dos puntos diagonales -->
+        <div class="face right face-2">
+          <div class="dot top-left"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+        
+        <!-- Cara 5 - Cinco puntos -->
+        <div class="face left face-5">
+          <div class="dot top-left"></div>
+          <div class="dot top-right"></div>
+          <div class="dot center"></div>
+          <div class="dot bottom-left"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+        
+        <!-- Cara 3 - Tres puntos diagonales -->
+        <div class="face top face-3">
+          <div class="dot top-left"></div>
+          <div class="dot center"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+        
+        <!-- Cara 4 - Cuatro puntos en las esquinas -->
+        <div class="face bottom face-4">
+          <div class="dot top-left"></div>
+          <div class="dot top-right"></div>
+          <div class="dot bottom-left"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "DiceRoller",
+  props: {
+    size: {
+      type: String,
+      default: 'small',
+      validator: (value) => ['small', 'medium', 'big'].includes(value)
+    }
+  },
+  data() {
+    return {
+      result: 0,
+      isRolling: false,
+      animationClass: ''
+    }
+  },
+  methods: {
+    rollDice() {
+      if (this.isRolling) return;
+      
+      this.isRolling = true;
+      this.result = Math.floor(Math.random() * 6) + 1;
+      this.animationClass = `roll-to-${this.result}`;
+      
+      setTimeout(() => {
+        this.isRolling = false;
+        this.$emit('result', this.result);
+      }, 2500);
+    }
+  }
+}
+</script>
+
+<style scoped>
+/* Tamaño Small */
+.size-small .dice-scene {
+  width: 50px;
+  height: 150px;
+  perspective: 450px;
+}
+
+.size-small .dice {
+  width: 60px;
+  height: 60px;
+}
+
+.size-small .face {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.size-small .dot {
+  width: 9px;
+  height: 9px;
+}
+
+.size-small .dot.top-left,
+.size-small .dot.bottom-left,
+.size-small .dot.middle-left {
+  left: 11px;
+}
+
+.size-small .dot.top-right,
+.size-small .dot.bottom-right,
+.size-small .dot.middle-right {
+  right: 11px;
+}
+
+.size-small .dot.top-left,
+.size-small .dot.top-right {
+  top: 11px;
+}
+
+.size-small .dot.bottom-left,
+.size-small .dot.bottom-right {
+  bottom: 11px;
+}
+
+.size-small .front,
+.size-small .back { transform: translateZ(30px); }
+.size-small .right,
+.size-small .left { transform: rotateY(90deg) translateZ(30px); }
+.size-small .left { transform: rotateY(-90deg) translateZ(30px); }
+.size-small .top { transform: rotateX(90deg) translateZ(30px); }
+.size-small .bottom { transform: rotateX(-90deg) translateZ(30px); }
+.size-small .back { transform: rotateY(180deg) translateZ(30px); }
+
+/* Tamaño Medium (por defecto) */
+.size-medium .dice-scene,
+.dice-scene {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  perspective: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.size-medium .dice,
+.dice {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-15deg) rotateY(-15deg);
+  transition: transform 0.3s ease;
+}
+
+.size-medium .face,
+.face {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(145deg, #fff, #f0f0f0);
+  border: 2px solid #333;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 
+    inset 0 0 15px rgba(255,255,255,0.8),
+    0 4px 8px rgba(0,0,0,0.2);
+}
+
+.size-medium .dot,
+.dot {
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Tamaño Big */
+.size-big .dice-scene {
+  width: 250px;
+  height: 250px;
+  perspective: 750px;
+}
+
+.size-big .dice {
+  width: 100px;
+  height: 100px;
+}
+
+.size-big .face {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.size-big .dot {
+  width: 15px;
+  height: 15px;
+}
+
+.size-big .dot.top-left,
+.size-big .dot.bottom-left,
+.size-big .dot.middle-left {
+  left: 19px;
+}
+
+.size-big .dot.top-right,
+.size-big .dot.bottom-right,
+.size-big .dot.middle-right {
+  right: 19px;
+}
+
+.size-big .dot.top-left,
+.size-big .dot.top-right {
+  top: 19px;
+}
+
+.size-big .dot.bottom-left,
+.size-big .dot.bottom-right {
+  bottom: 19px;
+}
+
+.size-big .front,
+.size-big .back { transform: translateZ(50px); }
+.size-big .right,
+.size-big .left { transform: rotateY(90deg) translateZ(50px); }
+.size-big .left { transform: rotateY(-90deg) translateZ(50px); }
+.size-big .top { transform: rotateX(90deg) translateZ(50px); }
+.size-big .bottom { transform: rotateX(-90deg) translateZ(50px); }
+.size-big .back { transform: rotateY(180deg) translateZ(50px); }
+
+.dice:not([class*="roll"]) {
+  animation: idleFloat 3s ease-in-out infinite;
+}
+
+@keyframes idleFloat {
+  0%, 100% { transform: rotateX(710deg) rotateY(890deg); }
+  50% { transform: rotateX(720deg) rotateY(900deg) translateY(-10px); }
+}
+
+.dice:hover:not([class*="roll"]) {
+  transform: rotateX(-10deg) rotateY(-10deg) scale(1.05);
+}
+
+/* Posiciones de los puntos */
+.dot.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dot.top-left {
+  top: 15px;
+  left: 15px;
+}
+
+.dot.top-right {
+  top: 15px;
+  right: 15px;
+}
+
+.dot.bottom-left {
+  bottom: 15px;
+  left: 15px;
+}
+
+.dot.bottom-right {
+  bottom: 15px;
+  right: 15px;
+}
+
+.dot.middle-left {
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+}
+
+.dot.middle-right {
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+}
+
+/* Posicionamiento de las caras del cubo */
+.front { transform: translateZ(40px); }
+.back { transform: rotateY(180deg) translateZ(40px); }
+.right { transform: rotateY(90deg) translateZ(40px); }
+.left { transform: rotateY(-90deg) translateZ(40px); }
+.top { transform: rotateX(90deg) translateZ(40px); }
+.bottom { transform: rotateX(-90deg) translateZ(40px); }
+
+/* Animaciones específicas para cada resultado */
+
+/* Animación para mostrar 1 (cara frontal) */
+.roll-to-1 {
+  animation: rollAnimation1 2.5s ease-out forwards;
+}
+@keyframes rollAnimation1 {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(180deg) rotateY(180deg) scale(1.1); }
+  50% { transform: rotateX(360deg) rotateY(360deg) scale(1); }
+  75% { transform: rotateX(540deg) rotateY(540deg) scale(1.05); }
+  100% { transform: rotateX(720deg) rotateY(720deg) scale(1); } /* = 0deg, 0deg - Cara 1 */
+}
+
+/* Animación para mostrar 2 (cara derecha) */
+.roll-to-2 {
+  animation: rollAnimation2 2.5s ease-out forwards;
+}
+@keyframes rollAnimation2 {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(135deg) rotateY(225deg) scale(1.1); }
+  50% { transform: rotateX(270deg) rotateY(450deg) scale(1); }
+  75% { transform: rotateX(405deg) rotateY(675deg) scale(1.05); }
+  100% { transform: rotateX(720deg) rotateY(810deg) scale(1); } /* = 0deg, 90deg - Cara 2 */
+}
+
+/* Animación para mostrar 3 (cara superior) */
+.roll-to-3 {
+  animation: rollAnimation3 2.5s ease-out forwards;
+}
+@keyframes rollAnimation3 {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(225deg) rotateY(135deg) scale(1.1); }
+  50% { transform: rotateX(450deg) rotateY(270deg) scale(1); }
+  75% { transform: rotateX(675deg) rotateY(405deg) scale(1.05); }
+  100% { transform: rotateX(810deg) rotateY(720deg) scale(1); } /* = 90deg, 0deg - Cara 3 */
+}
+
+/* Animación para mostrar 4 (cara inferior) */
+.roll-to-4 {
+  animation: rollAnimation4 2.5s ease-out forwards;
+}
+@keyframes rollAnimation4 {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(315deg) rotateY(315deg) scale(1.1); }
+  50% { transform: rotateX(630deg) rotateY(630deg) scale(1); }
+  75% { transform: rotateX(585deg) rotateY(675deg) scale(1.05); }
+  100% { transform: rotateX(630deg) rotateY(720deg) scale(1); } /* = -90deg, 0deg - Cara 4 */
+}
+
+/* Animación para mostrar 5 (cara izquierda) */
+.roll-to-5 {
+  animation: rollAnimation5 2.5s ease-out forwards;
+}
+@keyframes rollAnimation5 {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(405deg) rotateY(45deg) scale(1.1); }
+  50% { transform: rotateX(810deg) rotateY(90deg) scale(1); }
+  75% { transform: rotateX(675deg) rotateY(315deg) scale(1.05); }
+  100% { transform: rotateX(720deg) rotateY(630deg) scale(1); } /* = 0deg, -90deg - Cara 5 */
+}
+
+/* Animación para mostrar 6 (cara trasera) */
+.roll-to-6 {
+  animation: rollAnimation6 2.5s ease-out forwards;
+}
+@keyframes rollAnimation6 {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(495deg) rotateY(495deg) scale(1.1); }
+  50% { transform: rotateX(990deg) rotateY(990deg) scale(1); }
+  75% { transform: rotateX(765deg) rotateY(855deg) scale(1.05); }
+  100% { transform: rotateX(720deg) rotateY(900deg) scale(1); } /* = 0deg, 180deg - Cara 6 */
+}
+</style>

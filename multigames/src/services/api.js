@@ -556,7 +556,7 @@ export const apiService = {
       return response.data
 
     } catch (error) {
-      console.error(`❌ Error al verificar estado de interacción`, error);
+      console.error(`❌ Error al verificar estado de interacción`, error.response.data.message);
       throw error;
     }
   },
@@ -571,7 +571,20 @@ export const apiService = {
       //console.log(`🔍 --- rollInitialDice --- recibido:`, responseApi.data)
       return responseApi.data
     } catch (error) {
-      console.error(`❌ Error al enviar la tirada inicial:`, error);
+      console.error(`❌ Error al enviar la tirada inicial:`, error.response.data.message);
+      throw error;
+    }
+  },
+
+  // Consulta mi turno en al interaccion
+  async checkMyTurn(idInteraction, idUser){
+    try {
+      // console.log(`Consultando si es el turno de ${idUser} en la interaccion ${idInteraction}`)
+      const responseApi = await axios.get(`${API_URL}/interactions/checkMyTurn/${idInteraction}?idUser=${idUser}`)
+      // console.log(`🔍 --- checkMyTurn --- recibido:`, responseApi.data)
+      return responseApi.data
+    } catch (error) {
+      console.error(`❌ Error al consultar si es mi turno:`, error.response.data.message);
       throw error;
     }
   }

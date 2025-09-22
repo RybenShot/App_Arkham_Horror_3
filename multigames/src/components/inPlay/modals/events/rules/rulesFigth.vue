@@ -1,7 +1,7 @@
 <template>
   <div class="cajaReglas">
     <header class="rules-header">
-      <h1 class="title has-text-centered">Reglas de Dados</h1>
+      <h1 class="title has-text-centered">Reglas</h1>
     </header>
     
     <section class="rules-content">
