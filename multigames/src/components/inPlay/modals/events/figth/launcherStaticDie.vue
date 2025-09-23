@@ -1,7 +1,7 @@
 <template>
   <div class="dice-roller" :class="`size-${size}`">
-    <div class="dice-scene" @click="rollDice">
-      <div class="dice" :class="animationClass">
+    <div class="dice-scene" @click="reRollDice">
+      <div class="dice" :class="animationClass" >
         <!-- Cara 1 - Un punto central -->
         <div class="face front face-1">
           <div class="dot center"></div>
@@ -52,29 +52,53 @@ export default {
   props: {
     size: {
       type: String,
-      default: 'small',
+      default: 'small', 
       validator: (value) => ['small', 'medium', 'big'].includes(value)
     }
   },
   data() {
-    return {
+    return { 
       result: 0,
       isRolling: false,
       animationClass: ''
     }
-  },
+  }, 
   methods: {
     rollDice() {
-      if (this.isRolling) return;
-      
-      this.isRolling = true;
-      this.result = Math.floor(Math.random() * 6) + 1;
-      this.animationClass = `roll-to-${this.result}`;
-      
+      this.animationClass = 'roll-transition';
+
       setTimeout(() => {
-        this.isRolling = false;
-        this.$emit('result', this.result);
-      }, 2500);
+        if (this.isRolling) return;
+        
+        this.isRolling = true;
+        this.result = Math.floor(Math.random() * 6) + 1;
+        this.animationClass = `roll-to-${this.result}`;
+        
+        setTimeout(() => {
+          this.isRolling = false;
+          this.$emit('result', this.result);
+
+          if (this.result == 1) {
+            this.animationClass += ' pulse-red';
+          } else if (this.result == 5 || this.result === 6) {
+            this.animationClass += ' pulse-green';
+          } else if (this.result == 3 ) {
+            this.animationClass += ' pulse-yelow';
+          }
+        }, 2500);
+      }, 100); // Espera a que termine la transición antes de iniciar el roll
+    },
+
+    reRollDice(){
+      if (this.result == 3){
+        this.rollDice();
+      } else {
+        this.$buefy.toast.open({
+            message: this.$store.state.lenguaje === 'español' ? `No puedes rerolear este dado` : `You can't reroll this die`,
+            type: 'is-danger',
+            duration: 2000
+        });
+      }
     }
   }
 }
@@ -134,6 +158,61 @@ export default {
 .size-small .top { transform: rotateX(90deg) translateZ(30px); }
 .size-small .bottom { transform: rotateX(-90deg) translateZ(30px); }
 .size-small .back { transform: rotateY(180deg) translateZ(30px); }
+
+/* Efectos de palpitación */
+.pulse-red .face {
+  animation: pulseRed 1.5s ease-in-out infinite !important;
+}
+@keyframes pulseRed {
+  0%, 100% { 
+    box-shadow: 
+      inset 0 0 15px rgba(255,255,255,0.8),
+      0 4px 8px rgba(0,0,0,0.2),
+      0 0 20px rgba(255, 0, 0, 0.8); 
+  }
+  50% { 
+    box-shadow: 
+      inset 0 0 15px rgba(255,255,255,0.8),
+      0 4px 8px rgba(0,0,0,0.2),
+      0 0 40px rgba(255, 0, 0, 1); 
+  }
+}
+
+.pulse-green .face {
+  animation: pulseGreen 1.5s ease-in-out infinite !important;
+}
+@keyframes pulseGreen {
+  0%, 100% { 
+    box-shadow: 
+      inset 0 0 15px rgba(255,255,255,0.8),
+      0 4px 8px rgba(0,0,0,0.2),
+      0 0 20px rgba(0, 255, 0, 0.8); 
+  }
+  50% { 
+    box-shadow: 
+      inset 0 0 15px rgba(255,255,255,0.8),
+      0 4px 8px rgba(0,0,0,0.2),
+      0 0 40px rgba(0, 255, 0, 1); 
+  }
+}
+
+.pulse-yelow .face {
+  animation: pulseYelow 1.5s ease-in-out infinite !important;
+}
+@keyframes pulseYelow {
+  0%, 100% { 
+    box-shadow: 
+      inset 0 0 15px rgba(255,255,255,0.8),
+      0 4px 8px rgba(0,0,0,0.2),
+      0 0 20px rgba(251, 255, 0, 0.8); 
+  }
+  50% { 
+    box-shadow: 
+      inset 0 0 15px rgba(255,255,255,0.8),
+      0 4px 8px rgba(0,0,0,0.2),
+      0 0 40px rgb(251, 255, 0); 
+  }
+}
 
 /* Tamaño Medium (por defecto) */
 .size-medium .dice-scene,
@@ -298,7 +377,16 @@ export default {
 .top { transform: rotateX(90deg) translateZ(40px); }
 .bottom { transform: rotateX(-90deg) translateZ(40px); }
 
-/* Animaciones específicas para cada resultado */
+/* animacion de transicion */
+.roll-transition{
+  animation: rollAnimationTransition 0.5s ease-out;
+}
+@keyframes rollAnimationTransition {
+  0% { transform: rotateX(-15deg) rotateY(-15deg); }
+  25% { transform: rotateX(180deg) rotateY(180deg) scale(1.1); }
+  50% { transform: rotateX(810deg) rotateY(90deg) scale(1); }
+  100% { transform: rotateX(675deg) rotateY(315deg) scale(1.05); }
+}
 
 /* Animación para mostrar 1 (cara frontal) */
 .roll-to-1 {
@@ -309,7 +397,7 @@ export default {
   25% { transform: rotateX(180deg) rotateY(180deg) scale(1.1); }
   50% { transform: rotateX(360deg) rotateY(360deg) scale(1); }
   75% { transform: rotateX(540deg) rotateY(540deg) scale(1.05); }
-  100% { transform: rotateX(720deg) rotateY(720deg) scale(1); } /* = 0deg, 0deg - Cara 1 */
+  100% { transform: rotateX(720deg) rotateY(720deg) scale(1); } 
 }
 
 /* Animación para mostrar 2 (cara derecha) */
@@ -318,10 +406,10 @@ export default {
 }
 @keyframes rollAnimation2 {
   0% { transform: rotateX(-15deg) rotateY(-15deg); }
-  25% { transform: rotateX(135deg) rotateY(225deg) scale(1.1); }
-  50% { transform: rotateX(270deg) rotateY(450deg) scale(1); }
-  75% { transform: rotateX(405deg) rotateY(675deg) scale(1.05); }
-  100% { transform: rotateX(720deg) rotateY(810deg) scale(1); } /* = 0deg, 90deg - Cara 2 */
+  25% { transform: rotateX(405deg) rotateY(45deg) scale(1.1); }
+  50% { transform: rotateX(810deg) rotateY(90deg) scale(1); }
+  75% { transform: rotateX(675deg) rotateY(315deg) scale(1.05); }
+  100% { transform: rotateX(720deg) rotateY(630deg) scale(1); } 
 }
 
 /* Animación para mostrar 3 (cara superior) */
@@ -330,10 +418,10 @@ export default {
 }
 @keyframes rollAnimation3 {
   0% { transform: rotateX(-15deg) rotateY(-15deg); }
-  25% { transform: rotateX(225deg) rotateY(135deg) scale(1.1); }
-  50% { transform: rotateX(450deg) rotateY(270deg) scale(1); }
-  75% { transform: rotateX(675deg) rotateY(405deg) scale(1.05); }
-  100% { transform: rotateX(810deg) rotateY(720deg) scale(1); } /* = 90deg, 0deg - Cara 3 */
+  25% { transform: rotateX(315deg) rotateY(315deg) scale(1.1); }
+  50% { transform: rotateX(630deg) rotateY(630deg) scale(1); }
+  75% { transform: rotateX(585deg) rotateY(675deg) scale(1.05); }
+  100% { transform: rotateX(630deg) rotateY(720deg) scale(1); } 
 }
 
 /* Animación para mostrar 4 (cara inferior) */
@@ -342,10 +430,10 @@ export default {
 }
 @keyframes rollAnimation4 {
   0% { transform: rotateX(-15deg) rotateY(-15deg); }
-  25% { transform: rotateX(315deg) rotateY(315deg) scale(1.1); }
-  50% { transform: rotateX(630deg) rotateY(630deg) scale(1); }
-  75% { transform: rotateX(585deg) rotateY(675deg) scale(1.05); }
-  100% { transform: rotateX(630deg) rotateY(720deg) scale(1); } /* = -90deg, 0deg - Cara 4 */
+  25% { transform: rotateX(225deg) rotateY(135deg) scale(1.1); }
+  50% { transform: rotateX(450deg) rotateY(270deg) scale(1); }
+  75% { transform: rotateX(675deg) rotateY(405deg) scale(1.05); }
+  100% { transform: rotateX(810deg) rotateY(720deg) scale(1); } 
 }
 
 /* Animación para mostrar 5 (cara izquierda) */
@@ -354,10 +442,10 @@ export default {
 }
 @keyframes rollAnimation5 {
   0% { transform: rotateX(-15deg) rotateY(-15deg); }
-  25% { transform: rotateX(405deg) rotateY(45deg) scale(1.1); }
-  50% { transform: rotateX(810deg) rotateY(90deg) scale(1); }
-  75% { transform: rotateX(675deg) rotateY(315deg) scale(1.05); }
-  100% { transform: rotateX(720deg) rotateY(630deg) scale(1); } /* = 0deg, -90deg - Cara 5 */
+  25% { transform: rotateX(135deg) rotateY(225deg) scale(1.1); }
+  50% { transform: rotateX(270deg) rotateY(450deg) scale(1); }
+  75% { transform: rotateX(405deg) rotateY(675deg) scale(1.05); }
+  100% { transform: rotateX(720deg) rotateY(810deg) scale(1); } 
 }
 
 /* Animación para mostrar 6 (cara trasera) */
@@ -369,6 +457,6 @@ export default {
   25% { transform: rotateX(495deg) rotateY(495deg) scale(1.1); }
   50% { transform: rotateX(990deg) rotateY(990deg) scale(1); }
   75% { transform: rotateX(765deg) rotateY(855deg) scale(1.05); }
-  100% { transform: rotateX(720deg) rotateY(900deg) scale(1); } /* = 0deg, 180deg - Cara 6 */
+  100% { transform: rotateX(720deg) rotateY(900deg) scale(1); } 
 }
 </style>

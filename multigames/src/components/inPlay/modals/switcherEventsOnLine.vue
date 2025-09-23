@@ -1,9 +1,9 @@
 <template>
     <div>
       <div v-if="this.$store.state.interactionData.event.type == 'fight'"> <event_figth/> </div>
-      <div v-if="this.$store.state.interactionData.event.type == 'resonance'"> <event_resonance/> </div>
-      <div v-if="this.$store.state.interactionData.event.type == 'trade'"> <event_trade/> </div>
-      <div v-if="this.$store.state.interactionData.event.type == 'temporalFracture'"> <event_temporalFracture/> </div>
+      <div v-else-if="this.$store.state.interactionData.event.type == 'resonance'"> <event_resonance/> </div>
+      <div v-else-if="this.$store.state.interactionData.event.type == 'trade'"> <event_trade/> </div>
+      <div v-else-if="this.$store.state.interactionData.event.type == 'temporalFracture'"> <event_temporalFracture/> </div>
         
     </div>
 </template>

@@ -560,7 +560,7 @@ export const apiService = {
       throw error;
     }
   },
-
+  
   // Tirada inicial de dado
   async rollInitialDice(idInteraction, idUser, diceResult){
     const payload =  { idUser, diceResult }
@@ -585,6 +585,20 @@ export const apiService = {
       return responseApi.data
     } catch (error) {
       console.error(`❌ Error al consultar si es mi turno:`, error.response.data.message);
+      throw error;
+    }
+  },
+
+  // Envio de resultado de aciertos
+  async sendHitResults(idInteraction, idUser, hits){
+    const payload = {idUser, hits}
+    try {
+      const responseApi = await axios.put(`${API_URL}/interactions/sendHits/${idInteraction}`, payload)
+      console.log(`🔍 --- sendHitResults --- recibido:`, responseApi)
+      return responseApi
+
+    } catch (error) {
+      console.error(`❌ - sendHitResults - Error al enviar los aciertos:`, error.response.data.message);
       throw error;
     }
   }

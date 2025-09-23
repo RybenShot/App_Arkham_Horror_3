@@ -2,13 +2,13 @@
   <div class="modal is-active">
     <div class="modal-background" @click="closeModal"></div>
     <div>
-      <div class="modal-card m-1">
+      <div class="modal-card m-0">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
           <p class="modal-card-title has-text-weight-bold has-text-white">Pelea</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
         </header>
 
-        <section class="modal-card-body hero is-large py-2">
+        <section class="modal-card-body hero is-large p-2 cajaModal">
 
           <section v-if="scene == 'firstRoll'">
             <!-- Componente hijo del tirador de dados -->
@@ -140,8 +140,7 @@ export default {
 }
 
 .cajaModal {
-  width: 30lvh;
-  height: 70lvh;
+  min-width: 40lvh;
 }
 
 .cruzeta {

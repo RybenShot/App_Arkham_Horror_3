@@ -213,7 +213,7 @@ export default {
         const invData = this.$store.state.datosPJactual;
 
         console.log('invitacion respondida con:', { idInteraction, idUser, response });
-        const result = this.respondInteractionToAPI(idInteraction, idUser, response, invData);
+        const result = await this.respondInteractionToAPI(idInteraction, idUser, response, invData);
 
         if (userResponse == 'rejected') {
           this.$buefy.toast.open({
@@ -223,6 +223,7 @@ export default {
             type: 'is-warning',
             duration: 3000
           });
+
           this.$emit('response-sent', { action: 'rejected', result });
           setTimeout(() => {
             this.$store.state.showGuestInvitationModal= false
@@ -236,11 +237,14 @@ export default {
             type: 'is-success',
             duration: 4000
           });
-          this.$store.commit('setInteractionData', this.interactionData);
-          console.log(this.interactionData)
+          console.warn(result.interaction)
+
+          this.$store.commit('setInteractionData', result.interaction);
+          
           setTimeout(() => {
             this.$store.state.showSwithcherEventsOnLine = true
             this.$store.state.showGuestInvitationModal= false
+            console.log(this.$store.state.interactionData)
           }, 2000);
 
         } else if  (userResponse == 'timeout') {
