@@ -33,7 +33,7 @@
           <i class="fas fa-dice-three"></i>
         </div>
         <div class="rule-description">
-          <p class="rule-title">Comodín, permite rerolear 1 dado (excepto 1 pifia)</p>
+          <p class="rule-title">Comodín, permite rerolear el dado</p>
         </div>
       </div>
 
@@ -51,14 +51,15 @@
       <hr>
 
       <div>
-        <p class="subtitle is-7 mb-1">El perdedor pierte 1 Cordura y gana un estado mancillado, pero recupera todas las vidas. El ganador del combate arrebata una de los siguientes objetos del rival de forma aleatoria:
-            <ul class="pl-3 subtitle is-7">
-                <li>2 dinero</li>
-                <li>1 resto</li>
-                <li>1 pista</li>
-                <li>1 objeto aleatorio</li>
-            </ul>
-        </p>
+        <p class="subtitle is-7 mb-1">El perdedor pierte 1 Cordura y gana un estado mancillado, pero recupera todas las vidas. El ganador del combate arrebata una de los siguientes objetos del rival de forma aleatoria:</p>
+        <ul class="pl-3 subtitle is-7">
+            <li>2 dinero</li>
+            <li>1 resto</li>
+            <li>1 pista</li>
+            <li>1 objeto aleatorio</li>
+        </ul>
+        <p class="subtitle is-7 mb-1 has-text-centered">Al final del encuentro se te dira que has ganado o perdido.</p>
+        <p class="subtitle is-7 mb-1 has-text-centered">Si no puedes cumplir con la peticion, omitelo.</p>
       </div>
 
     </section>

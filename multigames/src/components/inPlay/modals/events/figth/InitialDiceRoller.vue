@@ -37,9 +37,8 @@
         </div>
       </div>
     </div>
-    
-    <p v-if="isRolling == false && result != 0" class="title has-text-centered"> Resultado: {{ result }}
-    </p>
+    <p class="subtitle is-7 mb-5 has-text-centered"> Si ambos empatan, comienza el Host de la partida</p>
+    <p v-if="isRolling == false && result != 0" class="title has-text-centered"> Resultado: {{ result }}</p>
   </div>
 </template>
 
@@ -89,7 +88,7 @@ export default {
         setTimeout(() => {
           // Fase 3: Resetear animación
           this.isRolling = false;
-          console.log(`Resultado del dado: ${this.result}`);
+          // console.log(`Resultado del dado: ${this.result}`);
           
           // Emitir el resultado al componente padre
           this.$emit('dice-rolled', this.result);

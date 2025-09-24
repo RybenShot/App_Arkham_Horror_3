@@ -72,7 +72,7 @@ export default {
       if (available == true) {
         try {
           const result = await apiService.getRandomInvOnLine(idZone, idUser);
-          console.log('Resultado búsqueda:', result);
+          // console.log('Resultado búsqueda:', result);
           
           if (result.user) {
             // detenemos el polling general
@@ -102,7 +102,7 @@ export default {
 
     // Callback cuando se crea una interacción desde el modal (HOST)
     onInteractionCreated(interactionResult) {
-      console.log('Interacción creada:', interactionResult);
+      // console.log('Interacción creada:', interactionResult);
       
       // Iniciar polling para esperar respuesta del GUEST
       const interactionId = interactionResult.idInteraction;
@@ -145,7 +145,7 @@ export default {
           try {
             // función para mover al investigador
             const result = await apiService.postLocationInMap(idZone, idUser, invData, available);
-            console.log('Movimiento realizado:', result);
+            // console.log('Movimiento realizado:', result);
             
             this.$buefy.toast.open({
               message: this.$store.state.lenguaje === 'español' ? `Movido a ${point.name}` : `Moved to ${point.name}`,

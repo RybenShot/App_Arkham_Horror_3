@@ -138,6 +138,7 @@ export default {
 
     // aqui tiene que cambiar el estado del encuentro a "Rejected"
     declineEncounter() {
+      invitationService.resumePollingGeneral();; // volvemos al polling General
       this.closeModal();
       this.$buefy.toast.open({
         message: this.$store.state.lenguaje === 'español' ? 'Has decidido no entrar. El encuentro se desvanece...' : 'You decided not to enter. The encounter fades away...',
@@ -154,7 +155,7 @@ export default {
         const type = this.selectedIntention; // Usar la intención seleccionada
         const idLocationMap = this.currentZone;
 
-        console.log('Creando interacción:', { idUserHost, idUserGuest, invData, type, idLocationMap });
+        // console.log('Creando interacción:', { idUserHost, idUserGuest, invData, type, idLocationMap });
         const result = await apiService.createInteraction(idUserHost, idUserGuest, invData, type, idLocationMap);
         
         this.closeModal();

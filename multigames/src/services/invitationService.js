@@ -11,15 +11,17 @@ class InvitationService {
   // Inicializar con el store de Vuex
   init(store) {
     this.store = store;
-    console.log('🔄 InvitationService inicializado');
+    // console.log('🔄 InvitationService inicializado');
   }
 
   // Iniciar polling
   startPollingGeneral() {
     if (this.pollingGeneralisRunning) return;
     
-    console.log('🚀 Iniciando polling de invitaciones cada 60 segundos');
+    console.log('🚀 reiniciando polling General');
     this.pollingGeneralisRunning = true;
+
+    this.checkInvitations();
     
     // Configurar interval
     this.pollingInterval = setInterval(() => {
@@ -34,7 +36,7 @@ class InvitationService {
       this.pollingInterval = null;
     }
     this.pollingGeneralisRunning = false;
-    console.log('⏹️ Polling detenido');
+    console.log('⏹️ polling detenido');
   }
 
   // Verificar invitaciones
@@ -45,11 +47,11 @@ class InvitationService {
       const idUser = this.store.state.IDUserHost;
       if (!idUser) return;
 
-      console.log('🔍 Verificando invitaciones para:', idUser);
+      // console.log('🔍 Verificando invitaciones para:', idUser);
       const result = await apiService.getPendingInvitations(idUser);
       
       if (result) {
-        console.log('📩 Invitación recibida:', result);
+        // console.log('📩 Invitación recibida:', result);
         
         // Parar polling temporalmente
         this.stopPollingGeneral(); // antes usabamos pause()

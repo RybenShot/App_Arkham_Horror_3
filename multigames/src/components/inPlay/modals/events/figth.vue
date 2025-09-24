@@ -20,7 +20,7 @@
           </section>
 
           <section v-if="scene == 'encounterFigth'">
-            <player_encounterFigth/>
+            <player_encounterFigth @closeModal="closeModalEncounter"/>
           </section>
 
         </section>
@@ -64,7 +64,7 @@ export default {
     // Manejar el resultado del dado del componente hijo
     async handleDiceResult(result) {
       this.diceResult = result;
-      console.log(`Resultado recibido del dado: ${result}`);
+      // console.log(`Resultado recibido del dado: ${result}`);
       
       // Enviar resultado al backend
       await this.enviarResultadoInicio(result);
@@ -75,6 +75,11 @@ export default {
       this.scene = "rules";
     },
 
+    closeModalEncounter(){
+      this.$store.state.showSwithcherEventsOnLine = false
+      invitationService.resumePollingGeneral();; // volvemos al polling General
+    },
+
     // Función para enviar a backend el resultado del dado
     async enviarResultadoInicio(resultado) {
       const idInteraction = this.$store.state.interactionData.idInteraccionOnLine;
@@ -83,7 +88,7 @@ export default {
 
       try {
         const response = await apiService.rollInitialDice(idInteraction, idUser, diceResult);
-        console.log('Resultado enviado al backend:', response);
+        // console.log('Resultado enviado al backend:', response);
       } catch (error) {
         this.$buefy.toast.open({
           message: this.$store.state.lenguaje === 'español' ? `Error: ${error.response.data.message}` : 'Error sending dice result',
@@ -97,6 +102,14 @@ export default {
       if (this.scene == "rules") {
         this.scene = "encounterFigth";
       }
+    },
+
+    async respondInteractionToAPI(){
+      const idInteraction = this.$store.state.interactionData.idInteraccionOnLine;
+      const idUser = this.$store.state.IDUserHost;
+
+      const response = await apiService.abandonInteraction(idInteraction, idUser);
+      console.warn('Interacción abandonada:', response);
     },
 
     closeModal() {
@@ -115,12 +128,8 @@ export default {
           this.$store.state.showSwithcherEventsOnLine = false
 
           // llamada a backend para cancelar el evento
-          const idInteraction = this.$store.state.interactionData.idInteraccionOnLine;
-          const idUser = this.$store.state.IDUserHost;
-          const response = "abandoned";
-          const invData = null;
-          // this.respondInteractionToAPI(idInteraction, idUser, response, invData) // TODO -- falta implementar
-          console.warn("TODO queda implementar la llamada a back para abandonar el evento")
+          this.respondInteractionToAPI()
+          // console.warn("TODO queda implementar la llamada a back para abandonar el evento")
 
           this.$store.state.showGuestInvitationModal= false
           invitationService.resumePollingGeneral();; // volvemos al polling General

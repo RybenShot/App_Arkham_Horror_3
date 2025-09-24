@@ -134,6 +134,7 @@ export default {
         type: 'is-danger',
         duration: 2000
       });
+      invitationService.resumePollingGeneral();; // volvemos al polling General
     },
 
     // Añadir información del contador en el toast

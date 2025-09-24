@@ -212,7 +212,7 @@ export default {
         const response = userResponse || null;
         const invData = this.$store.state.datosPJactual;
 
-        console.log('invitacion respondida con:', { idInteraction, idUser, response });
+        // console.log('invitacion respondida con:', { idInteraction, idUser, response });
         const result = await this.respondInteractionToAPI(idInteraction, idUser, response, invData);
 
         if (userResponse == 'rejected') {
@@ -227,6 +227,7 @@ export default {
           this.$emit('response-sent', { action: 'rejected', result });
           setTimeout(() => {
             this.$store.state.showGuestInvitationModal= false
+            invitationService.resumePollingGeneral();; // volvemos al polling General
           }, 2000);
 
         } else if  (userResponse == 'accepted') {
@@ -237,14 +238,14 @@ export default {
             type: 'is-success',
             duration: 4000
           });
-          console.warn(result.interaction)
+          // console.warn(result.interaction)
 
           this.$store.commit('setInteractionData', result.interaction);
           
           setTimeout(() => {
             this.$store.state.showSwithcherEventsOnLine = true
             this.$store.state.showGuestInvitationModal= false
-            console.log(this.$store.state.interactionData)
+            // console.log(this.$store.state.interactionData)
           }, 2000);
 
         } else if  (userResponse == 'timeout') {

@@ -29,7 +29,7 @@ class HostPollingService {
   // Inicializar el servicio con el store de Vuex
   init(store) {
     this.store = store;  // Guardamos referencia al store
-    console.log('🔄 HostPollingService inicializado');
+    // console.log('🔄 HostPollingService inicializado');
   }
 
   // Configurar qué funciones ejecutar según el resultado
@@ -47,7 +47,7 @@ class HostPollingService {
       this.stopPolling(); // Limpiar el anterior
     }
 
-    console.log(`🚀 Iniciando polling HOST para interacción ${interactionId} cada 5 segundos`);
+    console.log(`🚀 Iniciando polling HOST para interacción ${interactionId}`);
     this.pollingIsRunning = true;
     // Guardar los datos de la interacción que vamos a monitorear
     this.currentInteraction = { id: interactionId, userId: userId };
@@ -76,7 +76,7 @@ class HostPollingService {
     try {
       // llamamos a la API para verificar el estado actual de la interaccion
       const result = await apiService.pollInteractionStatus(this.currentInteraction.id, this.currentInteraction.userId );
-      console.log(`📊 Estado de interacción (intento ${this.attemptCount}):`, result.status);
+      console.log(`📊 Estado de interacción`, result.status);
 
       // Según el estado ...
       switch (result.status) {
@@ -89,7 +89,7 @@ class HostPollingService {
                 this.callbacks.onTimeout(this.totalAttempts);
               }
 
-              //TODO hayq ue hacer una llamada a back para cerar la interaccion
+              //TODO hay que hacer una llamada a back para cerar la interaccion
             } else {
               // Continuar esperando
               if (this.callbacks.onPending) {
@@ -100,7 +100,7 @@ class HostPollingService {
 
         case 'accepted':
           // ¡El guest aceptó! - parar polling y mostrar modal de éxito
-          console.log('✅ Interacción aceptada!');
+          // console.log('✅ Interacción aceptada!');
           this.stopPolling();  // Parar el temporizador
           if (this.callbacks.onAccepted) {
             this.callbacks.onAccepted(result);  // Ejecuta función desde Play.vue (modal éxito)
@@ -109,7 +109,7 @@ class HostPollingService {
 
         case 'rejected':
           // El guest rechazó - parar polling y mostrar modal de rechazo
-          console.log('❌ Interacción rechazada');
+          // console.log('❌ Interacción rechazada');
           this.stopPolling();
           if (this.callbacks.onRejected) {
             this.callbacks.onRejected(result);  // Ejecuta función desde Play.vue (modal rechazo)

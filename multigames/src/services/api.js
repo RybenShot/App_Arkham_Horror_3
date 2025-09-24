@@ -510,7 +510,7 @@ export const apiService = {
       // console.log(`Vamos a crear la invitacion OnLine con estos valores: ${payload}`)
 
       const response = await axios.post(`${API_URL}/interactions`, payload)
-      console.log(`🔍 --- createInteraction --- recibid:`, response.data)
+      // console.log(`🔍 --- createInteraction --- recibid:`, response.data)
       return response.data
 
     } catch (error) {
@@ -539,7 +539,7 @@ export const apiService = {
   async getPendingInvitations(idUser){
     try {
       const response = await axios.get(`${API_URL}/interactions/pending/${idUser}`)
-      console.log(`🔍 --- getPendingInvitations --- recibido:`, response.data)
+      // console.log(`🔍 --- getPendingInvitations --- recibido:`, response.data)
       return response.data
 
     } catch (error) {
@@ -574,9 +574,9 @@ export const apiService = {
       console.error(`❌ Error al enviar la tirada inicial:`, error.response.data.message);
       throw error;
     }
-  },
+  },  
 
-  // Consulta mi turno en al interaccion
+  // Consulta mi turno en al interaccio
   async checkMyTurn(idInteraction, idUser){
     try {
       // console.log(`Consultando si es el turno de ${idUser} en la interaccion ${idInteraction}`)
@@ -589,12 +589,38 @@ export const apiService = {
     }
   },
 
+  // Consulta estado de interaccio
+  async getGameState(idInteraction, idUser){
+    try {
+      // console.log(`Consultando el estado de la interaccion ${idInteraction}`)
+      const responseApi = await axios.get(`${API_URL}/interactions/gameState/${idInteraction}?idUser=${idUser}`)
+      // console.log(`🔍 --- checkInteractionState --- recibido:`, responseApi.data)
+      return responseApi.data
+    } catch (error) {
+      console.error(`❌ Error al consultar el estado de la interaccion:`, error.response.data);
+      throw error;
+    }
+  },
+
+  // llamada par abandonar encuentro
+  async abandonInteraction(idInteraction, idUser){
+    try {
+      // console.log(`Enviando abandono de encuentro de ${idUser} en la interaccion ${idInteraction}`)
+      const responseApi = await axios.get(`${API_URL}/interactions/abandon/${idInteraction}?idUser=${idUser}`)
+      // console.log(`🔍 --- abandonInteraction --- recibido:`, responseApi.data)
+      return responseApi.data
+    } catch (error) {
+      console.error(`❌ Error al abandonar la interaccion:`, error.response.data.message);
+      throw error;
+    }
+  },
+
   // Envio de resultado de aciertos
   async sendHitResults(idInteraction, idUser, hits){
     const payload = {idUser, hits}
     try {
       const responseApi = await axios.put(`${API_URL}/interactions/sendHits/${idInteraction}`, payload)
-      console.log(`🔍 --- sendHitResults --- recibido:`, responseApi)
+      // console.log(`🔍 --- sendHitResults --- recibido:`, responseApi)
       return responseApi
 
     } catch (error) {
