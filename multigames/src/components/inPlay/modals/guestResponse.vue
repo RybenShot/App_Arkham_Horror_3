@@ -35,8 +35,6 @@
               <strong>{{ textoInterfaz.ubicacion }}</strong> {{ getLocationName() }}
             </p>
           </div>
-          
-          <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
         </section>
 
         <footer class="">
@@ -81,7 +79,6 @@ export default {
       textoInterfaz: {
         titulo: "",
         descripcion: "",
-        expansion: "",
         investigadorHost: "",
         tipoEncuentro: "",
         ubicacion: "",
@@ -98,7 +95,6 @@ export default {
       if (this.$store.state.lenguaje == 'español') {
         this.textoInterfaz.titulo = "Encuentro Misterioso";
         this.textoInterfaz.descripcion = "Desde la oscuridad ves algo moverse y la extraña sensación de que algo te llama. ¿Qué haces?";
-        this.textoInterfaz.expansion = "Expansión: Base";
         this.textoInterfaz.investigadorHost = "Investigador que te llama:";
         this.textoInterfaz.tipoEncuentro = "Tipo de encuentro:";
         this.textoInterfaz.ubicacion = "Ubicación:";
@@ -107,7 +103,6 @@ export default {
       } else if (this.$store.state.lenguaje == 'ingles') {
         this.textoInterfaz.titulo = "Mysterious Encounter";
         this.textoInterfaz.descripcion = "From the darkness you see something moving and the strange sensation that something is calling you. What do you do?";
-        this.textoInterfaz.expansion = "Expansion: Base";
         this.textoInterfaz.investigadorHost = "Investigator calling you:";
         this.textoInterfaz.tipoEncuentro = "Encounter type:";
         this.textoInterfaz.ubicacion = "Location:";

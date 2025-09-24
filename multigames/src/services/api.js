@@ -479,6 +479,17 @@ export const apiService = {
   },
 
   // INTERACCIONES ONLINE
+  // Obtener el numero de usuarios activos en la plataforma
+  async getActiveUsers(){
+    try {
+      const response = await axios.get(`${API_URL}/losetasOnLine/allUsersOnLine`)
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Error al obtener el numero de usuarios activos`, error);
+      throw error;
+    }
+  },
+
   async postLocationInMap(idZone, idUser, invData, available){
     try {
       const payload = {idZone, idUser, invData, available}

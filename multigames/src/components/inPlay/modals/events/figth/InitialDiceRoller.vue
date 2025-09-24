@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="subtitle has-text-gray has-text-centered is-6">
-      {{ isRolling ? '' : (result ? `` : 'Tap en el dado para lanzar') }}
+      {{ isRolling ? '' : (result ? `` : textoInterfaz.tapEnDado) }}
     </p>
     
     <!-- Contenedor del dado -->
@@ -37,8 +37,8 @@
         </div>
       </div>
     </div>
-    <p class="subtitle is-7 mb-5 has-text-centered"> Si ambos empatan, comienza el Host de la partida</p>
-    <p v-if="isRolling == false && result != 0" class="title has-text-centered"> Resultado: {{ result }}</p>
+    <p class="subtitle is-7 mb-5 has-text-centered"> {{ textoInterfaz.empateInfo }}</p>
+    <p v-if="isRolling == false && result != 0" class="title has-text-centered"> {{ textoInterfaz.resultado }}: {{ result }}</p>
   </div>
 </template>
 
@@ -60,10 +60,30 @@ export default {
       result: 0,
       isRolling: false,
       animationClass: '',
-      desvanecerDado: null
+      desvanecerDado: null,
+      textoInterfaz: {
+        tapEnDado: "",
+        empateInfo: "",
+        resultado: "",
+        noPuedesTirar: ""
+      }
     }
   },
   methods: {
+    rellenarTextoSegunIdioma() {
+      if (this.$store.state.lenguaje == 'español') {
+        this.textoInterfaz.tapEnDado = "Tap en el dado para lanzar";
+        this.textoInterfaz.empateInfo = "Si ambos empatan, comienza el Host de la partida";
+        this.textoInterfaz.resultado = "Resultado";
+        this.textoInterfaz.noPuedesTirar = "No puedes volver a tirar";
+      } else if (this.$store.state.lenguaje == 'ingles') {
+        this.textoInterfaz.tapEnDado = "Tap the dice to roll";
+        this.textoInterfaz.empateInfo = "If both tie, the game Host starts";
+        this.textoInterfaz.resultado = "Result";
+        this.textoInterfaz.noPuedesTirar = "You can't roll again";
+      }
+    },
+    
     rollDice() {
       if (this.isRolling || this.disabled) return;
       
@@ -103,7 +123,7 @@ export default {
       }, 1000); // Esperar 1 segundo para el fade
     },
     
-    // Método público para resetear el dado
+    // Método para resetear el dado
     resetDice() {
       this.result = 0;
       this.isRolling = false;

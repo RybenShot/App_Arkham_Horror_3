@@ -11,12 +11,21 @@
       </div>
       
       <!-- hero -->
-      <div class="hero pt-3 pb-2">
+      <div class="hero pt-3 pb-2 has-text-centered">
         <div class="visit-counter">
-          <i class="fas fa-eye pr-2"></i>
-          <p class="counter-text">{{ textoInterfaz.textoVisitas }}: <span class="">{{ this.$store.state.contadorVisitasTotales }}</span></p>
-          <i class="fas fa-eye pl-2"></i>
+          
+          <p class="counter-text mr-3">
+            <i class="fas fa-eye px-2"></i>
+            {{ textoInterfaz.textoVisitas }}: <span>{{ this.$store.state.contadorVisitasTotales }} </span>
+          </p>
+          
+          <!-- NUEVO: Punto rojo palpitante -->
+          <p class="mx-1">
+            <i class="fas fa-circle pulse-red ml-2"></i> 
+            {{ textoInterfaz.textoUserActivos }}: <span>{{ this.contadorUsuariosActivos }} </span> 
+          </p>
         </div>
+
 
         <div class=" columns is-mobile mx-6">
           <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorror.png" alt="Logo de Arkham Horror"/>
@@ -174,6 +183,7 @@ export default {
   data() {
     return {
       contadorVisitas: null,
+      contadorUsuariosActivos: null,
       textoInterfaz: {
         wellcome: "",
         versionApp: "Beta 4.0.6",
@@ -181,6 +191,7 @@ export default {
         fechaUltimaActualizacion: "13/08/2025",
         textoVisitas: "",
         textoActualizacion: "",
+        textoUserActivos: "",
         botones: {
           textBotonMapa: "",
           textBotonInvestigador: "",
@@ -308,6 +319,7 @@ export default {
         this.textoInterfaz.ultimaActualizacion = "Ultima actualización:";
         this.textoInterfaz.textoVisitas = "Visitas totales";
         this.textoInterfaz.textoActualizacion = "Actualización V";
+        this.textoInterfaz.textoUserActivos = "Investigadores conectados";
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.botones.textBotonMapa = "Maps";
         this.textoInterfaz.botones.textBotonInvestigador = "Investigators";
@@ -317,17 +329,32 @@ export default {
         this.textoInterfaz.ultimaActualizacion = "Last update:";
         this.textoInterfaz.textoVisitas = "Total visits";
         this.textoInterfaz.textoActualizacion = "Update V";
+        this.textoInterfaz.textoUserActivos = "Investigators online";
       }
     },
+
     toggleNoticias() {
       this.noticias.isNoticiasOpen = !this.noticias.isNoticiasOpen;
     },
+
+    // llamada a back para ver los usuarios activos de los ultimos 15 min
+    async activeUsers(){
+      try {
+        const responseApi = await apiService.getActiveUsers();
+        this.contadorUsuariosActivos = responseApi.totalUsersOnline;
+      } catch (error) {
+        console.error("Error fetching active users:", error);
+        this.contadorUsuariosActivos = "N/A"; // Valor por defecto en caso de error
+      }
+    }
   },
   async mounted(){
     //Esta función tonta es una manera de que salga o no el anuncion al principio
     this.resultadoAnuncio = Math.floor(Math.random() * (1, 3)) + 1;
     // console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
+    this.activeUsers();
     this.rellenarTextosegunIdioma();
+
   },
   updated(){
     this.rellenarTextosegunIdioma();
@@ -350,6 +377,28 @@ export default {
   font-family: tituloSeleccion;
   src: url("@/assets/fonts/home/Stranger back in the Night.ttf");
 }
+
+/* CSS para contador de usuarios online actuales */
+.pulse-red {
+  color: #ff4757;
+  animation: live-pulse 1s ease-in-out infinite;
+  font-size: 14px;
+  text-shadow: 0 0 5px rgba(255, 71, 87, 0.5);
+}
+
+@keyframes live-pulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 5px rgba(255, 71, 87, 0.5);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(1.3);
+    text-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
+  }
+}
+
 /* Helpers */
 .buttonsBanderas{
   max-height: 50px;

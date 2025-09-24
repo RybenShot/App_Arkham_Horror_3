@@ -1,7 +1,7 @@
 <template>
   <div class="cajaReglas">
     <header class="rules-header">
-      <h1 class="title has-text-centered">Reglas</h1>
+      <h1 class="title has-text-centered">{{ textoInterfaz.titulo }}</h1>
     </header>
     
     <section class="rules-content">
@@ -12,7 +12,7 @@
           <i class="fas fa-dice-one"></i>
         </div>
         <div class="rule-description">
-          <p class="rule-title">Pifia, contraresta un acierto.</p>
+          <p class="rule-title">{{ textoInterfaz.reglas.pifia }}</p>
         </div>
       </div>
 
@@ -23,7 +23,7 @@
           <i class="fas fa-dice-four"></i>
         </div>
         <div class="rule-description">
-          <p class="rule-title">Nada</p>
+          <p class="rule-title">{{ textoInterfaz.reglas.nada }}</p>
         </div>
       </div>
 
@@ -33,7 +33,7 @@
           <i class="fas fa-dice-three"></i>
         </div>
         <div class="rule-description">
-          <p class="rule-title">Comodín, permite rerolear el dado</p>
+          <p class="rule-title">{{ textoInterfaz.reglas.comodin }}</p>
         </div>
       </div>
 
@@ -44,22 +44,22 @@
           <i class="fas fa-dice-six"></i>
         </div>
         <div class="rule-description">
-          <p class="rule-title">Acierto</p>
+          <p class="rule-title">{{ textoInterfaz.reglas.acierto }}</p>
         </div>
       </div>
 
       <hr>
 
       <div>
-        <p class="subtitle is-7 mb-1">El perdedor pierte 1 Cordura y gana un estado mancillado, pero recupera todas las vidas. El ganador del combate arrebata una de los siguientes objetos del rival de forma aleatoria:</p>
+        <p class="subtitle is-7 mb-1">{{ textoInterfaz.descripcionCombate }}</p>
         <ul class="pl-3 subtitle is-7">
-            <li>2 dinero</li>
-            <li>1 resto</li>
-            <li>1 pista</li>
-            <li>1 objeto aleatorio</li>
+            <li>{{ textoInterfaz.recompensas.dinero }}</li>
+            <li>{{ textoInterfaz.recompensas.resto }}</li>
+            <li>{{ textoInterfaz.recompensas.pista }}</li>
+            <li>{{ textoInterfaz.recompensas.objeto }}</li>
         </ul>
-        <p class="subtitle is-7 mb-1 has-text-centered">Al final del encuentro se te dira que has ganado o perdido.</p>
-        <p class="subtitle is-7 mb-1 has-text-centered">Si no puedes cumplir con la peticion, omitelo.</p>
+        <p class="subtitle is-7 mb-1 has-text-centered">{{ textoInterfaz.infoFinal }}</p>
+        <p class="subtitle is-7 mb-1 has-text-centered">{{ textoInterfaz.infoOmision }}</p>
       </div>
 
     </section>
@@ -68,7 +68,63 @@
 
 <script>
 export default {
-  name: 'RulesModal'
+  name: 'RulesModal',
+  data() {
+    return {
+      textoInterfaz: {
+        titulo: "",
+        reglas: {
+          pifia: "",
+          nada: "",
+          comodin: "",
+          acierto: ""
+        },
+        descripcionCombate: "",
+        recompensas: {
+          dinero: "",
+          resto: "",
+          pista: "",
+          objeto: ""
+        },
+        infoFinal: "",
+        infoOmision: ""
+      }
+    }
+  },
+  methods: {
+    rellenarTextoSegunIdioma() {
+      if (this.$store.state.lenguaje == 'español') {
+        this.textoInterfaz.titulo = "Reglas";
+        this.textoInterfaz.reglas.pifia = "Pifia, contraresta un acierto.";
+        this.textoInterfaz.reglas.nada = "Nada";
+        this.textoInterfaz.reglas.comodin = "Comodín, permite rerolear el dado";
+        this.textoInterfaz.reglas.acierto = "Acierto";
+        this.textoInterfaz.descripcionCombate = "El perdedor pierte 1 Cordura y gana un estado mancillado, pero recupera todas las vidas. El ganador del combate arrebata una de los siguientes objetos del rival de forma aleatoria:";
+        this.textoInterfaz.recompensas.dinero = "2 dinero";
+        this.textoInterfaz.recompensas.resto = "1 resto";
+        this.textoInterfaz.recompensas.pista = "1 pista";
+        this.textoInterfaz.recompensas.objeto = "1 objeto aleatorio";
+        this.textoInterfaz.infoFinal = "Al final del encuentro se te dira que has ganado o perdido.";
+        this.textoInterfaz.infoOmision = "Si no puedes cumplir con la peticion, omitelo.";
+      } else if (this.$store.state.lenguaje == 'ingles') {
+        this.textoInterfaz.titulo = "Rules";
+        this.textoInterfaz.reglas.pifia = "Fumble, counteracts a hit.";
+        this.textoInterfaz.reglas.nada = "Nothing";
+        this.textoInterfaz.reglas.comodin = "Wild, allows rerolling the die";
+        this.textoInterfaz.reglas.acierto = "Hit";
+        this.textoInterfaz.descripcionCombate = "The loser loses 1 Sanity and gains a tainted status, but recovers all health. The combat winner randomly takes one of the following items from the rival:";
+        this.textoInterfaz.recompensas.dinero = "2 money";
+        this.textoInterfaz.recompensas.resto = "1 remnant";
+        this.textoInterfaz.recompensas.pista = "1 clue";
+        this.textoInterfaz.recompensas.objeto = "1 random object";
+        this.textoInterfaz.infoFinal = "At the end of the encounter you will be told if you won or lost.";
+        this.textoInterfaz.infoOmision = "If you cannot fulfill the request, skip it.";
+      }
+    }
+  },
+  mounted() {
+    this.rellenarTextoSegunIdioma();
+  }
 }
 </script>
 

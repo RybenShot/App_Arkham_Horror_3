@@ -4,7 +4,7 @@
     <div>
       <div class="modal-card">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
-          <p class="modal-card-title has-text-weight-bold has-text-white">{{ textoInterfaz.titulo }}</p>
+          <p class="modal-card-title has-text-weight-bold has-text-white has-text-left">{{ textoInterfaz.titulo }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
         </header>
 
@@ -26,31 +26,30 @@
               <div class="column is-4">
                 
                 <button @click="selectedIntention = 'fight'" class="button is-danger is-fullwidth" 
-                :class="{ 'is-outlined': selectedIntention !== 'fight' }" > Combate </button>
+                :class="{ 'is-outlined': selectedIntention !== 'fight' }" > {{ textoInterfaz.botones.combate }} </button>
               </div>
               
               <div class="column is-4">
-                <button @click="selectedIntention = 'trade'" class="button is-info is-fullwidth" 
-                :class="{ 'is-outlined': selectedIntention !== 'trade' }" >  Intercambio </button>
+                <button @click="selectInteractionDisabled('trade')" class="button is-info is-fullwidth "  
+                :class="{ 'is-outlined': selectedIntention !== 'trade' }" >  {{ textoInterfaz.botones.intercambio }} </button>
               </div>
               
               <div class="column is-4">
-                <button @click="selectedIntention = 'resonance'" class="button is-warning is-fullwidth" 
-                :class="{ 'is-outlined': selectedIntention !== 'resonance' }" > Resonancia </button>
+                <button @click="selectInteractionDisabled('resonance')" class="button is-link is-fullwidth " 
+                :class="{ 'is-outlined': selectedIntention !== 'resonance' }" > {{ textoInterfaz.botones.resonancia }} </button>
               </div>
             </div>
             
             <!-- Texto descriptivo simple -->
             <div v-if="selectedIntention" class="notification is-dark mt-3">
               <p class="has-text-centered">
-                <span v-if="selectedIntention === 'fight'">Te preparas para el combate</span>
-                <span v-if="selectedIntention === 'trade'">Buscas intercambiar objetos</span>
-                <span v-if="selectedIntention === 'resonance'">Intentas una conexión mística</span>
+                <span v-if="selectedIntention === 'fight'">{{ textoInterfaz.descripciones.combate }}</span>
+                <span v-if="selectedIntention === 'trade'">{{ textoInterfaz.descripciones.intercambio }}</span>
+                <span v-if="selectedIntention === 'resonance'">{{ textoInterfaz.descripciones.resonancia }}</span>
               </p>
             </div>
           </div>
           
-          <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
         </section>
 
         <footer class="">
@@ -92,13 +91,20 @@ export default {
       textoInterfaz: {
         titulo: "",
         descripcion: "",
-        expansion: "",
         investigadorEncontrado: "",
         seleccionaIntencion: "",
         botones: {
           rechazar: "",
-          aceptar: ""
+          aceptar: "",
+          combate: "",
+          intercambio: "",
+          resonancia: ""
         },
+        descripciones: {
+          combate: "",
+          intercambio: "",
+          resonancia: ""
+        }
       },
     }
   },
@@ -108,19 +114,29 @@ export default {
       if (this.$store.state.lenguaje == 'español') {
         this.textoInterfaz.titulo = "Encuentro Misterioso";
         this.textoInterfaz.descripcion = "Ha aparecido un mortal frente a ti que desde dentro hay algo que te susurra 'Entraaaa'. ¿Qué haces?";
-        this.textoInterfaz.expansion = "Expansión: Base";
         this.textoInterfaz.investigadorEncontrado = "Investigador encontrado:";
         this.textoInterfaz.seleccionaIntencion = "Selecciona tu intención:";
         this.textoInterfaz.botones.rechazar = "No Entrar";
         this.textoInterfaz.botones.aceptar = "Entrar";
+        this.textoInterfaz.botones.combate = "Combate";
+        this.textoInterfaz.botones.intercambio = "Intercambio";
+        this.textoInterfaz.botones.resonancia = "Resonancia";
+        this.textoInterfaz.descripciones.combate = "Aprietas los puños y te preparas por lo que pueda pasar.";
+        this.textoInterfaz.descripciones.intercambio = "Buscas intercambiar objetos";
+        this.textoInterfaz.descripciones.resonancia = "Intentas una conexión mística";
       } else if (this.$store.state.lenguaje == 'ingles') {
         this.textoInterfaz.titulo = "Mysterious Encounter";
         this.textoInterfaz.descripcion = "A mortal has appeared before you, and from within something whispers 'Enterrr'. What do you do?";
-        this.textoInterfaz.expansion = "Expansion: Base";
         this.textoInterfaz.investigadorEncontrado = "Investigator found:";
         this.textoInterfaz.seleccionaIntencion = "Select your intention:";
         this.textoInterfaz.botones.rechazar = "Don't Enter";
         this.textoInterfaz.botones.aceptar = "Enter";
+        this.textoInterfaz.botones.combate = "Combat";
+        this.textoInterfaz.botones.intercambio = "Trade";
+        this.textoInterfaz.botones.resonancia = "Resonance";
+        this.textoInterfaz.descripciones.combate = "You clench your fists and prepare for whatever may come!";
+        this.textoInterfaz.descripciones.intercambio = "You seek to exchange objects";
+        this.textoInterfaz.descripciones.resonancia = "You attempt a mystical connection";
       }
     },
 
@@ -134,6 +150,22 @@ export default {
 
     closeModal() {
       this.$store.state.StoreModalInteractionsOnLine = false;
+    },
+
+    selectInteractionDisabled(type){
+      if(type === 'trade' ){
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? 'intercambio proximamente ...' : 'trade coming soon ...',
+          type: 'is-warning',
+          duration: 3000
+        });
+      } else if(type === 'resonance'){
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? 'resonancia proximamente ...' : 'resonance coming soon ...',
+          type: 'is-warning',
+          duration: 3000
+        });
+      }
     },
 
     // aqui tiene que cambiar el estado del encuentro a "Rejected"
@@ -164,14 +196,14 @@ export default {
         let successMessage = '';
         if (this.$store.state.lenguaje === 'español') {
           const intentionMessages = {
-            fight: '¡Te preparas para el combate!',
+            fight: '¡Agarras con fuerza tu puños y te preparas por lo que pueda pasar!',
             trade: '¡Iniciando intercambio!',
             resonance: '¡Conexión mística establecida!'
           };
           successMessage = intentionMessages[type] || '¡Encuentro iniciado!';
         } else {
           const intentionMessages = {
-            fight: 'Preparing for combat!',
+            fight: 'You grip your fists tightly and prepare for whatever may come!',
             trade: 'Starting trade!',
             resonance: 'Mystical connection established!'
           };
@@ -187,17 +219,8 @@ export default {
         // Disparar evento con el resultado
         this.$emit('interaction-created', result);
 
-        // cancelamos las peticiones de invitaciones
-        invitationService.stopPollingGeneral();
-        // TODO este toast se debera borrar para prod
-        this.$buefy.toast.open({
-            message: this.$store.state.lenguaje === 'español' 
-              ? 'Se deja de buscar encuentros ...' 
-              : 'Stopping encounter search ...',
-            type: 'is-warning',
-            duration: 3000
-          });
-        
+        // dejamos de buscar encuentros
+        invitationService.stopPollingGeneral();        
       } catch (error) {
         console.error('Error creando interacción:', error);
         this.$buefy.toast.open({

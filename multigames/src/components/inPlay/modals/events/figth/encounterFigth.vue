@@ -18,13 +18,13 @@
          <!-- Cargando ... -->
          <div v-if="status == 'onLoading'" class="has-text-centered">
             <button class="button is-loading is-white is-large is-rounded mt-3 mb-3"></button>
-            <p class="subtitle is-6 mt-2">Esperando al otro jugador ...</p>
+            <p class="subtitle is-6 mt-2">{{ textoInterfaz.esperandoJugador }}</p>
          </div>
 
         <!-- Tirador de dados -->
         <div v-if="status == 'onPlay'" class="has-text-centered">
-            <p class="title is-2 mb-3">Te toca!</p>
-            <p class="subtitle is-5">Vas a tirar con Fuerza</p>
+            <p class="title is-2 mb-3">{{ textoInterfaz.teToca }}</p>
+            <p class="subtitle is-5">{{ textoInterfaz.tirarFuerza }}</p>
 
             <div class="columns is-mobile is-centered">
                 <div v-for="(dice, index) in this.$store.state.datosPJactual.atributes.strength" :key="index"  class="column"> 
@@ -33,63 +33,61 @@
             </div>
 
             <div>
-                <p class="subtitle is-6 mt-2">Aciertos: {{ Naciertos }}</p>
+                <p class="subtitle is-6 mt-2">{{ textoInterfaz.aciertos }}: {{ Naciertos }}</p>
             </div>
 
-            <button v-if="!this.isRolled" class="button is-medium mt-3 mb-3" @click="throwDies()">Roll</button>
-            <button v-else-if="this.isRolled == 'readyToSend'" class="button is-medium mt-3 mb-3" @click="sendResultToBack()">Enviar</button>
+            <button v-if="!this.isRolled" class="button is-medium mt-3 mb-3" @click="throwDies()">{{ textoInterfaz.botones.roll }}</button>
+            <button v-else-if="this.isRolled == 'readyToSend'" class="button is-medium mt-3 mb-3" @click="sendResultToBack()">{{ textoInterfaz.botones.enviar }}</button>
         </div>
 
         <!-- Victoria -->
         <div v-if="status == 'win'" class="has-text-centered">
             <div class="notification is-success is-light">
-                <p class="title is-3 has-text-success mb-2">Victoria</p>
+                <p class="title is-3 has-text-success mb-2">{{ textoInterfaz.victoria }}</p>
                 
                 <div v-if="reward == 'money'" class="box mb-2">
                     <p class="title is-2">💰</p>
-                    <p class="subtitle is-5">Has ganado 2$</p>
+                    <p class="subtitle is-5">{{ textoInterfaz.recompensas.ganadoDinero }}</p>
                 </div>
 
                 <div v-if="reward == 'remnant'" class="box mb-2">
                     <p class="title is-2">🧩</p>
-                    <p class="subtitle is-5">Has ganado 1 resto</p>
+                    <p class="subtitle is-5">{{ textoInterfaz.recompensas.ganadoResto }}</p>
                 </div>
 
                 <div v-if="reward == 'clue'" class="box mb-2">
                     <p class="title is-2">🔍</p>
-                    <p class="subtitle is-5">Has ganado 1 pista</p>
+                    <p class="subtitle is-5">{{ textoInterfaz.recompensas.ganadoPista }}</p>
                 </div>
 
-                <p v-if="isAvandoned" class="subtitle is-7 mb-1 has-text-centered">Tu rival ha abandonado la partida.</p>
+                <p v-if="isAvandoned" class="subtitle is-7 mb-1 has-text-centered">{{ textoInterfaz.rivalAbandono }}</p>
                 
-                <button class="button is-success mt-2" @click="$emit('closeModal')">
-                    Cerrar
-                </button>
+                <button class="button is-success mt-2" @click="$emit('closeModal')"> {{ textoInterfaz.botones.cerrar }} </button>
             </div>
         </div>
 
         <!-- Derrota -->
         <div v-if="status == 'lose'" class="has-text-centered">
             <div class="notification is-danger is-light">
-                <p class="title is-3 has-text-danger mb-2">Derrota</p>
+                <p class="title is-3 has-text-danger mb-2">{{ textoInterfaz.derrota }}</p>
                 
                 <div v-if="reward == 'money'" class="box mb-2">
                     <p class="title is-2">💸</p>
-                    <p class="subtitle is-5">Has perdido 2$</p>
+                    <p class="subtitle is-5">{{ textoInterfaz.recompensas.perdidoDinero }}</p>
                 </div>
 
                 <div v-if="reward == 'remnant'" class="box mb-2">
                     <p class="title is-2">📉</p>
-                    <p class="subtitle is-5">Has perdido 1 resto</p>
+                    <p class="subtitle is-5">{{ textoInterfaz.recompensas.perdidoResto }}</p>
                 </div>
 
                 <div v-if="reward == 'clue'" class="box mb-2">
                     <p class="title is-2">❌</p>
-                    <p class="subtitle is-5">Has perdido 1 pista</p>
+                    <p class="subtitle is-5">{{ textoInterfaz.recompensas.perdidoPista }}</p>
                 </div>
                  
                 <button class="button is-danger mt-2" @click="$emit('closeModal')">
-                    Cerrar
+                    {{ textoInterfaz.botones.cerrar }}
                 </button>
             </div>
         </div>
@@ -129,7 +127,31 @@ export default {
             },
 
             HostTurn: null,
-            GestTurn:null
+            GestTurn:null,
+
+            textoInterfaz: {
+                yo: "",
+                esperandoJugador: "",
+                teToca: "",
+                tirarFuerza: "",
+                aciertos: "",
+                victoria: "",
+                derrota: "",
+                rivalAbandono: "",
+                botones: {
+                    roll: "",
+                    enviar: "",
+                    cerrar: ""
+                },
+                recompensas: {
+                    ganadoDinero: "",
+                    ganadoResto: "",
+                    ganadoPista: "",
+                    perdidoDinero: "",
+                    perdidoResto: "",
+                    perdidoPista: ""
+                }
+            }
         }
     },
     computed: {
@@ -144,6 +166,46 @@ export default {
         staticDie
     },
     methods:{
+        rellenarTextoSegunIdioma() {
+            if (this.$store.state.lenguaje == 'español') {
+                this.textoInterfaz.yo = "Me";
+                this.textoInterfaz.esperandoJugador = "Esperando al otro jugador ...";
+                this.textoInterfaz.teToca = "Te toca!";
+                this.textoInterfaz.tirarFuerza = "Vas a tirar con Fuerza";
+                this.textoInterfaz.aciertos = "Aciertos";
+                this.textoInterfaz.victoria = "Victoria";
+                this.textoInterfaz.derrota = "Derrota";
+                this.textoInterfaz.rivalAbandono = "Tu rival ha abandonado la partida.";
+                this.textoInterfaz.botones.roll = "Roll";
+                this.textoInterfaz.botones.enviar = "Enviar";
+                this.textoInterfaz.botones.cerrar = "Cerrar";
+                this.textoInterfaz.recompensas.ganadoDinero = "Has ganado 2$";
+                this.textoInterfaz.recompensas.ganadoResto = "Has ganado 1 resto";
+                this.textoInterfaz.recompensas.ganadoPista = "Has ganado 1 pista";
+                this.textoInterfaz.recompensas.perdidoDinero = "Has perdido 2$";
+                this.textoInterfaz.recompensas.perdidoResto = "Has perdido 1 resto";
+                this.textoInterfaz.recompensas.perdidoPista = "Has perdido 1 pista";
+            } else if (this.$store.state.lenguaje == 'ingles') {
+                this.textoInterfaz.yo = "Me";
+                this.textoInterfaz.esperandoJugador = "Waiting for the other player ...";
+                this.textoInterfaz.teToca = "Your turn!";
+                this.textoInterfaz.tirarFuerza = "You will roll with Strength";
+                this.textoInterfaz.aciertos = "Hits";
+                this.textoInterfaz.victoria = "Victory";
+                this.textoInterfaz.derrota = "Defeat";
+                this.textoInterfaz.rivalAbandono = "Your rival has abandoned the game.";
+                this.textoInterfaz.botones.roll = "Roll";
+                this.textoInterfaz.botones.enviar = "Send";
+                this.textoInterfaz.botones.cerrar = "Close";
+                this.textoInterfaz.recompensas.ganadoDinero = "You have won 2$";
+                this.textoInterfaz.recompensas.ganadoResto = "You have won 1 remnant";
+                this.textoInterfaz.recompensas.ganadoPista = "You have won 1 clue";
+                this.textoInterfaz.recompensas.perdidoDinero = "You have lost 2$";
+                this.textoInterfaz.recompensas.perdidoResto = "You have lost 1 remnant";
+                this.textoInterfaz.recompensas.perdidoPista = "You have lost 1 clue";
+            }
+        },
+
         async throwDies(){
 
             // console.log("Lanzando dados...");
@@ -194,7 +256,7 @@ export default {
 
                 if(response.status == "not your"){
                     this.$buefy.toast.open({
-                        message: this.$store.state.lenguaje === 'español' ? `Esperando que el rival tire dado ...` : `Waiting for the rival to roll dice ...`,
+                        message: this.$store.state.lenguaje === 'español' ? `Esperando respuesa ...` : `Waiting for the rival to roll dice ...`,
                         type: 'is-danger',
                         duration: 2000
                     });
@@ -205,7 +267,7 @@ export default {
 
                 } else if(response.status == "waiting_initial_roll"){
                     this.$buefy.toast.open({
-                        message: this.$store.state.lenguaje === 'español' ? `Esperando que el rival tire dado inicial ...` : `Waiting for the rival to roll initial dice ...`,
+                        message: this.$store.state.lenguaje === 'español' ? `Esperando tirada inicial de rival ...` : `Waiting for the rival to roll initial dice ...`,
                         type: 'is-danger',
                         duration: 2000
                     });
@@ -261,7 +323,7 @@ export default {
 
         stopPollingStatusInteraction(){
             if (this.pollingStatusInteraction) {
-                clearInterval(this.pollingStatusInteraction); // ¡ESTO FALTABA!
+                clearInterval(this.pollingStatusInteraction);
                 this.pollingStatusInteraction = null;
                 // console.log("Intervalo detenido correctamente");
             }
@@ -343,6 +405,7 @@ export default {
         
     },
     mounted() {
+        this.rellenarTextoSegunIdioma();
         this.comprobarTurno();
         this.identifyPlayers();
     },
