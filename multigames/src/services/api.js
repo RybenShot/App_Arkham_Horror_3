@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-//const API_URL = process.env.VUE_APP_API_URL_DEV;
+//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+const API_URL = process.env.VUE_APP_API_URL_DEV;
 //const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -515,9 +515,9 @@ export const apiService = {
   },
 
   // Inicio de Fase 2 Creacion de primera interaccion por parte de Host
-  async createInteraction(idUserHost, idUserGuest, invData, type, idLocationMap){
+  async createInteraction(idUserHost, nameUserHost, idUserGuest, invData, type, idLocationMap){
     try {
-      const payload = { idUserHost, idUserGuest, invData, type, idLocationMap }
+      const payload = { idUserHost, nameUserHost, idUserGuest, invData, type, idLocationMap }
       // console.log(`Vamos a crear la invitacion OnLine con estos valores: ${payload}`)
 
       const response = await axios.post(`${API_URL}/interactions`, payload)
@@ -531,9 +531,9 @@ export const apiService = {
   },
 
   // Responder a invitación (GUEST)
-  async respondToInteraction(idInteraction, idUser, response, invData){
+  async respondToInteraction(idInteraction, idUser, nameUser, response, invData){
     try {
-      const payload = { idUser, response, invData }
+      const payload = { idUser, nameUser, response, invData }
       // console.log(`Respondiendo a invitación ${idInteraction}:`, payload)
 
       const responseApi = await axios.put(`${API_URL}/interactions/respond/${idInteraction}`, payload)

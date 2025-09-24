@@ -180,6 +180,7 @@ export default createStore({
     showSwithcherEventsOnLine: false,
     // variable para comprovar si el usuario quiere ser emparejado o no
     ModoOnLine: true,
+    interactionData: null,
 
     // MAPAS
     contadorMapa: 0,

@@ -8,36 +8,25 @@
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
         </header>
 
-        <section class="modal-card-body hero is-large py-2">
-          <h2 class="has-text-centered">{{ textoInterfaz.descripcion }}</h2>
+        <section class="modal-card-body hero is-large py-4">
+          <h2 class="subtitle is-5 has-text-centered">{{ textoInterfaz.descripcion }}</h2>
           
           <!-- Solo mostrar investigador HOST si tiene el objeto especial -->
           <div v-if="canSeeHost && interactionData" class="box mt-4">
-            <p class="has-text-centered">
-              <strong>{{ textoInterfaz.investigadorHost }}</strong>
-            </p>
-            <p class="has-text-centered">
-              {{ getHostInvestigatorName() }} ({{ getHostInvestigatorPosition() }})
-            </p>
-            <p class="has-text-centered has-text-weight-semibold">
-              <span class="tag" :class="getIntentionClass()">
-                {{ getIntentionText() }}
-              </span>
-            </p>
+            <p class="has-text-centered"> <strong>{{ textoInterfaz.investigadorHost }}</strong> </p>
+            <p class="has-text-centered"> {{ getHostInvestigatorName() }} ({{ getHostInvestigatorPosition() }}) </p>
+            <p class="has-text-centered has-text-weight-semibold"> <span class="tag" :class="getIntentionClass()"> {{ getIntentionText() }}</span> </p>
           </div>
 
-          <!-- Información básica de la invitación -->
+          <!-- Información básica de la invitación
           <div class="notification is-dark mt-3">
-            <p class="has-text-centered">
-              <strong>{{ textoInterfaz.tipoEncuentro }}</strong> {{ getIntentionText() }}
-            </p>
-            <p class="has-text-centered">
-              <strong>{{ textoInterfaz.ubicacion }}</strong> {{ getLocationName() }}
-            </p>
+            <p class="has-text-centered"> <strong>{{ textoInterfaz.tipoEncuentro }}</strong> {{ getIntentionText() }} </p>
+            <p class="has-text-centered"> <strong>{{ textoInterfaz.ubicacion }}</strong> {{ getLocationName() }} </p>
           </div>
+           -->
         </section>
 
-        <footer class="">
+        <footer>
           <div class="field has-addons columns is-mobile is-gapless">
             <p class="control column is-half">
               <button @click="respondInvitation('rejected')" class="button is-danger is-fullwidth">
@@ -71,7 +60,7 @@ export default {
     },
     canSeeHost: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
@@ -165,7 +154,8 @@ export default {
 
     // Funcion para responder a la invitacion
     async respondInteractionToAPI(idInteraction, idUser, response, invData){
-      const result = await apiService.respondToInteraction(idInteraction, idUser, response, invData);
+      const nameUser = this.$store.state.nameUserHost;
+      const result = await apiService.respondToInteraction(idInteraction, idUser, nameUser, response, invData);
       return result;
     },
 

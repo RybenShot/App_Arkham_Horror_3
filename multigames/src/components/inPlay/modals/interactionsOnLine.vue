@@ -182,13 +182,14 @@ export default {
     async acceptEncounter() {
       try {
         const idUserHost = this.$store.state.IDUserHost;
+        const nameUserHost = this.$store.state.nameUserHost;
         const idUserGuest = this.foundUser.idUser;
         const invData = this.$store.state.datosPJactual;
         const type = this.selectedIntention; // Usar la intención seleccionada
         const idLocationMap = this.currentZone;
 
         // console.log('Creando interacción:', { idUserHost, idUserGuest, invData, type, idLocationMap });
-        const result = await apiService.createInteraction(idUserHost, idUserGuest, invData, type, idLocationMap);
+        const result = await apiService.createInteraction(idUserHost, nameUserHost, idUserGuest, invData, type, idLocationMap);
         
         this.closeModal();
         

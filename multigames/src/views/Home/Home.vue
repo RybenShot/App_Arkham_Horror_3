@@ -12,21 +12,14 @@
       
       <!-- hero -->
       <div class="hero pt-3 pb-2 has-text-centered">
+
+        <!-- visitas totales y usuarios activos -->
         <div class="visit-counter">
-          
-          <p class="counter-text mr-3">
-            <i class="fas fa-eye px-2"></i>
-            {{ textoInterfaz.textoVisitas }}: <span>{{ this.$store.state.contadorVisitasTotales }} </span>
-          </p>
-          
-          <!-- NUEVO: Punto rojo palpitante -->
-          <p class="mx-1">
-            <i class="fas fa-circle pulse-red ml-2"></i> 
-            {{ textoInterfaz.textoUserActivos }}: <span>{{ this.contadorUsuariosActivos }} </span> 
-          </p>
+          <p class="counter-text mx-3" @click="infoTotalVisits()"> <i class="fas fa-eye px-2"></i> <span>{{ this.$store.state.contadorVisitasTotales }} </span></p>
+          <p class="mx-3" @click="infoUsersActive()"> <i class="fas fa-circle pulse-red ml-2"></i> <span>{{ this.contadorUsuariosActivos }} </span> </p>
         </div>
 
-
+        <!-- Logo AH -->
         <div class=" columns is-mobile mx-6">
           <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorror.png" alt="Logo de Arkham Horror"/>
         </div>
@@ -186,9 +179,9 @@ export default {
       contadorUsuariosActivos: null,
       textoInterfaz: {
         wellcome: "",
-        versionApp: "Beta 4.0.6",
+        versionApp: "Beta 4.0.7",
         ultimaActualizacion: "",
-        fechaUltimaActualizacion: "13/08/2025",
+        fechaUltimaActualizacion: "24/09/2025",
         textoVisitas: "",
         textoActualizacion: "",
         textoUserActivos: "",
@@ -202,6 +195,20 @@ export default {
       noticias:{
         isNoticiasOpen: false,
         articulos: [
+          {id: 8,
+            numberUpdate: "4.0.7",
+            dateUpdate: "24/09/2025",
+            translations: {
+              es: {
+                title: "Sistema de encuentros multijugador!",
+                description: "Nueva funcionalidad de localización en mapa que permite encuentros entre investigadores en tiempo real. El sistema de combate jugador vs jugador ya está disponible, con mecánicas de dados y recompensas balanceadas. En desarrollo: intercambio de objetos, rituales colaborativos y eventos de ubicación específica."
+              },
+              en: {
+                title: "Multiplayer encounter system",
+                description: "New map location tracking enables real-time encounters between investigators. Player vs player combat system is now live, featuring balanced dice mechanics and rewards. In development: item trading, collaborative rituals, and location-specific events."
+              }
+            }
+          },
           {id: 7,
             numberUpdate: "4.0.6",
             dateUpdate: "13/08/2025",
@@ -333,6 +340,22 @@ export default {
       }
     },
 
+    infoTotalVisits(){
+      this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? 'Visitas totales a la aplicación' : 'Total visits to the application',
+          type: 'is-info',
+          duration: 3000
+        });
+    },
+
+    infoUsersActive(){
+      this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? 'Usuarios activos en los ultimos 15 min' : 'Active users in the last 15 min',
+          type: 'is-info',
+          duration: 3000
+        });
+    },
+
     toggleNoticias() {
       this.noticias.isNoticiasOpen = !this.noticias.isNoticiasOpen;
     },
@@ -453,8 +476,8 @@ export default {
 
 /* Estilos para el contador de visitas */
 .visit-counter {
-  background: linear-gradient(45deg, #6bff8b, #bbf065);
-  padding: 10px 15px;
+  background: linear-gradient(45deg, #6bff8baf, #bbf065b0);
+  padding: 5px 15px;
   border-radius: 10px;
   display: flex;
   align-items: center;

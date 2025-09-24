@@ -3,13 +3,13 @@
         <!-- vida de jugadores -->
         <div class="columns is-mobile is-vcentered mb-0">
             <div class="column">
-                <p class="has-text-centered">Me</p>
+                <p class="has-text-centered">@{{ this.myData.name }}</p>
                 <img :src="this.myData.img" class=" investigator-image my-1" :class="{ 'activo': myData.turn }">
                 <progress class="progress is-danger" :value="this.myData.life" :max="this.myData.maxLife" min:="0"></progress>
             </div>
             
             <div class="column">
-                <p class="has-text-centered">{{ this.rivalData.name }}</p>
+                <p class="has-text-centered">@{{ this.rivalData.name }}</p>
                 <img :src="this.rivalData.img" class=" investigator-image my-1" :class="{ 'activo': rivalData.turn }">
                 <progress class="progress is-danger" :value="this.rivalData.life" :max="this.rivalData.maxLife" min:="0"></progress>
             </div>
@@ -243,10 +243,18 @@ export default {
         },
 
         // Helper para ver que ha ganado o perdido
-        getReward(){
+        getReward(status){
             const randomIndex = Math.floor(Math.random() * 3);
             const rewards = ['money', 'remnant', 'clue'];
             this.reward = rewards[randomIndex];
+
+            if (this.reward == 'money') {
+                this.$store.state.datosPJactual.atributes.money += (status == "you won") ? 2 : -2;
+            } else if (this.reward == 'remnant') {
+                this.$store.state.datosPJactual.atributes.remnant += (status == "you won") ? 1 : -1;
+            } else if (this.reward == 'clue') {
+                this.$store.state.datosPJactual.atributes.clue += (status == "you won") ? 1 : -1;
+            }
         },
 
         comprobarTurno(){
@@ -286,7 +294,7 @@ export default {
                     return
 
                 }  else if(response.status == "you won"){
-                    this.getReward()
+                    this.getReward(response.status)
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `¡Has ganado el combate!` : `You have won the combat!`,
                         type: 'is-success',
@@ -297,7 +305,7 @@ export default {
                     this.stopPollingStatusInteraction(); // Detener el intervalo si es tu turno
 
                 } else if(response.status == "you lost"){
-                    this.getReward()
+                    this.getReward(response.status)
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `Has perdido el combate...` : `You have lost the combat...`,
                         type: 'is-danger',
@@ -384,22 +392,22 @@ export default {
 
             if(this.myIdUser == hostId){
                 this.myData.img = this.$store.state.interactionData.event.invDataHost.imgInv;
-                this.myData.name = this.$store.state.interactionData.event.invDataHost.name;
+                this.myData.name = this.$store.state.interactionData.nameUserHost;
 
                 this.myData.maxLife = this.$store.state.interactionData.event.gameData.maxLifeHost;
                 this.rivalData.maxLife = this.$store.state.interactionData.event.gameData.maxLifeGest;
 
                 this.rivalData.img = this.$store.state.interactionData.event.invDataGest.imgInv
-                this.rivalData.name = this.$store.state.interactionData.event.invDataGest.name;
+                this.rivalData.name = this.$store.state.interactionData.nameUserGest;
             } else {
                 this.myData.img = this.$store.state.interactionData.event.invDataGest.imgInv;
-                this.myData.name = this.$store.state.interactionData.event.invDataGest.name;
+                this.myData.name = this.$store.state.interactionData.nameUserGest;
 
                 this.myData.maxLife = this.$store.state.interactionData.event.gameData.maxLifeGest;
                 this.rivalData.maxLife = this.$store.state.interactionData.event.gameData.maxLifeHost;
 
                 this.rivalData.img = this.$store.state.interactionData.event.invDataHost.imgInv
-                this.rivalData.name = this.$store.state.interactionData.event.invDataHost.name;
+                this.rivalData.name = this.$store.state.interactionData.nameUserHost;
             }
         }
         

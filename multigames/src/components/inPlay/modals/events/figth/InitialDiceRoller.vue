@@ -37,8 +37,8 @@
         </div>
       </div>
     </div>
-    <p class="subtitle is-7 mb-5 has-text-centered"> {{ textoInterfaz.empateInfo }}</p>
-    <p v-if="isRolling == false && result != 0" class="title has-text-centered"> {{ textoInterfaz.resultado }}: {{ result }}</p>
+    <p class="subtitle is-7 mb-5 has-text-centered"> Si ambos empatan, comienza el Host de la partida</p>
+    <p v-if="isRolling == false && result != 0" class="title has-text-centered"> Resultado: {{ result }}</p>
   </div>
 </template>
 
@@ -83,7 +83,7 @@ export default {
         this.textoInterfaz.noPuedesTirar = "You can't roll again";
       }
     },
-    
+
     rollDice() {
       if (this.isRolling || this.disabled) return;
       
