@@ -1,8 +1,15 @@
 <template>
     <div>
+      <!-- Evento Pelea -->
       <div v-if="this.$store.state.interactionData.event.type == 'fight'"> <event_figth/> </div>
+
+      <!-- Evento Resonancia -->
       <div v-else-if="this.$store.state.interactionData.event.type == 'resonance'"> <event_resonance/> </div>
+
+      <!-- Evento Intercambio -->
       <div v-else-if="this.$store.state.interactionData.event.type == 'trade'"> <event_trade/> </div>
+
+      <!-- Evento fractura temporal -->
       <div v-else-if="this.$store.state.interactionData.event.type == 'temporalFracture'"> <event_temporalFracture/> </div>
         
     </div>
