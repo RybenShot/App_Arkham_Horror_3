@@ -220,7 +220,8 @@ export default {
         // Disparar evento con el resultado
         this.$emit('interaction-created', result);
 
-        // dejamos de buscar encuentros
+        // dejamos de buscar encuentros 
+        // TODO esta llamada hay que borrarla ya que hacemos esto anteriomente en el "ubiationPlayer"
         invitationService.stopPollingGeneral();        
       } catch (error) {
         console.error('Error creando interacción:', error);

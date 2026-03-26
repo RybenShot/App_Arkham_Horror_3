@@ -21,6 +21,7 @@
 
 <script>
 import { Howl } from 'howler';
+import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
 const sounds = {
   0: new Howl({ src: require('@/assets/sound/Locucion/mapas/1-Azathoth.mp3') }),
   1: new Howl({ src: require('@/assets/sound/Locucion/mapas/2-Festin.mp3') }),
@@ -52,12 +53,21 @@ export default {
     reproducirAudio() {
       const idMapasound = this.$store.state.datosMapa.idMap;
       const sound = sounds[idMapasound];
+      audioService.lowerVolume(); // 🔉 Baja la música
       sound.play()
+
+      // Cuando la locución termine, sube la música de nuevo
+      sound.once('end', () => {
+        audioService.raiseVolume(); // 🔊 Sube la música
+        this.reproduciendo = false;
+      });
     },
     detenerAudio() {
       const idMapasound = this.$store.state.datosMapa.idMap;
       const sound = sounds[idMapasound];
       sound.stop()
+      audioService.raiseVolume(); // 🔊 Sube la música al detener manualmente
+      this.reproduciendo = false;
     }
   },
   mounted(){

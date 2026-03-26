@@ -127,6 +127,7 @@
 </template>
 
 <script>
+import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
 import { apiService } from '@/services/api.js';
 
 // importamos clear para la gestion de usuarios
@@ -175,6 +176,7 @@ export default {
   },
   data() {
     return {
+      audioIniciado: false,
       contadorVisitas: null,
       contadorUsuariosActivos: null,
       textoInterfaz: {
@@ -314,6 +316,13 @@ export default {
     };
   },
   methods: {
+    iniciarAudio() {
+      if (!this.audioIniciado) {
+        audioService.play();
+        this.audioIniciado = true;
+      }
+    },
+
     SonidoTecla() {sound.play();},
     
     rellenarTextosegunIdioma(){
@@ -377,6 +386,7 @@ export default {
     // console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
     this.activeUsers();
     this.rellenarTextosegunIdioma();
+    // this.iniciarAudio(); TODO,  descomentar esto, por ahora lo comento para que no me queme la cabeza
 
   },
   updated(){

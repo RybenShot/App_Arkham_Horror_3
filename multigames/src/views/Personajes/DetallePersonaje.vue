@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
 // datos
 import DatosBasicosDetalle from "@/components/personajes/datosBasicosDetalle.vue";
 import AtributosDetalle from "@/components/personajes/atributosDetalle.vue";
@@ -81,6 +82,7 @@ export default {
       if (this.$store.state.datosPJactual.id) {
         // Redirigimos a la zona de juego
         this.$router.push('/PlayAH');
+        audioService.stop()
       }
       else{
         // Abrir modal de selección de objetos
@@ -90,7 +92,7 @@ export default {
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
-  }
+  },
 }
 </script>
 

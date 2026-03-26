@@ -76,6 +76,8 @@
 <script>
 import CardObjectSelection from './CardObjectSelection.vue';
 import { apiService } from '@/services/api.js';
+import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
+
 
 export default {
   name: "ModalSeleccionObjetosIniciales",
@@ -157,6 +159,8 @@ export default {
             
             // Cerrar modal y comenzar partida
             this.$store.state.modalSeleccionObjetosIniciales = false;
+
+            audioService.stop()
             
             // Redirigir a la partida
             this.$router.push('/PlayAH');
