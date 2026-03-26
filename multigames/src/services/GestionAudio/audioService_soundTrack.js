@@ -1,4 +1,3 @@
-// src/services/audioService.js
 import { Howl } from 'howler';
 
 const soundtrack = new Howl({
@@ -7,7 +6,7 @@ const soundtrack = new Howl({
   volume: 0.5  // volumen inicial
 });
 
-export const audioService = {
+export const audioService_soundTrack = {
   play()       { if (!soundtrack.playing()) soundtrack.play(); },
   stop()       { soundtrack.stop(); },
   pause()      { soundtrack.pause(); },

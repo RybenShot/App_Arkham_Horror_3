@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_soundTrack } from '@/services/GestionAudio/audioService_soundTrack.js';
 import { Howl } from 'howler';
 const sounds = {
   0: new Howl({ src: require('@/assets/sound/Locucion/personajes/1-Tommy.mp3') }),
@@ -91,12 +91,12 @@ export default {
     reproducirAudio() {
       const idPersonaje = this.$store.state.datosPJactual.idInv;
       const sound = sounds[idPersonaje];
-      audioService.lowerVolume(); // 🔉 Baja la música
+      audioService_soundTrack.lowerVolume(); // 🔉 Baja la música
       sound.play()
 
       // Cuando la locución termine, sube la música de nuevo
       sound.once('end', () => {
-        audioService.raiseVolume(); // 🔊 Sube la música
+        audioService_soundTrack.raiseVolume(); // 🔊 Sube la música
         this.reproduciendo = false;
       });
     },
@@ -104,7 +104,7 @@ export default {
       const idPersonaje = this.$store.state.datosPJactual.idInv;
       const sound = sounds[idPersonaje];
       sound.stop()
-      audioService.raiseVolume(); // 🔊 Sube la música al detener manualmente
+      audioService_soundTrack.raiseVolume(); // 🔊 Sube la música al detener manualmente
       this.reproduciendo = false;
     },
     rellenaTextoSegunIdioma(){

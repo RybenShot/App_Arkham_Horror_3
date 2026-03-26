@@ -28,7 +28,9 @@
 </template>
 
 <script>
-import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_soundTrack } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 // datos
 import DatosBasicosDetalle from "@/components/personajes/datosBasicosDetalle.vue";
 import AtributosDetalle from "@/components/personajes/atributosDetalle.vue";
@@ -63,9 +65,12 @@ export default {
     }
   },
   methods: {
+    SonidoTecla() {audioService_effects.playTecla()},
     goBack() {
-      this.$router.go(-1);
+      this.SonidoTecla()
+      this.$router.go(-1); 
     },
+
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == "español"){
         this.textoInterfaz.lista = "Lista";
@@ -78,11 +83,12 @@ export default {
 
     // funciones para la gestion de objetos del investigador
     iniciarSeleccionObjetos() {  
+      this.SonidoTecla()
       // Si el investigador ya tiene una id, significa que es un investigador OnLine y no necesita seleccionar objetos
       if (this.$store.state.datosPJactual.id) {
         // Redirigimos a la zona de juego
         this.$router.push('/PlayAH');
-        audioService.stop()
+        audioService_soundTrack.stop()
       }
       else{
         // Abrir modal de selección de objetos

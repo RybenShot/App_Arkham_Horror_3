@@ -127,7 +127,9 @@
 </template>
 
 <script>
-import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_soundTrack } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 import { apiService } from '@/services/api.js';
 
 // importamos clear para la gestion de usuarios
@@ -137,11 +139,7 @@ import { useStore } from 'vuex' // importamos esto para poder usar el store en e
 
 import ModalBienvenida from '@/components/home/modalBienvenida.vue';
 import ModalDonacion from '@/components/home/modalDonacion.vue';
-import { Howl } from 'howler';                  // dependencia para la reproduccion de sonidos
 
-const sound = new Howl({                        // necesario para enlazar y ejecutar los sonidos
-  src: require('@/assets/sound/SonidoTecla.mp3'),
-});
 
 export default {
   name: "view_Home",
@@ -318,12 +316,12 @@ export default {
   methods: {
     iniciarAudio() {
       if (!this.audioIniciado) {
-        audioService.play();
+        audioService_soundTrack.play();
         this.audioIniciado = true;
       }
     },
 
-    SonidoTecla() {sound.play();},
+    SonidoTecla() {audioService_effects.playTecla()},
     
     rellenarTextosegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){

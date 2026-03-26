@@ -79,15 +79,12 @@
 </template>
 
 <script>
-import { Howl } from 'howler';
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import InvestigatorCard from '@/components/personajes/invCard.vue'
 import ModalInvOnLine from '@/components/personajes/modalInvOnLine.vue';
-
-const sonidoTecla = new Howl({
-  src: require('@/assets/sound/SonidoTecla.mp3'),
-});
 
 export default {
   name: "listaDePersonajes",
@@ -159,12 +156,9 @@ export default {
   },
 
   methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
-    SonidoTecla() {
-      sonidoTecla.play();
-    },
+    goBack() { this.$router.go(-1); },
+    SonidoTecla() {audioService_effects.playTecla()},
+
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.titulo = "Seleccionar Investigador";

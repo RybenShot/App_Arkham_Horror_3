@@ -45,6 +45,7 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
 
 export default {
   name: 'MapCard',
@@ -52,6 +53,7 @@ export default {
     map: { type: Object, required: true }
   },
   methods: {
+    SonidoTecla() {audioService_effects.playTecla()},
     async selectMap() {
       const idMap = this.map.idMap;
       const isModalJoin = this.$store.state.modalJoinMapInPlay
@@ -64,6 +66,7 @@ export default {
       }
 
       if (response) {
+        this.SonidoTecla();
         this.$store.commit('setDatosMapa', response);
         this.$router.push('/DetalleMapa');
       } else {

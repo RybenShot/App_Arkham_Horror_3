@@ -55,25 +55,21 @@
 
     </div>
     
-
     <footer>
-      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = false)" class="button is-fullwidth is-dark mb-2">
-        <i class="fas fa-users mx-3"></i>{{ textoInterfaz.botones.seleccionPersonaje }}
-      </button>
-      <button @click="($store.state.ModalConfirmacion = true), ($store.state.Terminarpartida = true)" class="button is-fullwidth  is-black">
-        <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.terminarPartida }}
-      </button>
+      <button @click="backToSelectInv()" class="button is-fullwidth is-dark mb-2"> <i class="fas fa-users mx-3"></i>{{ textoInterfaz.botones.seleccionPersonaje }} </button>
+      <button @click="endGame()" class="button is-fullwidth  is-black"> <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.terminarPartida }} </button>
     </footer>
   </div>
 </template>
 
 <script>
+import { invitationService } from '@/services/invitationService.js';
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 import { useUser, useAuth } from '@clerk/vue'
 import { onMounted } from 'vue'
 import { useStore } from 'vuex' // importamos esto para poder usar el store en el setup
-
-import { invitationService } from '@/services/invitationService.js';
 
 export default {
   name: "AjustesPlay",
@@ -113,6 +109,20 @@ export default {
     return { user }
   },
   methods:{
+    SonidoTecla() {audioService_effects.playTecla()},
+
+    backToSelectInv(){
+      this.SonidoTecla()
+      this.$store.state.ModalConfirmacion = true;
+      this.$store.state.Terminarpartida = false
+    },
+
+    endGame(){
+      this.SonidoTecla()
+      this.$store.state.ModalConfirmacion = true;
+      this.$store.state.Terminarpartida = true
+    },
+
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.textoInterfaz.titulo = "Ajustes";

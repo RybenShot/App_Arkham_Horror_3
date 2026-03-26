@@ -76,7 +76,8 @@
 <script>
 import CardObjectSelection from './CardObjectSelection.vue';
 import { apiService } from '@/services/api.js';
-import { audioService } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_soundTrack } from '@/services/GestionAudio/audioService_soundTrack.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
 
 
 export default {
@@ -101,6 +102,7 @@ export default {
     }
   },
   methods: {
+    SonidoTecla() {audioService_effects.playTecla()},
     async cargarObjetosIniciales() {
       try {
         const idInv = this.$store.state.datosPJactual.idInv;
@@ -160,7 +162,8 @@ export default {
             // Cerrar modal y comenzar partida
             this.$store.state.modalSeleccionObjetosIniciales = false;
 
-            audioService.stop()
+            this.SonidoTecla()
+            audioService_soundTrack.stop()
             
             // Redirigir a la partida
             this.$router.push('/PlayAH');

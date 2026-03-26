@@ -3,7 +3,7 @@
     <div class="columns is-mobile mt-5 mb-0 mx-2">
       <!-- Loseta -->
       <div class="column is-6 px-5">
-        <div class=" helperimgMapas ml-2" :style="losetaStyle" @click="this.$store.state.modalVerLosetaMapa = true"></div>
+        <div class=" helperimgMapas ml-2" :style="losetaStyle" @click="openLosetas()"></div>
       </div>
 
       <!-- Botones derecha -->
@@ -13,12 +13,12 @@
           <p class="has-text-white subtitle is-6" @click="openEnemyList()">{{ textoBotones.enemigos }}</p>
         </div>
         <!-- "Inv Recomendados" -->
-        <div id="BG-boton-inv-rec" class="helperbotones p-4 " @click="this.$store.state.modalInvRec = true">
+        <div id="BG-boton-inv-rec" class="helperbotones p-4 " @click="openInvRec()">
           <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">{{ textoBotones.invRec }}</p>
         </div>
         <!-- Comunidad -->
         
-        <div id="BG-boton-comunidad" class="helperbotones my-2 p-4" @click="this.$store.state.modalComunityMap = true">
+        <div id="BG-boton-comunidad" class="helperbotones my-2 p-4" @click="openCommunity()">
           <p class="has-text-white subtitle is-7 has-text-left">{{ textoBotones.comunidad }}</p>
         </div>
       </div>
@@ -51,7 +51,7 @@
       
       <div id="BG-boton-Selec-inv" :class="{'boxShadowGreen':this.$store.state.mapaSeleccionado}" class="helperbotones column my-2 py-4">
         <router-link to="/ListaPersonajes">
-          <p class="has-text-white has-text-left subtitle is-7">{{ textoBotones.selecInv }}</p>
+          <p class="has-text-white has-text-left subtitle is-7" @click="openSelectInv()">{{ textoBotones.selecInv }} </p>
         </router-link>
       </div>
     </div>
@@ -60,6 +60,7 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
 
 export default {
   name: "Losetas y botones",
@@ -95,7 +96,9 @@ export default {
     }
   },
   methods:{
+    SonidoTecla() {audioService_effects.playTecla()},
     goBack() {
+      this.SonidoTecla();
       this.$router.go(-1);
     },
     rellenarTextoSegunIdioma(){
@@ -128,12 +131,28 @@ export default {
       const idMap = this.$store.state.datosMapa.idMap
       // llama a la api para obtener los enemigos con la id del mapa
       let enemyList = await apiService.obtainEnemyList(idMap)
-      console.log(enemyList)
+      // console.log(enemyList)
+      this.SonidoTecla();
       // guardamos la lista de enemigos en el store
       this.$store.commit('setEnemysList', enemyList)
       // cambiamos la vista
       this.$store.state.viewDetalleMapa = false
       this.$store.state.modalVerEnemigos = true
+    },
+    openLosetas(){
+      this.SonidoTecla();
+      this.$store.state.modalVerLosetaMapa = true
+    },
+    openInvRec(){
+      this.SonidoTecla();
+      this.$store.state.modalInvRec = true
+    },
+    openCommunity(){
+      this.SonidoTecla();
+      this.$store.state.modalComunityMap = true
+    },
+    openSelectInv(){
+      this.SonidoTecla(); // hacer otro audio
     }
   },
   mounted(){

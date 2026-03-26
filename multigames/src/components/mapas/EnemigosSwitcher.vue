@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
 import ModalDetalleEnemigo from "@/components/helpers/DetalleEnemigo.vue"
 
 export default {
@@ -132,10 +133,12 @@ export default {
       // console.log(this.monstersList) // aqui me aparecen los enemigos en un array
     },
     closeEnemiesModal(){
+      audioService_effects.playTecla()
       this.$store.state.viewDetalleMapa = true
       this.$store.state.modalVerEnemigos = false
     },
     async watchEnemiDetail(monster){
+      audioService_effects.playTecla()
       this.$store.state.SeleccionarURLEnemigo = await monster.img
       this.$store.state.verDetalleEnemigo = true
     }

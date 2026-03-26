@@ -47,15 +47,12 @@
 </template>
 
 <script>
-import { Howl } from 'howler';
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import MapCard from '@/components/mapas/MapCard.vue';
 import modalJoinMapInPlay from '@/components/mapas/modalJoinMapInPlay.vue';
-
-const sound = new Howl({
-  src: require('@/assets/sound/SonidoTecla.mp3'),
-});
 
 export default {
   name: "lista_De_Mapas",
@@ -96,6 +93,7 @@ export default {
     modalJoinMapInPlay
   },
   methods: {
+    SonidoTecla() {audioService_effects.playTecla()},
     handleToggle(expansionKey) {
       this.SonidoTecla();
       const activada = !this.$store.state[expansionKey];
@@ -123,9 +121,6 @@ export default {
     },
     goBack() {
       this.$router.go(-1);
-    },
-    SonidoTecla() {
-      sound.play();
     },
     rellenarTextosegunIdioma() {
       if (this.$store.state.lenguaje === 'español') {

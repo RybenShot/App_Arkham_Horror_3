@@ -83,29 +83,31 @@
     <!-- Navegacion -->
     <div class="columns is-mobile has-text-centered has-text-white">
       <!-- Dados -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreTiradorDados = true)" class="column pt-0">
+      <div @click="selectMenu(0)" class="column pt-0">
         <i v-if="this.$store.state.StoreTiradorDados == true" class="has-text-success fa-2x fas fa-dice"></i>
         <i v-if="this.$store.state.StoreTiradorDados == false" class="desactivado fa-2x fas fa-dice"></i>
       </div>
       
       <!-- Ubicacion  -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreUbicationPlayer = true)" class="column pt-0">
+      <div @click="selectMenu(1)" class="column pt-0">
         <i v-if="this.$store.state.StoreUbicationPlayer == true" class="has-text-success fa-2x fas fa-street-view"></i>
         <i v-if="this.$store.state.StoreUbicationPlayer == false" class="desactivado fa-2x fas fa-street-view"></i>
       </div>
 
       <!-- Estados -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreEstadosPlay = true)" class="column pt-0">
+      <div @click="selectMenu(2)" class="column pt-0">
         <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-user-injured"></i>
         <i v-if="this.$store.state.StoreEstadosPlay == false" class="desactivado fa-2x fas fa-user-injured"></i>
       </div>
+
       <!-- Habilidades -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreHabilidades = true) " class="column pt-0">
+      <div @click="selectMenu(3)" class="column pt-0">
         <i v-if="this.$store.state.StoreHabilidades == true" class="has-text-success fa-2x fas fa-address-card"></i>
         <i v-if="this.$store.state.StoreHabilidades == false" class="desactivado fa-2x fas fa-address-card"></i>
       </div>
+
       <!-- Ajustes -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreAjustesPlay = true) " class="column pt-0">
+      <div @click="selectMenu(4)" class="column pt-0">
         <i v-if="this.$store.state.StoreAjustesPlay == true" class="has-text-success fa-2x fas fa-cogs"></i>
         <i v-if="this.$store.state.StoreAjustesPlay == false" class="desactivado fa-2x fas fa-cogs"></i>
       </div>
@@ -114,6 +116,8 @@
 </template>
 
 <script>
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 export default {
   name: "DatosBasicosPlay",
   data(){
@@ -153,6 +157,20 @@ export default {
   },
   
   methods: {
+    SonidoTecla() {audioService_effects.playTecla()},
+
+    selectMenu(view){
+      this.resetearNavegacion()
+      this.SonidoTecla()
+      
+      if (view == 0) { this.$store.state.StoreTiradorDados = true } 
+      else if (view == 1) {this.$store.state.StoreUbicationPlayer = true}
+      else if (view == 2) {this.$store.state.StoreEstadosPlay = true}
+      else if (view == 3) {this.$store.state.StoreHabilidades = true}
+      else if (view == 4) {this.$store.state.StoreAjustesPlay = true} 
+      else { this.$store.state.StoreTiradorDados = true } 
+    },
+
     // selector de variables
     selectProperty(prop) {
       // Reiniciamos todos y activamos solo el seleccionado

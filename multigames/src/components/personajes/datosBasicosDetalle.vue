@@ -38,13 +38,13 @@
             <i class="fas fa-suitcase"></i>
             <p>{{ textoInterfaz.pertenencias }}</p>
           </div>
-          <div class="column p-0 py-1" @click="this.$store.state.modalHistoriaDetalle = true">
+          <div class="column p-0 py-1" @click="openModalHistory()">
             <i class="fas fa-id-card"></i>
             <p>{{ textoInterfaz.historia }}</p>
           </div>
         </div>
 
-        <div class="columns is-mobile" @click="this.$store.state.modalArquetipoDetalle = true">
+        <div class="columns is-mobile" @click="openModalArchetype()">
           <div class="column p-0 py-1">
             <i class="fas fa-bolt"></i>
             <p>{{ textoInterfaz.arquetipo }}</p>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+
 export default {
   name: "Datos Basicos Detalle",
   data(){
@@ -73,8 +75,19 @@ export default {
     }
   },
   methods:{
+    SonidoTecla() {audioService_effects.playTecla()},
+
     openModalPertenences(){
+      this.SonidoTecla()
       this.$store.state.modalPertenenciasDetalle = true;
+    },
+    openModalHistory(){
+      this.SonidoTecla()
+      this.$store.state.modalHistoriaDetalle = true
+    },
+    openModalArchetype(){
+      this.SonidoTecla()
+      this.$store.state.modalArquetipoDetalle = true
     },
     redireccionarTemporalmente(){
       this.$router.push('/enproceso');

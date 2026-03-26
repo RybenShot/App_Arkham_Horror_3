@@ -1,11 +1,11 @@
 <template>
   <div class="modal is-active">
-    <div class="modal-background" @click="$store.state.modalComunityMap = false"></div>
+    <div class="modal-background" @click="closeModal()"></div>
     <div class="mr-6">
       <div class="modal-card">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
           <p class="modal-card-title has-text-weight-bold">{{ textoInterfaz.headTitle }}</p>
-          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="$store.state.modalComunityMap = false"></i>
+          <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal()"></i>
         </header>
 
         <section class="modal-card-body hero is-large py-2">
@@ -69,7 +69,7 @@
         <footer>
           <div class="field has-addons columns is-mobile is-gapless">
             <p class="control column">
-              <button @click="$store.state.modalComunityMap = false" class="button is-danger is-fullwidth">
+              <button @click="closeModal()" class="button is-danger is-fullwidth">
                 <p>{{ this.textoInterfaz.closeModal }}</p>
               </button>
             </p>
@@ -83,6 +83,7 @@
 <script>
 import { SignedIn, SignedOut } from '@clerk/vue';
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
 
 export default {
   name: 'ModalComentarios',
@@ -147,6 +148,10 @@ export default {
         console.error(`❌ postNewComment(.vue) - Error al enviar el comentario`, error);
         throw error;
       }
+    },
+    closeModal(){
+      audioService_effects.playTecla();
+      this.$store.state.modalComunityMap = false
     },
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){

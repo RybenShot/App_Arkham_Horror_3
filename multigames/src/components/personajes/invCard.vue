@@ -56,6 +56,7 @@
 
 <script>
 import { apiService } from '@/services/api.js';
+import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
 
 export default {
   name: 'InvestigatorCard',
@@ -63,6 +64,7 @@ export default {
     investigator: { type: Object, required: true }
   },
   methods: {
+    SonidoTecla() {audioService_effects.playTecla()},
     async selectInv(investigator) {
       try {
         // si existe una id, esque es un investigador OnLine, por lo cual no hace falta que hagamos ninguna llamada a back
@@ -74,6 +76,7 @@ export default {
         const response = await apiService.obtainInvByID(investigator.idInv);
         await this.$store.commit('setDatosInvestigator', response);
         this.$store.state.modalInvOnLine = false;
+        this.SonidoTecla();
         this.$router.push('/DetallePersonaje');
       } catch (error) {
         console.error("❌ selectInv(.vue) - No se pudo obtener el investigador", error);
