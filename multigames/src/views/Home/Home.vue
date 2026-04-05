@@ -7,6 +7,9 @@
         <div v-if="this.$store.state.StoreModalBienvenida"><ModalBienvenida/></div>
         <!-- modal donacion -->
         <div v-if="this.$store.state.StoreModalDonacion"><ModalDonacion/></div>
+
+        <!-- modal Ajustes -->
+        <div v-if="this.$store.state.StoreModalAjustes"><ModalAjustes/></div>
         
       </div>
       
@@ -57,6 +60,8 @@
             <router-link to="/credits" @click="SonidoTecla()">
               <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button>
             </router-link>
+
+            <button class="buttonsHome" @click="abrirAjustes()">Ajustes</button>
 
             <li class="support-row mb-2">
               <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
@@ -139,6 +144,7 @@ import { useStore } from 'vuex' // importamos esto para poder usar el store en e
 
 import ModalBienvenida from '@/components/home/modalBienvenida.vue';
 import ModalDonacion from '@/components/home/modalDonacion.vue';
+import ModalAjustes from '@/components/home/modalAjustes.vue';
 
 
 export default {
@@ -150,6 +156,7 @@ export default {
     UserButton,
     ModalBienvenida,
     ModalDonacion,
+    ModalAjustes
   },
   setup() {
     const { isSignedIn } = useAuth()
@@ -314,6 +321,11 @@ export default {
     };
   },
   methods: {
+    abrirAjustes(){
+      this.SonidoTecla()
+      this.$store.state.StoreModalAjustes = true
+    },
+
     iniciarAudio() {
       if (!this.audioIniciado) {
         audioService_soundTrack.play();
@@ -384,7 +396,7 @@ export default {
     // console.log("El resultado de la tirada de los modals ha sido", this.resultadoAnuncio)
     this.activeUsers();
     this.rellenarTextosegunIdioma();
-    // this.iniciarAudio(); TODO,  descomentar esto, por ahora lo comento para que no me queme la cabeza
+    this.iniciarAudio();
 
   },
   updated(){

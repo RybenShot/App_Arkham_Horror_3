@@ -7,6 +7,8 @@ export default createStore({
     contadorVisitasTotales: null,
     StoreModalBienvenida: true,
     StoreModalDonacion: true,
+    StoreModalAjustes: false,
+    musicaActiva: true,
 
     //modalCreditos: false, ahora mismo en desuso, pero proximamente se usara
 
@@ -387,6 +389,10 @@ export default createStore({
   },
 
   mutations: {
+    // motacion para activar-desactivar soundtrack
+    SET_MUSICA_ACTIVA(state, valor) {
+      state.musicaActiva = valor;
+    },
     // Mutation para modificar el dinero (sumar o restar)
     updateMoney(state, cantidad) {
       state.datosPJactual.atributes.money += cantidad;

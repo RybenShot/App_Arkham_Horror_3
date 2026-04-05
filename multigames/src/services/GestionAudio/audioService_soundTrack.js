@@ -6,8 +6,14 @@ const soundtrack = new Howl({
   volume: 0.5  // volumen inicial
 });
 
+let AudioSoundtrackOn = true;
+
 export const audioService_soundTrack = {
-  play()       { if (!soundtrack.playing()) soundtrack.play(); },
+  play(){ 
+    if ( !soundtrack.playing() && AudioSoundtrackOn ){
+      soundtrack.play()
+    }
+  },
   stop()       { soundtrack.stop(); },
   pause()      { soundtrack.pause(); },
   
