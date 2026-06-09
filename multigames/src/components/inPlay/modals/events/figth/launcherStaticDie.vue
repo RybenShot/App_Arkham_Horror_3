@@ -52,8 +52,16 @@ export default {
   props: {
     size: {
       type: String,
-      default: 'small', 
-      validator: (value) => ['small', 'medium', 'big'].includes(value)
+      default: 'small',
+      validator: (value) => ['tiny', 'small', 'medium', 'big'].includes(value)
+    },
+    rerollable: {
+      type: Boolean,
+      default: true
+    },
+    successOnly: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -78,18 +86,31 @@ export default {
           this.isRolling = false;
           this.$emit('result', this.result);
 
-          if (this.result == 1) {
-            this.animationClass += ' pulse-red';
-          } else if (this.result == 5 || this.result === 6) {
-            this.animationClass += ' pulse-green';
-          } else if (this.result == 3 ) {
-            this.animationClass += ' pulse-yelow';
+          if (this.successOnly) {
+            const av2 = this.$store.state.AvAcierto2;
+            const av3 = this.$store.state.AvAcierto3;
+            if (
+              this.result === 6 ||
+              (this.result === 5 && av2) ||
+              (this.result === 4 && av3)
+            ) {
+              this.animationClass += ' pulse-green';
+            }
+          } else {
+            if (this.result == 1) {
+              this.animationClass += ' pulse-red';
+            } else if (this.result == 5 || this.result === 6) {
+              this.animationClass += ' pulse-green';
+            } else if (this.result == 3) {
+              this.animationClass += ' pulse-yelow';
+            }
           }
         }, 2500);
       }, 100); // Espera a que termine la transición antes de iniciar el roll
     },
 
     reRollDice(){
+      if (!this.rerollable) return;
       if (this.result == 3){
         this.rollDice();
       } else {
@@ -105,11 +126,71 @@ export default {
 </script>
 
 <style scoped>
+/* Tamaño Tiny */
+.size-tiny .dice-scene {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  perspective: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.size-tiny .dice {
+  width: 42px;
+  height: 42px;
+}
+
+.size-tiny .face {
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+}
+
+.size-tiny .dot {
+  width: 6px;
+  height: 6px;
+}
+
+.size-tiny .dot.top-left,
+.size-tiny .dot.bottom-left,
+.size-tiny .dot.middle-left {
+  left: 7px;
+}
+
+.size-tiny .dot.top-right,
+.size-tiny .dot.bottom-right,
+.size-tiny .dot.middle-right {
+  right: 7px;
+}
+
+.size-tiny .dot.top-left,
+.size-tiny .dot.top-right {
+  top: 7px;
+}
+
+.size-tiny .dot.bottom-left,
+.size-tiny .dot.bottom-right {
+  bottom: 7px;
+}
+
+.size-tiny .front  { transform: translateZ(21px); }
+.size-tiny .back   { transform: rotateY(180deg) translateZ(21px); }
+.size-tiny .right  { transform: rotateY(90deg) translateZ(21px); }
+.size-tiny .left   { transform: rotateY(-90deg) translateZ(21px); }
+.size-tiny .top    { transform: rotateX(90deg) translateZ(21px); }
+.size-tiny .bottom { transform: rotateX(-90deg) translateZ(21px); }
+
 /* Tamaño Small */
 .size-small .dice-scene {
-  width: 50px;
-  height: 150px;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
   perspective: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .size-small .dice {

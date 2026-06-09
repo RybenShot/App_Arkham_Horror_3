@@ -64,26 +64,18 @@
         <p class="has-text-centered">{{ textoInterfaz.totalDados }} : {{ this.NDeDadosExtra + this.NDadosAtributo }}</p>
          <!-- Lanzador -->
         <div class="column has-text-centered p-0">
-          <button @click="tirarDados(1)" class="button is-success is-active is-fullwidth"><strong>{{ textoInterfaz.botonTirar }}</strong></button>
+          <button @click="tirarDados()" class="button is-success is-active is-fullwidth"><strong>{{ textoInterfaz.botonTirar }}</strong></button>
         </div>
       </div>
 
     </div>
     
     <!-- Resultados -->
-    <div class="resultados mx-2">
+    <div v-if="showDice" class="resultados mx-2">
       <hr class="my-1">
-      <div id="resultados-css" class="container">
-        <!-- Aqui pintamos todos los resultados, OJO!! enseñamos el array gracias a la funcion "TodosLosResultados", si pusieramos aqui el array no hace na -->
-        <div v-for="item in resultados" :key="item">
-          <p class=" resultado-css has-text-white">
-            <i v-if="item == 1" class="fa-2x fas fa-dice-one"></i>
-            <i v-if="item == 2" class="fa-2x fas fa-dice-two"></i>
-            <i v-if="item == 3" class="fa-2x fas fa-dice-three"></i>
-            <i v-if="item == 4" class="fa-2x fas fa-dice-four" :class="{'acierto': this.$store.state.AvAcierto3}"></i>
-            <i v-if="item == 5" class="fa-2x fas fa-dice-five" :class="{'acierto': this.$store.state.AvAcierto2}"></i>
-            <i v-if="item == 6" class="acierto fa-2x fas fa-dice-six"></i>
-          </p>
+      <div class="columns is-mobile is-multiline is-centered">
+        <div v-for="(d, index) in NDadosTotal" :key="index" class="column is-narrow">
+          <staticDie :ref="`diceRoller${index}`" size="tiny" :rerollable="false" :success-only="true" @result="handleDiceResult" />
         </div>
       </div>
     </div>
@@ -111,8 +103,11 @@
 </template>
 
 <script>
+import staticDie from "@/components/inPlay/modals/events/figth/launcherStaticDie.vue";
+
 export default {
   name: "TiraDados",
+  components: { staticDie },
   data(){
     return{
       //Atributo activado
@@ -120,7 +115,9 @@ export default {
     // TIRADA DE DADOS
       NDadosAtributo: 0,
       NDeDadosExtra: 0,
-      resultados: [1, 6, 5, 4],
+      resultados: [],
+      diceResults: [],
+      showDice: false,
       sumaResultado: 0,
 
       modalConcentracionAbierto: false,
@@ -192,27 +189,26 @@ export default {
     }
   },
 // TIRADA DE DADOS
-    async tirarDados(min) {
-      let max = 6; // maximo de lados de dados
-      let totalDados = this.NDadosAtributo + this.NDeDadosExtra;
-      if (totalDados <= 0) {
-        // TODO notificar al usuario de que tiene que seleccionar algun atributo para tirar dados
-        return
+    async tirarDados() {
+      if (this.NDadosTotal <= 0) return;
+      this.resultados = [];
+      this.diceResults = [];
+      this.showDice = true;
+      await this.$nextTick();
+      for (let i = 0; i < this.NDadosTotal; i++) {
+        this.$refs[`diceRoller${i}`][0].rollDice();
       }
-      await this.vaciarArray(); // vaciamos el array de resultados
-      for (let i = 0; i < totalDados; i++) {
-        // un bucle normal
-        this.resultado = Math.floor(Math.random() * (min, max)) + min;
-        this.resultados.push(this.resultado); // en cada vuelta metemos el resultado ene l array
+    },
+    handleDiceResult(result) {
+      this.diceResults.push(result);
+      this.resultados.push(result);
+      if (this.diceResults.length === this.NDadosTotal) {
+        setTimeout(() => { this.comprobarResultado(); }, 500);
       }
-      // funcion que se ejecuta por si el jugador estuviera bendecido o maldecido
-      setTimeout(() => {
-        this.comprobarResultado();
-      }, 3000);
-      
     },
     vaciarArray: function () {
-      this.resultados = []; // vaciamos el array de resultado
+      this.resultados = [];
+      this.diceResults = [];
       this.sumaResultado = 0;
     },
 
@@ -264,6 +260,9 @@ export default {
     }
   },
   computed: {
+    NDadosTotal() {
+      return this.NDadosAtributo + this.NDeDadosExtra;
+    },
     // Recupera las fichas desde Vuex usando el getter
     //! ESTA FUNCION SE USA COMO VARIABLE
     concentracionFichas() {
