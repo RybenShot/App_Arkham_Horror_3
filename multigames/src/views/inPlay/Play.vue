@@ -59,6 +59,9 @@ import { invitationService } from '@/services/invitationService.js';
 import { hostPollingService } from '@/services/hostPollingService.js';
 import { apiService } from '@/services/api.js';
 
+//SoundTrack
+import { audioService_audioInPlay } from '@/services/GestionAudio/audioService_soundTrack.js';
+
 
 export default {
   name: "Play",
@@ -80,6 +83,7 @@ export default {
   data(){
     return{
       // hostInteractionData: null, // variable donde se guardará todos los datos de la interaccion al aceptar
+      audioIniciado: false,
 
       textoInterfaz: {
         textNoLogin: '',
@@ -113,6 +117,13 @@ export default {
         
       } catch (error) {
         console.error("Error al cargar los objetos principales del investigador", error);
+      }
+    },
+
+    iniciarAudioInPlay() {
+      if (!this.audioIniciado) {
+        audioService_audioInPlay.play();
+        this.audioIniciado = true;
       }
     },
 
@@ -181,7 +192,8 @@ export default {
     );
 
     this.serchInitialObjectsInv();
-    this.rellenarTextoSegunIdioma()
+    this.rellenarTextoSegunIdioma();
+    this.iniciarAudioInPlay()
   },
 
   beforeUnmount() {

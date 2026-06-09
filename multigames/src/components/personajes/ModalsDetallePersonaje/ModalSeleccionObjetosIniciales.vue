@@ -163,7 +163,7 @@ export default {
             this.$store.state.modalSeleccionObjetosIniciales = false;
 
             this.SonidoTecla()
-            audioService_soundTrack.stop()
+            audioService_soundTrack.endSoundTrack()
             
             // Redirigir a la partida
             this.$router.push('/PlayAH');

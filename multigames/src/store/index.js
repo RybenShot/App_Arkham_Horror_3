@@ -168,7 +168,7 @@ export default createStore({
       AudioRespiración: [
         { src: require('@/assets/sound/efectos_Sonido/Vida_Cordura/Respiracion_Agitada_Mujer.mp3') }
       ],
-      MusicaHambiental: false,
+      MusicaHambiental: true,
     },
     // Ajustes
     ModalConfirmacion: false,

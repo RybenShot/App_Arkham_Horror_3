@@ -5,8 +5,8 @@
 
       <div class="columns is-mobile">
         <div class="column has-text-right ">
-          <p class="title is-6 has-text-white mb-3 pt-2">{{ textoInterfaz.musicaAmb }}</p>
-          <p class="title is-6 has-text-white">{{ textoInterfaz.efectoInmersion }}</p>
+          <p class="title is-6 has-text-white mb-3 pt-2">{{ textoInterfaz.efectoInmersion }}</p>
+          <p class="title is-6 has-text-white">{{ textoInterfaz.musicaAmb }}</p>
           <p class="title is-6 has-text-white">{{ textoInterfaz.modoOnLine }}</p>
         </div>
         <div class="column has-text-left">
@@ -18,9 +18,12 @@
           </div>
           <div class="buttons has-addons m-0">
             <button :class="{'is-outlined': $store.state.PistasAudio.MusicaHambiental == false }" 
-              @click="$store.state.PistasAudio.MusicaHambiental = true" class="button is-success is-small is-selected">ON</button>
+              @click="($store.state.PistasAudio.MusicaHambiental = true), switchSoundTrackInPlay(true)" 
+              class="button is-success is-small is-selected">ON</button>
+
             <button :class="{'is-outlined': $store.state.PistasAudio.MusicaHambiental == true }" 
-              @click="$store.state.PistasAudio.MusicaHambiental = false" class="button is-danger is-small">OFF</button>
+              @click="($store.state.PistasAudio.MusicaHambiental = false), switchSoundTrackInPlay(false)" 
+              class="button is-danger is-small">OFF</button>
           </div>
           <div class="buttons has-addons">
             <button :class="{'is-outlined': $store.state.ModoOnLine == false }" 
@@ -71,10 +74,15 @@ import { useUser, useAuth } from '@clerk/vue'
 import { onMounted } from 'vue'
 import { useStore } from 'vuex' // importamos esto para poder usar el store en el setup
 
+//SoundTrack
+import { audioService_audioInPlay } from '@/services/GestionAudio/audioService_soundTrack.js';
+
+
 export default {
   name: "AjustesPlay",
   data(){
     return{
+      audioIniciado: false,
       textoInterfaz:{
         titulo: "",
         musicaAmb:"",
@@ -110,6 +118,13 @@ export default {
   },
   methods:{
     SonidoTecla() {audioService_effects.playTecla()},
+    switchSoundTrackInPlay(activar) {
+      if (activar) {
+        audioService_audioInPlay.play();
+      } else {
+        audioService_audioInPlay.endSoundInPlay();
+      }
+    },
 
     backToSelectInv(){
       this.SonidoTecla()
