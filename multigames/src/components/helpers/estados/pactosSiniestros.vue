@@ -18,10 +18,12 @@
                 <p class="subtitle is-7 has-text-right mt-2">{{ textoInterfaz.expansion }}</p>
               </div>
 
-              <div v-if="verResultadoPacto">
-                <p class="title is-1 has-text-centered resultadoPactosiniestro">{{ ResultadoPacto }}</p>
-                <div v-if="ResultadoPacto == 1"> <p class="subtitle is-3 titlePactosiniestro">{{ textoInterfaz.descripcionDestino }}</p> </div>
-                <div v-else> <p class="subtitle is-3 titlePactosiniestro">{{ textoInterfaz.descripcionSuerte }}</p> </div>
+              <div v-if="verDado" class="has-text-centered">
+                <staticDie ref="diceRoller" size="medium" @result="handleDiceResult" />
+                <div v-if="ResultadoPacto !== null" class="mt-3">
+                  <p v-if="ResultadoPacto == 1" class="subtitle is-3 titlePactosiniestro">{{ textoInterfaz.descripcionDestino }}</p>
+                  <p v-else class="subtitle is-3 titlePactosiniestro">{{ textoInterfaz.descripcionSuerte }}</p>
+                </div>
               </div>
 
               <div v-if="verPactoSiniestro">
@@ -48,7 +50,7 @@
             <!-- FASE 1 -->
             <div v-if="verCartaPacto" class="field has-addons columns is-mobile is-gapless" >
               <p class="control column is-half">
-                <button @click=" tirarPacto(1), (verResultadoPacto = true), (verCartaPacto = false)" class="button is-danger is-fullwidth" >{{ textoInterfaz.botones.tirar }}</button>
+                <button @click="(verCartaPacto = false), (verDado = true)" class="button is-danger is-fullwidth" >{{ textoInterfaz.botones.tirar }}</button>
               </p>
 
               <p class="control column is-half">
@@ -56,25 +58,20 @@
               </p>
             </div>
 
-            <!-- FASE 2 -->
-            <div v-if="verResultadoPacto">
-              <button v-if="ResultadoPacto != 1"
-                @click="
-                  (this.$store.state.modalPacto = false),
-                  (ResultadoPacto = null),
-                  (verResultadoPacto = false),
-                  (verCartaPacto = true)"
-                class="button is-fullwidth is-12 is-link column">
-                <p>{{ textoInterfaz.botones.volver }}</p>
+            <!-- FASE DADO -->
+            <div v-if="verDado">
+              <button v-if="!isRolled" class="button is-danger is-fullwidth" @click="throwDie()">{{ textoInterfaz.botones.tirar }}</button>
+
+              <button v-if="ResultadoPacto !== null && ResultadoPacto != 1"
+                @click="(this.$store.state.modalPacto = false), (ResultadoPacto = null), (verDado = false), (isRolled = false), (verCartaPacto = true)"
+                class="button is-fullwidth is-link">
+                {{ textoInterfaz.botones.volver }}
               </button>
 
               <button v-if="ResultadoPacto == 1"
-                @click="
-                  this.seleccionarPacto(),
-                  (verResultadoPacto = false),
-                  (verPactoSiniestro = true)"
-                class="button is-fullwidth is-12 is-link column">
-                <p>{{ textoInterfaz.botones.verPacto }}</p>
+                @click="this.seleccionarPacto(), (verDado = false), (verPactoSiniestro = true)"
+                class="button is-fullwidth is-link">
+                {{ textoInterfaz.botones.verPacto }}
               </button>
             </div>
 
@@ -100,12 +97,16 @@
 </template>
 
 <script>
+import staticDie from "@/components/inPlay/modals/events/figth/launcherStaticDie.vue";
+
 export default {
   name: "modal Pacto Suniestro",
+  components: { staticDie },
   data() {
     return {
       verCartaPacto: true,
-      verResultadoPacto: false,
+      verDado: false,
+      isRolled: false,
       ResultadoPacto: null,
       verPactoSiniestro: false,
 
@@ -294,10 +295,12 @@ export default {
         this.textoInterfaz.botones.verPacto = "See Dark Pact";
       }
     },
-    tirarPacto(min) {
-      let max = 6; // maximo de lados de dados
-      this.ResultadoPacto = Math.floor(Math.random() * (min, max)) + min;
-      console.log(`Resultado de tirada para pacto ${this.ResultadoPacto}`)
+    throwDie() {
+      this.isRolled = true;
+      this.$refs.diceRoller.rollDice();
+    },
+    handleDiceResult(result) {
+      this.ResultadoPacto = result;
     },
     // SELECCION PACTO SINIESTRO
     activarEstados(NdePacto){
