@@ -26,7 +26,12 @@
               <div v-if="pertenenciasIniciales">
                 <!-- Objetos requeridos -->
                 <div class="objects-container">
-                  <div v-for="object in responseObjects.objects" :key="object.id" class="object-item" @click="seeCard(object)">
+                  <div
+                    v-for="(object, index) in responseObjects.objects"
+                    :key="object.id"
+                    class="object-item deal-in"
+                    :style="getCardStyle(index, responseObjects.objects.length)"
+                    @click="seeCard(object)">
                     <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
@@ -44,16 +49,26 @@
                 
                 <!-- Objetos opcionales -->
                 <div class="objects-container">
-                  <div v-for="object in responseObjects.optionalObjects" :key="object.id" class="object-item" @click="seeCard(object)">
+                  <div
+                    v-for="(object, index) in responseObjects.optionalObjects"
+                    :key="object.id"
+                    class="object-item deal-in"
+                    :style="getCardStyle(index, responseObjects.optionalObjects.length)"
+                    @click="seeCard(object)">
                     <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
               </div>
 
               <!-- Pertenencias ya construidas de invOnLine -->
-              <div v-else class="has-text-centered"> 
+              <div v-else class="has-text-centered">
                 <div class="objects-container">
-                  <div v-for="object in this.$store.state.datosPJactual.possessions" :key="object.id" class="object-item" @click="seeCard(object)">
+                  <div
+                    v-for="(object, index) in this.$store.state.datosPJactual.possessions"
+                    :key="object.id"
+                    class="object-item deal-in"
+                    :style="getCardStyle(index, $store.state.datosPJactual.possessions.length)"
+                    @click="seeCard(object)">
                     <CardObject :object="object" @card-clicked="seeCard(object)"/>
                   </div>
                 </div>
@@ -134,6 +149,14 @@ export default {
         console.error("Error al cargar los objetos principales del investigador", error);
       }
     },
+    getCardStyle(index, total) {
+      const mid = (total - 1) / 2;
+      const rotation = (index - mid) * 5; // 5° entre carta y carta
+      return {
+        '--card-rotation': `${rotation}deg`,
+        animationDelay: `${index * 0.08}s`,
+      };
+    },
     seeCard( object ){
       this.$store.state.detalleCartaObjeto = object;
       // console.log(this.$store.state.detalleCartaObjeto)
@@ -182,5 +205,29 @@ overflow: hidden;
   text-align: center;
   margin-bottom: 1rem;
   cursor: pointer;
+  transform: rotate(var(--card-rotation, 0deg));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.object-item:hover {
+  transform: rotate(0deg) translateY(-6px) scale(1.05);
+  z-index: 10;
+  position: relative;
+}
+
+/* Animación de reparto de cartas */
+.deal-in {
+  animation: dealCard 0.45s ease-out both;
+}
+
+@keyframes dealCard {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.7) rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--card-rotation, 0deg));
+  }
 }
 </style>

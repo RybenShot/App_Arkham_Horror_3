@@ -1,15 +1,14 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background"></div>
-    <div class="modal-container">
-      <div class="modal-card mx-1">
+    <div class="modal-card mx-1" style="max-height:92dvh; max-height:92vh; display:flex; flex-direction:column; width:95vw;">
         <!-- HEADER -->
         <header class="modal-card-head BGPertenencias">
           <p class="modal-card-title has-text-white title is-5 pt-2 m-0">{{ textoInterfaz.titulo }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="cancelar"></i>
         </header>
 
-        <section class="modal-card-body p-4">
+        <section class="modal-card-body p-4" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;">
           <!-- Nombre del investigador -->
           <p class="has-text-centered title is-italic mb-4">
             {{ this.$store.state.datosPJactual.name }}
@@ -55,11 +54,11 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="p-1 has-background-white">
+        <footer class="p-1 has-background-white" style="flex-shrink:0;">
           <div class="field has-addons columns is-mobile is-gapless">
-            <button 
-              @click="confirmarSeleccion" 
-                class="button is-success is-fullwidth" 
+            <button
+              @click="confirmarSeleccion"
+                class="button is-success is-fullwidth"
                 :class="{ 'is-loading': guardando }" >
               <i class="fas fa-play mr-2"></i> {{ textoInterfaz.comenzarPartida }}
             </button>
@@ -68,7 +67,6 @@
             </button>
           </div>
         </footer>
-      </div>
     </div>
   </div>
 </template>
@@ -244,14 +242,27 @@ export default {
   margin-right: 0.25rem;
 }
 
+/* El modal ocupa toda la altura disponible y el body hace scroll */
+.modal-card-full {
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+}
+
+.modal-card-full .modal-card-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .modal-container {
     max-width: 95vw;
   }
-  
-  .modal-card-body {
-    padding: 1rem;
+
+  .modal-card-full {
+    max-height: 95vh;
   }
 }
 </style>

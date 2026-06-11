@@ -93,8 +93,8 @@ export default {
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  padding: 0.75rem;
-  border-radius: 12px;
+  padding: 0.4rem;
+  border-radius: 8px;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   border: 2px solid transparent;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -139,9 +139,9 @@ export default {
 }
 
 .card-image {
-  max-width: 120px;
+  max-width: 80px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease;
 }
@@ -151,7 +151,7 @@ export default {
 }
 
 .card-info {
-  margin-top: 0.75rem;
+  margin-top: 0.35rem;
   width: 100%;
   text-align: center;
 }
