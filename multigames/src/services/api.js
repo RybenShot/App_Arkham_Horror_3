@@ -252,27 +252,10 @@ export const apiService = {
   // votaciones de like y dislike
   async getLikeDislike (idMap){
     try {
-      // console.log('🔍 --- getLikeDislike --- idMap:', idMap)
       const response = await axios.get(`${API_URL}/maps/likeDislike/${idMap}`)
-
-      const { likes, dislikes, NVotesLikeDislike } = response.data;
-
-      // console.log('🔍 --- getLikeDislike --- recibid:', response.data)
-
-      // Actualizamos el store de un solo golpe:
-      this.$store.state.datosMapa.extraData.likes = likes;
-      this.$store.state.datosMapa.extraData.dislikes = dislikes;
-      this.$store.state.datosMapa.extraData.NVotesLikeDislike = NVotesLikeDislike;
-
-      // console.log('🔍 --- getLikeDislike --- datos actualizados en el store:', this.$store.state.datosMapa.extraData);
-      
       return response.data
     } catch (error) {
       console.error(`❌ Error al obtener las votaciones`, error);
-      if (error.response) {
-        console.error('   Status:', error.response.status);
-        console.error('   Data:', error.response.data);
-      }
       throw error;
     }
   },

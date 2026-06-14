@@ -193,8 +193,22 @@ export default {
       return this.$store.state.datosMapa.id
     }
   },
-  mounted(){
+  async mounted(){
     this.rellenarTextoSegunIdioma();
+    const idMap = this.$store.state.datosMapa.idMap;
+    if (!idMap) return;
+    try {
+      const likeData = await apiService.getLikeDislike(idMap);
+      this.$store.state.datosMapa.extraData.likes = likeData.likes || 0;
+      this.$store.state.datosMapa.extraData.dislikes = likeData.dislikes || 0;
+      this.$store.state.datosMapa.extraData.NVotesLikeDislike = likeData.NVotesLikeDislike || 0;
+      const timeData = await apiService.getTimeEstimated(idMap);
+      this.$store.state.datosMapa.extraData.timeEstimated = timeData.timeEstimated || 0;
+      const diffData = await apiService.getDifficultyMap(idMap);
+      this.$store.state.datosMapa.extraData.difficulty = diffData.difficulty || 0;
+    } catch (error) {
+      console.error('❌ Error cargando valoraciones del mapa:', error);
+    }
   }
 }
 </script>
