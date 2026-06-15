@@ -75,18 +75,22 @@
                   </section>
               </b-tab-item>
               <b-tab-item>
-                  <template #header>
-                      <b-icon icon="source-pull"></b-icon>
-                      <span> Investigadores <b-tag rounded> {{this.getInvestigadoresCount()}} </b-tag> </span>
-                  </template>
+                <template #header>
+                  <b-icon icon="source-pull"></b-icon>
+                  <span> Investigadores <b-tag rounded> {{ this.getInvestigadoresCount() }} </b-tag> </span>
+                </template>
 
-                  <section>
-                    <p class="subtitle has-text-white maps-title my-2">Lista investigadores</p>
+                <section>
+                  <p class="subtitle has-text-white maps-title my-2">Lista investigadores</p>
 
-                    <div class="PersonajesList ">
-                      <InvestigatorCard v-for="investigator in getInvestigadores()" :key="investigator.id" :investigator="investigator" />
-                    </div>
-                  </section>
+                  <div v-if="getInvestigadores().length === 0" class="has-text-white no-maps-message">
+                    {{ $store.state.lenguaje === 'español' ? 'No tienes investigadores guardados.' : 'No saved investigators.' }}
+                  </div>
+
+                  <div class="PersonajesList">
+                    <InvestigatorCard v-for="investigator in getInvestigadores()" :key="investigator.id" :investigator="investigator" />
+                  </div>
+                </section>
               </b-tab-item>
           </b-tabs>
         <!-- seccion de investigadores OnLine -->
@@ -171,10 +175,7 @@ export default {
   methods: {
     // Obtener lista de investigadores
     getInvestigadores() {
-      if (this.userInv && this.userInv.length > 0 && this.userInv[0].investigadoresOnLine) {
-        return this.userInv[0].investigadoresOnLine;
-      }
-      return [];
+      return Array.isArray(this.userInv) ? this.userInv : [];
     },
     
     // Obtener cantidad de investigadores

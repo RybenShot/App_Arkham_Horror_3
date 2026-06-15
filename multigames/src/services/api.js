@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
-const API_URL = process.env.VUE_APP_API_URL_DEV;
+const API_URL = process.env.VUE_APP_API_URL_LOCAL ;
+//const API_URL = process.env.VUE_APP_API_URL_DEV;
 // const API_URL = process.env.VUE_APP_API_URL_PROD ;
 
 
@@ -251,11 +251,13 @@ export const apiService = {
   // VOTACIONES
   // votaciones de like y dislike
   async getLikeDislike (idMap){
+    // console.log('🔍 [api] getLikeDislike - idMap recibido:', idMap);
     try {
       const response = await axios.get(`${API_URL}/maps/likeDislike/${idMap}`)
+      // console.log('🔍 [api] getLikeDislike - respuesta:', response.data);
       return response.data
     } catch (error) {
-      console.error(`❌ Error al obtener las votaciones`, error);
+      // console.error(`❌ Error al obtener las votaciones`, error);
       throw error;
     }
   },
@@ -276,12 +278,13 @@ export const apiService = {
   
   // get tiempo estimado
   async getTimeEstimated (idMap){
+    // console.log('🔍 [api] getTimeEstimated - idMap:', idMap);
     try {
       const response = await axios.get(`${API_URL}/maps/timeEstimated/${idMap}`)
-      // console.log('🔍 --- getTimeEstimated --- recibid:', response.data)
+      // console.log('🔍 [api] getTimeEstimated - respuesta:', response.data);
       return response.data
     } catch (error) {
-      console.error(`❌ Error al obtener el tiempo estimado`, error);
+      // console.error(`❌ Error al obtener el tiempo estimado`, error);
       throw error;
     }
   },
@@ -302,12 +305,13 @@ export const apiService = {
 
   // get dificultad
   async getDifficultyMap (idMap){
+    // console.log('🔍 [api] getDifficultyMap - idMap:', idMap);
     try {
       const response = await axios.get(`${API_URL}/maps/difficultyMap/${idMap}`)
-      // console.log('🔍 --- getDifficultyMap --- recibid:', response.data)
+      // console.log('🔍 [api] getDifficultyMap - respuesta:', response.data);
       return response.data
     } catch (error) {
-      console.error(`❌ getDifficultyMap(api.js) - Error al obtener la dificultad`, error);
+      // console.error(`❌ getDifficultyMap(api.js) - Error al obtener la dificultad`, error);
       throw error;
     }
   },
@@ -621,5 +625,48 @@ export const apiService = {
       console.error(`❌ - sendHitResults - Error al enviar los aciertos:`, error.response.data.message);
       throw error;
     }
-  }
+  },
+
+  // INVESTIGADORES - VOTACIONES
+  async getLikeDislikeInv (idInv){
+    try {
+      const response = await axios.get(`${API_URL}/inv/likeDislike/${idInv}`)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener las votaciones del investigador`, error);
+      throw error;
+    }
+  },
+
+  async postLikeDislikeInv (idInv, idUser, value){
+    try {
+      const payload = { idInv, idUser, value }
+      const response = await axios.post(`${API_URL}/inv/likeDislike`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al votar investigador`, error);
+      throw error;
+    }
+  },
+
+  async getCommentsInv (idInv){
+    try {
+      const response = await axios.get(`${API_URL}/inv/comments/${idInv}`)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener comentarios del investigador`, error);
+      throw error;
+    }
+  },
+
+  async postCommentInv (idInv, idUser, nameUser, comment){
+    try {
+      const payload = { idInv, idUser, nameUser, comment }
+      const response = await axios.post(`${API_URL}/inv/comments`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al comentar investigador`, error);
+      throw error;
+    }
+  },
 };

@@ -237,6 +237,7 @@ export default createStore({
       }
     },
     modalComunityMap: false,
+    modalComunityInv: false,
     modalInvRec: false,
     modalDifficultyTime: false,
 

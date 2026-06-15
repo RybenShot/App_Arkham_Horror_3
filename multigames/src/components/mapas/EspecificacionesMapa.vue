@@ -196,18 +196,31 @@ export default {
   async mounted(){
     this.rellenarTextoSegunIdioma();
     const idMap = this.$store.state.datosMapa.idMap;
-    if (!idMap) return;
+
+    if (idMap === null || idMap === undefined) {
+      // console.warn('⚠️ [Espec] idMap es null/undefined → abortando fetch');
+      return;
+    }
+
     try {
       const likeData = await apiService.getLikeDislike(idMap);
+      // console.log('🔍 [Espec] likeData recibido de la API:', likeData);
       this.$store.state.datosMapa.extraData.likes = likeData.likes || 0;
       this.$store.state.datosMapa.extraData.dislikes = likeData.dislikes || 0;
       this.$store.state.datosMapa.extraData.NVotesLikeDislike = likeData.NVotesLikeDislike || 0;
+      // console.log('🔍 [Espec] extraData tras likes:', JSON.stringify(this.$store.state.datosMapa.extraData));
+
       const timeData = await apiService.getTimeEstimated(idMap);
+      // console.log('🔍 [Espec] timeData recibido:', timeData);
       this.$store.state.datosMapa.extraData.timeEstimated = timeData.timeEstimated || 0;
+
       const diffData = await apiService.getDifficultyMap(idMap);
+      // console.log('🔍 [Espec] diffData recibido:', diffData);
       this.$store.state.datosMapa.extraData.difficulty = diffData.difficulty || 0;
+
+      // console.log('🔍 [Espec] extraData FINAL:', JSON.stringify(this.$store.state.datosMapa.extraData));
     } catch (error) {
-      console.error('❌ Error cargando valoraciones del mapa:', error);
+      // console.error('❌ [Espec] Error cargando valoraciones:', error);
     }
   }
 }
