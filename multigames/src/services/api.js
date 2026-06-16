@@ -669,4 +669,48 @@ export const apiService = {
       throw error;
     }
   },
+
+  async sendTradeOffer(idInteraction, idUser, fromHost, fromGuest) {
+      try {
+          const payload = { idUser, fromHost, fromGuest }
+          const response = await axios.put(`${API_URL}/interactions/trade/offer/${idInteraction}`, payload)
+          return response.data
+      } catch (error) {
+          console.error(`❌ sendTradeOffer(api.js) error:`, error)
+          throw error
+      }
+  },
+
+  async guestRespondToTradeOffer(idInteraction, idUser, response, counterFromHost = [], counterFromGuest = []) {
+      try {
+          const payload = { idUser, response, counterFromHost, counterFromGuest }
+          const responseApi = await axios.put(`${API_URL}/interactions/trade/guestRespond/${idInteraction}`, payload)
+          return responseApi.data
+      } catch (error) {
+          console.error(`❌ guestRespondToTradeOffer(api.js) error:`, error)
+          throw error
+      }
+  },
+
+  async hostResolveCounteroffer(idInteraction, idUser, response) {
+      try {
+          const payload = { idUser, response }
+          const responseApi = await axios.put(`${API_URL}/interactions/trade/hostResolve/${idInteraction}`, payload)
+          return responseApi.data
+      } catch (error) {
+          console.error(`❌ hostResolveCounteroffer(api.js) error:`, error)
+          throw error
+      }
+  },
+
+  async cancelTrade(idInteraction, idUser) {
+      try {
+          const payload = { idUser }
+          const response = await axios.put(`${API_URL}/interactions/trade/cancel/${idInteraction}`, payload)
+          return response.data
+      } catch (error) {
+          console.error(`❌ cancelTrade(api.js) error:`, error)
+          throw error
+      }
+  },
 };
