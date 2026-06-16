@@ -30,8 +30,8 @@
               </div>
               
               <div class="column is-4">
-                <button @click="selectInteractionDisabled('trade')" class="button is-info is-fullwidth "  
-                :class="{ 'is-outlined': selectedIntention !== 'trade' }" >  {{ textoInterfaz.botones.intercambio }} </button>
+                <button @click="selectedIntention = 'trade'" class="button is-info is-fullwidth "  
+                  :class="{ 'is-outlined': selectedIntention !== 'trade' }" >  {{ textoInterfaz.botones.intercambio }} </button>
               </div>
               
               <div class="column is-4">
@@ -153,18 +153,14 @@ export default {
     },
 
     selectInteractionDisabled(type){
-      if(type === 'trade' ){
-        this.$buefy.toast.open({
-          message: this.$store.state.lenguaje === 'español' ? 'intercambio proximamente ...' : 'trade coming soon ...',
-          type: 'is-warning',
-          duration: 3000
-        });
-      } else if(type === 'resonance'){
+      if(type === 'resonance'){
         this.$buefy.toast.open({
           message: this.$store.state.lenguaje === 'español' ? 'resonancia proximamente ...' : 'resonance coming soon ...',
           type: 'is-warning',
           duration: 3000
         });
+      } else {
+        this.selectedIntention = type
       }
     },
 
@@ -184,7 +180,12 @@ export default {
         const idUserHost = this.$store.state.IDUserHost;
         const nameUserHost = this.$store.state.nameUserHost;
         const idUserGuest = this.foundUser.idUser;
-        const invData = this.$store.state.datosPJactual;
+        const invData = { ...this.$store.state.datosPJactual, possessionsInPlay: this.$store.state.possessionsInPlay }
+        // === DEBUG ===
+        console.log('🐛 [DEBUG interactionsOnLine] possessionsInPlay que se envía:', this.$store.state.possessionsInPlay)
+        console.log('🐛 [DEBUG interactionsOnLine] invData completo:', invData)
+        // === FIN DEBUG ===
+
         const type = this.selectedIntention; // Usar la intención seleccionada
         const idLocationMap = this.currentZone;
 

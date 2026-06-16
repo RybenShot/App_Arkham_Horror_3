@@ -304,14 +304,21 @@ export default {
       this.isHost = interaction.idUserHost === myId
       console.log('👤 [initPlayers] isHost:', this.isHost, '| myId:', myId)
 
+      const getItems = (invData) => {
+        if (Array.isArray(invData?.possessionsInPlay) && invData.possessionsInPlay.length > 0) return invData.possessionsInPlay
+        if (Array.isArray(invData?.possessions)) return invData.possessions
+        console.warn('⚠️ [getItems] no se encontraron objetos en:', invData)
+        return []
+      }
+
       if (this.isHost) {
         this.rivalName = interaction.nameUserGest || 'Invitado'
-        this.myPossessions = interaction.event.invDataHost?.possessionsInPlay || []
-        this.rivalPossessions = interaction.event.invDataGest?.possessionsInPlay || []
+        this.myPossessions = getItems(interaction.event.invDataHost)
+        this.rivalPossessions = getItems(interaction.event.invDataGest)
       } else {
         this.rivalName = interaction.nameUserHost || 'Anfitrión'
-        this.myPossessions = interaction.event.invDataGest?.possessionsInPlay || []
-        this.rivalPossessions = interaction.event.invDataHost?.possessionsInPlay || []
+        this.myPossessions = getItems(interaction.event.invDataGest)
+        this.rivalPossessions = getItems(interaction.event.invDataHost)
       }
       console.log('💼 [initPlayers] mis objetos:', this.myPossessions.length, '| objetos rival:', this.rivalPossessions.length)
     },
@@ -378,7 +385,9 @@ export default {
       this.tradeApplied = true
       console.log('🤝 [applyTrade] aplicando trato:', finalDeal)
 
-      const possessions = this.$store.state.datosPJactual.possessionsInPlay || []
+      const possessions = Array.isArray(this.$store.state.datosPJactual.possessions)
+        ? [...this.$store.state.datosPJactual.possessions]
+        : [...(this.$store.state.possessionsInPlay || [])]
       let itemsReceived = []
       let itemsLost = []
 
@@ -393,7 +402,11 @@ export default {
       const lostIds = itemsLost.map(i => i.id)
       const newPossessions = possessions.filter(p => !lostIds.includes(p.id))
       itemsReceived.forEach(item => newPossessions.push(item))
-      this.$store.state.datosPJactual.possessionsInPlay = newPossessions
+      if (Array.isArray(this.$store.state.datosPJactual.possessions)) {
+        this.$store.state.datosPJactual.possessions = newPossessions
+      } else {
+        this.$store.state.possessionsInPlay = newPossessions
+      }
 
       this.myNewItems = itemsReceived
       this.myLostItems = itemsLost

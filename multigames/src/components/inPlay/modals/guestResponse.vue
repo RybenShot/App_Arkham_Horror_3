@@ -195,7 +195,7 @@ export default {
         const idInteraction = this.interactionData.idInteraccionOnLine;
         const idUser = this.$store.state.IDUserHost;
         const response = userResponse || null;
-        const invData = this.$store.state.datosPJactual;
+        const invData = { ...this.$store.state.datosPJactual, possessionsInPlay: this.$store.state.possessionsInPlay }
 
         // console.log('invitacion respondida con:', { idInteraction, idUser, response });
         const result = await this.respondInteractionToAPI(idInteraction, idUser, response, invData);
