@@ -110,6 +110,7 @@ export default {
             myIdUser: this.$store.state.IDUserHost,
             idInteraction: this.$store.state.interactionData.idInteraccionOnLine,
             isRolled: false,
+            reward: null,
 
             myData:{
                 name: null,
@@ -243,19 +244,23 @@ export default {
         },
 
         applyReward(rewardData, isWinner) {
+            console.log('🎁 [applyReward] rewardData recibido:', rewardData, '| isWinner:', isWinner)
             const types = ['money', 'remnant', 'clue']
-            const rewardType = rewardData?.type || types[Math.floor(Math.random() * types.length)]
+            const rewardType = (rewardData?.type && types.includes(rewardData.type))
+                ? rewardData.type
+                : types[Math.floor(Math.random() * types.length)]
             this.reward = rewardType
 
             const inv = this.$store.state.datosPJactual.atributes
             const amount = rewardData?.amount ?? (rewardType === 'money' ? 3 : rewardType === 'remnant' ? 2 : 1)
 
+            console.log(`🎁 [applyReward] tipo: ${rewardType} | cantidad: ${amount} | valor antes: ${inv[rewardType]}`)
             if (isWinner) {
                 inv[rewardType] += amount
             } else {
                 inv[rewardType] = Math.max(0, inv[rewardType] - amount)
             }
-
+            console.log(`🎁 [applyReward] valor después: ${inv[rewardType]}`)
             this.saveInvestigadorToAPI()
         },
 
@@ -263,13 +268,16 @@ export default {
             try {
                 const idUser = this.$store.state.IDUserHost
                 const payload = { ...this.$store.state.datosPJactual, idUser }
+                console.log('💾 [saveInvestigadorToAPI] guardando investigador para user:', idUser)
                 await apiService.postInvOnLine(payload)
+                console.log('✅ [saveInvestigadorToAPI] guardado correctamente')
             } catch (e) {
-                console.error('Error al guardar investigador tras el combate:', e)
+                console.error('❌ [saveInvestigadorToAPI] Error:', e)
             }
         },
 
         comprobarTurno(){
+            console.log('🔄 [comprobarTurno] iniciando polling para:', this.myIdUser)
             this.pollingStatusInteraction = setInterval(async () => {
                 const response = await apiService.checkMyTurn(this.idInteraction, this.myIdUser);
                 // console.log("Estado de la interacción:", response);
@@ -355,41 +363,38 @@ export default {
             const idUser = this.$store.state.IDUserHost;
             const hits = this.Naciertos
 
-            // console.error("Enviando resultados de dados al backend:", hits);
+            console.log('📤 [sendResultToBack] enviando aciertos:', hits)
 
             try {
                 const response = await apiService.sendHitResults(idInteraction, idUser, hits);
+                console.log('📤 [sendResultToBack] respuesta backend:', response.data)
 
-                // console.error("Respuesta del backend:", response.data);
-
-                if (response.data.status == true) {
+                if (response.data.status === true) {
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `Resultados enviados correctamente` : 'Results sent successfully',
                         type: 'is-success',
                         duration: 3000
                     });
-                    this.status = "onLoading"; // Volver a estado de carga esperando al otro jugador
+                    this.status = "onLoading";
                     this.isRolled = false;
-                    this.diceResults = []; // Resetear resultados de dados
-                    this.comprobarTurno(); // Volver a comprobar turno
+                    this.diceResults = [];
+                    this.comprobarTurno();
                     this.updateLifes()
-                    // actualizar turnos en UI
                     this.rivalData.turn = true
                     this.myData.turn = false
-                } else if (response.data.status == false) {
+                } else {
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `Ya has mandado los aciertos` : 'You have already sent the hits',
                         type: 'is-danger',
                         duration: 3000
                     });
-                    this.status = "onLoading"; // Volver a estado de carga esperando al otro jugador
+                    this.status = "onLoading";
                     this.isRolled = false;
-                    this.diceResults = []; // Resetear resultados de dados
-                    this.comprobarTurno(); // Volver a comprobar turno
+                    this.diceResults = [];
+                    this.comprobarTurno();
                 }
-
-                // console.log('Resultado enviado al backend:', response);
             } catch (error) {
+                console.error('❌ [sendResultToBack] error:', error)
                 this.$buefy.toast.open({
                     message: this.$store.state.lenguaje === 'español' ? `Error: ${error.response}` : 'Error sending dice result',
                     type: 'is-danger',
