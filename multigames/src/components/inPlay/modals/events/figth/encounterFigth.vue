@@ -242,18 +242,30 @@ export default {
             }
         },
 
-        // Helper para ver que ha ganado o perdido
-        getReward(status){
-            const randomIndex = Math.floor(Math.random() * 3);
-            const rewards = ['money', 'remnant', 'clue'];
-            this.reward = rewards[randomIndex];
+        applyReward(rewardData, isWinner) {
+            const types = ['money', 'remnant', 'clue']
+            const rewardType = rewardData?.type || types[Math.floor(Math.random() * types.length)]
+            this.reward = rewardType
 
-            if (this.reward == 'money') {
-                this.$store.state.datosPJactual.atributes.money += (status == "you won") ? 2 : -2;
-            } else if (this.reward == 'remnant') {
-                this.$store.state.datosPJactual.atributes.remnant += (status == "you won") ? 1 : -1;
-            } else if (this.reward == 'clue') {
-                this.$store.state.datosPJactual.atributes.clue += (status == "you won") ? 1 : -1;
+            const inv = this.$store.state.datosPJactual.atributes
+            const amount = rewardData?.amount ?? (rewardType === 'money' ? 3 : rewardType === 'remnant' ? 2 : 1)
+
+            if (isWinner) {
+                inv[rewardType] += amount
+            } else {
+                inv[rewardType] = Math.max(0, inv[rewardType] - amount)
+            }
+
+            this.saveInvestigadorToAPI()
+        },
+
+        async saveInvestigadorToAPI() {
+            try {
+                const idUser = this.$store.state.IDUserHost
+                const payload = { ...this.$store.state.datosPJactual, idUser }
+                await apiService.postInvOnLine(payload)
+            } catch (e) {
+                console.error('Error al guardar investigador tras el combate:', e)
             }
         },
 
@@ -282,7 +294,7 @@ export default {
                     return
 
                 } else if(response.status == "your_rival_abandoned"){
-                    this.getReward()
+                    this.applyReward(response.reward, true)
                     this.isAvandoned = true
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `Tu rival ha abandonado el encuentro, has ganado` : `Your rival has abandoned the encounter, you have won`,
@@ -294,7 +306,7 @@ export default {
                     return
 
                 }  else if(response.status == "you won"){
-                    this.getReward(response.status)
+                    this.applyReward(response.reward, true)
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `¡Has ganado el combate!` : `You have won the combat!`,
                         type: 'is-success',
@@ -305,7 +317,7 @@ export default {
                     this.stopPollingStatusInteraction(); // Detener el intervalo si es tu turno
 
                 } else if(response.status == "you lost"){
-                    this.getReward(response.status)
+                    this.applyReward(response.reward, false)
                     this.$buefy.toast.open({
                         message: this.$store.state.lenguaje === 'español' ? `Has perdido el combate...` : `You have lost the combat...`,
                         type: 'is-danger',
