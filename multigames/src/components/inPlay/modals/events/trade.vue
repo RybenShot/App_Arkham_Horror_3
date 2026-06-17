@@ -20,47 +20,39 @@
           <div v-else-if="tradeStatus === 'waitingOffer' && isHost">
             <p class="title is-5 has-text-centered mb-3">Preparar oferta</p>
 
-            <!-- Rival items (orange) – lo que quieres -->
-            <p class="label is-small mb-2">
+            <!-- Rival items – lo que quieres -->
+            <p class="label is-small mb-1">
               <span class="tag is-warning mr-1">{{ rivalName }}</span>lo que quieres
             </p>
             <div v-if="rivalPossessions.length === 0" class="notification is-light py-2 mb-3">
               <p class="is-size-7 has-text-centered">{{ rivalName }} no tiene objetos</p>
             </div>
-            <div class="columns is-mobile is-multiline is-gapless mb-4" v-else>
-              <div v-for="item in rivalPossessions" :key="item.id" class="column is-half p-1">
-                <div @click="toggleWant(item.id)" :style="{
-                  borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
-                  border: isSelectedWant(item.id) ? '2px solid #48c78e' : '2px solid #e0e0e0',
-                  boxShadow: isSelectedWant(item.id) ? '0 0 8px rgba(72,199,142,0.4)' : 'none'
-                }">
-                  <img :src="item.img" :alt="itemName(item)" style="width:100%; display:block;">
-                  <div style="background:#f89406; padding:3px 6px;">
-                    <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemName(item) }}</p>
-                  </div>
-                </div>
+            <div class="objects-container mb-3" v-else>
+              <div
+                v-for="(item, index) in rivalPossessions" :key="item.id"
+                class="object-item"
+                :class="{ 'is-selected': isSelectedWant(item.id) }"
+                :style="getCardStyle(index, rivalPossessions.length)"
+                @click="toggleWant(item.id)">
+                <CardObject :object="item" />
               </div>
             </div>
 
-            <!-- My items (blue) – lo que ofreces -->
-            <p class="label is-small mb-2">
+            <!-- My items – lo que ofreces -->
+            <p class="label is-small mb-1">
               <span class="tag is-info mr-1">Tú</span>lo que ofreces
             </p>
             <div v-if="myPossessions.length === 0" class="notification is-light py-2 mb-3">
               <p class="is-size-7 has-text-centered">No tienes objetos para ofrecer</p>
             </div>
-            <div class="columns is-mobile is-multiline is-gapless mb-3" v-else>
-              <div v-for="item in myPossessions" :key="item.id" class="column is-half p-1">
-                <div @click="toggleGive(item.id)" :style="{
-                  borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
-                  border: isSelectedGive(item.id) ? '2px solid #48c78e' : '2px solid #e0e0e0',
-                  boxShadow: isSelectedGive(item.id) ? '0 0 8px rgba(72,199,142,0.4)' : 'none'
-                }">
-                <img :src="item.img" :alt="itemName(item)" style="width:100%; display:block;">
-                  <div style="background:#3273dc; padding:3px 6px;">
-                    <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemName(item) }}</p>
-                  </div>
-                </div>
+            <div class="objects-container mb-3" v-else>
+              <div
+                v-for="(item, index) in myPossessions" :key="item.id"
+                class="object-item"
+                :class="{ 'is-selected': isSelectedGive(item.id) }"
+                :style="getCardStyle(index, myPossessions.length)"
+                @click="toggleGive(item.id)">
+                <CardObject :object="item" />
               </div>
             </div>
 
@@ -162,46 +154,42 @@
           <div v-else-if="tradeStatus === 'offerPending' && !isHost">
             <p class="title is-5 has-text-centered mb-3">Oferta de {{ rivalName }}</p>
 
-            <!-- Host (rival) ofrece – azul -->
-            <p class="label is-small mb-2">
+            <!-- Host (rival) ofrece -->
+            <p class="label is-small mb-1">
               <span class="tag is-info mr-1">{{ rivalName }}</span>te ofrece
             </p>
             <div v-if="!(currentOffer.fromHost?.items?.length || currentOffer.fromHost?.money || currentOffer.fromHost?.clue || currentOffer.fromHost?.remnant)" class="has-text-grey is-size-7 mb-2">Nada</div>
             <div v-else class="mb-3">
-              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentOffer.fromHost?.items?.length">
-                <div v-for="id in currentOffer.fromHost.items" :key="id" class="column is-half p-1">
-                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #3273dc' }">
-                    <img :src="itemImgById(id, 'rival')" :alt="itemNameById(id, 'rival')" style="width:100%; display:block;">
-                    <div style="background:#3273dc; padding:3px 6px;">
-                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemNameById(id, 'rival') }}</p>
-                    </div>
-                  </div>
+              <div class="objects-container mb-1" v-if="currentOffer.fromHost?.items?.length">
+                <div
+                  v-for="(id, index) in currentOffer.fromHost.items" :key="id"
+                  class="object-item no-hover"
+                  :style="getCardStyle(index, currentOffer.fromHost.items.length)">
+                  <CardObject :object="makeCardObj(id, 'rival')" />
                 </div>
               </div>
-              <div class="tags mb-0">
+              <div class="tags is-centered mb-0">
                 <span v-if="currentOffer.fromHost?.money" class="tag is-info is-light">💰 {{ currentOffer.fromHost.money }}</span>
                 <span v-if="currentOffer.fromHost?.clue" class="tag is-info is-light">🔍 {{ currentOffer.fromHost.clue }}</span>
                 <span v-if="currentOffer.fromHost?.remnant" class="tag is-info is-light">🧩 {{ currentOffer.fromHost.remnant }}</span>
               </div>
             </div>
 
-            <!-- Guest (tú) das – naranja -->
-            <p class="label is-small mb-2">
+            <!-- Guest (tú) das -->
+            <p class="label is-small mb-1">
               <span class="tag is-warning mr-1">Tú</span>das a cambio
             </p>
             <div v-if="!(currentOffer.fromGuest?.items?.length || currentOffer.fromGuest?.money || currentOffer.fromGuest?.clue || currentOffer.fromGuest?.remnant)" class="has-text-grey is-size-7 mb-3">Nada</div>
             <div v-else class="mb-3">
-              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentOffer.fromGuest?.items?.length">
-                <div v-for="id in currentOffer.fromGuest.items" :key="id" class="column is-half p-1">
-                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #f89406' }">
-                    <img :src="itemImgById(id, 'mine')" :alt="itemNameById(id, 'mine')" style="width:100%; display:block;">
-                    <div style="background:#f89406; padding:3px 6px;">
-                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemNameById(id, 'mine') }}</p>
-                    </div>
-                  </div>
+              <div class="objects-container mb-1" v-if="currentOffer.fromGuest?.items?.length">
+                <div
+                  v-for="(id, index) in currentOffer.fromGuest.items" :key="id"
+                  class="object-item no-hover"
+                  :style="getCardStyle(index, currentOffer.fromGuest.items.length)">
+                  <CardObject :object="makeCardObj(id, 'mine')" />
                 </div>
               </div>
-              <div class="tags mb-0">
+              <div class="tags is-centered mb-0">
                 <span v-if="currentOffer.fromGuest?.money" class="tag is-warning is-light">💰 {{ currentOffer.fromGuest.money }}</span>
                 <span v-if="currentOffer.fromGuest?.clue" class="tag is-warning is-light">🔍 {{ currentOffer.fromGuest.clue }}</span>
                 <span v-if="currentOffer.fromGuest?.remnant" class="tag is-warning is-light">🧩 {{ currentOffer.fromGuest.remnant }}</span>
@@ -216,36 +204,45 @@
             <!-- Counteroffer builder -->
             <div v-if="makingCounteroffer" class="mt-3">
               <hr>
-              <p class="title is-6 mb-1">Tu contraoferta</p>
-              <p class="is-size-7 has-text-grey mb-3">
-                {{ rivalName }} seguirá ofreciendo lo mismo. Selecciona qué darás tú.
-              </p>
+              <p class="title is-6 mb-2">Tu contraoferta</p>
 
-              <!-- Guest items (naranja) -->
-              <p class="label is-small mb-2">
-                <span class="tag is-warning mr-1">Tú</span>lo que ofreces
+              <!-- Rival items – lo que quieres del host -->
+              <p class="label is-small mb-1">
+                <span class="tag is-info mr-1">{{ rivalName }}</span>lo que quieres
               </p>
-              <div v-if="myPossessions.length === 0" class="notification is-light py-2 mb-2">
-                <p class="is-size-7 has-text-centered">No tienes objetos para ofrecer</p>
+              <div v-if="rivalPossessions.length === 0" class="notification is-light py-2 mb-3">
+                <p class="is-size-7 has-text-centered">{{ rivalName }} no tiene objetos</p>
               </div>
-              <div class="columns is-mobile is-multiline is-gapless mb-3" v-else>
-                <div v-for="item in myPossessions" :key="item.id" class="column is-half p-1">
-                  <div @click="toggleCounterGive(item.id)" :style="{
-                    borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
-                    border: isCounterSelectedGive(item.id) ? '2px solid #48c78e' : '2px solid #e0e0e0',
-                    boxShadow: isCounterSelectedGive(item.id) ? '0 0 8px rgba(72,199,142,0.4)' : 'none'
-                  }">
-                    <div style="background:#f89406; padding:5px 8px; min-height:36px; display:flex; align-items:center;">
-                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; word-break:break-word;">{{ itemName(item) }}</p>
-                    </div>
-                    <div style="background:#fffbf5; padding:8px; text-align:center;">
-                      <i class="fas fa-scroll" style="color:#f89406; font-size:1rem;"></i>
-                    </div>
-                  </div>
+              <div class="objects-container mb-3" v-else>
+                <div
+                  v-for="(item, index) in rivalPossessions" :key="item.id"
+                  class="object-item"
+                  :class="{ 'is-selected': isCounterSelectedWant(item.id) }"
+                  :style="getCardStyle(index, rivalPossessions.length)"
+                  @click="toggleCounterWant(item.id)">
+                  <CardObject :object="item" />
                 </div>
               </div>
 
-              <!-- Recursos de contraoferta – solo si el guest tiene algo -->
+              <!-- Guest items – lo que ofreces -->
+              <p class="label is-small mb-1">
+                <span class="tag is-warning mr-1">Tú</span>lo que ofreces
+              </p>
+              <div v-if="myPossessions.length === 0" class="notification is-light py-2 mb-3">
+                <p class="is-size-7 has-text-centered">No tienes objetos para ofrecer</p>
+              </div>
+              <div class="objects-container mb-3" v-else>
+                <div
+                  v-for="(item, index) in myPossessions" :key="item.id"
+                  class="object-item"
+                  :class="{ 'is-selected': isCounterSelectedGive(item.id) }"
+                  :style="getCardStyle(index, myPossessions.length)"
+                  @click="toggleCounterGive(item.id)">
+                  <CardObject :object="item" />
+                </div>
+              </div>
+
+              <!-- Recursos de contraoferta -->
               <div v-if="myAttrs.money > 0 || myAttrs.clue > 0 || myAttrs.remnant > 0" class="mb-3">
                 <p class="label is-small mb-1">Recursos que ofreces</p>
                 <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.money > 0">
@@ -301,50 +298,42 @@
           <div v-else-if="tradeStatus === 'counterofferPending' && isHost">
             <p class="title is-5 has-text-centered mb-3">Contraoferta de {{ rivalName }}</p>
 
-            <!-- Guest (rival) propone dar – naranja -->
-            <p class="label is-small mb-2">
+            <!-- Guest (rival) propone dar -->
+            <p class="label is-small mb-1">
               <span class="tag is-warning mr-1">{{ rivalName }}</span>propone dar
             </p>
             <div v-if="!(currentCounteroffer.fromGuest?.items?.length || currentCounteroffer.fromGuest?.money || currentCounteroffer.fromGuest?.clue || currentCounteroffer.fromGuest?.remnant)" class="has-text-grey is-size-7 mb-2">Nada</div>
             <div v-else class="mb-3">
-              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentCounteroffer.fromGuest?.items?.length">
-                <div v-for="id in currentCounteroffer.fromGuest.items" :key="id" class="column is-half p-1">
-                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #f89406' }">
-                    <div style="background:#f89406; padding:4px 7px; min-height:30px; display:flex; align-items:center;">
-                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; word-break:break-word;">{{ itemNameById(id, 'rival') }}</p>
-                    </div>
-                    <div style="background:#fffbf5; padding:6px; text-align:center;">
-                      <i class="fas fa-scroll" style="color:#f89406; font-size:0.9rem;"></i>
-                    </div>
-                                  </div>
-              <div class="tags mb-0">
+              <div class="objects-container mb-1" v-if="currentCounteroffer.fromGuest?.items?.length">
+                <div
+                  v-for="(id, index) in currentCounteroffer.fromGuest.items" :key="id"
+                  class="object-item no-hover"
+                  :style="getCardStyle(index, currentCounteroffer.fromGuest.items.length)">
+                  <CardObject :object="makeCardObj(id, 'rival')" />
+                </div>
+              </div>
+              <div class="tags is-centered mb-0">
                 <span v-if="currentCounteroffer.fromGuest?.money" class="tag is-warning is-light">💰 {{ currentCounteroffer.fromGuest.money }}</span>
                 <span v-if="currentCounteroffer.fromGuest?.clue" class="tag is-warning is-light">🔍 {{ currentCounteroffer.fromGuest.clue }}</span>
                 <span v-if="currentCounteroffer.fromGuest?.remnant" class="tag is-warning is-light">🧩 {{ currentCounteroffer.fromGuest.remnant }}</span>
               </div>
             </div>
-            </div>
-            </div>
 
-            <!-- Host (tú) darías – azul -->
-            <p class="label is-small mb-2">
+            <!-- Host (tú) darías -->
+            <p class="label is-small mb-1">
               <span class="tag is-info mr-1">Tú</span>darías a cambio
             </p>
             <div v-if="!(currentCounteroffer.fromHost?.items?.length || currentCounteroffer.fromHost?.money || currentCounteroffer.fromHost?.clue || currentCounteroffer.fromHost?.remnant)" class="has-text-grey is-size-7 mb-3">Nada</div>
             <div v-else class="mb-3">
-              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentCounteroffer.fromHost?.items?.length">
-                <div v-for="id in currentCounteroffer.fromHost.items" :key="id" class="column is-half p-1">
-                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #3273dc' }">
-                    <div style="background:#3273dc; padding:4px 7px; min-height:30px; display:flex; align-items:center;">
-                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; word-break:break-word;">{{ itemNameById(id, 'mine') }}</p>
-                    </div>
-                    <div style="background:#f0f7ff; padding:6px; text-align:center;">
-                      <i class="fas fa-scroll" style="color:#3273dc; font-size:0.9rem;"></i>
-                    </div>
-                  </div>
+              <div class="objects-container mb-1" v-if="currentCounteroffer.fromHost?.items?.length">
+                <div
+                  v-for="(id, index) in currentCounteroffer.fromHost.items" :key="id"
+                  class="object-item no-hover"
+                  :style="getCardStyle(index, currentCounteroffer.fromHost.items.length)">
+                  <CardObject :object="makeCardObj(id, 'mine')" />
                 </div>
               </div>
-              <div class="tags mb-0">
+              <div class="tags is-centered mb-0">
                 <span v-if="currentCounteroffer.fromHost?.money" class="tag is-info is-light">💰 {{ currentCounteroffer.fromHost.money }}</span>
                 <span v-if="currentCounteroffer.fromHost?.clue" class="tag is-info is-light">🔍 {{ currentCounteroffer.fromHost.clue }}</span>
                 <span v-if="currentCounteroffer.fromHost?.remnant" class="tag is-info is-light">🧩 {{ currentCounteroffer.fromHost.remnant }}</span>
@@ -417,9 +406,11 @@
 
 <script>
 import { apiService } from '@/services/api.js'
+import CardObject from '@/components/personajes/ModalsDetallePersonaje/CardObject.vue'
 
 export default {
   name: 'EventoIntercambio',
+  components: { CardObject },
   data() {
     return {
       selectedResourcesToGive: { money: 0, clue: 0, remnant: 0 },
@@ -436,6 +427,7 @@ export default {
       selectedWant: [],
       selectedGive: [],
       counterSelectedGive: [],
+      counterSelectedWant: [],
       makingCounteroffer: false,
 
       currentOffer: {
@@ -476,33 +468,51 @@ export default {
       return item?.img || ''
     },
 
+    makeCardObj(id, who) {
+      const name = this.itemNameById(id, who)
+      const img = this.itemImgById(id, who)
+      return { img, translations: { es: { name }, en: { name } } }
+    },
+
     formatIdList(offerSide, who) {
       const items = offerSide?.items ?? (Array.isArray(offerSide) ? offerSide : [])
       if (!items.length) return 'Nada'
       return items.map(id => this.itemNameById(id, who)).join(', ')
     },
 
+    getCardStyle(index, total) {
+      const mid = (total - 1) / 2
+      const rotation = (index - mid) * 5
+      return {
+        '--card-rotation': `${rotation}deg`,
+        animationDelay: `${index * 0.08}s`,
+      }
+    },
+
     isSelectedWant(id) { return this.selectedWant.includes(id) },
     isSelectedGive(id) { return this.selectedGive.includes(id) },
     isCounterSelectedGive(id) { return this.counterSelectedGive.includes(id) },
+    isCounterSelectedWant(id) { return this.counterSelectedWant.includes(id) },
 
     toggleWant(id) {
       const idx = this.selectedWant.indexOf(id)
       if (idx === -1) this.selectedWant.push(id)
       else this.selectedWant.splice(idx, 1)
-      console.log('🔍 [toggleWant]', this.selectedWant)
     },
     toggleGive(id) {
       const idx = this.selectedGive.indexOf(id)
       if (idx === -1) this.selectedGive.push(id)
       else this.selectedGive.splice(idx, 1)
-      console.log('📦 [toggleGive]', this.selectedGive)
     },
     toggleCounterGive(id) {
       const idx = this.counterSelectedGive.indexOf(id)
       if (idx === -1) this.counterSelectedGive.push(id)
       else this.counterSelectedGive.splice(idx, 1)
-      console.log('🔄 [toggleCounterGive]', this.counterSelectedGive)
+    },
+    toggleCounterWant(id) {
+      const idx = this.counterSelectedWant.indexOf(id)
+      if (idx === -1) this.counterSelectedWant.push(id)
+      else this.counterSelectedWant.splice(idx, 1)
     },
 
     initPlayers() {
@@ -724,12 +734,16 @@ export default {
     startCounteroffer() {
       this.makingCounteroffer = true
       this.counterSelectedGive = []
+      this.counterSelectedWant = []
       this.counterResourcesToGive = { money: 0, clue: 0, remnant: 0 }
       console.log('🔄 [startCounteroffer] abriendo pantalla de contraoferta')
     },
 
     async sendCounteroffer() {
-      const fromHost = { ...this.currentOffer.fromHost }
+      const fromHost = {
+        items: [...this.counterSelectedWant],
+        money: 0, clue: 0, remnant: 0
+      }
       const fromGuest = {
         items: [...this.counterSelectedGive],
         money: this.counterResourcesToGive.money,
@@ -838,26 +852,49 @@ export default {
 </script>
 
 <style scoped>
-.item-card {
-  transition: all 0.15s ease;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-.item-card:hover {
-  border-color: #dbdbdb;
-  transform: translateY(-1px);
-}
-.is-selected-want {
-  border-color: #ffdd57 !important;
-  background-color: #fffbeb;
-}
-.is-selected-give {
-  border-color: #3273dc !important;
-  background-color: #eef3fb;
-}
 .BGBendicion {
   background-image: url(@/assets/img/Estados/Bendicion.jpg);
   background-position: center;
   background-size: cover;
+}
+
+.objects-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0.5rem 0.25rem;
+}
+
+.object-item {
+  width: 25%;
+  text-align: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transform: rotate(var(--card-rotation, 0deg));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.object-item:hover {
+  transform: rotate(0deg) translateY(-6px) scale(1.05);
+  z-index: 10;
+}
+
+.object-item.is-selected {
+  transform: rotate(0deg) translateY(-10px) scale(1.08);
+  z-index: 10;
+}
+
+.object-item.is-selected ::v-deep .card-image {
+  box-shadow: 0 0 0 3px #48c78e, 0 0 14px rgba(72, 199, 142, 0.7);
+}
+
+.object-item.no-hover {
+  cursor: default;
+}
+
+.object-item.no-hover:hover {
+  transform: rotate(var(--card-rotation, 0deg));
+  z-index: auto;
 }
 </style>
