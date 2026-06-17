@@ -35,7 +35,7 @@
               </div>
               
               <div class="column is-4">
-                <button @click="selectInteractionDisabled('resonance')" class="button is-link is-fullwidth " 
+                <button @click="selectedIntention = 'resonance'" class="button is-link is-fullwidth " 
                 :class="{ 'is-outlined': selectedIntention !== 'resonance' }" > {{ textoInterfaz.botones.resonancia }} </button>
               </div>
             </div>

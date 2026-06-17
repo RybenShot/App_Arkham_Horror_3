@@ -713,4 +713,17 @@ export const apiService = {
           throw error
       }
   },
+
+  async submitResonance(idInteraction, idUser, bet) {
+    try {
+      const response = await axios.put(
+        `${API_URL}/interactions/resonance/submit/${idInteraction}`,
+        { idUser, bet }
+      )
+      return response.data
+    } catch (error) {
+      console.error('❌ submitResonance(api.js) error:', error)
+      throw error
+    }
+  },
 };
