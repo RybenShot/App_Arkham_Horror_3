@@ -20,46 +20,110 @@
           <div v-else-if="tradeStatus === 'waitingOffer' && isHost">
             <p class="title is-5 has-text-centered mb-3">Preparar oferta</p>
 
-            <p class="label is-small mb-1">
-              Objetos de <strong>{{ rivalName }}</strong>
-              <span class="tag is-light ml-1">selecciona lo que quieres</span>
+            <!-- Rival items (orange) – lo que quieres -->
+            <p class="label is-small mb-2">
+              <span class="tag is-warning mr-1">{{ rivalName }}</span>lo que quieres
             </p>
             <div v-if="rivalPossessions.length === 0" class="notification is-light py-2 mb-3">
               <p class="is-size-7 has-text-centered">{{ rivalName }} no tiene objetos</p>
             </div>
             <div class="columns is-mobile is-multiline is-gapless mb-4" v-else>
               <div v-for="item in rivalPossessions" :key="item.id" class="column is-half p-1">
-                <div class="box py-2 px-3 item-card"
-                  :class="{ 'is-selected-want': isSelectedWant(item.id) }"
-                  @click="toggleWant(item.id)">
-                  <p class="is-size-7 has-text-weight-semibold">{{ itemName(item) }}</p>
-                  <span v-if="isSelectedWant(item.id)" class="tag is-warning is-small mt-1">🔍 Quiero</span>
+                <div @click="toggleWant(item.id)" :style="{
+                  borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
+                  border: isSelectedWant(item.id) ? '2px solid #48c78e' : '2px solid #e0e0e0',
+                  boxShadow: isSelectedWant(item.id) ? '0 0 8px rgba(72,199,142,0.4)' : 'none'
+                }">
+                  <img :src="item.img" :alt="itemName(item)" style="width:100%; display:block;">
+                  <div style="background:#f89406; padding:3px 6px;">
+                    <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemName(item) }}</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <p class="label is-small mb-1">
-              Mis objetos
-              <span class="tag is-light ml-1">selecciona lo que ofreces</span>
+            <!-- My items (blue) – lo que ofreces -->
+            <p class="label is-small mb-2">
+              <span class="tag is-info mr-1">Tú</span>lo que ofreces
             </p>
             <div v-if="myPossessions.length === 0" class="notification is-light py-2 mb-3">
               <p class="is-size-7 has-text-centered">No tienes objetos para ofrecer</p>
             </div>
             <div class="columns is-mobile is-multiline is-gapless mb-3" v-else>
               <div v-for="item in myPossessions" :key="item.id" class="column is-half p-1">
-                <div class="box py-2 px-3 item-card"
-                  :class="{ 'is-selected-give': isSelectedGive(item.id) }"
-                  @click="toggleGive(item.id)">
-                  <p class="is-size-7 has-text-weight-semibold">{{ itemName(item) }}</p>
-                  <span v-if="isSelectedGive(item.id)" class="tag is-info is-small mt-1">↑ Ofrezco</span>
+                <div @click="toggleGive(item.id)" :style="{
+                  borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
+                  border: isSelectedGive(item.id) ? '2px solid #48c78e' : '2px solid #e0e0e0',
+                  boxShadow: isSelectedGive(item.id) ? '0 0 8px rgba(72,199,142,0.4)' : 'none'
+                }">
+                <img :src="item.img" :alt="itemName(item)" style="width:100%; display:block;">
+                  <div style="background:#3273dc; padding:3px 6px;">
+                    <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemName(item) }}</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="box has-background-light mb-3">
-              <p class="is-size-7 mb-1"><strong>Resumen:</strong></p>
-              <p class="is-size-7">🎁 Das: {{ selectedGive.length > 0 ? selectedGive.map(id => itemNameById(id, 'mine')).join(', ') : 'Nada' }}</p>
-              <p class="is-size-7">🔍 Quieres: {{ selectedWant.length > 0 ? selectedWant.map(id => itemNameById(id, 'rival')).join(', ') : 'Nada' }}</p>
+            <!-- Recursos – solo si alguien tiene algo -->
+            <div v-if="myAttrs.money > 0 || rivalAttrs.money > 0 || myAttrs.clue > 0 || rivalAttrs.clue > 0 || myAttrs.remnant > 0 || rivalAttrs.remnant > 0" class="mt-2 mb-3">
+              <p class="label is-small mb-1">Recursos</p>
+              <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.money > 0 || rivalAttrs.money > 0">
+                <div class="column is-2"><span>💰</span></div>
+                <div class="column">
+                  <p class="is-size-7 has-text-centered has-text-info">Das ({{ myAttrs.money }})</p>
+                  <div class="field has-addons is-justify-content-center mb-0">
+                    <p class="control"><button class="button is-small is-info is-light" @click="selectedResourcesToGive.money = Math.max(0, selectedResourcesToGive.money - 1)">-</button></p>
+                    <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="selectedResourcesToGive.money" readonly></p>
+                    <p class="control"><button class="button is-small is-info is-light" @click="selectedResourcesToGive.money = Math.min(myAttrs.money, selectedResourcesToGive.money + 1)">+</button></p>
+                  </div>
+                </div>
+                <div class="column">
+                  <p class="is-size-7 has-text-centered has-text-warning">Quieres ({{ rivalAttrs.money }})</p>
+                  <div class="field has-addons is-justify-content-center mb-0">
+                    <p class="control"><button class="button is-small is-warning is-light" @click="selectedResourcesToWant.money = Math.max(0, selectedResourcesToWant.money - 1)">-</button></p>
+                    <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="selectedResourcesToWant.money" readonly></p>
+                    <p class="control"><button class="button is-small is-warning is-light" @click="selectedResourcesToWant.money = Math.min(rivalAttrs.money, selectedResourcesToWant.money + 1)">+</button></p>
+                  </div>
+                </div>
+              </div>
+              <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.clue > 0 || rivalAttrs.clue > 0">
+                <div class="column is-2"><span>🔍</span></div>
+                <div class="column">
+                  <p class="is-size-7 has-text-centered has-text-info">Das ({{ myAttrs.clue }})</p>
+                  <div class="field has-addons is-justify-content-center mb-0">
+                    <p class="control"><button class="button is-small is-info is-light" @click="selectedResourcesToGive.clue = Math.max(0, selectedResourcesToGive.clue - 1)">-</button></p>
+                    <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="selectedResourcesToGive.clue" readonly></p>
+                    <p class="control"><button class="button is-small is-info is-light" @click="selectedResourcesToGive.clue = Math.min(myAttrs.clue, selectedResourcesToGive.clue + 1)">+</button></p>
+                  </div>
+                </div>
+                <div class="column">
+                  <p class="is-size-7 has-text-centered has-text-warning">Quieres ({{ rivalAttrs.clue }})</p>
+                  <div class="field has-addons is-justify-content-center mb-0">
+                    <p class="control"><button class="button is-small is-warning is-light" @click="selectedResourcesToWant.clue = Math.max(0, selectedResourcesToWant.clue - 1)">-</button></p>
+                    <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="selectedResourcesToWant.clue" readonly></p>
+                    <p class="control"><button class="button is-small is-warning is-light" @click="selectedResourcesToWant.clue = Math.min(rivalAttrs.clue, selectedResourcesToWant.clue + 1)">+</button></p>
+                  </div>
+                </div>
+              </div>
+              <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.remnant > 0 || rivalAttrs.remnant > 0">
+                <div class="column is-2"><span>🧩</span></div>
+                <div class="column">
+                  <p class="is-size-7 has-text-centered has-text-info">Das ({{ myAttrs.remnant }})</p>
+                  <div class="field has-addons is-justify-content-center mb-0">
+                    <p class="control"><button class="button is-small is-info is-light" @click="selectedResourcesToGive.remnant = Math.max(0, selectedResourcesToGive.remnant - 1)">-</button></p>
+                    <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="selectedResourcesToGive.remnant" readonly></p>
+                    <p class="control"><button class="button is-small is-info is-light" @click="selectedResourcesToGive.remnant = Math.min(myAttrs.remnant, selectedResourcesToGive.remnant + 1)">+</button></p>
+                  </div>
+                </div>
+                <div class="column">
+                  <p class="is-size-7 has-text-centered has-text-warning">Quieres ({{ rivalAttrs.remnant }})</p>
+                  <div class="field has-addons is-justify-content-center mb-0">
+                    <p class="control"><button class="button is-small is-warning is-light" @click="selectedResourcesToWant.remnant = Math.max(0, selectedResourcesToWant.remnant - 1)">-</button></p>
+                    <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="selectedResourcesToWant.remnant" readonly></p>
+                    <p class="control"><button class="button is-small is-warning is-light" @click="selectedResourcesToWant.remnant = Math.min(rivalAttrs.remnant, selectedResourcesToWant.remnant + 1)">+</button></p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <button class="button is-success is-fullwidth" @click="sendOffer()">
@@ -79,8 +143,18 @@
             <p class="subtitle is-6">Esperando respuesta de {{ rivalName }}...</p>
             <div class="box mx-2 mt-2 has-text-left">
               <p class="is-size-7 has-text-grey mb-2"><strong>Tu oferta enviada:</strong></p>
-              <p class="is-size-7 mb-1">🎁 <strong>Das:</strong> {{ formatIdList(currentOffer.fromHost, 'mine') }}</p>
-              <p class="is-size-7">🔍 <strong>Quieres:</strong> {{ formatIdList(currentOffer.fromGuest, 'rival') }}</p>
+              <p class="is-size-7 mb-1">
+                🎁 <strong>Das:</strong> {{ formatIdList(currentOffer.fromHost, 'mine') }}
+                <span v-if="currentOffer.fromHost.money"> + 💰{{ currentOffer.fromHost.money }}</span>
+                <span v-if="currentOffer.fromHost.clue"> + 🔍{{ currentOffer.fromHost.clue }}</span>
+                <span v-if="currentOffer.fromHost.remnant"> + 🧩{{ currentOffer.fromHost.remnant }}</span>
+              </p>
+              <p class="is-size-7">
+                🔍 <strong>Quieres:</strong> {{ formatIdList(currentOffer.fromGuest, 'rival') }}
+                <span v-if="currentOffer.fromGuest.money"> + 💰{{ currentOffer.fromGuest.money }}</span>
+                <span v-if="currentOffer.fromGuest.clue"> + 🔍{{ currentOffer.fromGuest.clue }}</span>
+                <span v-if="currentOffer.fromGuest.remnant"> + 🧩{{ currentOffer.fromGuest.remnant }}</span>
+              </p>
             </div>
           </div>
 
@@ -88,23 +162,49 @@
           <div v-else-if="tradeStatus === 'offerPending' && !isHost">
             <p class="title is-5 has-text-centered mb-3">Oferta de {{ rivalName }}</p>
 
-            <div class="box mb-3">
-              <p class="label is-small mb-2">{{ rivalName }} te ofrece:</p>
-              <div v-if="currentOffer.fromHost.length === 0" class="has-text-grey is-size-7 mb-2">Nada</div>
-              <div class="tags" v-else>
-                <span v-for="id in currentOffer.fromHost" :key="id" class="tag is-success is-light is-medium">
-                  🎁 {{ itemNameById(id, 'rival') }}
-                </span>
+            <!-- Host (rival) ofrece – azul -->
+            <p class="label is-small mb-2">
+              <span class="tag is-info mr-1">{{ rivalName }}</span>te ofrece
+            </p>
+            <div v-if="!(currentOffer.fromHost?.items?.length || currentOffer.fromHost?.money || currentOffer.fromHost?.clue || currentOffer.fromHost?.remnant)" class="has-text-grey is-size-7 mb-2">Nada</div>
+            <div v-else class="mb-3">
+              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentOffer.fromHost?.items?.length">
+                <div v-for="id in currentOffer.fromHost.items" :key="id" class="column is-half p-1">
+                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #3273dc' }">
+                    <img :src="itemImgById(id, 'rival')" :alt="itemNameById(id, 'rival')" style="width:100%; display:block;">
+                    <div style="background:#3273dc; padding:3px 6px;">
+                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemNameById(id, 'rival') }}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div class="tags mb-0">
+                <span v-if="currentOffer.fromHost?.money" class="tag is-info is-light">💰 {{ currentOffer.fromHost.money }}</span>
+                <span v-if="currentOffer.fromHost?.clue" class="tag is-info is-light">🔍 {{ currentOffer.fromHost.clue }}</span>
+                <span v-if="currentOffer.fromHost?.remnant" class="tag is-info is-light">🧩 {{ currentOffer.fromHost.remnant }}</span>
+              </div>
+            </div>
 
-              <hr class="my-2">
-
-              <p class="label is-small mb-2">A cambio quiere de ti:</p>
-              <div v-if="currentOffer.fromGuest.length === 0" class="has-text-grey is-size-7 mb-2">Nada</div>
-              <div class="tags" v-else>
-                <span v-for="id in currentOffer.fromGuest" :key="id" class="tag is-warning is-light is-medium">
-                  📦 {{ itemNameById(id, 'mine') }}
-                </span>
+            <!-- Guest (tú) das – naranja -->
+            <p class="label is-small mb-2">
+              <span class="tag is-warning mr-1">Tú</span>das a cambio
+            </p>
+            <div v-if="!(currentOffer.fromGuest?.items?.length || currentOffer.fromGuest?.money || currentOffer.fromGuest?.clue || currentOffer.fromGuest?.remnant)" class="has-text-grey is-size-7 mb-3">Nada</div>
+            <div v-else class="mb-3">
+              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentOffer.fromGuest?.items?.length">
+                <div v-for="id in currentOffer.fromGuest.items" :key="id" class="column is-half p-1">
+                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #f89406' }">
+                    <img :src="itemImgById(id, 'mine')" :alt="itemNameById(id, 'mine')" style="width:100%; display:block;">
+                    <div style="background:#f89406; padding:3px 6px;">
+                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; margin:0; word-break:break-word;">{{ itemNameById(id, 'mine') }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tags mb-0">
+                <span v-if="currentOffer.fromGuest?.money" class="tag is-warning is-light">💰 {{ currentOffer.fromGuest.money }}</span>
+                <span v-if="currentOffer.fromGuest?.clue" class="tag is-warning is-light">🔍 {{ currentOffer.fromGuest.clue }}</span>
+                <span v-if="currentOffer.fromGuest?.remnant" class="tag is-warning is-light">🧩 {{ currentOffer.fromGuest.remnant }}</span>
               </div>
             </div>
 
@@ -118,20 +218,67 @@
               <hr>
               <p class="title is-6 mb-1">Tu contraoferta</p>
               <p class="is-size-7 has-text-grey mb-3">
-                {{ rivalName }} seguirá ofreciendo los mismos objetos. Selecciona qué darás tú en cambio.
+                {{ rivalName }} seguirá ofreciendo lo mismo. Selecciona qué darás tú.
               </p>
 
-              <p class="label is-small mb-1">Selecciona lo que ofreces:</p>
+              <!-- Guest items (naranja) -->
+              <p class="label is-small mb-2">
+                <span class="tag is-warning mr-1">Tú</span>lo que ofreces
+              </p>
               <div v-if="myPossessions.length === 0" class="notification is-light py-2 mb-2">
                 <p class="is-size-7 has-text-centered">No tienes objetos para ofrecer</p>
               </div>
               <div class="columns is-mobile is-multiline is-gapless mb-3" v-else>
                 <div v-for="item in myPossessions" :key="item.id" class="column is-half p-1">
-                  <div class="box py-2 px-3 item-card"
-                    :class="{ 'is-selected-give': isCounterSelectedGive(item.id) }"
-                    @click="toggleCounterGive(item.id)">
-                    <p class="is-size-7 has-text-weight-semibold">{{ itemName(item) }}</p>
-                    <span v-if="isCounterSelectedGive(item.id)" class="tag is-success is-small mt-1">↑ Ofrezco</span>
+                  <div @click="toggleCounterGive(item.id)" :style="{
+                    borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
+                    border: isCounterSelectedGive(item.id) ? '2px solid #48c78e' : '2px solid #e0e0e0',
+                    boxShadow: isCounterSelectedGive(item.id) ? '0 0 8px rgba(72,199,142,0.4)' : 'none'
+                  }">
+                    <div style="background:#f89406; padding:5px 8px; min-height:36px; display:flex; align-items:center;">
+                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; word-break:break-word;">{{ itemName(item) }}</p>
+                    </div>
+                    <div style="background:#fffbf5; padding:8px; text-align:center;">
+                      <i class="fas fa-scroll" style="color:#f89406; font-size:1rem;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recursos de contraoferta – solo si el guest tiene algo -->
+              <div v-if="myAttrs.money > 0 || myAttrs.clue > 0 || myAttrs.remnant > 0" class="mb-3">
+                <p class="label is-small mb-1">Recursos que ofreces</p>
+                <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.money > 0">
+                  <div class="column is-2"><span>💰</span></div>
+                  <div class="column">
+                    <p class="is-size-7 has-text-centered has-text-warning">Das ({{ myAttrs.money }})</p>
+                    <div class="field has-addons is-justify-content-center mb-0">
+                      <p class="control"><button class="button is-small is-warning is-light" @click="counterResourcesToGive.money = Math.max(0, counterResourcesToGive.money - 1)">-</button></p>
+                      <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="counterResourcesToGive.money" readonly></p>
+                      <p class="control"><button class="button is-small is-warning is-light" @click="counterResourcesToGive.money = Math.min(myAttrs.money, counterResourcesToGive.money + 1)">+</button></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.clue > 0">
+                  <div class="column is-2"><span>🔍</span></div>
+                  <div class="column">
+                    <p class="is-size-7 has-text-centered has-text-warning">Das ({{ myAttrs.clue }})</p>
+                    <div class="field has-addons is-justify-content-center mb-0">
+                      <p class="control"><button class="button is-small is-warning is-light" @click="counterResourcesToGive.clue = Math.max(0, counterResourcesToGive.clue - 1)">-</button></p>
+                      <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="counterResourcesToGive.clue" readonly></p>
+                      <p class="control"><button class="button is-small is-warning is-light" @click="counterResourcesToGive.clue = Math.min(myAttrs.clue, counterResourcesToGive.clue + 1)">+</button></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns is-mobile is-vcentered mb-2" v-if="myAttrs.remnant > 0">
+                  <div class="column is-2"><span>🧩</span></div>
+                  <div class="column">
+                    <p class="is-size-7 has-text-centered has-text-warning">Das ({{ myAttrs.remnant }})</p>
+                    <div class="field has-addons is-justify-content-center mb-0">
+                      <p class="control"><button class="button is-small is-warning is-light" @click="counterResourcesToGive.remnant = Math.max(0, counterResourcesToGive.remnant - 1)">-</button></p>
+                      <p class="control"><input class="input is-small has-text-centered" style="width:38px" :value="counterResourcesToGive.remnant" readonly></p>
+                      <p class="control"><button class="button is-small is-warning is-light" @click="counterResourcesToGive.remnant = Math.min(myAttrs.remnant, counterResourcesToGive.remnant + 1)">+</button></p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -154,23 +301,53 @@
           <div v-else-if="tradeStatus === 'counterofferPending' && isHost">
             <p class="title is-5 has-text-centered mb-3">Contraoferta de {{ rivalName }}</p>
 
-            <div class="box mb-3">
-              <p class="label is-small mb-2">{{ rivalName }} propone dar:</p>
-              <div v-if="currentCounteroffer.fromGuest.length === 0" class="has-text-grey is-size-7 mb-2">Nada</div>
-              <div class="tags" v-else>
-                <span v-for="id in currentCounteroffer.fromGuest" :key="id" class="tag is-warning is-light is-medium">
-                  📦 {{ itemNameById(id, 'rival') }}
-                </span>
+            <!-- Guest (rival) propone dar – naranja -->
+            <p class="label is-small mb-2">
+              <span class="tag is-warning mr-1">{{ rivalName }}</span>propone dar
+            </p>
+            <div v-if="!(currentCounteroffer.fromGuest?.items?.length || currentCounteroffer.fromGuest?.money || currentCounteroffer.fromGuest?.clue || currentCounteroffer.fromGuest?.remnant)" class="has-text-grey is-size-7 mb-2">Nada</div>
+            <div v-else class="mb-3">
+              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentCounteroffer.fromGuest?.items?.length">
+                <div v-for="id in currentCounteroffer.fromGuest.items" :key="id" class="column is-half p-1">
+                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #f89406' }">
+                    <div style="background:#f89406; padding:4px 7px; min-height:30px; display:flex; align-items:center;">
+                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; word-break:break-word;">{{ itemNameById(id, 'rival') }}</p>
+                    </div>
+                    <div style="background:#fffbf5; padding:6px; text-align:center;">
+                      <i class="fas fa-scroll" style="color:#f89406; font-size:0.9rem;"></i>
+                    </div>
+                                  </div>
+              <div class="tags mb-0">
+                <span v-if="currentCounteroffer.fromGuest?.money" class="tag is-warning is-light">💰 {{ currentCounteroffer.fromGuest.money }}</span>
+                <span v-if="currentCounteroffer.fromGuest?.clue" class="tag is-warning is-light">🔍 {{ currentCounteroffer.fromGuest.clue }}</span>
+                <span v-if="currentCounteroffer.fromGuest?.remnant" class="tag is-warning is-light">🧩 {{ currentCounteroffer.fromGuest.remnant }}</span>
               </div>
+            </div>
+            </div>
+            </div>
 
-              <hr class="my-2">
-
-              <p class="label is-small mb-2">A cambio recibirá de ti (tu oferta original):</p>
-              <div v-if="currentCounteroffer.fromHost.length === 0" class="has-text-grey is-size-7 mb-2">Nada</div>
-              <div class="tags" v-else>
-                <span v-for="id in currentCounteroffer.fromHost" :key="id" class="tag is-info is-light is-medium">
-                  🎁 {{ itemNameById(id, 'mine') }}
-                </span>
+            <!-- Host (tú) darías – azul -->
+            <p class="label is-small mb-2">
+              <span class="tag is-info mr-1">Tú</span>darías a cambio
+            </p>
+            <div v-if="!(currentCounteroffer.fromHost?.items?.length || currentCounteroffer.fromHost?.money || currentCounteroffer.fromHost?.clue || currentCounteroffer.fromHost?.remnant)" class="has-text-grey is-size-7 mb-3">Nada</div>
+            <div v-else class="mb-3">
+              <div class="columns is-mobile is-multiline is-gapless mb-2" v-if="currentCounteroffer.fromHost?.items?.length">
+                <div v-for="id in currentCounteroffer.fromHost.items" :key="id" class="column is-half p-1">
+                  <div :style="{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #3273dc' }">
+                    <div style="background:#3273dc; padding:4px 7px; min-height:30px; display:flex; align-items:center;">
+                      <p class="is-size-7 has-text-white has-text-weight-semibold" style="line-height:1.2; word-break:break-word;">{{ itemNameById(id, 'mine') }}</p>
+                    </div>
+                    <div style="background:#f0f7ff; padding:6px; text-align:center;">
+                      <i class="fas fa-scroll" style="color:#3273dc; font-size:0.9rem;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tags mb-0">
+                <span v-if="currentCounteroffer.fromHost?.money" class="tag is-info is-light">💰 {{ currentCounteroffer.fromHost.money }}</span>
+                <span v-if="currentCounteroffer.fromHost?.clue" class="tag is-info is-light">🔍 {{ currentCounteroffer.fromHost.clue }}</span>
+                <span v-if="currentCounteroffer.fromHost?.remnant" class="tag is-info is-light">🧩 {{ currentCounteroffer.fromHost.remnant }}</span>
               </div>
             </div>
 
@@ -180,28 +357,38 @@
             </div>
           </div>
 
-          <!-- FINISHED: trade completed -->
+          <!-- FINISHED -->
           <div v-else-if="tradeStatus === 'finished'">
             <div class="notification is-success is-light has-text-centered">
               <p class="title is-3 has-text-success mb-2">🤝 ¡Intercambio realizado!</p>
-              <p class="subtitle is-6 mb-3">Los objetos han sido intercambiados.</p>
-
               <div class="box mb-2">
                 <p class="is-size-7 has-text-grey mb-1">Recibiste:</p>
-                <div v-if="myNewItems.length === 0" class="has-text-grey is-size-7">Ningún objeto</div>
-                <div class="tags is-centered" v-else>
-                  <span v-for="item in myNewItems" :key="item.id" class="tag is-success is-medium">🎁 {{ itemName(item) }}</span>
+                <div v-if="myNewItems.length === 0 && !resourcesGained.money && !resourcesGained.clue && !resourcesGained.remnant" class="has-text-grey is-size-7">Nada</div>
+                <div v-else>
+                  <div class="tags is-centered" v-if="myNewItems.length > 0">
+                    <span v-for="item in myNewItems" :key="item.id" class="tag is-success is-medium">🎁 {{ itemName(item) }}</span>
+                  </div>
+                  <div class="tags is-centered" v-if="resourcesGained.money || resourcesGained.clue || resourcesGained.remnant">
+                    <span v-if="resourcesGained.money" class="tag is-success is-medium">💰 +{{ resourcesGained.money }}</span>
+                    <span v-if="resourcesGained.clue" class="tag is-success is-medium">🔍 +{{ resourcesGained.clue }}</span>
+                    <span v-if="resourcesGained.remnant" class="tag is-success is-medium">🧩 +{{ resourcesGained.remnant }}</span>
+                  </div>
                 </div>
               </div>
-
               <div class="box">
                 <p class="is-size-7 has-text-grey mb-1">Diste:</p>
-                <div v-if="myLostItems.length === 0" class="has-text-grey is-size-7">Ningún objeto</div>
-                <div class="tags is-centered" v-else>
-                  <span v-for="item in myLostItems" :key="item.id" class="tag is-light is-medium">📤 {{ itemName(item) }}</span>
+                <div v-if="myLostItems.length === 0 && !resourcesLost.money && !resourcesLost.clue && !resourcesLost.remnant" class="has-text-grey is-size-7">Nada</div>
+                <div v-else>
+                  <div class="tags is-centered" v-if="myLostItems.length > 0">
+                    <span v-for="item in myLostItems" :key="item.id" class="tag is-light is-medium">📤 {{ itemName(item) }}</span>
+                  </div>
+                  <div class="tags is-centered" v-if="resourcesLost.money || resourcesLost.clue || resourcesLost.remnant">
+                    <span v-if="resourcesLost.money" class="tag is-light is-medium">💰 -{{ resourcesLost.money }}</span>
+                    <span v-if="resourcesLost.clue" class="tag is-light is-medium">🔍 -{{ resourcesLost.clue }}</span>
+                    <span v-if="resourcesLost.remnant" class="tag is-light is-medium">🧩 -{{ resourcesLost.remnant }}</span>
+                  </div>
                 </div>
               </div>
-
               <button class="button is-success mt-3" @click="closeFinished()">Cerrar</button>
             </div>
           </div>
@@ -217,7 +404,7 @@
 
         </section>
 
-        <footer v-if="tradeStatus !== 'finished' && tradeStatus !== 'cancelled'" class="">
+        <footer v-if="tradeStatus !== 'finished' && tradeStatus !== 'cancelled'">
           <button @click="closeModal()" class="button is-danger is-fullwidth">
             Cancelar intercambio
           </button>
@@ -235,6 +422,11 @@ export default {
   name: 'EventoIntercambio',
   data() {
     return {
+      selectedResourcesToGive: { money: 0, clue: 0, remnant: 0 },
+      selectedResourcesToWant: { money: 0, clue: 0, remnant: 0 },
+      counterResourcesToGive:  { money: 0, clue: 0, remnant: 0 },
+      myAttrs: { money: 0, clue: 0, remnant: 0 },
+      rivalAttrs: { money: 0, clue: 0, remnant: 0 },
       tradeStatus: 'loading',
       isHost: false,
       rivalName: '',
@@ -246,11 +438,19 @@ export default {
       counterSelectedGive: [],
       makingCounteroffer: false,
 
-      currentOffer: { fromHost: [], fromGuest: [] },
-      currentCounteroffer: { fromHost: [], fromGuest: [] },
+      currentOffer: {
+        fromHost: { items: [], money: 0, clue: 0, remnant: 0 },
+        fromGuest: { items: [], money: 0, clue: 0, remnant: 0 }
+      },
+      currentCounteroffer: {
+        fromHost: { items: [], money: 0, clue: 0, remnant: 0 },
+        fromGuest: { items: [], money: 0, clue: 0, remnant: 0 }
+      },
 
       myNewItems: [],
       myLostItems: [],
+      resourcesGained: { money: 0, clue: 0, remnant: 0 },
+      resourcesLost:   { money: 0, clue: 0, remnant: 0 },
 
       tradeApplied: false,
       pollingInterval: null,
@@ -270,9 +470,16 @@ export default {
       return item ? this.itemName(item) : `Objeto (${id})`
     },
 
-    formatIdList(ids, who) {
-      if (!ids || ids.length === 0) return 'Nada'
-      return ids.map(id => this.itemNameById(id, who)).join(', ')
+    itemImgById(id, who) {
+      const list = who === 'mine' ? this.myPossessions : this.rivalPossessions
+      const item = list.find(p => p.id == id)
+      return item?.img || ''
+    },
+
+    formatIdList(offerSide, who) {
+      const items = offerSide?.items ?? (Array.isArray(offerSide) ? offerSide : [])
+      if (!items.length) return 'Nada'
+      return items.map(id => this.itemNameById(id, who)).join(', ')
     },
 
     isSelectedWant(id) { return this.selectedWant.includes(id) },
@@ -320,7 +527,22 @@ export default {
         this.myPossessions = getItems(interaction.event.invDataGest)
         this.rivalPossessions = getItems(interaction.event.invDataHost)
       }
+      this.initAttrs()
       console.log('💼 [initPlayers] mis objetos:', this.myPossessions.length, '| objetos rival:', this.rivalPossessions.length)
+    },
+
+    initAttrs() {
+      const interaction = this.$store.state.interactionData
+      const hostAttrs = interaction.event.invDataHost?.atributes || {}
+      const gestAttrs = interaction.event.invDataGest?.atributes || {}
+      if (this.isHost) {
+        this.myAttrs    = { money: hostAttrs.money || 0, clue: hostAttrs.clue || 0, remnant: hostAttrs.remnant || 0 }
+        this.rivalAttrs = { money: gestAttrs.money || 0, clue: gestAttrs.clue || 0, remnant: gestAttrs.remnant || 0 }
+      } else {
+        this.myAttrs    = { money: gestAttrs.money || 0, clue: gestAttrs.clue || 0, remnant: gestAttrs.remnant || 0 }
+        this.rivalAttrs = { money: hostAttrs.money || 0, clue: hostAttrs.clue || 0, remnant: hostAttrs.remnant || 0 }
+      }
+      console.log('💰 [initAttrs] myAttrs:', this.myAttrs, '| rivalAttrs:', this.rivalAttrs)
     },
 
     startPolling() {
@@ -348,18 +570,22 @@ export default {
     },
 
     syncTradeState(tradeData) {
+      const emptyOffer = () => ({
+        fromHost: { items: [], money: 0, clue: 0, remnant: 0 },
+        fromGuest: { items: [], money: 0, clue: 0, remnant: 0 }
+      })
       const prev = this.tradeStatus
       switch (tradeData.status) {
         case 'waitingOffer':
           this.tradeStatus = 'waitingOffer'
           break
         case 'offerPending':
-          this.currentOffer = tradeData.offer || { fromHost: [], fromGuest: [] }
+          this.currentOffer = tradeData.offer || emptyOffer()
           this.tradeStatus = 'offerPending'
           break
         case 'counterofferPending':
-          this.currentOffer = tradeData.offer || { fromHost: [], fromGuest: [] }
-          this.currentCounteroffer = tradeData.counteroffer || { fromHost: [], fromGuest: [] }
+          this.currentOffer = tradeData.offer || emptyOffer()
+          this.currentCounteroffer = tradeData.counteroffer || emptyOffer()
           this.tradeStatus = 'counterofferPending'
           break
         case 'finished':
@@ -385,34 +611,57 @@ export default {
       this.tradeApplied = true
       console.log('🤝 [applyTrade] aplicando trato:', finalDeal)
 
+      const fromHostItems  = finalDeal.fromHost?.items  ?? finalDeal.fromHost  ?? []
+      const fromGuestItems = finalDeal.fromGuest?.items ?? finalDeal.fromGuest ?? []
+      const fromHostRes  = { money: finalDeal.fromHost?.money  || 0, clue: finalDeal.fromHost?.clue  || 0, remnant: finalDeal.fromHost?.remnant  || 0 }
+      const fromGuestRes = { money: finalDeal.fromGuest?.money || 0, clue: finalDeal.fromGuest?.clue || 0, remnant: finalDeal.fromGuest?.remnant || 0 }
+
       const possessions = Array.isArray(this.$store.state.datosPJactual.possessions)
         ? [...this.$store.state.datosPJactual.possessions]
         : [...(this.$store.state.possessionsInPlay || [])]
+
       let itemsReceived = []
       let itemsLost = []
 
       if (this.isHost) {
-        itemsLost = (finalDeal.fromHost || []).map(id => this.findItem(id, 'mine')).filter(Boolean)
-        itemsReceived = (finalDeal.fromGuest || []).map(id => this.findItem(id, 'rival')).filter(Boolean)
+        itemsLost     = fromHostItems.map(id => this.findItem(id, 'mine')).filter(Boolean)
+        itemsReceived = fromGuestItems.map(id => this.findItem(id, 'rival')).filter(Boolean)
+        this.resourcesGained = { money: fromGuestRes.money, clue: fromGuestRes.clue, remnant: fromGuestRes.remnant }
+        this.resourcesLost   = { money: fromHostRes.money,  clue: fromHostRes.clue,  remnant: fromHostRes.remnant }
       } else {
-        itemsLost = (finalDeal.fromGuest || []).map(id => this.findItem(id, 'mine')).filter(Boolean)
-        itemsReceived = (finalDeal.fromHost || []).map(id => this.findItem(id, 'rival')).filter(Boolean)
+        itemsLost     = fromGuestItems.map(id => this.findItem(id, 'mine')).filter(Boolean)
+        itemsReceived = fromHostItems.map(id => this.findItem(id, 'rival')).filter(Boolean)
+        this.resourcesGained = { money: fromHostRes.money,  clue: fromHostRes.clue,  remnant: fromHostRes.remnant }
+        this.resourcesLost   = { money: fromGuestRes.money, clue: fromGuestRes.clue, remnant: fromGuestRes.remnant }
       }
 
       const lostIds = itemsLost.map(i => i.id)
       const newPossessions = possessions.filter(p => !lostIds.includes(p.id))
       itemsReceived.forEach(item => newPossessions.push(item))
+
       if (Array.isArray(this.$store.state.datosPJactual.possessions)) {
         this.$store.state.datosPJactual.possessions = newPossessions
       } else {
         this.$store.state.possessionsInPlay = newPossessions
       }
 
-      this.myNewItems = itemsReceived
+      const attrs = this.$store.state.datosPJactual.atributes
+      if (this.isHost) {
+        attrs.money   = Math.max(0, attrs.money   - fromHostRes.money   + fromGuestRes.money)
+        attrs.clue    = Math.max(0, attrs.clue    - fromHostRes.clue    + fromGuestRes.clue)
+        attrs.remnant = Math.max(0, attrs.remnant - fromHostRes.remnant + fromGuestRes.remnant)
+      } else {
+        attrs.money   = Math.max(0, attrs.money   - fromGuestRes.money   + fromHostRes.money)
+        attrs.clue    = Math.max(0, attrs.clue    - fromGuestRes.clue    + fromHostRes.clue)
+        attrs.remnant = Math.max(0, attrs.remnant - fromGuestRes.remnant + fromHostRes.remnant)
+      }
+
+      this.myNewItems  = itemsReceived
       this.myLostItems = itemsLost
 
       console.log('📥 [applyTrade] recibidos:', itemsReceived.map(i => this.itemName(i)))
       console.log('📤 [applyTrade] dados:', itemsLost.map(i => this.itemName(i)))
+      console.log('💰 [applyTrade] recursos aplicados | money:', attrs.money, 'clue:', attrs.clue, 'remnant:', attrs.remnant)
 
       this.saveInvestigadorToAPI()
       this.tradeStatus = 'finished'
@@ -437,9 +686,19 @@ export default {
     },
 
     async sendOffer() {
-      const fromHost = [...this.selectedGive]
-      const fromGuest = [...this.selectedWant]
-      console.log('📤 [sendOffer] fromHost (yo doy):', fromHost, '| fromGuest (yo quiero):', fromGuest)
+      const fromHost = {
+        items: [...this.selectedGive],
+        money: this.selectedResourcesToGive.money,
+        clue: this.selectedResourcesToGive.clue,
+        remnant: this.selectedResourcesToGive.remnant
+      }
+      const fromGuest = {
+        items: [...this.selectedWant],
+        money: this.selectedResourcesToWant.money,
+        clue: this.selectedResourcesToWant.clue,
+        remnant: this.selectedResourcesToWant.remnant
+      }
+      console.log('📤 [sendOffer] fromHost:', fromHost, '| fromGuest:', fromGuest)
       try {
         await apiService.sendTradeOffer(this.idInteraction, this.myIdUser, fromHost, fromGuest)
         this.currentOffer = { fromHost, fromGuest }
@@ -465,13 +724,19 @@ export default {
     startCounteroffer() {
       this.makingCounteroffer = true
       this.counterSelectedGive = []
+      this.counterResourcesToGive = { money: 0, clue: 0, remnant: 0 }
       console.log('🔄 [startCounteroffer] abriendo pantalla de contraoferta')
     },
 
     async sendCounteroffer() {
-      const fromHost = [...this.currentOffer.fromHost]
-      const fromGuest = [...this.counterSelectedGive]
-      console.log('🔄 [sendCounteroffer] fromHost:', fromHost, '| fromGuest (mi contraoferta):', fromGuest)
+      const fromHost = { ...this.currentOffer.fromHost }
+      const fromGuest = {
+        items: [...this.counterSelectedGive],
+        money: this.counterResourcesToGive.money,
+        clue: this.counterResourcesToGive.clue,
+        remnant: this.counterResourcesToGive.remnant
+      }
+      console.log('🔄 [sendCounteroffer] fromHost:', fromHost, '| fromGuest:', fromGuest)
       try {
         await apiService.guestRespondToTradeOffer(this.idInteraction, this.myIdUser, 'counteroffer', fromHost, fromGuest)
         this.currentCounteroffer = { fromHost, fromGuest }
