@@ -62,7 +62,11 @@ export default {
     successOnly: {
       type: Boolean,
       default: false
-    }
+    },
+    forceResult: {
+      type: Number,
+      default: null
+    },
   },
   data() {
     return { 
@@ -79,7 +83,7 @@ export default {
         if (this.isRolling) return;
         
         this.isRolling = true;
-        this.result = Math.floor(Math.random() * 6) + 1;
+        this.result = (this.forceResult !== null) ? this.forceResult : Math.floor(Math.random() * 6) + 1;
         this.animationClass = `roll-to-${this.result}`;
         
         setTimeout(() => {
