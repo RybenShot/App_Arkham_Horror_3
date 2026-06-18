@@ -275,6 +275,15 @@ export default {
       // console.log("datos actuales del investigador:", this.$store.state.datosPJactual)
     }
   },
+  watch: {
+    '$store.state.datosPJactual.atributes.sanity'(newVal) {
+      this.atributos.cordura = newVal
+    },
+    '$store.state.datosPJactual.atributes.life'(newVal) {
+      this.atributos.vida = newVal
+    }
+  },
+
   mounted(){
     this.resetearNavegacion();
     this.$store.state.StoreTiradorDados = true;

@@ -11,7 +11,10 @@
 
       <!-- Evento fractura temporal -->
       <div v-else-if="this.$store.state.interactionData.event.type == 'temporalFracture'"> <event_temporalFracture/> </div>
-        
+
+      <!-- Evento Espejo Dimensional (oculto) -->
+      <div v-else-if="this.$store.state.interactionData.event.type == 'dimensionalMirror'"> <event_dimensionalMirror/> </div>
+
     </div>
 </template>
 
@@ -20,6 +23,7 @@ import event_figth from "@/components/inPlay/modals/events/figth.vue";
 import event_resonance from "@/components/inPlay/modals/events/resonance.vue";
 import event_temporalFracture from "@/components/inPlay/modals/events/temporalFracture.vue";
 import event_trade from "@/components/inPlay/modals/events/trade.vue";
+import event_dimensionalMirror from "@/components/inPlay/modals/events/dimensionalMirror.vue";
 
 export default {
   name:"switcher Eventos OnLine entre usuarios",
@@ -27,7 +31,8 @@ export default {
     event_figth,
     event_resonance,
     event_temporalFracture,
-    event_trade
+    event_trade,
+    event_dimensionalMirror
   },
   data(){
     return{}

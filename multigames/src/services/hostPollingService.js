@@ -116,6 +116,14 @@ class HostPollingService {
           }
           break;
 
+        case 'finished':
+          // Evento resuelto automáticamente por el backend (ej: Espejo Dimensional)
+          this.stopPolling();
+          if (this.callbacks.onAccepted) {
+            this.callbacks.onAccepted(result);
+          }
+          break;
+
         default:
           // Estado que no esperábamos - solo log
           console.log('⚠️ Estado desconocido:', result.status);
