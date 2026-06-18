@@ -277,6 +277,7 @@ export default {
     return {
       scene: 'rules',
       ritualState: 'idle', // 'idle' | 'rolling' | 'readyToSend' | 'sent'
+      diceResults: [],
 
       myBet: 0,
       myRemnants: 0,
@@ -294,6 +295,12 @@ export default {
       pollingInterval: null,
       idInteraction: null,
       myIdUser: null
+    }
+  },
+
+  computed: {
+    naciertos() {
+      return this.diceResults.filter(r => r >= 5).length
     }
   },
 
@@ -330,30 +337,45 @@ export default {
     increaseBet() { if (this.myBet < this.myRemnants) this.myBet++ },
     decreaseBet()  { if (this.myBet > 0) this.myBet-- },
 
-    // Igual que encounterFigth.vue: lanza los dados visualmente
     throwDice() {
+      this.diceResults = []
+      console.log('🎲 [resonance] throwDice — reseteando diceResults, myWillpower:', this.myWillpower)
       for (let i = 0; i < this.myWillpower; i++) {
         const diceRef = this.$refs[`diceRoller${i}`]
-        if (diceRef) {
-          const die = Array.isArray(diceRef) ? diceRef[0] : diceRef
-          if (die) die.rollDice()
-        }
+        const die = Array.isArray(diceRef) ? diceRef[0] : diceRef
+        console.log(`🎲 [resonance] dado ${i} ref:`, diceRef, '→ die:', die)
+        if (die) die.rollDice()
       }
       this.ritualState = 'rolling'
       setTimeout(() => {
+        console.log('🎲 [resonance] timeout — diceResults al finalizar:', this.diceResults, '| naciertos:', this.naciertos)
         this.ritualState = 'readyToSend'
       }, 2500)
     },
 
-    handleDiceResult() {
-      // La tirada visual es cosmética; el servidor hace el roll real al enviar
+    handleDiceResult(result) {
+      this.diceResults.push(result)
+      console.log(`🎲 [resonance] handleDiceResult — resultado recibido: ${result} | diceResults hasta ahora:`, [...this.diceResults])
     },
 
-    // Envía la apuesta al servidor (el servidor hace el roll real)
     async submitRitual() {
+      console.log('🕯️ [resonance] submitRitual — enviando:', {
+        idInteraction: this.idInteraction,
+        idUser: this.myIdUser,
+        bet: this.myBet,
+        successes: this.naciertos,
+        dice: this.diceResults
+      })
       this.ritualState = 'sent'
       try {
-        await apiService.submitResonance(this.idInteraction, this.myIdUser, this.myBet)
+        const res = await apiService.submitResonance(
+          this.idInteraction,
+          this.myIdUser,
+          this.myBet,
+          this.naciertos,
+          this.diceResults
+        )
+        console.log('🕯️ [resonance] submitRitual — respuesta del servidor:', res)
         this.scene = 'waiting'
         this.startPolling()
       } catch (e) {
@@ -402,10 +424,9 @@ export default {
         pj.atributes.remnant = Math.max(0, (pj.atributes.remnant || 0) - myBetFromServer)
       }
 
-      // Vue 3: asignación directa en lugar de this.$set
-      if (rd.result === 'failure' && pj) {
-        if (!Array.isArray(pj.states)) pj.states = []
-        if (!pj.states.includes('senalado')) pj.states.push('senalado')
+      if (rd.result === 'failure') {
+        this.$store.state.EstadoSeñalado = true
+        console.log('👁️ [resonance] estado Señalado activado')
       }
 
       this.saveInvestigadorToAPI()

@@ -714,11 +714,11 @@ export const apiService = {
       }
   },
 
-  async submitResonance(idInteraction, idUser, bet) {
+  async submitResonance(idInteraction, idUser, bet, successes, dice) {
     try {
       const response = await axios.put(
         `${API_URL}/interactions/resonance/submit/${idInteraction}`,
-        { idUser, bet }
+        { idUser, bet, successes, dice }
       )
       return response.data
     } catch (error) {
