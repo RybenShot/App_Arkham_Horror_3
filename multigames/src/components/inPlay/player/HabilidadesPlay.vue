@@ -2,14 +2,14 @@
   <section>
     <ModalBuscarObjeto v-if="$store.state.modalBuscarObjeto" />
     <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
-    <div class="container mx-3 has-text-white">
+    <div class="container mx-3 has-text-white" data-tour="hab-habilidades">
       <p>>> {{ textoInterfaz.efecto1 }}</p>
       <p v-if="textoInterfaz.efecto2">>> {{ textoInterfaz.efecto2 }}</p>
     </div>
     <hr>
 
-    <h1 class="title has-text-white has-text-centered">
-      {{ textoInterfaz.pertenenciasIniciales }} 
+    <h1 class="title has-text-white has-text-centered" data-tour="hab-pertenencias">
+      {{ textoInterfaz.pertenenciasIniciales }}
       <button class="button" @click="$store.state.modalBuscarObjeto = true">+</button>
     </h1>
     

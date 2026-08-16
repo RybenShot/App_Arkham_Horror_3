@@ -3,7 +3,7 @@
     <div id="ventana-ajustes">
       <p class="title has-text-centered has-text-white">{{ textoInterfaz.titulo }}</p>
 
-      <div class="columns is-mobile">
+      <div class="columns is-mobile" data-tour="ajustes-toggles">
         <div class="column has-text-right ">
           <p class="title is-6 has-text-white mb-3 pt-2">{{ textoInterfaz.efectoInmersion }}</p>
           <p class="title is-6 has-text-white">{{ textoInterfaz.musicaAmb }}</p>
@@ -25,11 +25,21 @@
               @click="($store.state.PistasAudio.MusicaHambiental = false), switchSoundTrackInPlay(false)" 
               class="button is-danger is-small">OFF</button>
           </div>
-          <div class="buttons has-addons">
-            <button :class="{'is-outlined': $store.state.ModoOnLine == false }" 
-              @click="reactivarModoOnLine()" class="button is-success is-small is-selected">ON</button>
-            <button :class="{'is-outlined': $store.state.ModoOnLine == true }" 
-              @click="cancelarModoOnLine()" class="button is-danger is-small">OFF</button>
+          <div style="display:flex; align-items:center; gap:0.3rem;">
+            <div class="buttons has-addons mb-0">
+              <button :class="{'is-outlined': $store.state.ModoOnLine == false }"
+                @click="reactivarModoOnLine()" class="button is-success is-small is-selected">ON</button>
+              <button :class="{'is-outlined': $store.state.ModoOnLine == true }"
+                @click="cancelarModoOnLine()" class="button is-danger is-small">OFF</button>
+            </div>
+            <button
+              class="button is-small is-dark poll-btn"
+              :disabled="$store.state.ModoOnLine == false"
+              :title="$store.state.lenguaje === 'español' ? 'Buscar invitación ahora' : 'Search for invitation now'"
+              @click="manualPoll()"
+            >
+              <span class="icon is-small"><i class="fas fa-satellite-dish"></i></span>
+            </button>
           </div>
         </div>
       </div>
@@ -50,7 +60,7 @@
       </div>
 
       <!-- boton para guardar perdonaje OnLine -->
-       <div>
+       <div data-tour="ajustes-guardar">
         <button @click="safeinvOnLine()" class="button is-fullwidth  is-warning">
           <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.safeInv || "guardar investigador" }}
         </button>
@@ -58,7 +68,7 @@
 
     </div>
     
-    <footer>
+    <footer data-tour="ajustes-footer">
       <button @click="backToSelectInv()" class="button is-fullwidth is-dark mb-2"> <i class="fas fa-users mx-3"></i>{{ textoInterfaz.botones.seleccionPersonaje }} </button>
       <button @click="endGame()" class="button is-fullwidth  is-black"> <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.terminarPartida }} </button>
     </footer>
@@ -254,6 +264,16 @@ export default {
     },
 
     // Cancelar Modo OnLine
+    async manualPoll() {
+      if (!this.$store.state.ModoOnLine) return
+      this.$buefy.toast.open({
+        message: this.$store.state.lenguaje === 'español' ? 'Buscando invitaciones...' : 'Searching for invitations...',
+        type: 'is-info',
+        duration: 1500
+      })
+      await invitationService.checkInvitations()
+    },
+
     async cancelarModoOnLine(){
       invitationService.stopPollingGeneral();
       this.$store.state.ModoOnLine = false
@@ -298,5 +318,18 @@ export default {
 <style scoped>
 #ventana-ajustes{
   height: 40vh;
+}
+.poll-btn {
+  border-radius: 6px !important;
+  transition: all 0.2s;
+}
+.poll-btn:not(:disabled):hover {
+  background: #3273dc !important;
+  color: #fff !important;
+  border-color: #3273dc !important;
+}
+.poll-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 </style>

@@ -21,7 +21,7 @@
     </div>
 
     <!-- Navegacion Player - Map -->
-    <b-tabs position="is-centered" class="block mb-0">
+    <b-tabs position="is-centered" class="block mb-0" data-tour="play-tabs">
         <b-tab-item label="Player">
           <viewPlayer/>
         </b-tab-item>
@@ -58,6 +58,7 @@ import hostAcceptedModal from "@/components/inPlay/modals/hostAcceptedModal.vue"
 import { invitationService } from '@/services/invitationService.js';
 import { hostPollingService } from '@/services/hostPollingService.js';
 import { apiService } from '@/services/api.js';
+import { continueTourIfNeeded } from '@/services/tourService.js';
 
 //SoundTrack
 import { audioService_audioInPlay } from '@/services/GestionAudio/audioService_soundTrack.js';
@@ -193,7 +194,8 @@ export default {
 
     this.serchInitialObjectsInv();
     this.rellenarTextoSegunIdioma();
-    this.iniciarAudioInPlay()
+    this.iniciarAudioInPlay();
+    continueTourIfNeeded('/PlayAH');
   },
 
   beforeUnmount() {

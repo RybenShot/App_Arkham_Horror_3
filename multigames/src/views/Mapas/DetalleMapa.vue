@@ -24,9 +24,9 @@
     <div v-if="this.$store.state.modalVerEnemigos == true"><ModalEnemigos/></div>
     <!-- Detalle de Mapa -->
     <div v-if="this.$store.state.viewDetalleMapa == true" >
-      <div><RolloHistoriaMapa/></div>
-      <div><EspecificacionesMapas/></div>
-      <div><LosetasYBotones/></div>
+      <div data-tour="mapa-historia"><RolloHistoriaMapa/></div>
+      <div data-tour="mapa-especificaciones"><EspecificacionesMapas/></div>
+      <div data-tour="mapa-losetas-botones"><LosetasYBotones/></div>
     </div>
 
   </div>
@@ -46,6 +46,7 @@ import ModalEnemigos from "@/components/mapas/EnemigosSwitcher.vue";
 import ModalLosetaMapa from "@/components/mapas/DetalleLosetaMapa.vue";
 import ModalPostOnLineMap from "@/components/mapas/modalPostOnLineMap.vue";
 import { onMounted } from "vue";
+import { continueTourIfNeeded } from '@/services/tourService.js';
 
 export default {
   name:"DetalleMapa",
@@ -84,6 +85,7 @@ export default {
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
+    continueTourIfNeeded('/DetalleMapa');
   }
 }
 </script>

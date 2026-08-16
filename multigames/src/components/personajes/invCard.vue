@@ -6,49 +6,38 @@
       <button v-if="this.$route.path === '/profile'" class="delete-btn" @click.stop="deleteInvInPlay()">
         <i class="fas fa-times"></i>
       </button>
-      
-      <!-- Stats superiores -->
-      <div class="stats-container">
-        <div class="stat-badge life-stat">
-          <i class="fas fa-heart stat-icon"></i>
-          <span class="stat-value">{{ investigator.baseData?.life || investigator.atributes.life }}</span>
-        </div>
-        <div class="stat-badge sanity-stat">
-          <i class="fas fa-brain stat-icon"></i>
-          <span class="stat-value">{{ investigator.baseData?.sanity || investigator.atributes.sanity }}</span>
-        </div>
-      </div>
 
-      <!-- Efectos atmosféricos -->
-      <div class="cosmic-overlay"></div>
-      
       <!-- Imagen del investigador -->
       <div class="image-container">
-        <img 
-          :src="investigator.imgInv" 
-          :alt="getInvestigatorName()" 
+        <img
+          :src="investigator.imgInv"
+          :alt="getInvestigatorName()"
           class="investigator-image"
           @error="handleImageError"
         />
-        <div class="image-vignette"></div>
+        <!-- Viñeta éldritch: oscurece bordes con tinte violáceo -->
+        <div class="eldritch-vignette"></div>
       </div>
-      
-      <!-- Información del investigador -->
-      <div class="info-container">
-        <div class="info-frame">
-          <h3 class="investigator-name">{{ getInvestigatorName() }}</h3>
-          <p class="investigator-position">{{ getInvestigatorPosition() }}</p>
-        </div>
+
+      <!-- Overlay atmosférico cósmico -->
+      <div class="void-overlay"></div>
+
+      <!-- Nombre del investigador — sin fondo, glow éldritch -->
+      <div class="inv-name-wrap">
+        <p class="inv-name">{{ getInvestigatorName() }}</p>
       </div>
-      
-      <!-- Partículas místicas -->
-      <div class="mystic-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+
+      <!-- Vida y cordura en esquinas inferiores -->
+      <div class="stat-life">
+        <i class="fas fa-heart s-icon"></i>
+        <span class="s-val">{{ investigator.baseData?.life || investigator.atributes.life }}</span>
       </div>
-      
-      <!-- Aura de expansión -->
+      <div class="stat-sanity">
+        <i class="fas fa-brain s-icon"></i>
+        <span class="s-val">{{ investigator.baseData?.sanity || investigator.atributes.sanity }}</span>
+      </div>
+
+      <!-- Aura de expansión en hover -->
       <div class="expansion-aura" :class="getExpansionClass()"></div>
     </div>
   </div>
@@ -64,10 +53,9 @@ export default {
     investigator: { type: Object, required: true }
   },
   methods: {
-    SonidoTecla() {audioService_effects.playTecla()},
+    SonidoTecla() { audioService_effects.playTecla() },
     async selectInv(investigator) {
       try {
-        // si existe una id, esque es un investigador OnLine, por lo cual no hace falta que hagamos ninguna llamada a back
         if (investigator.id) {
           this.$store.commit('setDatosInvestigator', investigator);
           this.$router.push('/DetallePersonaje');
@@ -79,66 +67,40 @@ export default {
         this.SonidoTecla();
         this.$router.push('/DetallePersonaje');
       } catch (error) {
-        console.error("❌ selectInv(.vue) - No se pudo obtener el investigador", error);
+        console.error('❌ selectInv - No se pudo obtener el investigador', error);
       }
     },
-    
+
     getExpansionClass() {
-      if (!this.investigator || !this.investigator.expansion) return 'expansion-base';
-      
-      switch(this.investigator.expansion) {
-        case 'AHBase': return 'expansion-base';
-        case 'AHWaves': return 'expansion-waves';
-        case 'AHNigth': return 'expansion-night';
-        case 'AHSecrets': return 'expansion-secrets';
-        case 'AHOriginal': return 'expansion-original';
-        case 'AHComunity': return 'expansion-community';
-        default: return 'expansion-base';
-      }
+      if (!this.investigator?.expansion) return 'expansion-base';
+      const map = {
+        AHBase:      'expansion-base',
+        AHWaves:     'expansion-waves',
+        AHNigth:     'expansion-night',
+        AHSecrets:   'expansion-secrets',
+        AHOriginal:  'expansion-original',
+        AHComunity:  'expansion-community',
+      };
+      return map[this.investigator.expansion] || 'expansion-base';
     },
 
-    async deleteInvInPlay(){
-      const confirmDelete = window.confirm("¿Estás seguro de que quieres borrar este investigador?");
-      if (!confirmDelete) return;
-
+    async deleteInvInPlay() {
+      if (!window.confirm('¿Estás seguro de que quieres borrar este investigador?')) return;
       try {
-        const idInvInPlay = this.investigator.id;
-        const IDUserHost = this.$store.state.IDUserHost;
-
-        const response = await apiService.deleteInvOnLine(idInvInPlay, IDUserHost);
-        console.log("Investigador borrado:", response);
+        await apiService.deleteInvOnLine(this.investigator.id, this.$store.state.IDUserHost);
         location.reload();
       } catch (error) {
-        console.error("Error al borrar el investigador:", error);
+        console.error('Error al borrar el investigador:', error);
       }
     },
-    
+
     getInvestigatorName() {
       if (!this.investigator) return 'Investigador';
-      
-      if (this.$store.state.lenguaje === 'español' && 
-          this.investigator.translations && 
-          this.investigator.translations.es && 
-          this.investigator.translations.es.name) {
-        return this.investigator.translations.es.name;
-      }
-      
+      const es = this.investigator.translations?.es;
+      if (this.$store.state.lenguaje === 'español' && es?.name) return es.name;
       return this.investigator.name || 'Investigador';
     },
-    
-    getInvestigatorPosition() {
-      if (!this.investigator) return '';
-      
-      if (this.$store.state.lenguaje === 'español' && 
-          this.investigator.translations && 
-          this.investigator.translations.es && 
-          this.investigator.translations.es.position) {
-        return this.investigator.translations.es.position;
-      }
-      
-      return this.investigator.position || '';
-    },
-    
+
     handleImageError(event) {
       event.target.style.display = 'none';
     }
@@ -147,281 +109,159 @@ export default {
 </script>
 
 <style scoped>
-/* Contenedor principal */
+/* ─── Contenedor ──────────────────────────────────────────── */
 .inv-card-container {
   width: 100%;
-  padding: 0.25rem;
+  padding: 0.15rem;
 }
 
-/* Tarjeta cósmica de investigador */
+/* ─── Carta base ──────────────────────────────────────────── */
 .cosmic-inv-card {
   position: relative;
-  width: 120px;
-  max-height: 160px;
-  border-radius: 10px;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.cosmic-inv-card:active {transform: scale(0.98);}
+.cosmic-inv-card:active  { transform: scale(0.97); }
+.cosmic-inv-card:hover   { transform: scale(1.03); }
 
-/* Colores por expansión */
-.expansion-base {border-color: #48c78e;}
-.expansion-waves {border-color: #3e8ed0;}
-.expansion-night {border-color: #ffdc7d;}
-.expansion-secrets {border-color: #f14668;}
-.expansion-original {border-color: #7957d5;}
-.expansion-community {border-color: #ff6b35;}
+/* Glow éldritch por expansión */
+.expansion-base     { box-shadow: 0 0 10px 2px #48c78e88, 0 4px 24px #000c; }
+.expansion-waves    { box-shadow: 0 0 10px 2px #3e8ed088, 0 4px 24px #000c; }
+.expansion-night    { box-shadow: 0 0 10px 2px #ffdc7d88, 0 4px 24px #000c; }
+.expansion-secrets  { box-shadow: 0 0 10px 2px #f1466888, 0 4px 24px #000c; }
+.expansion-original { box-shadow: 0 0 10px 2px #7957d588, 0 4px 24px #000c; }
+.expansion-community{ box-shadow: 0 0 10px 2px #ff6b3588, 0 4px 24px #000c; }
 
-/* Botón de eliminar */
+/* ─── Imagen ──────────────────────────────────────────────── */
+.image-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.investigator-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: brightness(0.8) contrast(1.15) saturate(0.75);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.cosmic-inv-card:hover .investigator-image {
+  filter: brightness(0.9) contrast(1.2) saturate(0.9);
+  transform: scale(1.04);
+}
+
+/* Viñeta con tinte éldritch: negro en bordes, toque violáceo abajo */
+.eldritch-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 40%, rgba(10, 0, 20, 0.65) 100%),
+    linear-gradient(to bottom, rgba(10, 0, 20, 0.25) 0%, transparent 35%, transparent 55%, rgba(5, 0, 15, 0.88) 100%);
+  pointer-events: none;
+}
+
+/* ─── Overlay de atmósfera void ──────────────────────────── */
+.void-overlay {
+  display: none;
+}
+
+/* ─── Nombre — texto flotante sin fondo ───────────────────── */
+.inv-name-wrap {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 6px;
+  z-index: 7;
+}
+
+.inv-name {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'Cinzel', 'Georgia', serif;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  color: #e8d5a3;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.9),
+    0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+/* ─── Stats de vida y cordura ────────────────────────────── */
+.stat-life,
+.stat-sanity {
+  position: absolute;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  z-index: 7;
+}
+
+.stat-life   { left: 8px; }
+.stat-sanity { right: 8px; }
+
+.s-icon {
+  font-size: 0.65rem;
+}
+
+.stat-life   .s-icon { color: #e05555; filter: drop-shadow(0 0 4px #e0555599); }
+.stat-sanity .s-icon { color: #55aaee; filter: drop-shadow(0 0 4px #55aaee99); }
+
+.s-val {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  color: #f0e8d0;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+}
+
+/* ─── Botón eliminar ──────────────────────────────────────── */
 .delete-btn {
   position: absolute;
-  top: -3px;
-  right: -3px;
-  background: rgba(220, 53, 69, 0.8);
-  border: 1px solid #dc3545;
+  top: 4px;
+  right: 4px;
+  background: rgba(180, 0, 0, 0.75);
+  border: 1px solid #aa0000;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   cursor: pointer;
   z-index: 11;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(5px);
 }
 
-/* Stats superiores */
-.stats-container {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 5;
-}
-
-.stat-badge {
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  padding: 0.2rem 0.4rem;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.life-stat {border-color: rgba(220, 53, 69, 0.5);}
-.sanity-stat {border-color: rgba(52, 144, 220, 0.5);}
-.stat-icon {font-size: 0.8rem;}
-.life-stat .stat-icon {color: #dc3545;}
-.sanity-stat .stat-icon {color: #3490dc;}
-
-.stat-value {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Overlay atmosférico */
-.cosmic-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 30%, rgba(0, 100, 0, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(0, 50, 0, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Contenedor de imagen */
-.image-container {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-}
-
-.investigator-image {
-  max-width: 98%;
-  max-height: 98%;
-  top: 3px;
-  left: 3px;
-  object-fit: cover;
-  filter: brightness(0.85) contrast(1.1) saturate(0.9);
-  transition: all 0.3s ease;
-}
-
-.cosmic-inv-card:hover .investigator-image {
-  filter: brightness(0.95) contrast(1.2) saturate(1.0);
-  transform: scale(1.03);
-}
-
-/* Viñeta de imagen */
-.image-vignette {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7) 100%),
-    radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
-  pointer-events: none;
-}
-
-/* Información del investigador */
-.info-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 4;
-}
-
-.info-frame {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.9));
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.5rem;
-  text-align: center;
-  backdrop-filter: blur(10px);
-}
-
-.investigator-name {
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin: 0 0 0.2rem 0;
-  text-shadow: 
-    1px 1px 2px rgba(0, 0, 0, 0.8),
-    0 0 5px rgba(255, 255, 255, 0.3);
-  font-family: 'Cinzel', serif;
-  line-height: 1.1;
-}
-
-.investigator-position {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.65rem;
-  margin: 0 0 0.3rem 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  font-style: italic;
-  line-height: 1.1;
-}
-
-.expansion-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.expansion-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 8px currentColor;
-}
-
-/* Colores de expansión para indicadores */
-.expansion-indicator.expansion-base {color: #48c78e;}
-.expansion-indicator.expansion-waves {color: #3e8ed0;}
-.expansion-indicator.expansion-night {color: #ffdc7d;}
-.expansion-indicator.expansion-secrets {color: #f14668;}
-.expansion-indicator.expansion-original {color: #7957d5;}
-.expansion-indicator.expansion-community {color: #ff6b35;}
-
-/* Partículas místicas */
-.mystic-particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-  animation: mystic-float 5s ease-in-out infinite;
-}
-
-.particle:nth-child(1) {
-  top: 20%;
-  left: 15%;
-  animation-delay: 0s;
-}
-
-.particle:nth-child(2) {
-  top: 60%;
-  right: 20%;
-  animation-delay: 1.5s;
-}
-
-.particle:nth-child(3) {
-  bottom: 30%;
-  left: 70%;
-  animation-delay: 3s;
-}
-
-@keyframes mystic-float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.4;
-  }
-  25% {
-    transform: translateY(-6px) translateX(2px);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(-3px) translateX(-1px);
-    opacity: 0.6;
-  }
-  75% {
-    transform: translateY(-8px) translateX(3px);
-    opacity: 0.9;
-  }
-}
-
-/* Aura de expansión */
+/* ─── Aura de expansión en hover ─────────────────────────── */
 .expansion-aura {
   position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 140%;
-  height: 140%;
+  inset: -15%;
+  width: 130%;
+  height: 130%;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 1;
 }
 
-.cosmic-inv-card:hover .expansion-aura {opacity: 1;}
-.expansion-aura.expansion-base {background: radial-gradient(circle at center, rgba(72, 199, 142, 0.15) 0%, transparent 70%);}
-.expansion-aura.expansion-waves {background: radial-gradient(circle at center, rgba(62, 142, 208, 0.15) 0%, transparent 70%);}
-.expansion-aura.expansion-night {background: radial-gradient(circle at center, rgba(255, 220, 125, 0.15) 0%, transparent 70%);}
-.expansion-aura.expansion-secrets {background: radial-gradient(circle at center, rgba(241, 70, 104, 0.15) 0%, transparent 70%);}
-.expansion-aura.expansion-original {background: radial-gradient(circle at center, rgba(121, 87, 213, 0.15) 0%, transparent 70%);}
-.expansion-aura.expansion-community {background: radial-gradient(circle at center, rgba(255, 107, 53, 0.15) 0%, transparent 70%);}
-
+.cosmic-inv-card:hover .expansion-aura { opacity: 1; }
+.expansion-aura.expansion-base     { background: radial-gradient(circle at center, rgba(72,199,142,0.18) 0%, transparent 65%); }
+.expansion-aura.expansion-waves    { background: radial-gradient(circle at center, rgba(62,142,208,0.18) 0%, transparent 65%); }
+.expansion-aura.expansion-night    { background: radial-gradient(circle at center, rgba(255,220,125,0.18) 0%, transparent 65%); }
+.expansion-aura.expansion-secrets  { background: radial-gradient(circle at center, rgba(241,70,104,0.18) 0%, transparent 65%); }
+.expansion-aura.expansion-original { background: radial-gradient(circle at center, rgba(121,87,213,0.18) 0%, transparent 65%); }
+.expansion-aura.expansion-community{ background: radial-gradient(circle at center, rgba(255,107,53,0.18) 0%, transparent 65%); }
 </style>

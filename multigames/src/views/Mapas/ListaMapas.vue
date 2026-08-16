@@ -21,15 +21,15 @@
         <p class="subtitle is-6 has-text-white has-text-centered mb-2">{{ textoInterfaz.descripcionLocal }}</p>
         
         <!-- Botones de expansión -->
-        <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2 has-text-centered">
+        <div class="columns is-mobile pt-3 mx-1 buttons pl-4 pr-2 has-text-centered" data-tour="mapa-filtros">
           <button v-for="btn in expansionButtons" :key="btn.key"
             class="button p-3 column" :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
             @click="handleToggle(btn.key)" >
             {{ btn.text }}
           </button>
-          <button class=" py-0 join-btn column button" @click="this.$store.state.modalJoinMapInPlay = true">
+          <button class=" py-0 join-btn column button" data-tour="mapa-online-btn" @click="this.$store.state.modalJoinMapInPlay = true">
             <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
-            On-Line 
+            On-Line
             <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
           </button>
         </div>
@@ -40,7 +40,7 @@
     </div>
 
     <!-- Cartas de mapas filtradas -->
-    <div class="PersonajesList">
+    <div class="PersonajesList" data-tour="mapa-grid">
       <MapCard v-for="map in mapsList" :key="map.id" :map="map" />
     </div>
   </div>
@@ -49,6 +49,7 @@
 <script>
 import { apiService } from '@/services/api.js';
 import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+import { continueTourIfNeeded } from '@/services/tourService.js';
 
 import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import MapCard from '@/components/mapas/MapCard.vue';
@@ -168,6 +169,7 @@ export default {
   mounted() {
     this.rellenarTextosegunIdioma();
     this.getPreviewMapsList();
+    continueTourIfNeeded('/ListaMapas');
   },
 };
 </script>

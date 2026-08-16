@@ -1,9 +1,8 @@
 <template>
   <div class="BGGeneralAH px-2">
-    <DatosBasicosDetalle/>
-    <EspecificacionesInv/>
-    <AtributosDetalle/>
-    <HabilidadesDetalle/>
+    <div data-tour="detalle-img"><DatosBasicosDetalle/></div>
+    <div data-tour="detalle-stats"><EspecificacionesInv/><AtributosDetalle/></div>
+    <div data-tour="detalle-habilidades"><HabilidadesDetalle/></div>
     
 
     <!-- Modals -->
@@ -17,7 +16,7 @@
       <div @click="goBack" class="column">
         <i class="title is-4 has-text-white fas fa-bars"> <p>{{ textoInterfaz.lista }}</p></i>
       </div>
-      <div class="column">
+      <div class="column" data-tour="detalle-comenzar">
         <button @click="iniciarSeleccionObjetos" class="button is-success is-fullwidth is-large">
           <i class="fas fa-play mr-2"></i>{{ textoInterfaz.comenzar }}
         </button>
@@ -29,6 +28,7 @@
 <script>
 import { audioService_soundTrack } from '@/services/GestionAudio/audioService_soundTrack.js';
 import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+import { continueTourIfNeeded } from '@/services/tourService.js';
 
 import DatosBasicosDetalle from "@/components/personajes/datosBasicosDetalle.vue";
 import AtributosDetalle from "@/components/personajes/atributosDetalle.vue";
@@ -89,6 +89,7 @@ export default {
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
+    continueTourIfNeeded('/DetallePersonaje');
   },
 }
 </script>

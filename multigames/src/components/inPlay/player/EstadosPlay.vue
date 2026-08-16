@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <section data-tour="estados-area">
     <!-- Parte superior -->
-    <div class="columns is-mobile buttons px-3 mt-3">
+    <div class="columns is-mobile buttons px-3 mt-3" data-tour="estados-filtros">
       <button :class="{'is-outlined': EstadosActivos == false }" class="column is-3 button is-primary is-small p-0 m-0" @click="(this.EstadosActivos = true) , (this.EstadosTodos = false)">{{ textoInterfaz.botones.activos }}</button>
       <p class="column title has-text-centered has-text-white p-0 m-0 ">{{ textoInterfaz.titulo }}</p>
       <button :class="{'is-outlined': EstadosTodos == false }" class="column is-3 button is-primary is-small p-0 m-0" @click="(this.EstadosTodos = true) , (this.EstadosActivos = false)">{{ textoInterfaz.botones.todos }}</button>

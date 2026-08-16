@@ -3,17 +3,17 @@
     <div class="columns is-mobile mt-5 mb-0 mx-2">
       <!-- Loseta -->
       <div class="column is-6 px-5">
-        <div class=" helperimgMapas ml-2" :style="losetaStyle" @click="openLosetas()"></div>
+        <div class=" helperimgMapas ml-2" data-tour="mapa-loseta-img" :style="losetaStyle" @click="openLosetas()"></div>
       </div>
 
       <!-- Botones derecha -->
       <div class="column has-text-centered is-6">
         <!-- Enemigos -->
-        <div id="BG-boton-enemigos" class="helperbotones mb-5 pt-2 pb-6">
+        <div id="BG-boton-enemigos" data-tour="mapa-btn-enemigos" class="helperbotones mb-5 pt-2 pb-6">
           <p class="has-text-white subtitle is-6" @click="openEnemyList()">{{ textoBotones.enemigos }}</p>
         </div>
         <!-- "Inv Recomendados" -->
-        <div id="BG-boton-inv-rec" class="helperbotones p-4 " @click="openInvRec()">
+        <div id="BG-boton-inv-rec" data-tour="mapa-btn-inv-rec" class="helperbotones p-4 " @click="openInvRec()">
           <p class="has-text-light has-text-weight-bold subtitle is-7 has-text-left">{{ textoBotones.invRec }}</p>
         </div>
         <!-- Comunidad -->
@@ -25,7 +25,7 @@
     </div>
 
     <div class="mb-0 ">
-      <button v-if="!this.$store.state.datosMapa.id" class=" py-0 join-btn  button" @click="this.$store.state.modalCrearMapaOnLine = true">
+      <button v-if="!this.$store.state.datosMapa.id" data-tour="mapa-btn-online" class=" py-0 join-btn  button" @click="this.$store.state.modalCrearMapaOnLine = true">
         <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
         Crear Mapa On-Line
         <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
@@ -49,7 +49,7 @@
         <p class=" title is-4 has-text-white py-3">{{this.$store.state.datosMapa.idMap + 1}}/13</p>
       </div>
       
-      <div id="BG-boton-Selec-inv" :class="{'boxShadowGreen':this.$store.state.mapaSeleccionado}" class="helperbotones column my-2 py-4">
+      <div id="BG-boton-Selec-inv" data-tour="mapa-btn-selec-inv" :class="{'boxShadowGreen':this.$store.state.mapaSeleccionado}" class="helperbotones column my-2 py-4">
         <router-link to="/ListaPersonajes">
           <p class="has-text-white has-text-left subtitle is-7" @click="openSelectInv()">{{ textoBotones.selecInv }} </p>
         </router-link>

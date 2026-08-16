@@ -3,7 +3,7 @@
     <p class="title mb-0 has-text-white">Ubicación de jugador</p>
     <p v-if="this.$store.state.ModoOnLine != true" class="has-text-danger">Modo OnLine OFF</p>
     <div class="column is-6 px-5">
-      <div class="map-container" :style="losetaStyle">
+      <div class="map-container" :style="losetaStyle" data-tour="ubic-mapa">
         <!-- Puntos clicables desde la base de datos -->
         <div v-for="point in clickablePoints" :key="point.id" class="clickable-point"
           :style="{

@@ -39,20 +39,20 @@
         <p class="subtitle has-text-white has-text-centered mb-1"> {{ textoInterfaz.textoVariables }}</p>
 
         <!-- Vida - Cordura -->
-        <div class="columns is-mobile has-text-centered pt-2 espacioVidaCordura">
+        <div class="columns is-mobile has-text-centered pt-2 espacioVidaCordura" data-tour="play-vida-cordura">
           <div @click="selectProperty('vida')" class="column pb-1 selector-item pr-0">
             <i class="fa-4x fas fa-heartbeat has-text-danger" :class="{ efectoBumBum: atributos.marcado.vida } "></i>
-            <p class="contadorVidaCordura title has-text-white">{{ atributos.vida }}</p>
+            <p class="contadorVidaCordura title has-text-white">{{ actualVida }}</p>
           </div>
 
           <div @click="selectProperty('cordura')" class="column pb-0 selector-item pl-0">
             <i class="fa-4x fas fa-brain has-text-info" :class="{ efectoBumBum: atributos.marcado.cordura }"></i>
-            <p class="contadorVidaCordura title has-text-white">{{ atributos.cordura }}</p>
+            <p class="contadorVidaCordura title has-text-white">{{ actualCordura }}</p>
           </div>
         </div>
 
         <!-- dinero, pistas y restos -->
-        <div class="columns is-mobile has-text-centered pt-2">
+        <div class="columns is-mobile has-text-centered pt-2" data-tour="play-recursos">
           <div @click="selectProperty('dinero')" class="column p-0 selector-item" >
             <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ boxShadowYellow: atributos.marcado.dinero }"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ actualMoney }}</p>
@@ -60,17 +60,17 @@
 
           <div @click="selectProperty('pistas')" class="column p-0 selector-item" >
             <i class="has-text-success fa-3x fas fa-search" :class="{ boxShadowYellow: atributos.marcado.pistas }"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.pistas }}</p>
+            <p class="contadorVidaCorduraPeques title has-text-white">{{ actualPistas }}</p>
           </div>
 
           <div @click="selectProperty('restos')" class="column p-0 selector-item" >
             <i class="has-text-info fa-3x fas fa-poop" id="restos" :class="{ boxShadowYellow: atributos.marcado.restos }"></i>
-            <p class="contadorVidaCorduraPeques title has-text-white">{{ atributos.restos }}</p>
+            <p class="contadorVidaCorduraPeques title has-text-white">{{ actualRestos }}</p>
           </div>
         </div>
 
         <!-- sumar restar -->
-        <div class="columns is-mobile my-2 ">
+        <div class="columns is-mobile my-2" data-tour="play-sumar-restar">
           <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-5 button is-small p-0 is-danger pb-1"><i class="fas fa-window-minimize"></i></button>
           <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-5 button is-small p-0 is-primary "><i class="fas fa-plus"></i></button>
         </div>
@@ -81,7 +81,7 @@
     <br>
 
     <!-- Navegacion -->
-    <div class="columns is-mobile has-text-centered has-text-white">
+    <div class="columns is-mobile has-text-centered has-text-white" data-tour="play-nav">
       <!-- Dados -->
       <div @click="selectMenu(0)" class="column pt-0">
         <i v-if="this.$store.state.StoreTiradorDados == true" class="has-text-success fa-2x fas fa-dice"></i>
@@ -126,13 +126,8 @@ export default {
       mensajeVidaCorduraMax: "",
 
        atributos: {
-        maxVida :this.$store.state.datosPJactual.atributes.life,
-        maxCordura :this.$store.state.datosPJactual.atributes.sanity,
-
-        vida: this.$store.state.datosPJactual.atributes.life,
-        cordura: this.$store.state.datosPJactual.atributes.sanity,
-        pistas: this.$store.state.datosPJactual.atributes.clue,
-        restos: this.$store.state.datosPJactual.atributes.remnant,
+        maxVida:    this.$store.state.datosPJactual.atributes.life,
+        maxCordura: this.$store.state.datosPJactual.atributes.sanity,
         marcado: {
           vida: false,
           cordura: false,
@@ -149,11 +144,11 @@ export default {
     }
   },
   computed: {
-    // Recupera las fichas desde Vuex usando el getter
-    //! ESTA FUNCION SE USA COMO VARIABLE
-    actualMoney() {
-      return this.$store.getters.getMoneyInv;
-    }
+    actualMoney()   { return this.$store.getters.getMoneyInv },
+    actualVida()    { return this.$store.state.datosPJactual.atributes.life },
+    actualCordura() { return this.$store.state.datosPJactual.atributes.sanity },
+    actualPistas()  { return this.$store.state.datosPJactual.atributes.clue },
+    actualRestos()  { return this.$store.state.datosPJactual.atributes.remnant },
   },
   
   methods: {
@@ -214,17 +209,17 @@ export default {
       }
     },
     sumarRestarVidaCordura(signo, propiedad){
-      if(signo == "+" && propiedad == "vida" && this.atributos.vida < this.atributos.maxVida){
-        this.atributos.vida ++;
-      }else if(signo == "+" && propiedad == "cordura" && this.atributos.cordura < this.atributos.maxCordura){
-        this.atributos.cordura ++;
-      }else if(signo == "-" && propiedad == "vida" && this.atributos.vida > 0){
-        this.atributos.vida --;
-      }else if(signo == "-" && propiedad == "cordura" && this.atributos.cordura > 0){
-        this.atributos.cordura --;
+      const atrib = this.$store.state.datosPJactual.atributes
+      const key   = propiedad === 'vida' ? 'life' : 'sanity'
+      const max   = propiedad === 'vida' ? this.atributos.maxVida : this.atributos.maxCordura
+
+      if (signo === '+' && atrib[key] < max) {
+        atrib[key]++
+      } else if (signo === '-' && atrib[key] > 0) {
+        atrib[key]--
       } else {
-        console.error("No se puede sumar más vida o cordura");
-        this.mostrarNotificacionDesactivar("Vida Maxima alcanzada", "Max life reached");
+        console.error('No se puede sumar más vida o cordura')
+        this.mostrarNotificacionDesactivar('Vida Maxima alcanzada', 'Max life reached')
       }
     },
     buscarPropiedadActiva(){
@@ -243,47 +238,21 @@ export default {
         return
       }
       
-      if(signo == '+'){
-        if (propiedad == "dinero") {
-          this.$store.commit('sumarDinero', 1); // ✅ Usar mutation
-        } else if (propiedad == "pistas" || propiedad == "restos") {
-          this.atributos[propiedad]++;
-        } else {
-          this.sumarRestarVidaCordura(signo, propiedad);
-        }
-      } else if(signo == '-'){
-        if (propiedad == "dinero") {
-          this.$store.commit('restarDinero', 1); // ✅ Usar mutation
-        } else if (propiedad == "pistas" || propiedad == "restos") {
-          this.atributos[propiedad]--;
-        } else {
-          this.sumarRestarVidaCordura(signo, propiedad);
-        }
-      }
+      const atrib = this.$store.state.datosPJactual.atributes
 
-      // Actualizar el store con los nuevos valores
-      if (propiedad == "pistas") {
-        this.$store.state.datosPJactual.atributes.clue = this.atributos[propiedad];
-      } else if (propiedad == "restos") {
-        this.$store.state.datosPJactual.atributes.remnant = this.atributos[propiedad];
-      }  else if (propiedad == "vida"){
-        this.$store.state.datosPJactual.atributes.life = this.atributos[propiedad];
-      } else if (propiedad == "cordura"){
-        this.$store.state.datosPJactual.atributes.sanity = this.atributos[propiedad];
+      if (signo == '+') {
+        if      (propiedad == 'dinero') { this.$store.commit('sumarDinero', 1) }
+        else if (propiedad == 'pistas') { atrib.clue++ }
+        else if (propiedad == 'restos') { atrib.remnant++ }
+        else { this.sumarRestarVidaCordura(signo, propiedad) }
+      } else if (signo == '-') {
+        if      (propiedad == 'dinero') { this.$store.commit('restarDinero', 1) }
+        else if (propiedad == 'pistas') { atrib.clue    = Math.max(0, atrib.clue - 1) }
+        else if (propiedad == 'restos') { atrib.remnant = Math.max(0, atrib.remnant - 1) }
+        else { this.sumarRestarVidaCordura(signo, propiedad) }
       }
-
-      // console.log("datos actuales del investigador:", this.$store.state.datosPJactual)
     }
   },
-  watch: {
-    '$store.state.datosPJactual.atributes.sanity'(newVal) {
-      this.atributos.cordura = newVal
-    },
-    '$store.state.datosPJactual.atributes.life'(newVal) {
-      this.atributos.vida = newVal
-    }
-  },
-
   mounted(){
     this.resetearNavegacion();
     this.$store.state.StoreTiradorDados = true;

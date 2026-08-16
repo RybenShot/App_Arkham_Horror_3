@@ -17,7 +17,7 @@
       <div class="hero pt-3 pb-2 has-text-centered">
 
         <!-- visitas totales y usuarios activos -->
-        <div class="visit-counter">
+        <div class="visit-counter" data-tour="visit-counter">
           <p class="counter-text mx-3" @click="infoTotalVisits()"> <i class="fas fa-eye px-2"></i> <span>{{ this.$store.state.contadorVisitasTotales }} </span></p>
           <p class="mx-3" @click="infoUsersActive()"> <i class="fas fa-circle pulse-red ml-2"></i> <span>{{ this.contadorUsuariosActivos }} </span> </p>
         </div>
@@ -32,7 +32,7 @@
       <section class="mt-4">
         <div>
           <ul>
-            <div class="has-text-centered">
+            <div class="has-text-centered" data-tour="login-section">
               <SignedOut>
                 <SignInButton class="icon-btn button is-info mx-2"/>
               </SignedOut>
@@ -49,11 +49,11 @@
               </SignedIn>
             </div>
             
-            <router-link to="/ListaMapas" @click="SonidoTecla()">
+            <router-link to="/ListaMapas" @click="SonidoTecla()" data-tour="btn-mapas">
               <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonMapa }}</button>
             </router-link>
 
-            <router-link to="/ListaPersonajes" @click="SonidoTecla()">
+            <router-link to="/ListaPersonajes" @click="SonidoTecla()" data-tour="btn-investigadores">
               <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonInvestigador }}</button>
             </router-link>
 
@@ -61,9 +61,13 @@
               <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button>
             </router-link>
 
+            <router-link to="/tutoriales" @click="SonidoTecla()" data-tour="btn-tutoriales">
+              <button class="buttonsHome">{{ textoInterfaz.botones.textBotonTutoriales }}</button>
+            </router-link>
+
             <button class="buttonsHome" @click="abrirAjustes()">Ajustes</button>
 
-            <li class="support-row mb-2">
+            <li class="support-row mb-2" data-tour="support-row">
               <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
                 <button class="buttonsHomeIB coffee-button">
                   <i class="fas fa-mug-hot mr-2"></i>
@@ -85,7 +89,7 @@
         <div class="app-version">Version: {{ textoInterfaz.versionApp }}</div>
         
         <!-- Noticias (Menu desplegable) -->
-        <div class="app-version boxShadowYellow" id="ultimasNoticias">
+        <div class="app-version boxShadowYellow" id="ultimasNoticias" data-tour="noticias-section">
           <div class="noticias-header" @click="toggleNoticias">
             <p>{{ textoInterfaz.ultimaActualizacion }} {{ textoInterfaz.fechaUltimaActualizacion }}</p>
 
@@ -197,6 +201,7 @@ export default {
           textBotonInvestigador: "",
           textBotonSupport: "",
           textBotonCreditos: "",
+          textBotonTutoriales: "",
         },
       },
       noticias:{
@@ -341,6 +346,7 @@ export default {
         this.textoInterfaz.botones.textBotonInvestigador = "Investigadores";
         this.textoInterfaz.botones.textBotonSupport = "Apoyanos";
         this.textoInterfaz.botones.textBotonCreditos = "Creditos";
+        this.textoInterfaz.botones.textBotonTutoriales = "Tutoriales";
         this.textoInterfaz.wellcome = "Bienvenido";
         this.textoInterfaz.ultimaActualizacion = "Ultima actualización:";
         this.textoInterfaz.textoVisitas = "Visitas totales";
@@ -351,6 +357,7 @@ export default {
         this.textoInterfaz.botones.textBotonInvestigador = "Investigators";
         this.textoInterfaz.botones.textBotonSupport = "Support";
         this.textoInterfaz.botones.textBotonCreditos = "Credits";
+        this.textoInterfaz.botones.textBotonTutoriales = "Tutorials";
         this.textoInterfaz.wellcome = "Wellcome";
         this.textoInterfaz.ultimaActualizacion = "Last update:";
         this.textoInterfaz.textoVisitas = "Total visits";

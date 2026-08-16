@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // HOME
 import Home from '../views/Home/Home.vue'
 import Credits from '../views/Home/creditos.vue'
+import Tutoriales from '../views/Tutoriales/Tutoriales.vue'
 // PERFIL
 import Profile from '../views/Users/profile.vue'
 // OTROS
@@ -20,6 +21,7 @@ const routes = [
   // HOME
  {path: '/', name: 'home', component: Home},
  {path: '/credits', name: 'credits', component: Credits},
+ {path: '/tutoriales', name: 'tutoriales', component: Tutoriales},
 
   // PROFILE
   {path: '/profile', name: 'Profile', component: Profile, meta: { requiresAuth: true }}, // ← esta ruta exige login

@@ -1,24 +1,19 @@
 <template>
   <div id="app" class="BGGeneralAH">
-    <!-- Transición suave entre loader y contenido -->
-    <transition name="fade" mode="out-in">
-      <!-- Loader con key para animación -->
-      <LoadingPage v-if="$store.state.loadingPageState" key="loader" />
+    <LoadingPage v-if="$store.state.loadingPageState" />
+    <div v-else id="VistaMovil">
+      <router-view />
+    </div>
 
-      <!-- Contenido principal con key único por ruta -->
-      <div v-else key="content">
-        <div id="VistaMovil">
-          <router-view />
-        </div>
-      </div>
-      
-    </transition>
+    <!-- Overlay de fundido a negro -->
+    <div class="black-fade" :class="{ visible: fadeOverlay }"></div>
   </div>
 </template>
 
 <script>
 import LoadingPage from '@/components/helpers/loadingPage.vue';
 import { apiService } from '@/services/api.js';
+import { initTour, updateLang } from '@/services/tourService.js';
 
 export default {
   name: 'app',
@@ -26,7 +21,8 @@ export default {
     return {
       titulo: "",
       descripcion: "",
-      parrafo: ""
+      parrafo: "",
+      fadeOverlay: false,
     }
   },
   components: {
@@ -58,22 +54,42 @@ export default {
     }
   },
   created() {
-    // Transición "fake" de 10s entre rutas
-    this.$router.beforeEach((to, from, next) => {
-      this.$store.state.loadingPageState = true;
-      const delay = this.getRandomDelay();
-      setTimeout(() => next(), delay);
-    });
+    const FADE = 350
+
+    this.$router.beforeEach((_to, _from, next) => {
+      // 1. Fundir a negro
+      this.fadeOverlay = true
+      setTimeout(() => {
+        // 2. Mostrar loading y navegar
+        this.$store.state.loadingPageState = true
+        next()
+        // 3. Salir del negro (loading page ya visible)
+        setTimeout(() => { this.fadeOverlay = false }, 50)
+      }, FADE)
+    })
+
     this.$router.afterEach(() => {
-      this.$store.state.loadingPageState = false;
-    });
+      const delay = this.getRandomDelay()
+      setTimeout(() => {
+        // 4. Fundir a negro de nuevo
+        this.fadeOverlay = true
+        setTimeout(() => {
+          // 5. Quitar loading y salir del negro
+          this.$store.state.loadingPageState = false
+          setTimeout(() => { this.fadeOverlay = false }, 50)
+        }, FADE)
+      }, delay)
+    })
   },
   async mounted() {
     this.rellenarTextosegunIdioma();
+    initTour(this.$router, this.$store, this.$store.state.lenguaje);
     await this.obtainWellcomeApi();
-    // llamamos a la API para obtener las visitas totales
     await this.obtainVisitsApi();
     this.$store.state.loadingPageState = false;
+  },
+  watch: {
+    '$store.state.lenguaje'(val) { updateLang(val); }
   }
 }
 </script>
@@ -107,14 +123,18 @@ html, body, #app {
   margin: auto;
 }
 
-/* Transición fade más lenta y suave */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease-in-out;
-}
-.fade-enter-from,
-.fade-leave-to {
+/* Overlay de fundido a negro */
+.black-fade {
+  position: fixed;
+  inset: 0;
+  background: #000;
   opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.35s ease;
+}
+.black-fade.visible {
+  opacity: 1;
 }
 
 .BGGeneralAH {
@@ -122,5 +142,82 @@ html, body, #app {
   min-height: 110vh;
   background-position: center;
   background-size: cover;
+}
+
+/* ── Driver.js — tema Arkham Horror ───────────────────────── */
+.ah-tour-popover {
+  background: rgba(6, 3, 14, 0.97) !important;
+  border: 1px solid rgba(200, 144, 42, 0.55) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 24px rgba(200, 144, 42, 0.2), 0 8px 32px rgba(0,0,0,0.8) !important;
+  max-width: 300px !important;
+  font-family: Georgia, serif !important;
+}
+.ah-tour-popover .driver-popover-title {
+  color: #e8d5a3 !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid rgba(200, 144, 42, 0.25) !important;
+  padding-bottom: 6px !important;
+  margin-bottom: 6px !important;
+}
+.ah-tour-popover .driver-popover-description {
+  color: rgba(220, 210, 195, 0.88) !important;
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+.ah-tour-popover .driver-popover-progress-text {
+  color: rgba(200, 144, 42, 0.6) !important;
+  font-size: 0.72rem !important;
+}
+.ah-tour-popover .driver-popover-next-btn,
+.ah-tour-popover .driver-popover-done-btn {
+  background: rgba(200, 144, 42, 0.18) !important;
+  border: 1px solid rgba(200, 144, 42, 0.55) !important;
+  color: #e8d5a3 !important;
+  border-radius: 4px !important;
+  font-size: 0.78rem !important;
+}
+.ah-tour-popover .driver-popover-prev-btn {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: rgba(220, 210, 195, 0.6) !important;
+  border-radius: 4px !important;
+  font-size: 0.78rem !important;
+}
+.ah-tour-popover .driver-popover-close-btn {
+  color: rgba(200, 144, 42, 0.5) !important;
+  font-size: 1rem !important;
+}
+.ah-tour-popover .driver-popover-arrow-side-left.driver-popover-arrow {
+  border-left-color: rgba(200, 144, 42, 0.55) !important;
+}
+.ah-tour-popover .driver-popover-arrow-side-right.driver-popover-arrow {
+  border-right-color: rgba(200, 144, 42, 0.55) !important;
+}
+.ah-tour-popover .driver-popover-arrow-side-top.driver-popover-arrow {
+  border-top-color: rgba(200, 144, 42, 0.55) !important;
+}
+.ah-tour-popover .driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-bottom-color: rgba(200, 144, 42, 0.55) !important;
+}
+
+/* Botón Skip del tour */
+.ah-tour-skip-btn {
+  background: transparent !important;
+  border: 1px solid rgba(200, 144, 42, 0.2) !important;
+  color: rgba(220, 210, 195, 0.4) !important;
+  border-radius: 4px !important;
+  font-size: 0.68rem !important;
+  padding: 2px 7px !important;
+  cursor: pointer !important;
+  font-family: Georgia, serif !important;
+  white-space: nowrap !important;
+  transition: all 0.2s !important;
+}
+.ah-tour-skip-btn:hover {
+  border-color: rgba(200, 144, 42, 0.5) !important;
+  color: rgba(220, 210, 195, 0.7) !important;
+  background: rgba(200, 144, 42, 0.06) !important;
 }
 </style>

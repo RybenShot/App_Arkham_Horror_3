@@ -14,8 +14,8 @@
       </div>
 
       <!-- selectores de expansion o arquetipo -->
-      <section>
-        <b-tabs size="is-medium" type="is-boxed" position="is-centered" v-model="activeTab">
+      <section data-tour="expansion-tabs">
+        <b-tabs size="is-small" type="is-boxed" position="is-centered" v-model="activeTab">
             <b-tab-item>
               <template #header>
                   <i class="fa-1x fas fa-box pr-2"></i>
@@ -23,17 +23,18 @@
               </template>
 
               <!-- Botones de expansión -->
-              <div class="columns is-mobile pt-5 mx-1 buttons pl-4 pr-2 has-text-centered">
-                <button v-for="btn in expansionButtons" class="button" :key="btn.key" :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
+              <div class="exp-grid" data-tour="expansion-buttons">
+                <button v-for="btn in expansionButtons" class="button exp-btn" :key="btn.key"
+                  :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
                   @click="handleToggle(btn.key)">
                   {{ btn.text }}
                 </button>
-                <button class=" py-0 join-btn column button" @click="this.$store.state.modalInvOnLine = true">
-                  <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
-                  On-Line 
-                  <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
-                </button>
               </div>
+              <button class="join-btn" data-tour="inv-online-btn" @click="this.$store.state.modalInvOnLine = true">
+                <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+                On-Line
+                <img class="gifIMG" src="@/assets/img/GIFs/wired-outline-726-wireless-connection-loop-wave.gif" alt="">
+              </button>
 
             </b-tab-item>
 
@@ -44,8 +45,8 @@
               </template>
 
               <!-- Botones de arquetipos -->
-              <div class="columns is-mobile pt-5 mx-1 buttons pl-4 pr-2">
-                <button v-for="btn in rolButtons" class="button"
+              <div class="exp-grid">
+                <button v-for="btn in rolButtons" class="button exp-btn"
                   :key="btn.key"
                   :class="[btn.buttonClass, { 'is-outlined': !$store.state[btn.key] }]"
                   @click="changeForRol(btn.key)">
@@ -59,19 +60,25 @@
     </div>
     <br>
 
-    <div class="PersonajesList ">
+    <div class="PersonajesList" data-tour="inv-grid">
       <InvestigatorCard v-for="investigator in invList" :key="investigator.id" :investigator="investigator" />
     </div>
 
 <!-- EXPANSIONES // PERSONAJES -->
 
-    <div v-if="checkExpansions()">
-      <section class="hero is-halfheigh is-danger">
-        <div class="hero-body">
-          <p class="title has-text-centered">{{textoInterfaz.sinExpansion}}</p>
-          <p class="subtitle has-text-centered">{{ textoInterfaz.seleccionaExpansion }}</p>
-        </div>
-      </section>
+    <div v-if="checkExpansions()" class="empty-state">
+      <p class="empty-title">{{textoInterfaz.sinExpansion}}</p>
+      <p class="empty-sub">{{ textoInterfaz.seleccionaExpansion }}</p>
+
+      <button
+        class="random-btn"
+        :class="{ spinning: randomizing }"
+        :disabled="randomizing"
+        @click="selectRandomInvestigator"
+      >
+        <i class="fas fa-dice-d20 random-icon"></i>
+        <span>{{ textoInterfaz.botonAleatorio }}</span>
+      </button>
     </div>
 
     <br>
@@ -81,6 +88,7 @@
 <script>
 import { apiService } from '@/services/api.js';
 import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+import { continueTourIfNeeded, notifyInvListLoaded } from '@/services/tourService.js';
 
 import popUp_Notificaciones from '@/components/helpers/popUp/notificaciones.vue';
 import InvestigatorCard from '@/components/personajes/invCard.vue'
@@ -107,6 +115,7 @@ export default {
         descripcion: "",
         sinExpansion: "",
         seleccionaExpansion: "",
+        botonAleatorio: "",
         botones: {
           expansion: '',
           archetype: '',
@@ -128,6 +137,7 @@ export default {
       },
 
       activeTab: 0,
+      randomizing: false,
 
     }; // end return
   }, // end data
@@ -135,29 +145,46 @@ export default {
   computed: {
     expansionButtons() {
       return [
-        { key: 'stateExpansionBase', text: this.textoInterfaz.botones.base, buttonClass: 'is-success' },
-        { key: 'stateExpansionWaves', text: this.textoInterfaz.botones.mareas, buttonClass: 'is-info' },
-        { key: 'stateExpansionNigth', text: this.textoInterfaz.botones.noche, buttonClass: 'is-warning' },
-        { key: 'stateExpansionSecrets', text: this.textoInterfaz.botones.secretos, buttonClass: 'is-danger' },
-        { key: 'stateExpansionOriginal', text: this.textoInterfaz.botones.original, buttonClass: 'is-link' },
-        { key: 'stateExpansionComunity', text: this.textoInterfaz.botones.comunity, buttonClass: 'is-orange' },
+        { key: 'stateExpansionBase',     text: this.textoInterfaz.botones.base,     buttonClass: 'is-success', colorClass: 'c-green'  },
+        { key: 'stateExpansionWaves',    text: this.textoInterfaz.botones.mareas,   buttonClass: 'is-info',    colorClass: 'c-blue'   },
+        { key: 'stateExpansionNigth',    text: this.textoInterfaz.botones.noche,    buttonClass: 'is-warning', colorClass: 'c-yellow' },
+        { key: 'stateExpansionSecrets',  text: this.textoInterfaz.botones.secretos, buttonClass: 'is-danger',  colorClass: 'c-red'    },
+        { key: 'stateExpansionOriginal', text: this.textoInterfaz.botones.original, buttonClass: 'is-link',    colorClass: 'c-purple' },
+        { key: 'stateExpansionComunity', text: this.textoInterfaz.botones.comunity, buttonClass: 'is-orange',  colorClass: 'c-orange' },
       ];
     },
     rolButtons(){
       return [
-        { key: 'survivor', text: this.textoInterfaz.botones.survivor, buttonClass: 'is-success' },
-        { key: 'mystic', text: this.textoInterfaz.botones.mystic, buttonClass: 'is-info' },
-        { key: 'rogue', text: this.textoInterfaz.botones.rogue, buttonClass: 'is-warning' },
-        { key: 'guardian', text: this.textoInterfaz.botones.guardian, buttonClass: 'is-danger' },
-        { key: 'seeker', text: this.textoInterfaz.botones.seeker, buttonClass: 'is-link' },
-        { key: 'neutral', text: this.textoInterfaz.botones.neutral, buttonClass: 'is-orange' },
+        { key: 'survivor', text: this.textoInterfaz.botones.survivor, buttonClass: 'is-success', colorClass: 'c-green'  },
+        { key: 'mystic',   text: this.textoInterfaz.botones.mystic,   buttonClass: 'is-info',    colorClass: 'c-blue'   },
+        { key: 'rogue',    text: this.textoInterfaz.botones.rogue,    buttonClass: 'is-warning',  colorClass: 'c-yellow' },
+        { key: 'guardian', text: this.textoInterfaz.botones.guardian, buttonClass: 'is-danger',  colorClass: 'c-red'    },
+        { key: 'seeker',   text: this.textoInterfaz.botones.seeker,   buttonClass: 'is-link',    colorClass: 'c-purple' },
+        { key: 'neutral',  text: this.textoInterfaz.botones.neutral,  buttonClass: 'is-orange',  colorClass: 'c-orange' },
       ];
     }
   },
 
   methods: {
     goBack() { this.$router.go(-1); },
-    SonidoTecla() {audioService_effects.playTecla()},
+    SonidoTecla() { audioService_effects.playTecla() },
+
+    async selectRandomInvestigator() {
+      if (this.invListAll.length === 0) return
+      this.randomizing = true
+      this.SonidoTecla()
+      // Pequeña pausa para que la animación sea visible
+      await new Promise(r => setTimeout(r, 900))
+      const pick = this.invListAll[Math.floor(Math.random() * this.invListAll.length)]
+      try {
+        const response = await apiService.obtainInvByID(pick.idInv)
+        await this.$store.commit('setDatosInvestigator', response)
+        this.$router.push('/DetallePersonaje')
+      } catch (e) {
+        console.error('Error al cargar investigador aleatorio:', e)
+        this.randomizing = false
+      }
+    },
 
     rellenarTextoSegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
@@ -166,6 +193,7 @@ export default {
         this.textoInterfaz.descripcion = "Haz click para añadir o quitar la expansión que quieras y luego elige un investigador para verlo en detalle.";
         this.textoInterfaz.sinExpansion = "Sin expansiones seleccionadas";
         this.textoInterfaz.seleccionaExpansion = "Por favor selecciona alguna expansion para ver los personajes.";
+        this.textoInterfaz.botonAleatorio = "Investigador Aleatorio";
 
         this.textoInterfaz.botones.expansion = "Expansiones";
         this.textoInterfaz.botones.archetype = "Arquetipos";
@@ -188,7 +216,8 @@ export default {
         this.textoInterfaz.subtitulo = "Collections";
         this.textoInterfaz.descripcion = "Click to add or remove the expansion you want and then choose a investigator to view it in detail.";
         this.textoInterfaz.sinExpansion = "No expansions selected";
-        this.textoInterfaz.seleccionaExpansion = "Please select an expansion to view the characters."
+        this.textoInterfaz.seleccionaExpansion = "Please select an expansion to view the characters.";
+        this.textoInterfaz.botonAleatorio = "Random Investigator";
 
         this.textoInterfaz.botones.expansion = "Expansions";
         this.textoInterfaz.botones.archetype = "Archetypes";
@@ -258,6 +287,7 @@ export default {
         const investigators = await apiService.obtainPreviewInv()
         // guaramos lo recivido en un array
         this.invListAll = investigators;
+        if (investigators.length > 0) notifyInvListLoaded(investigators[0].idInv);
         this.updateInvListForExpansion();
       } catch (error) {
         console.error("Error al cargar los investigadores por expansion:", error);
@@ -279,6 +309,7 @@ export default {
   mounted(){
     this.rellenarTextoSegunIdioma();
     this.getPreviewInvestigatorsList();
+    continueTourIfNeeded('/ListaPersonajes');
   },
 };
 </script>
@@ -286,10 +317,10 @@ export default {
 
 <style scoped>
 
-/* Helers */
+/* Helpers */
 .centrarHero{
-  display: flex; 
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center
 }
 .is-orange{
@@ -303,7 +334,6 @@ export default {
   color: hsl(17, 100%, 66%) !important;
 }
 
-/* Usado */
 .BGGeneralAH {
   background-image: url(@/assets/img/ZZOtros/BGAH.jpg)!important;
   min-height: 110vh;
@@ -314,38 +344,130 @@ export default {
 /* Lista de Personajes */
 .PersonajesList {
   display: grid;
-  grid-template-columns: auto auto auto;
-  column-gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 6px;
   row-gap: 10px;
-  justify-items: center;
-  margin-left: 10px;
-  margin-right: 10px;
+  padding: 0 8px;
 }
 
-/* Estilos para boton de onLine */
+/* Grid 3×2 para botones de expansión/arquetipo */
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px 10px 4px;
+}
+
+.exp-btn {
+  font-size: 0.75rem !important;
+  padding: 0.3rem 0.2rem !important;
+  height: 2rem !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Boton Online */
 .join-btn {
-  display: block;
-  width: 80%;
-  max-width: 260px;
-  margin: 0.5rem auto;
-  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 65%;
+  margin: 6px auto 2px;
+  padding: 0.35rem 0.8rem;
   background-color: #28a745;
   color: white;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  /* Animación de pulso */
   animation: pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%   { transform: scale(1);     }
-  50%  { transform: scale(1.05);  }
-  100% { transform: scale(1);     }
+  0%   { transform: scale(1);    }
+  50%  { transform: scale(1.04); }
+  100% { transform: scale(1);    }
 }
-.gifIMG{
-  width: 30px;
+
+.gifIMG {
+  width: 22px;
+}
+
+/* ─── Estado vacío + botón aleatorio ─────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  gap: 0.6rem;
+}
+
+.empty-title {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.empty-sub {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}
+
+.random-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  background: rgba(5, 0, 20, 0.8);
+  border: 1px solid rgba(160, 80, 255, 0.6);
+  border-radius: 30px;
+  color: #d9c8f0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(130, 50, 220, 0.35), inset 0 0 10px rgba(100, 30, 200, 0.1);
+  transition: all 0.2s;
+  animation: random-idle 3s ease-in-out infinite;
+}
+
+.random-btn:hover:not(:disabled) {
+  border-color: rgba(200, 120, 255, 0.9);
+  box-shadow: 0 0 20px rgba(160, 80, 255, 0.6), inset 0 0 14px rgba(120, 40, 220, 0.2);
+  color: #f0e0ff;
+}
+
+.random-btn:disabled {
+  cursor: default;
+  animation: none;
+}
+
+.random-icon {
+  font-size: 1.1rem;
+  color: #b080ff;
+}
+
+/* Pulso suave en reposo */
+@keyframes random-idle {
+  0%, 100% { box-shadow: 0 0 10px rgba(130,50,220,0.3), inset 0 0 8px rgba(100,30,200,0.08); }
+  50%       { box-shadow: 0 0 20px rgba(160,80,255,0.55), inset 0 0 14px rgba(120,40,220,0.15); }
+}
+
+/* Animación al hacer click: dado girando */
+.random-btn.spinning .random-icon {
+  animation: dice-spin 0.9s ease-in-out infinite;
+}
+
+@keyframes dice-spin {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  25%  { transform: rotate(180deg) scale(1.3);  }
+  50%  { transform: rotate(360deg) scale(1);    }
+  75%  { transform: rotate(540deg) scale(1.3);  }
+  100% { transform: rotate(720deg) scale(1);    }
 }
 </style>

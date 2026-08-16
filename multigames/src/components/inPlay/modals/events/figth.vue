@@ -4,12 +4,12 @@
     <div>
       <div class="modal-card m-0">
 
-        <header class="columns is-mobile modal-card-head BGBendicion m-0">
-          <p class="modal-card-title has-text-weight-bold has-text-white">Pelea</p>
+        <header class="columns is-mobile modal-card-head combat-header m-0">
+          <p class="modal-card-title combat-title">⚔ COMBATE ⚔</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
         </header>
 
-        <section class="modal-card-body hero is-large p-2 cajaModal">
+        <section class="modal-card-body p-2 combat-body cajaModal">
 
           <figthDiceRoll
             v-if="scene === 'firstRoll'"
@@ -27,8 +27,10 @@
 
         </section>
 
-        <footer v-if="scene === 'rules'">
-          <button @click="nextStep" class="button is-info is-fullwidth">Siguiente</button>
+        <footer v-if="scene === 'rules'" class="combat-footer">
+          <button @click="nextStep" class="button is-danger is-fullwidth combat-next-btn">
+            ⚔ Comenzar Combate
+          </button>
         </footer>
 
       </div>
@@ -39,8 +41,8 @@
 <script>
 import { apiService } from '@/services/api.js'
 import { invitationService } from '@/services/invitationService.js'
-import figthDiceRoll from './figth/figthDiceRoll.vue'
-import figthRules    from './figth/figthRules.vue'
+import figthDiceRoll  from './figth/figthDiceRoll.vue'
+import figthRules     from './figth/figthRules.vue'
 import figthEncounter from './figth/figthEncounter.vue'
 
 export default {
@@ -60,15 +62,11 @@ export default {
       await this.enviarResultadoInicio(result)
     },
 
-    goToRules() {
-      this.scene = 'rules'
-    },
-
-    nextStep() {
-      if (this.scene === 'rules') this.scene = 'encounterFigth'
-    },
+    goToRules() { this.scene = 'rules' },
+    nextStep()  { if (this.scene === 'rules') this.scene = 'encounterFigth' },
 
     closeModalEncounter() {
+      // recoger recompensa
       this.$store.state.showSwithcherEventsOnLine = false
       invitationService.resumePollingGeneral()
     },
@@ -93,19 +91,18 @@ export default {
       const idInteraction = this.$store.state.interactionData.idInteraccionOnLine
       const idUser        = this.$store.state.IDUserHost
       await apiService.abandonInteraction(idInteraction, idUser)
-      console.warn('Interacción abandonada')
     },
 
     closeModal() {
       const isEs = this.$store.state.lenguaje === 'español'
       this.$buefy.dialog.confirm({
-        title:       isEs ? 'Evento' : 'Event',
+        title:       isEs ? 'Abandonar' : 'Abandon',
         message:     isEs
-          ? '¿Estás seguro? Se tomará como una derrota y perderás algo de tu equipo.'
-          : 'Are you sure? It will be taken as a defeat and you will lose something from your equipment.',
+          ? '¿Estás seguro? Se tomará como una derrota y perderás parte de tu equipo.'
+          : 'Are you sure? It will count as a defeat and you will lose part of your equipment.',
         confirmText: isEs ? 'Confirmar' : 'Confirm',
         cancelText:  isEs ? 'Cancelar'  : 'Cancel',
-        type: 'is-info',
+        type: 'is-danger',
         hasIcon: true,
         onConfirm: async () => {
           this.$store.state.showSwithcherEventsOnLine = false
@@ -120,11 +117,37 @@ export default {
 </script>
 
 <style scoped>
-.BGBendicion {
-  background-image: url(@/assets/img/Estados/Bendicion.jpg);
-  background-position: center;
-  background-size: cover;
+.combat-header {
+  background: linear-gradient(135deg, #1a0000 0%, #3b0000 50%, #1a0000 100%);
+  border-bottom: 2px solid #dc2626;
+  box-shadow: 0 2px 12px rgba(220, 38, 38, 0.4);
+  padding: 0.6rem 0.8rem !important;
 }
-.cajaModal { min-width: 40lvh; }
-.cruzeta   { cursor: pointer; }
+.combat-title {
+  color: #fca5a5 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+  font-size: 1rem !important;
+}
+.combat-body {
+  background: #0d0000;
+  min-width: 40lvh;
+}
+.combat-footer {
+  background: #0d0000;
+  border-top: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 0.5rem;
+}
+.combat-next-btn {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: none;
+  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+}
+.combat-next-btn:hover {
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.8) !important;
+}
+.cruzeta { cursor: pointer; }
 </style>

@@ -6,7 +6,7 @@
     
     <!-- Atributos -->
 
-    <div class="columns is-mobile has-text-centered px-2"> 
+    <div class="columns is-mobile has-text-centered px-2" data-tour="tiradas-atributos">
       <div class="column p-1 mx-2 ml-4 boton" :class="{'color-saber': activeButton === 1 }" @click="(this.NDadosAtributo = this.$store.state.datosPJactual.atributes.lore) && (setActiveButton(1))">
         <p><i class="fa-2x fas fa-book-open"></i></p>
         <p class="contadorAtributos has-text-weight-bold title is-4 mb-0">{{ this.$store.state.datosPJactual.atributes.lore }}</p>
@@ -37,7 +37,7 @@
     <div class="columns is-mobile is-vcentered mb-0">
 
       <!-- Concentracion -->
-      <div class="column has-text-centered">
+      <div class="column has-text-centered" data-tour="tiradas-concentracion">
         <p class="title is-5 has-text-white mb-0">Concentración</p>
         <hr class="m-0">
         <div class="has-text-white my-3 columns is-mobile mb-0">
@@ -54,7 +54,7 @@
       </div>
 
       <!-- Dadoz extras + lanzador -->
-      <div class="column has-text-white px-2">
+      <div class="column has-text-white px-2" data-tour="tiradas-lanzar">
         <p class="has-text-centered mb-3">{{ textoInterfaz.dadosExtras }}</p>
         <div class="columns is-mobile mb-0">
           <button class="column p-1 ml-5 my-2 is-size-4" @click="NDeDadosExtra--"><strong>-</strong></button>
