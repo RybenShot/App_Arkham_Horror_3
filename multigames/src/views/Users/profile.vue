@@ -1,108 +1,108 @@
 <template>
-  <div>
-    <!-- BARRA SUPERIOR: VOLVER / CERRAR SESIÓN -->
-    <div class="columns is-mobile mb-0 pt-3 centrarHero">
-      <div class="column is-3 p-0" style="text-align: center;" @click="$router.push('/')">
-        <i class="fa-2x fas fa-arrow-left has-text-white"></i>
-      </div>
-      <div class="column" style="margin: 0 auto;">
-        <p class="has-text-centered title has-text-white">{{ textoInterfaz.title }}</p>
-      </div>
-      <div class="column is-3 p-0" style="text-align: center;" @click="signOut()">
-        <i class="fa-2x fas fa-sign-out-alt has-text-white"></i>
-      </div>
+  <div class="BGAHHome profile-page">
+
+    <!-- ── HEADER ─────────────────────────────────────────── -->
+    <div class="prof-header">
+      <button class="prof-nav-btn" @click="$router.push('/')">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h1 class="prof-title">{{ textoInterfaz.title }}</h1>
+      <button v-if="isSignedIn" class="prof-nav-btn" @click="signOut()">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <div v-else class="prof-nav-spacer"></div>
     </div>
 
-    <!-- LOGO AH -->
-    <div class="hero is-small mb-3">
-      <div class="columns is-mobile">
-        <img class="column logoAH" src="@/assets/img/ZZOtros/TituloArkhamHorror.png" alt="Logo de Arkham Horror"/>
-      </div>
-    </div>
+    <!-- ── AUTENTICADO ─────────────────────────────────────── -->
+    <div v-if="isSignedIn" class="prof-content">
 
-    <div v-if="isSignedIn" class="mx-3">
-      <!-- FOTO DE PERFIL Y NOMBRE -->
-      <div class="columns is-mobile">
-        <!-- foto y nombre -->
-        <div class="column is-half image-container">
-          <div class="user-image-wrapper">
-            <img class="is-rounded image bordeImagen" :src="this.$store.state.datosPJactual.imgInv || '/img/1-inv/57-Nameless.jpg'">
-            <div class="nombrePosicion">
-              <p class="title mb-1 is-4 has-text-weight-bold has-text-white">{{ user.fullName || user.firstName }}</p>
-              <p class="has-background-dark subtitle is-6 has-text-white posicion">@{{ user.username || 'Investigador' }}</p>
+      <!-- Tarjeta avatar + identidad -->
+      <div class="avatar-card">
+        <img class="avatar-img"
+          :src="$store.state.datosPJactual.imgInv || '/img/1-inv/57-Nameless.jpg'"
+          alt="Investigador">
+        <div class="avatar-info">
+          <p class="avatar-name">{{ user.fullName || user.firstName || user.username }}</p>
+          <p class="avatar-username">@{{ user.username || 'Investigador' }}</p>
+          <p class="avatar-email">{{ user.primaryEmailAddress?.emailAddress }}</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num">{{ getMapsLength() }}</span>
+          <span class="stat-label">{{ $store.state.lenguaje === 'español' ? 'Mapas' : 'Maps' }}</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">{{ getInvestigadoresCount() }}</span>
+          <span class="stat-label">{{ $store.state.lenguaje === 'español' ? 'Investigadores' : 'Investigators' }}</span>
+        </div>
+        <div class="stat-card stat-soon">
+          <span class="stat-num">🏆</span>
+          <span class="stat-label">{{ $store.state.lenguaje === 'español' ? 'Pronto' : 'Soon' }}</span>
+        </div>
+      </div>
+
+      <!-- User ID -->
+      <div class="user-id-zone">
+        <p class="user-id-label">{{ textoInterfaz.isAuth.titleIDUsuario }}</p>
+        <div class="user-id-row">
+          <code class="user-id-code">{{ user.id }}</code>
+          <button class="copy-id-btn" @click="copyCode()">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs: Mapas / Investigadores -->
+      <section class="prof-tabs-section">
+        <b-tabs type="is-boxed">
+          <b-tab-item>
+            <template #header>
+              <b-icon icon="information-outline"></b-icon>
+              <span>{{ $store.state.lenguaje === 'español' ? 'Mapas' : 'Maps' }}
+                <b-tag rounded>{{ getMapsLength() }}</b-tag>
+              </span>
+            </template>
+            <p class="tab-subtitle">{{ textoInterfaz.isAuth.titleMapsOnLine }}</p>
+            <div v-if="userMaps.length === 0" class="empty-state-msg">
+              {{ textoInterfaz.isAuth.subtitleMapsOnline }}
             </div>
-          </div>
-        </div>
-        
-        <!-- trofeos -->
-        <div class="is-half column pt-4 has-text-centered trophies-section">
-          <p class="title has-text-white mb-2">{{ textoInterfaz.isAuth.titleTrofeos }}</p>
-          <hr class="m-2 trophy-divider">
-          <div class="trophy-content">
-            <p class="subtitle has-text-white is-6 mb-1">{{ textoInterfaz.isAuth.subtitleTrofeos }}</p>
-            <p class="subtitle has-text-white is-6">{{ textoInterfaz.isAuth.descriptionTrofeos }}</p>
-          </div>
-        </div>
-      </div>
+            <div class="PersonajesList">
+              <MapCard v-for="map in userMaps" :key="map.idInPlay" :map="map" />
+            </div>
+          </b-tab-item>
 
-      <!-- ID de usuario -->
-      <div class="has-text-centered has-text-white user-id-section is-vcentered">
-        <p class="id-title">{{ textoInterfaz.isAuth.titleIDUsuario }}</p>
-        <b-field class="id-field">
-          <b-input type="search" icon="magnify" v-model="user.id" readonly class="user-id-input"></b-input>
-          <p class="control">
-            <b-button type="is-primary" label="Copiar" @click="copyCode()" class="copy-btn" />
-          </p>
-        </b-field>
-      </div>
-      
-      <section class="mt-5 maps-section">
-          <b-tabs type="is-boxed">
-              <b-tab-item>
-                  <template #header>
-                      <b-icon icon="information-outline"></b-icon>
-                      <span> Mapas <b-tag rounded> {{this.getMapsLength()}} </b-tag> </span>
-                  </template>
-                  <section>
-                    <p class="subtitle has-text-white maps-title my-2">{{ textoInterfaz.isAuth.titleMapsOnLine }}</p>
-                    <div v-if="userMaps.length === 0" class="has-text-white no-maps-message">
-                      {{ textoInterfaz.isAuth.subtitleMapsOnline }}
-                    </div>
-
-                    <div class="PersonajesList">
-                      <MapCard v-for="map in userMaps" :key="map.idInPlay" :map="map" />
-                    </div>
-                  </section>
-              </b-tab-item>
-              <b-tab-item>
-                <template #header>
-                  <b-icon icon="source-pull"></b-icon>
-                  <span> Investigadores <b-tag rounded> {{ this.getInvestigadoresCount() }} </b-tag> </span>
-                </template>
-
-                <section>
-                  <p class="subtitle has-text-white maps-title my-2">Lista investigadores</p>
-
-                  <div v-if="getInvestigadores().length === 0" class="has-text-white no-maps-message">
-                    {{ $store.state.lenguaje === 'español' ? 'No tienes investigadores guardados.' : 'No saved investigators.' }}
-                  </div>
-
-                  <div class="PersonajesList">
-                    <InvestigatorCard v-for="investigator in getInvestigadores()" :key="investigator.id" :investigator="investigator" />
-                  </div>
-                </section>
-              </b-tab-item>
-          </b-tabs>
-        <!-- seccion de investigadores OnLine -->
-      </section>        
+          <b-tab-item>
+            <template #header>
+              <b-icon icon="source-pull"></b-icon>
+              <span>{{ $store.state.lenguaje === 'español' ? 'Investigadores' : 'Investigators' }}
+                <b-tag rounded>{{ getInvestigadoresCount() }}</b-tag>
+              </span>
+            </template>
+            <div v-if="getInvestigadores().length === 0" class="empty-state-msg">
+              {{ $store.state.lenguaje === 'español' ? 'No tienes investigadores guardados.' : 'No saved investigators.' }}
+            </div>
+            <div class="PersonajesList">
+              <InvestigatorCard v-for="investigator in getInvestigadores()" :key="investigator.id" :investigator="investigator" />
+            </div>
+          </b-tab-item>
+        </b-tabs>
+      </section>
     </div>
 
-    <div v-else class="not-authenticated has-text-centered mt-5 px-3">
-      <p class="title has-text-white">{{ textoInterfaz.noAuth.title }}</p>
-      <p class="subtitle has-text-white mb-4">{{ textoInterfaz.noAuth.description1 }}</p>
-      <p class="subtitle has-text-white mb-4">{{ textoInterfaz.noAuth.description2 }}</p>
-      <SignInButton class="button is-info"/>
+    <!-- ── NO AUTENTICADO ──────────────────────────────────── -->
+    <div v-else class="not-auth-screen">
+      <div class="not-auth-card">
+        <div class="not-auth-icon">🔐</div>
+        <h2 class="not-auth-title">{{ textoInterfaz.noAuth.title }}</h2>
+        <p class="not-auth-text">{{ textoInterfaz.noAuth.description1 }}</p>
+        <p class="not-auth-text mt-3">{{ textoInterfaz.noAuth.description2 }}</p>
+        <SignInButton class="not-auth-btn"/>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -254,140 +254,202 @@ export default {
 </script>
 
 <style scoped>
-.tab-content {
-  padding: 0px;
-}
-.logoAH {
-  max-width: 200px;
-  margin: 0 auto;
+/* ── Page ─────────────────────────────────── */
+.profile-page {
+  min-height: 100vh;
 }
 
-.id-field{
+/* ── Header ───────────────────────────────── */
+.prof-header {
   display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.45);
+  border-bottom: 1px solid rgba(200, 144, 42, 0.22);
+}
+.prof-nav-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  color: rgba(220, 210, 195, 0.85);
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
 }
-
-/* Imagen de usuario mejorada */
-.image-container {
-  position: relative;
+.prof-nav-btn:hover {
+  background: rgba(200, 144, 42, 0.15);
+  border-color: rgba(200, 144, 42, 0.45);
 }
-
-.user-image-wrapper {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-}
-
-.bordeImagen {
-  border: thick double #F2C94C;
-  box-shadow: 0 0 15px rgba(242, 201, 76, 0.3);
-  transition: all 0.3s ease;
-}
-
-.bordeImagen:hover {
-  box-shadow: 0 0 25px rgba(242, 201, 76, 0.5);
-}
-
-.nombrePosicion {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
+.prof-nav-spacer { width: 38px; flex-shrink: 0; }
+.prof-title {
+  flex: 1;
   text-align: center;
-  backdrop-filter: blur(8px);
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-  padding: 8px;
+  color: #e8d5a3;
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
-.posicion {
-  border: 1px solid rgba(242, 201, 76, 0.6);
-  border-radius: 6px;
-  padding: 2px 8px;
-  margin: 4px auto 0;
-  display: inline-block;
+/* ── Content wrapper ──────────────────────── */
+.prof-content {
+  padding-bottom: 28px;
 }
 
-/* Sección de trofeos mejorada */
-.trophies-section {
-  padding-left: 1rem;
+/* ── Avatar card ──────────────────────────── */
+.avatar-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 14px 14px 12px;
+  background: rgba(6, 3, 14, 0.78);
+  border: 1px solid rgba(200, 144, 42, 0.38);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+.avatar-img {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(200, 144, 42, 0.7);
+  box-shadow: 0 0 16px rgba(200, 144, 42, 0.22);
+  flex-shrink: 0;
+}
+.avatar-info {
+  flex: 1;
+  min-width: 0;
+}
+.avatar-name {
+  color: #e8d5a3;
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.avatar-username {
+  color: rgba(200, 144, 42, 0.8);
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+}
+.avatar-email {
+  color: rgba(220, 210, 195, 0.45);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.trophy-divider {
-  background-color: rgba(242, 201, 76, 0.5);
-  height: 1px;
-  border: none;
+/* ── Stats row ────────────────────────────── */
+.stats-row {
+  display: flex;
+  gap: 9px;
+  margin: 0 14px 12px;
 }
-
-.trophy-content {
-  padding: 0.5rem;
-  border: 1px dashed rgba(242, 201, 76, 0.3);
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.2);
-}
-
-/* ID de usuario mejorado */
-.user-id-section {
-  padding: 5px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  border: 1px solid rgba(242, 201, 76, 0.2);
-}
-
-.id-title {
-  margin-bottom: 1rem;
-  font-weight: bold;
-  color: #F2C94C;
-}
-
-.field.has-addons {
-  justify-content: center;
-}
-
-.user-id-input input {
+.stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   background: rgba(0, 0, 0, 0.5);
-  border-color: rgba(242, 201, 76, 0.4);
-  color: #e0e0e0;
+  border: 1px solid rgba(200, 144, 42, 0.22);
+  border-radius: 12px;
+  padding: 11px 4px;
+}
+.stat-num {
+  color: #e8d5a3;
+  font-family: Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-soon .stat-num { font-size: 1.1rem; }
+.stat-label {
+  color: rgba(220, 210, 195, 0.55);
+  font-size: 0.62rem;
+  text-align: center;
+  letter-spacing: 0.03em;
 }
 
-.user-id-input input:focus {
-  border-color: #F2C94C;
-  box-shadow: 0 0 0 0.125em rgba(242, 201, 76, 0.25);
+/* ── User ID ──────────────────────────────── */
+.user-id-zone {
+  margin: 0 14px 14px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(200, 144, 42, 0.18);
+  border-radius: 10px;
+  padding: 11px 12px;
 }
-
-.copy-btn {
-  background: #F2C94C !important;
-  color: #000 !important;
-  border-color: #F2C94C !important;
-  font-weight: bold;
+.user-id-label {
+  color: rgba(200, 144, 42, 0.75);
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-bottom: 7px;
+  letter-spacing: 0.04em;
 }
-
-.copy-btn:hover {
-  background: #e6b843 !important;
-  transform: translateY(-1px);
+.user-id-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-
-/* Mapas mejorados */
-.maps-section {
-  background: rgba(0, 0, 0, 0.1);
+.user-id-code {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(200, 144, 42, 0.22);
+  border-radius: 6px;
+  padding: 6px 9px;
+  color: rgba(220, 210, 195, 0.65);
+  font-size: 0.65rem;
+  word-break: break-all;
+  font-family: monospace;
+}
+.copy-id-btn {
+  width: 34px;
+  height: 34px;
+  background: rgba(200, 144, 42, 0.16);
+  border: 1px solid rgba(200, 144, 42, 0.48);
   border-radius: 8px;
-  border: 1px solid rgba(242, 201, 76, 0.1);
+  color: #e8d5a3;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  transition: background 0.2s;
 }
+.copy-id-btn:hover { background: rgba(200, 144, 42, 0.28); }
 
-.maps-title {
-  color: #F2C94C;
-  font-weight: bold;
+/* ── Tabs ─────────────────────────────────── */
+.prof-tabs-section { margin: 0 14px; }
+
+.tab-subtitle {
+  color: rgba(200, 144, 42, 0.8);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 10px;
   text-align: center;
 }
 
-.no-maps-message {
+.empty-state-msg {
   text-align: center;
-  padding: 2rem;
+  padding: 22px 14px;
+  color: rgba(220, 210, 195, 0.48);
   font-style: italic;
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px dashed rgba(242, 201, 76, 0.3);
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.2);
+  font-size: 0.82rem;
+  border: 1px dashed rgba(200, 144, 42, 0.18);
+  border-radius: 8px;
 }
 
 .PersonajesList {
@@ -396,7 +458,51 @@ export default {
   column-gap: 3px;
   row-gap: 5px;
   justify-items: center;
-  background: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+}
+
+/* ── Not authenticated ────────────────────── */
+.not-auth-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72vh;
+  padding: 20px;
+}
+.not-auth-card {
+  background: rgba(6, 3, 14, 0.88);
+  border: 1px solid rgba(200, 144, 42, 0.38);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  max-width: 340px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+}
+.not-auth-icon {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+.not-auth-title {
+  color: #e8d5a3;
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.not-auth-text {
+  color: rgba(220, 210, 195, 0.72);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.not-auth-btn {
+  display: inline-block;
+  margin-top: 20px;
+  background: rgba(200, 144, 42, 0.18) !important;
+  border: 1px solid rgba(200, 144, 42, 0.6) !important;
+  color: #e8d5a3 !important;
+  border-radius: 20px !important;
+  padding: 8px 24px !important;
+  font-size: 0.9rem !important;
+  cursor: pointer !important;
 }
 </style>

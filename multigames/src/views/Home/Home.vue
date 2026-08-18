@@ -1,134 +1,162 @@
 <template>
   <div class="BGAHHome container">
+
+    <!-- ── Tour FAB (aparece tras 3 s) ───────────────────────── -->
+    <div :class="['tour-fab', { visible: showTourButton }]">
+      <button class="tour-fab-btn" @click="showTourModal = true" :title="textoInterfaz.lenguaje === 'español' ? 'Tour interactivo' : 'Interactive tour'">
+        🔦
+      </button>
+    </div>
+
+    <!-- ── Modal Tour (gracioso) ─────────────────────────────── -->
+    <div v-if="showTourModal" class="tour-modal-overlay" @click.self="showTourModal = false">
+      <div class="tour-modal-card">
+        <button class="tour-modal-close" @click="showTourModal = false">×</button>
+        <div class="tour-modal-icon">🔮</div>
+        <template v-if="$store.state.lenguaje === 'español'">
+          <h2 class="tour-modal-title">¡Alto ahí, investigador!</h2>
+          <p class="tour-modal-text">
+            Nuevo en Arkham, ¿verdad?<br>
+            <em>Los Dioses Exteriores no vienen con manual de instrucciones...</em><br><br>
+            ¿Te apetece un tour interactivo antes de que la locura te absorba?
+          </p>
+          <div class="tour-modal-buttons">
+            <button class="tour-btn-yes" @click="launchTour">¡Sí, ilumíname! 🔦</button>
+            <button class="tour-btn-no"  @click="showTourModal = false; showTourButton = false">No, lo tengo controlado 🎩</button>
+          </div>
+        </template>
+        <template v-else>
+          <h2 class="tour-modal-title">Hold it right there, investigator!</h2>
+          <p class="tour-modal-text">
+            New to Arkham, huh?<br>
+            <em>The Ancient Ones don't come with a user manual...</em><br><br>
+            Want an interactive tour before madness takes you?
+          </p>
+          <div class="tour-modal-buttons">
+            <button class="tour-btn-yes" @click="launchTour">Yes, show me the way! 🔦</button>
+            <button class="tour-btn-no"  @click="showTourModal = false; showTourButton = false">I know what I'm doing 🎩</button>
+          </div>
+        </template>
+      </div>
+    </div>
+
     <div id="contenido">
       <!-- Modals de inicio -->
-      <div v-if="this.resultadoAnuncio >= 2 ">
-        <!-- modal bienvenida -->
+      <div v-if="this.resultadoAnuncio >= 2">
         <div v-if="this.$store.state.StoreModalBienvenida"><ModalBienvenida/></div>
-        <!-- modal donacion -->
         <div v-if="this.$store.state.StoreModalDonacion"><ModalDonacion/></div>
-
-        <!-- modal Ajustes -->
         <div v-if="this.$store.state.StoreModalAjustes"><ModalAjustes/></div>
-        
-      </div>
-      
-      <!-- hero -->
-      <div class="hero pt-3 pb-2 has-text-centered">
-
-        <!-- visitas totales y usuarios activos -->
-        <div class="visit-counter" data-tour="visit-counter">
-          <p class="counter-text mx-3" @click="infoTotalVisits()"> <i class="fas fa-eye px-2"></i> <span>{{ this.$store.state.contadorVisitasTotales }} </span></p>
-          <p class="mx-3" @click="infoUsersActive()"> <i class="fas fa-circle pulse-red ml-2"></i> <span>{{ this.contadorUsuariosActivos }} </span> </p>
-        </div>
-
-        <!-- Logo AH -->
-        <div class=" columns is-mobile mx-6">
-          <img class="column px-5" src="@/assets/img/ZZOtros/TituloArkhamHorror.png" alt="Logo de Arkham Horror"/>
-        </div>
       </div>
 
-      <!-- menu list -->
-      <section class="mt-4">
-        <div>
-          <ul>
-            <div class="has-text-centered" data-tour="login-section">
-              <SignedOut>
-                <SignInButton class="icon-btn button is-info mx-2"/>
-              </SignedOut>
-              <SignedIn>
-                <div class="has-text-centered ">
-                  <p class="subtitle is-6 has-text-white m-0">{{ textoInterfaz.wellcome }}</p>
-                    <hr class="p-0 my-0 mx-3">
-                    <h1 class="title has-text-white my-1"><UserButton /> {{ user.username }}</h1>
-                    <hr class="p-0 my-0 mx-3">
-                </div>
-                <router-link to="/profile"> 
-                  <button class="icon-btn button is-info mx-2"> <i class="fas px-1 fa-user"></i> Mi Perfil <i class="fas px-1 fa-user"></i></button> 
-                </router-link>
-              </SignedIn>
-            </div>
-            
-            <router-link to="/ListaMapas" @click="SonidoTecla()" data-tour="btn-mapas">
-              <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonMapa }}</button>
-            </router-link>
-
-            <router-link to="/ListaPersonajes" @click="SonidoTecla()" data-tour="btn-investigadores">
-              <button class="buttonsHome ">{{ textoInterfaz.botones.textBotonInvestigador }}</button>
-            </router-link>
-
-            <router-link to="/credits" @click="SonidoTecla()">
-              <button class="buttonsHome" @click="SonidoTecla()">{{ textoInterfaz.botones.textBotonCreditos }}</button>
-            </router-link>
-
-            <router-link to="/tutoriales" @click="SonidoTecla()" data-tour="btn-tutoriales">
-              <button class="buttonsHome">{{ textoInterfaz.botones.textBotonTutoriales }}</button>
-            </router-link>
-
-            <button class="buttonsHome" @click="abrirAjustes()">Ajustes</button>
-
-            <li class="support-row mb-2" data-tour="support-row">
-              <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
-                <button class="buttonsHomeIB coffee-button">
-                  <i class="fas fa-mug-hot mr-2"></i>
-                  {{ textoInterfaz.botones.textBotonSupport }}
-                </button>
-              </a>
-              <a href="https://instagram.com/apparkhamhorror" target="_blank" @click="SonidoTecla()">
-                <button class="buttonsHomeIB instagram-button">
-                  <i class="fab fa-instagram mr-2"></i>
-                  Instagram
-                </button>
-              </a>
-            </li>
-            
-          </ul>
+      <!-- ── HERO: visitas + logo ─────────────────────── -->
+      <div class="home-hero">
+        <div class="visit-bar" data-tour="visit-counter">
+          <span @click="infoTotalVisits()">
+            <i class="fas fa-eye"></i> {{ $store.state.contadorVisitasTotales }}
+          </span>
+          <span @click="infoUsersActive()">
+            <i class="fas fa-circle pulse-red"></i> {{ contadorUsuariosActivos }}
+          </span>
         </div>
+        <img class="home-logo" src="@/assets/img/ZZOtros/TituloArkhamHorror.png" alt="Arkham Horror"/>
+      </div>
 
-        <!-- Apartado para la versión de la aplicación -->
-        <div class="app-version">Version: {{ textoInterfaz.versionApp }}</div>
-        
-        <!-- Noticias (Menu desplegable) -->
-        <div class="app-version boxShadowYellow" id="ultimasNoticias" data-tour="noticias-section">
-          <div class="noticias-header" @click="toggleNoticias">
-            <p>{{ textoInterfaz.ultimaActualizacion }} {{ textoInterfaz.fechaUltimaActualizacion }}</p>
-
-            <i :class="{'fas fa-chevron-down': !noticias.isNoticiasOpen, 'fas fa-chevron-up': noticias.isNoticiasOpen}"></i>
+      <!-- ── ZONA USUARIO ────────────────────────────── -->
+      <div class="user-zone" data-tour="login-section">
+        <SignedOut>
+          <SignInButton class="sign-in-pill"/>
+        </SignedOut>
+        <SignedIn>
+          <div class="user-row">
+            <UserButton />
+            <span class="user-greeting">{{ textoInterfaz.wellcome }},&nbsp;<strong>{{ user.username }}</strong></span>
+            <router-link to="/profile">
+              <button class="profile-arrow"><i class="fas fa-chevron-right"></i></button>
+            </router-link>
           </div>
-          <div v-if="noticias.isNoticiasOpen" class="noticias-list">
-            <div class="box">
-              <ul>
-                <li v-for="(articulo, index) in noticias.articulos" :key="index" class="noticia-item">
-                  <p><strong> {{ textoInterfaz.textoActualizacion }} {{ articulo.numberUpdate }}</strong></p>
+        </SignedIn>
+      </div>
 
-                  <h4 v-if="this.$store.state.lenguaje == 'español'">{{ articulo.translations.es.title }}</h4>
-                  <h4 v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.translations.en.title }}</h4>
+      <!-- ── ACCIONES PRINCIPALES ────────────────────── -->
+      <div class="main-actions">
+        <router-link to="/ListaMapas" class="action-card" @click="SonidoTecla()" data-tour="btn-mapas">
+          <i class="fas fa-map action-icon"></i>
+          <span class="action-label">{{ textoInterfaz.botones.textBotonMapa }}</span>
+        </router-link>
+        <router-link to="/ListaPersonajes" class="action-card" @click="SonidoTecla()" data-tour="btn-investigadores">
+          <i class="fas fa-user-secret action-icon"></i>
+          <span class="action-label">{{ textoInterfaz.botones.textBotonInvestigador }}</span>
+        </router-link>
+      </div>
 
-                  <p v-if="this.$store.state.lenguaje == 'español'">{{ articulo.translations.es.description }}</p>
-                  <p v-if="this.$store.state.lenguaje == 'ingles'">{{ articulo.translations.en.description }}</p>
-                  <hr class="my-2">
-                </li>
-              </ul>
-            </div>
+      <!-- ── ACCIONES SECUNDARIAS ────────────────────── -->
+      <div class="secondary-actions">
+        <router-link to="/tutoriales" class="sec-btn" @click="SonidoTecla()" data-tour="btn-tutoriales">
+          <i class="fas fa-book-open"></i>
+          <span>{{ textoInterfaz.botones.textBotonTutoriales }}</span>
+        </router-link>
+        <router-link to="/credits" class="sec-btn" @click="SonidoTecla()">
+          <i class="fas fa-award"></i>
+          <span>{{ textoInterfaz.botones.textBotonCreditos }}</span>
+        </router-link>
+        <button class="sec-btn" @click="abrirAjustes()">
+          <i class="fas fa-cog"></i>
+          <span>{{ $store.state.lenguaje == 'español' ? 'Ajustes' : 'Settings' }}</span>
+        </button>
+      </div>
+
+      <!-- ── SOPORTE ──────────────────────────────────── -->
+      <div class="support-strip" data-tour="support-row">
+        <a href="https://www.buymeacoffee.com/appArkhamHorror" target="_blank" @click="SonidoTecla()">
+          <button class="support-btn coffee-btn">
+            <i class="fas fa-mug-hot"></i> {{ textoInterfaz.botones.textBotonSupport }}
+          </button>
+        </a>
+        <a href="https://instagram.com/apparkhamhorror" target="_blank" @click="SonidoTecla()">
+          <button class="support-btn insta-btn">
+            <i class="fab fa-instagram"></i> Instagram
+          </button>
+        </a>
+      </div>
+
+      <!-- ── VERSIÓN ──────────────────────────────────── -->
+      <div class="app-version">Version: {{ textoInterfaz.versionApp }}</div>
+
+      <!-- ── NOTICIAS ─────────────────────────────────── -->
+      <div class="app-version boxShadowYellow" id="ultimasNoticias" data-tour="noticias-section">
+        <div class="noticias-header" @click="toggleNoticias">
+          <p>{{ textoInterfaz.ultimaActualizacion }} {{ textoInterfaz.fechaUltimaActualizacion }}</p>
+          <i :class="noticias.isNoticiasOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+        </div>
+        <div v-if="noticias.isNoticiasOpen" class="noticias-list">
+          <div class="box">
+            <ul>
+              <li v-for="(articulo, index) in noticias.articulos" :key="index" class="noticia-item">
+                <p><strong>{{ textoInterfaz.textoActualizacion }} {{ articulo.numberUpdate }}</strong></p>
+                <h4 v-if="$store.state.lenguaje == 'español'">{{ articulo.translations.es.title }}</h4>
+                <h4 v-if="$store.state.lenguaje == 'ingles'">{{ articulo.translations.en.title }}</h4>
+                <p v-if="$store.state.lenguaje == 'español'">{{ articulo.translations.es.description }}</p>
+                <p v-if="$store.state.lenguaje == 'ingles'">{{ articulo.translations.en.description }}</p>
+                <hr class="my-2">
+              </li>
+            </ul>
           </div>
         </div>
-
-      </section>
+      </div>
 
     </div>
 
-    <!-- botones para cambiar de lenguaje -->
+    <!-- ── FOOTER: idioma ──────────────────────────────── -->
     <footer>
-      <div class="columns is-movile has-text-centered">
-        <p class="column">
-          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'español'), (this.rellenarTextosegunIdioma())">
-            <img class="buttonsBanderas" :class="{'buttonsBanderasDesactivado': this.$store.state.lenguaje == 'ingles'}" src="@/assets/img/ZZOtros/banderas/espana.png" alt="bandera español">
-          </button>
-          
-          <button @click="(this.SonidoTecla()),(this.$store.state.lenguaje = 'ingles') , (this.rellenarTextosegunIdioma())">
-            <img class="buttonsBanderas" :class="{'buttonsBanderasDesactivado': this.$store.state.lenguaje == 'español'}" src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="Ingles">
-          </button>
-        </p>
+      <div class="lang-row">
+        <button @click="SonidoTecla(); $store.state.lenguaje = 'español'; rellenarTextosegunIdioma()">
+          <img class="buttonsBanderas" :class="{'buttonsBanderasDesactivado': $store.state.lenguaje == 'ingles'}"
+               src="@/assets/img/ZZOtros/banderas/espana.png" alt="Español">
+        </button>
+        <button @click="SonidoTecla(); $store.state.lenguaje = 'ingles'; rellenarTextosegunIdioma()">
+          <img class="buttonsBanderas" :class="{'buttonsBanderasDesactivado': $store.state.lenguaje == 'español'}"
+               src="@/assets/img/ZZOtros/banderas/reino-unido.png" alt="English">
+        </button>
       </div>
     </footer>
 
@@ -149,6 +177,8 @@ import { useStore } from 'vuex' // importamos esto para poder usar el store en e
 import ModalBienvenida from '@/components/home/modalBienvenida.vue';
 import ModalDonacion from '@/components/home/modalDonacion.vue';
 import ModalAjustes from '@/components/home/modalAjustes.vue';
+
+import { initTour, startTourFromHome } from '@/services/tourService.js';
 
 
 export default {
@@ -188,6 +218,8 @@ export default {
       audioIniciado: false,
       contadorVisitas: null,
       contadorUsuariosActivos: null,
+      showTourButton: false,
+      showTourModal: false,
       textoInterfaz: {
         wellcome: "",
         versionApp: "Beta 4.0.7",
@@ -326,6 +358,13 @@ export default {
     };
   },
   methods: {
+    launchTour() {
+      this.showTourModal  = false;
+      this.showTourButton = false;
+      initTour(this.$router, this.$store, this.$store.state.lenguaje);
+      setTimeout(() => startTourFromHome(), 200);
+    },
+
     abrirAjustes(){
       this.SonidoTecla()
       this.$store.state.StoreModalAjustes = true
@@ -405,6 +444,8 @@ export default {
     this.rellenarTextosegunIdioma();
     this.iniciarAudio();
 
+    // Mostrar el FAB del tour después de 3 s
+    setTimeout(() => { this.showTourButton = true; }, 3000);
   },
   updated(){
     this.rellenarTextosegunIdioma();
@@ -421,11 +462,6 @@ export default {
   0% {box-shadow: 0px 0px 10px #04ff0000;}
   50% {box-shadow: 0px 0px 10px rgb(0, 195, 255);}
   100% {box-shadow: 0px 0px 20px 20px #04ff0000;}
-}
-
-@font-face {
-  font-family: tituloSeleccion;
-  src: url("@/assets/fonts/home/Stranger back in the Night.ttf");
 }
 
 /* CSS para contador de usuarios online actuales */
@@ -449,158 +485,331 @@ export default {
   }
 }
 
-/* Helpers */
-.buttonsBanderas{
-  max-height: 50px;
-}
-.buttonsBanderasDesactivado{
-  opacity: 30%;
-}
+/* ── Banderas idioma ──────────────────────────────────── */
+.buttonsBanderas           { max-height: 48px; }
+.buttonsBanderasDesactivado{ opacity: 30%; }
 
+/* ── Versión ──────────────────────────────────────────── */
 .app-version {
-  margin-left: 20px ;
-  margin-right: 20px;
+  margin: 0 16px 10px;
   text-align: center;
   background: rgba(0, 0, 0, 0.6);
   padding: 8px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  color: #fff;
-  font-size: 1em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.85em;
 }
 
-/* Noticias */
-/* Estilos para las noticias */
-.noticias-list {
-  max-height: 30vh;          /* Máximo 20% de la altura de la ventana */
-  overflow-y: auto;          /* Habilita el scroll si hay muchas noticias */
-}
+/* ── Noticias ─────────────────────────────────────────── */
+.noticias-list   { max-height: 30vh; overflow-y: auto; }
+.noticias-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.noticias-header i { font-size: 18px; }
+.noticia-item h4 { font-size: 15px; font-weight: bold; }
+.noticia-item p  { font-size: 13px; }
+.box             { margin-top: 10px; padding: 14px; }
 
-.noticias-header {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* ── Base ─────────────────────────────────────────────── */
+#contenido { position: relative; z-index: 2; }
+button     { background: none; border: 0; color: inherit; padding: 0; }
 
-.noticias-header i {
-  font-size: 20px;           /* Tamaño de la flecha */
-}
-
-.noticia-item h4 {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.noticia-item p {
-  font-size: 14px;
-}
-
-.box {
-  margin-top: 10px;
-  padding: 15px;
-}
-
-/* Estilos para el contador de visitas */
-.visit-counter {
-  background: linear-gradient(45deg, #6bff8baf, #bbf065b0);
-  padding: 5px 15px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin: 10px auto;
-  width: 90%;
-}
-
-.visit-counter i {
-  animation: blink 1s infinite;
-}
-/* Efecto parpadeante para el icono */
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0.5; }
-}
-
-
-
-#BGAHHome {
-  background-image: url(@/assets/img/ZZOtros/BG-App-AH-Home.jpg);
-  min-height: 120vh;
-  position: relative;
-  background-position: center;
-  background-size: cover;
-}
-
-#contenido{
-  position: relative;
-  z-index: 2;
-}
-
-button{
-  background: none;
-  border: 0;
-  color: inherit;
-  padding: 5px;
-}
-
-.buttonsHome{
-  display: block;
-  width: 50%;
-  margin: 10px auto;
-  padding: 10px;
+/* ── Hero ─────────────────────────────────────────────── */
+.home-hero {
+  padding: 14px 16px 4px;
   text-align: center;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 1em;
-  border: thick double #272727;
-  border-radius: 5px;
-  background: rgb(80, 80, 80);
 }
-
-.menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-list li {
-  margin-bottom: 10px;
-}
-
-.support-row {
+.visit-bar {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 5px;
-}
-
-.coffee-button {
-  background: #FFDD00;
-  color: #333;
-}
-
-.instagram-button {
-  background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF);
-  color: #fff;
-}
-
-/* Ajustes comunes */
-.buttonsHomeIB {
-  width: auto;
-  padding: 10px 20px;
-}
-
-.icon-btn {
-  align-items: center;
-  width: 50%;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  border: none;
+  gap: 24px;
+  background: linear-gradient(90deg, rgba(107,255,139,0.65), rgba(187,240,101,0.65));
+  padding: 6px 18px;
+  border-radius: 20px;
+  margin: 0 auto 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a2a1a;
   cursor: pointer;
-  margin: 10px auto;
+  width: fit-content;
+}
+.home-logo {
+  width: 68%;
+  max-width: 260px;
+  display: block;
+  margin: 0 auto 18px;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.7));
+}
+
+/* ── Zona usuario ─────────────────────────────────────── */
+.user-zone {
+  margin: 0 16px 18px;
+  background: rgba(0, 0, 0, 0.52);
+  border: 1px solid rgba(200, 144, 42, 0.3);
+  border-radius: 12px;
+  padding: 11px 16px;
+  text-align: center;
+}
+.sign-in-pill {
+  background: rgba(200, 144, 42, 0.14) !important;
+  border: 1px solid rgba(200, 144, 42, 0.5) !important;
+  color: #e8d5a3 !important;
+  border-radius: 20px !important;
+  padding: 8px 24px !important;
+  font-size: 0.88rem !important;
+  cursor: pointer !important;
+  font-family: Georgia, serif !important;
+}
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.user-greeting {
+  flex: 1;
+  color: rgba(220, 210, 195, 0.82);
+  font-size: 0.84rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-greeting strong { color: #e8d5a3; }
+.profile-arrow {
+  color: rgba(200, 144, 42, 0.6) !important;
+  font-size: 0.9rem !important;
+  flex-shrink: 0;
+}
+
+/* ── Acciones principales ─────────────────────────────── */
+.main-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px;
+  margin-bottom: 12px;
+}
+.action-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(6, 3, 14, 0.78);
+  border: 1px solid rgba(200, 144, 42, 0.5);
+  border-radius: 16px;
+  padding: 24px 10px;
+  text-decoration: none;
+  min-height: 120px;
+  transition: background 0.15s, transform 0.15s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.action-card:active {
+  transform: scale(0.95);
+  background: rgba(200, 144, 42, 0.12);
+}
+.action-icon {
+  font-size: 2.1rem;
+  color: rgba(200, 144, 42, 0.9);
+  display: block;
+}
+.action-label {
+  color: #e8d5a3;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ── Acciones secundarias ─────────────────────────────── */
+.secondary-actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+.sec-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 13px 6px;
+  color: rgba(220, 210, 195, 0.72);
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.sec-btn i {
+  font-size: 1.1rem;
+  color: rgba(200, 144, 42, 0.78);
+}
+.sec-btn:active { background: rgba(200, 144, 42, 0.1); }
+
+/* ── Soporte ──────────────────────────────────────────── */
+.support-strip {
+  display: flex;
+  gap: 10px;
+  padding: 0 16px;
+  margin-bottom: 14px;
+  justify-content: center;
+}
+.support-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px !important;
+  border-radius: 8px !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  border: none !important;
+}
+.coffee-btn { background: #FFDD00 !important; color: #333 !important; }
+.insta-btn  { background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF) !important; color: #fff !important; }
+
+/* ── Footer idioma ────────────────────────────────────── */
+.lang-row { display: flex; justify-content: center; gap: 20px; padding: 12px; }
+
+/* ── Tour FAB ────────────────────────────────────────────── */
+.tour-fab {
+  position: fixed;
+  right: max(14px, calc(50% - 201px));
+  bottom: 90px;
+  z-index: 500;
+  transform: translateX(72px);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  pointer-events: none;
+}
+.tour-fab.visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.tour-fab-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(6, 3, 14, 0.93);
+  border: 1.5px solid rgba(200, 144, 42, 0.75);
+  box-shadow: 0 0 18px rgba(200, 144, 42, 0.25), 0 4px 14px rgba(0,0,0,0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  animation: fab-beacon 2.8s ease-in-out infinite;
+}
+@keyframes fab-beacon {
+  0%, 100% { box-shadow: 0 0 18px rgba(200,144,42,0.25), 0 4px 14px rgba(0,0,0,0.7); }
+  50%       { box-shadow: 0 0 32px rgba(200,144,42,0.55), 0 4px 18px rgba(0,0,0,0.8); }
+}
+.tour-fab-btn:active {
+  transform: scale(0.93);
+}
+
+/* ── Tour Modal ──────────────────────────────────────────── */
+.tour-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.tour-modal-card {
+  background: rgba(6, 3, 14, 0.97);
+  border: 1px solid rgba(200, 144, 42, 0.6);
+  border-radius: 10px;
+  padding: 28px 22px 22px;
+  max-width: 340px;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(200,144,42,0.15), 0 20px 60px rgba(0,0,0,0.85);
+  animation: modal-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes modal-in {
+  from { transform: scale(0.85) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
+.tour-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: rgba(200, 144, 42, 0.5);
+  font-size: 1.3rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+}
+.tour-modal-close:hover { color: rgba(200,144,42,0.9); }
+.tour-modal-icon {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 10px rgba(200,144,42,0.5));
+}
+.tour-modal-title {
+  font-family: Georgia, serif;
+  color: #e8d5a3;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(200,144,42,0.25);
+  padding-bottom: 10px;
+}
+.tour-modal-text {
+  font-family: Georgia, serif;
+  color: rgba(220, 210, 195, 0.85);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.tour-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tour-btn-yes {
+  background: rgba(200, 144, 42, 0.18) !important;
+  border: 1px solid rgba(200, 144, 42, 0.6) !important;
+  color: #e8d5a3 !important;
+  border-radius: 6px !important;
+  font-family: Georgia, serif !important;
+  font-size: 0.9rem !important;
+  padding: 10px 16px !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  transition: all 0.2s !important;
+}
+.tour-btn-yes:hover {
+  background: rgba(200,144,42,0.32) !important;
+  box-shadow: 0 0 14px rgba(200,144,42,0.3) !important;
+}
+.tour-btn-no {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: rgba(220,210,195,0.5) !important;
+  border-radius: 6px !important;
+  font-family: Georgia, serif !important;
+  font-size: 0.82rem !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  transition: all 0.2s !important;
+}
+.tour-btn-no:hover {
+  color: rgba(220,210,195,0.8) !important;
+  border-color: rgba(255,255,255,0.35) !important;
 }
 
 </style>

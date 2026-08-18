@@ -8,15 +8,51 @@ let _driverInstance   = null;
 let _router           = null;
 let _store            = null;
 let _lang             = 'español';
-let _currentSegment   = null;   // tracks which segment is active for skipToNext()
-let _availableIdInv   = null;   // first known investigator ID (set by ListaPersonajes)
+let _currentSegment   = null;
+let _availableIdInv   = null;
+let _escHandler       = null;
 
 const es = () => _lang === 'español';
+
+// ─────────────────────────────────────────────────────────────
+// Confirmación al salir
+// ─────────────────────────────────────────────────────────────
+function showExitConfirm() {
+  if (document.querySelector('.ah-tour-confirm')) return;
+
+  const box = document.createElement('div');
+  box.className = 'ah-tour-confirm';
+  box.innerHTML = `
+    <div class="ah-tour-confirm-box">
+      <p class="ah-tour-confirm-title">${es() ? '¿Abandonar el tour?' : 'Abandon the tour?'}</p>
+      <p class="ah-tour-confirm-text">${es()
+        ? 'Podrás relanzarlo en cualquier momento desde Tutoriales en el menú principal.'
+        : 'You can relaunch it any time from Tutorials in the main menu.'}</p>
+      <div class="ah-tour-confirm-btns">
+        <button class="ah-tour-confirm-yes">${es() ? 'Sí, salir' : 'Yes, exit'}</button>
+        <button class="ah-tour-confirm-no">${es() ? 'No, continuar' : 'No, keep going'}</button>
+      </div>
+    </div>
+  `;
+  box.querySelector('.ah-tour-confirm-yes').addEventListener('click', () => {
+    box.remove();
+    destroy();
+  });
+  box.querySelector('.ah-tour-confirm-no').addEventListener('click', () => {
+    box.remove();
+  });
+  document.body.appendChild(box);
+}
 
 // ─────────────────────────────────────────────────────────────
 // Internals
 // ─────────────────────────────────────────────────────────────
 function destroy() {
+  document.querySelector('.ah-tour-confirm')?.remove();
+  if (_escHandler) {
+    document.removeEventListener('keydown', _escHandler, true);
+    _escHandler = null;
+  }
   if (_driverInstance) { _driverInstance.destroy(); _driverInstance = null; }
 }
 
@@ -47,12 +83,11 @@ async function skipToNext() {
 
     case 'listaPersonaje': {
       destroy();
-      // Load a predefined investigator if possible
       try {
         const idToUse = _availableIdInv || 1;
         const response = await apiService.obtainInvByID(idToUse);
         _store.commit('setDatosInvestigator', response);
-      } catch (e) { /* navigate anyway */ }
+      } catch (e) { /* navegar igualmente */ }
       localStorage.setItem(CONTINUE_KEY, '/PlayAH');
       _router.push('/PlayAH');
       break;
@@ -71,77 +106,128 @@ async function skipToNext() {
   }
 }
 
-// ─── Tab-switch helper used in onNextClick ───────────────────
+// ─── Tab-switch helper ───────────────────────────────────────
 function switchTabThenNext(index) {
   setPlayTab(index);
   setTimeout(() => _driverInstance?.moveNext(), 400);
 }
 
 // ─────────────────────────────────────────────────────────────
-// makeDriver — attaches skip button via onPopoverRender
+// makeDriver + driveSegment
 // ─────────────────────────────────────────────────────────────
 function makeDriver(steps, segment) {
   destroy();
   _currentSegment = segment;
 
+  // ESC → confirmación en lugar de cerrar
+  _escHandler = (e) => {
+    if (e.key === 'Escape' && _driverInstance) {
+      e.preventDefault();
+      e.stopPropagation();
+      showExitConfirm();
+    }
+  };
+  document.addEventListener('keydown', _escHandler, true);
+
   _driverInstance = driver({
-    animate:       true,
-    smoothScroll:  true,
-    allowClose:    true,
+    animate:        true,
+    smoothScroll:   true,
+    allowClose:     false,   // el overlay no cierra directamente; usamos nuestro handler
     overlayOpacity: 0.72,
-    stagePadding:  8,
-    stageRadius:   6,
-    popoverClass:  'ah-tour-popover',
-    progressText:  '{{current}} / {{total}}',
-    nextBtnText:   es() ? 'Siguiente →' : 'Next →',
-    prevBtnText:   es() ? '← Atrás'    : '← Back',
-    doneBtnText:   es() ? '✓ Listo'    : '✓ Done',
-    onPopoverRender: (popover) => {
+    stagePadding:   8,
+    stageRadius:    6,
+    popoverClass:   'ah-tour-popover',
+    progressText:   '{{current}} / {{total}}',
+    nextBtnText:    es() ? 'Siguiente →' : 'Next →',
+    prevBtnText:    es() ? '← Atrás'    : '← Back',
+    doneBtnText:    es() ? '✓ Listo'    : '✓ Done',
+
+    steps,
+
+    onPopoverRender: (popover, { state }) => {
+      // ── Botón skip ───────────────────────────────────────
       const skipBtn = document.createElement('button');
       skipBtn.textContent = es() ? '⏭ Saltar sección' : '⏭ Skip section';
       skipBtn.className = 'ah-tour-skip-btn';
       skipBtn.addEventListener('click', skipToNext);
-      // Insert before the nav buttons block
       const target = popover.footerButtons || popover.nextButton;
-      if (target && target.parentNode === popover.footer) {
+      if (target && target.parentNode === popover.footer)
         popover.footer.insertBefore(skipBtn, target);
-      } else {
+      else
         popover.footer.appendChild(skipBtn);
+
+      // ── Botón ✕ salir (esquina superior derecha del popover) ──
+      const exitBtn = document.createElement('button');
+      exitBtn.textContent = '✕';
+      exitBtn.className = 'ah-tour-exit-btn';
+      exitBtn.title = es() ? 'Salir del tour' : 'Exit tour';
+      exitBtn.addEventListener('click', showExitConfirm);
+      if (popover.title?.parentElement)
+        popover.title.parentElement.appendChild(exitBtn);
+
+      // ── Ocultar "Siguiente" en pasos que requieren toque ──
+      const noNextBtn = state?.activeStep?.popover?.noNextBtn;
+      if (noNextBtn) {
+        if (popover.nextButton) popover.nextButton.style.display = 'none';
+        // Añadir pista visual de toque
+        if (popover.description && !popover.description.querySelector('.ah-tap-hint')) {
+          const hint = document.createElement('p');
+          hint.className = 'ah-tap-hint';
+          hint.textContent = es()
+            ? '👆 Toca el elemento resaltado para continuar'
+            : '👆 Tap the highlighted element to continue';
+          popover.description.appendChild(hint);
+        }
       }
     },
-    steps,
   });
+
   return _driverInstance;
+}
+
+function driveSegment(steps, segment) {
+  makeDriver(steps, segment).drive();
+  // Attach click en overlay → confirmación (allowClose:false ya lo bloquea, pero interceptamos el click igualmente)
+  setTimeout(() => {
+    const overlay = document.querySelector('.driver-overlay');
+    if (overlay && !overlay.dataset.ahHandler) {
+      overlay.dataset.ahHandler = '1';
+      overlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showExitConfirm();
+      });
+    }
+  }, 300);
 }
 
 // ─────────────────────────────────────────────────────────────
 // SEGMENTO 1 — HOME
 // ─────────────────────────────────────────────────────────────
 function segmentHome() {
-  makeDriver([
+  driveSegment([
     {
       popover: {
         title: es() ? '¡Bienvenido a Arkham Horror App!' : 'Welcome to Arkham Horror App!',
         description: es()
-          ? 'Este tour te guiará por todas las funciones hasta tu primera partida. Pulsa <strong>Siguiente</strong> para empezar o <em>Saltar sección</em> para ir directo a los Mapas.'
-          : 'This tour will guide you through all features to your first game. Press <strong>Next</strong> to begin or <em>Skip section</em> to jump to Maps.',
+          ? 'Este tour te guiará por todas las funciones hasta tu primera partida. Pulsa Siguiente para empezar o <em>Saltar sección</em> para ir directo a los Mapas.'
+          : 'This tour will guide you through all features up to your first game. Press Next to begin or <em>Skip section</em> to jump straight to Maps.',
       },
     },
     {
       popover: {
         title: es() ? '❤️ Hecha con pasión' : '❤️ Made with passion',
         description: es()
-          ? 'Herramienta compañera para <strong>Arkham Horror 3ª Edición</strong>: seguimiento de partida, contenido de la comunidad, modo online y mucho más. Desarrollada por <strong>una sola persona</strong>. Una contribución ayuda a mantenerla viva. ¡Gracias!'
-          : 'Companion tool for <strong>Arkham Horror 3rd Edition</strong>: game tracking, community content, online mode and more. Built by <strong>one person</strong>. A contribution helps keep it alive. Thank you!',
+          ? 'Esta aplicacion es una herramienta para Arkham Horror 3ª Edición: seguimiento de partida, contenido de la comunidad, modo online y mucho más te espera. Desarrollada únicamente por 1 sola persona así que cualquier contribución ayudará a mantener esta aplicacion viva. <br> ¡Gracias y disfrutad!'
+          : 'This app is a companion for Arkham Horror 3rd Edition: game tracking, community content, online mode and much more await you. Built by just one person — any contribution helps keep the app alive. <br>Thank you and enjoy!',
       },
     },
     {
       element: '[data-tour="visit-counter"]',
       popover: {
-        title: es() ? '👁 Visitas e Investigadores activos' : '👁 Visits & Active Investigators',
+        title: es() ? '👁 Visitas y usuarios activos' : '👁 Visits & Active Investigators',
         description: es()
-          ? 'El primer número muestra las visitas totales. El punto rojo parpadeante indica cuántos investigadores están jugando <strong>ahora mismo</strong>.'
-          : 'The first number shows total visits. The blinking red dot shows how many investigators are playing <strong>right now</strong>.',
+          ? 'El primer número muestra las visitas totales. El punto rojo parpadeante indica cuántos usuarios están jugando ahora mismo.'
+          : 'The first number shows total visits. The blinking red dot shows how many users are playing right now.',
         side: 'bottom',
       },
     },
@@ -150,8 +236,8 @@ function segmentHome() {
       popover: {
         title: es() ? '🔐 Iniciar Sesión — Importante' : '🔐 Sign In — Important',
         description: es()
-          ? '<strong>Algunas funciones requieren registro:</strong> modo online, guardar tu investigador, votar mapas o crear partidas compartidas. Te recomendamos iniciar sesión antes de empezar.'
-          : '<strong>Some features require an account:</strong> online mode, saving your investigator, voting on maps, or creating shared games. Sign in before you start.',
+          ? 'Algunas funciones requieren estar registrado: modo online, guardar tu investigador, votar mapas o crear partidas compartidas. <br> Te recomendamos iniciar sesión antes de empezar. <br> Si solo quieres usar la app para el mapa, mazos o modo offline, puedes seguir sin problemas.'
+          : 'Some features require an account: online mode, saving your investigator, voting on maps or creating shared games. <br>We recommend signing in before starting. <br>If you only want the app for map/deck setup or offline play, you can use it without any issues.',
         side: 'bottom',
       },
     },
@@ -160,8 +246,8 @@ function segmentHome() {
       popover: {
         title: es() ? '🗺️ Mapas' : '🗺️ Maps',
         description: es()
-          ? 'Accede a todos los escenarios: historia con audio, dificultad, enemigos, opiniones de la comunidad y partidas online.'
-          : 'Access all scenarios: audio story, difficulty, enemies, community ratings and online games.',
+          ? 'Accede a todos los escenarios: historia con audio, dificultad, lista de enemigos CON IMAGENES, opiniones de la comunidad, partidas online, etc.'
+          : 'Access all scenarios: audio story, difficulty, enemy list WITH IMAGES, community opinions, online games and more.',
         side: 'top',
       },
     },
@@ -170,8 +256,8 @@ function segmentHome() {
       popover: {
         title: es() ? '🕵️ Investigadores' : '🕵️ Investigators',
         description: es()
-          ? 'Elige a tu personaje. Cada investigador tiene habilidades, stats, equipo inicial e historia únicos.'
-          : 'Choose your character. Each investigator has unique skills, stats, starting equipment and backstory.',
+          ? 'Lista de personajes. Aqui podras acceder a toda la lista de personajes de todas las expansiones y de nuevos personajes hechos por la comunidad o únicos de esta aplicacion.'
+          : 'Character list. Here you can access the full roster from all expansions, plus new characters made by the community or exclusive to this app.',
         side: 'top',
       },
     },
@@ -181,7 +267,7 @@ function segmentHome() {
         title: es() ? '📖 Tutoriales' : '📖 Tutorials',
         description: es()
           ? 'Vuelve aquí en cualquier momento para releer las reglas o relanzar este tour.'
-          : 'Come back here any time to review the rules or relaunch this tour.',
+          : 'Come back here any time to re-read the rules or relaunch this tour.',
         side: 'top',
       },
     },
@@ -190,8 +276,8 @@ function segmentHome() {
       popover: {
         title: es() ? '☕ Apóyanos & Instagram' : '☕ Support Us & Instagram',
         description: es()
-          ? '<strong>Apoyanos</strong> lleva a Buy Me a Coffee. <strong>Instagram</strong> publica novedades y contenido extra. ¡Síguenos!'
-          : '<strong>Support Us</strong> links to Buy Me a Coffee. <strong>Instagram</strong> posts news and extra content. Follow us!',
+          ? 'Cualquier aportacion ayudara con el proyecto. Desde Instagram podras ver el avance de la app. ¡Síguenos!'
+          : 'Any contribution helps the project. On Instagram you can follow the app\'s progress. Follow us!',
         side: 'top',
       },
     },
@@ -201,36 +287,36 @@ function segmentHome() {
         title: es() ? '📰 Últimas actualizaciones' : '📰 Latest updates',
         description: es()
           ? 'Despliega este panel para ver el historial de versiones y las novedades de cada actualización.'
-          : 'Expand this panel to see version history and what was added in each update.',
+          : 'Expand this panel to see the version history and what\'s new in each update.',
         side: 'top',
       },
     },
     {
       element: '[data-tour="btn-mapas"]',
       popover: {
-        title: es() ? '→ Vamos a los Mapas' : '→ Let\'s go to Maps',
+        title: es() ? '¡Empezamos!' : '→ Let\'s go!',
         description: es()
-          ? 'Pulsa <strong>Siguiente</strong> y te llevamos a la sección de Mapas.'
-          : 'Press <strong>Next</strong> and we\'ll take you to the Maps section.',
+          ? 'Para empezar, tenemos que seleccionar primero qué mapa vamos a jugar. ¡Vamos allá!'
+          : 'To start, we need to choose which map we\'ll play. Let\'s go!',
         side: 'top',
         onNextClick: () => goTo('/ListaMapas', '/ListaMapas'),
       },
     },
-  ], 'home').drive();
+  ], 'home');
 }
 
 // ─────────────────────────────────────────────────────────────
 // SEGMENTO 2 — LISTA DE MAPAS
 // ─────────────────────────────────────────────────────────────
 function segmentListaMapas() {
-  makeDriver([
+  driveSegment([
     {
       element: '[data-tour="mapa-filtros"]',
       popover: {
         title: es() ? '📦 Filtros de expansión' : '📦 Expansion filters',
         description: es()
-          ? '<strong>Pulsa estos botones</strong> para activar o desactivar las expansiones que tengas. Solo verás los mapas de las expansiones seleccionadas.'
-          : '<strong>Tap these buttons</strong> to enable or disable the expansions you own. You\'ll only see maps from selected expansions.',
+          ? 'Pulsa alguno de estos botones para activar o desactivar una expansión y revelar sus mapas.'
+          : 'Tap any of these buttons to enable or disable an expansion and reveal its maps.',
         side: 'bottom',
       },
     },
@@ -239,67 +325,75 @@ function segmentListaMapas() {
       popover: {
         title: es() ? '🌐 Botón Online' : '🌐 Online Button',
         description: es()
-          ? '<strong>Toca aquí</strong> para unirte a una partida creada por otro jugador introduciendo su código de mapa. Necesitas estar registrado.'
-          : '<strong>Tap here</strong> to join a game created by another player using their map code. Requires sign in.',
+          ? 'Toca aquí para unirte a una partida creada por otro jugador introduciendo su código de mapa. ¿Dónde se encuentra este código? Lo verás en la pantalla de ajustes del mapa online. <br> 🌐 Necesitas estar registrado. 🌐'
+          : 'Tap here to join a game created by another player using their map code. Where do you find this code? You\'ll see it on the online map settings screen. <br>🌐 You need to be registered. 🌐',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="mapa-grid"]',
+      onHighlightStarted: () => {
+        localStorage.setItem(CONTINUE_KEY, '/DetalleMapa');
+        const grid = document.querySelector('[data-tour="mapa-grid"]');
+        if (grid) {
+          const onTap = () => { grid.removeEventListener('click', onTap); destroy(); };
+          grid.addEventListener('click', onTap);
+        }
+      },
       popover: {
         title: es() ? '🗺️ Escenarios — Toca uno para continuar' : '🗺️ Scenarios — Tap one to continue',
         description: es()
-          ? 'Cada carta es un escenario diferente. <strong>Toca ahora cualquier mapa</strong> para ver su detalle completo. El tour continuará automáticamente en la pantalla de detalle.'
-          : 'Each card is a different scenario. <strong>Tap any map now</strong> to see its full detail. The tour will continue automatically on the detail screen.',
+          ? 'Aqui puedes ver todos los mapas de la expansión seleccionada. Se distinguen por el color de fondo según su expansión. Toca alguno para seguir el tour y ver el mapa en detalle.'
+          : 'Here you can see all maps from the selected expansion, distinguished by their background color. Tap one to continue the tour and see the map in detail.',
         side: 'top',
-        onNextClick: () => { destroy(); localStorage.setItem(CONTINUE_KEY, '/DetalleMapa'); },
+        noNextBtn: true,
       },
     },
-  ], 'listaMapa').drive();
+  ], 'listaMapa');
 }
 
 // ─────────────────────────────────────────────────────────────
 // SEGMENTO 3 — DETALLE DE MAPA
 // ─────────────────────────────────────────────────────────────
 function segmentDetalleMapa() {
-  makeDriver([
+  driveSegment([
     {
       element: '[data-tour="mapa-historia"]',
       popover: {
         title: es() ? '📜 Historia con Audio' : '📜 Story with Audio',
         description: es()
-          ? 'Texto de ambientación del escenario. <strong>Pulsa el icono 🔊</strong> para escuchar la locución de audio y sumergirte en la historia.'
-          : 'Narrative text for the scenario. <strong>Tap the 🔊 icon</strong> to hear the audio narration and immerse yourself in the story.',
+          ? 'Texto introductorio del escenario. Pulsa el icono 🔊 para escuchar la locución y sumergirte en la historia.'
+          : 'Introductory text for the scenario. Tap the 🔊 icon to hear the narration and immerse yourself in the story.',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="mapa-especificaciones"]',
       popover: {
-        title: es() ? '👍 Opiniones — Toca para votar' : '👍 Opinions — Tap to vote',
+        title: es() ? '👍 Opiniones de la comunidad' : '👍 Community opinions',
         description: es()
-          ? '<strong>Pulsa 👍 o 👎</strong> para votar. Consulta la <strong>dificultad estimada</strong> y la <strong>duración media</strong> según la comunidad. Necesitas estar registrado para votar.'
-          : '<strong>Tap 👍 or 👎</strong> to vote. Check the <strong>estimated difficulty</strong> and <strong>average duration</strong> from the community. Requires sign in to vote.',
+          ? 'Pulsa 👍 o 👎 para votar. Consulta la dificultad estimada y la duración media según la comunidad. Necesitas estar registrado para votar.'
+          : 'Tap 👍 or 👎 to vote. Check the estimated difficulty and average duration from the community. You need to be registered to vote.',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="mapa-btn-enemigos"]',
       popover: {
-        title: es() ? '👾 Enemigos — Toca para ver la lista' : '👾 Enemies — Tap to see the list',
+        title: es() ? '👾 Lista de enemigos' : '👾 Enemy list',
         description: es()
-          ? '<strong>Pulsa aquí</strong> para ver todos los monstruos del escenario. El color de fondo de cada enemigo indica a qué expansión pertenece.'
-          : '<strong>Tap here</strong> to see all monsters in this scenario. The background color of each enemy shows which expansion it belongs to.',
+          ? 'Pulsa aquí para ver todos los monstruos del escenario. El color de fondo de cada enemigo indica a qué expansión pertenece.'
+          : 'Tap here to see all monsters in the scenario. The background color of each enemy indicates which expansion it belongs to.',
         side: 'left',
       },
     },
     {
       element: '[data-tour="mapa-loseta-img"]',
       popover: {
-        title: es() ? '🧩 Mapa de losetas — Toca para ampliar' : '🧩 Tile map — Tap to enlarge',
+        title: es() ? '🧩 Mapa de losetas' : '🧩 Tile map',
         description: es()
-          ? 'Vista del tablero con la disposición de losetas. <strong>Pulsa sobre la imagen</strong> para verla ampliada con todos los detalles de cada zona.'
-          : 'Board layout with tile arrangement. <strong>Tap the image</strong> to see it enlarged with details of each zone.',
+          ? 'Vista del tablero con la disposición de losetas. Pulsa sobre la imagen para verla ampliada.'
+          : 'Board view with tile layout. Tap the image to see it enlarged.',
         side: 'right',
       },
     },
@@ -308,8 +402,8 @@ function segmentDetalleMapa() {
       popover: {
         title: es() ? '🕵️ Investigadores Recomendados' : '🕵️ Recommended Investigators',
         description: es()
-          ? '<strong>Pulsa aquí</strong> para ver qué investigadores recomienda la comunidad para este mapa y por qué. Muy útil si es tu primera vez.'
-          : '<strong>Tap here</strong> to see which investigators the community recommends for this map and why. Very useful for a first playthrough.',
+          ? 'Pulsa aquí para ver qué investigadores recomienda la comunidad para este mapa y por qué. Muy útil si es tu primera vez en este escenario.'
+          : 'Tap here to see which investigators the community recommends for this map and why. Very useful for your first time in this scenario.',
         side: 'left',
       },
     },
@@ -318,8 +412,8 @@ function segmentDetalleMapa() {
       popover: {
         title: es() ? '🌐 Crear Mapa Online' : '🌐 Create Online Map',
         description: es()
-          ? '<strong>Pulsa aquí</strong> para crear una partida online. Todos los jugadores podrán conectarse y gestionar juntos las fichas generales. Necesitas estar registrado.'
-          : '<strong>Tap here</strong> to create an online game. All players can connect and manage general tokens together. Requires sign in.',
+          ? 'Pulsa aquí para crear una partida online. Todos los jugadores podrán conectarse y gestionar juntos las fichas generales, tienda de objetos o saco de ficha de mitos. Todos los jugadores que quieran unirse necesitan estar registrados.'
+          : 'Tap here to create an online game. All players can connect and manage general tokens together, the item shop or the Mythos token bag. All players who want to join need to be registered.',
         side: 'top',
       },
     },
@@ -328,27 +422,27 @@ function segmentDetalleMapa() {
       popover: {
         title: es() ? '→ Seleccionar Investigador' : '→ Select Investigator',
         description: es()
-          ? 'Una vez elegido el mapa, <strong>pulsa aquí</strong> para ir a elegir tu investigador. Pulsamos Siguiente para continuar el tour.'
-          : 'Once the map is chosen, <strong>tap here</strong> to select your investigator. Press Next to continue the tour.',
+          ? 'Una vez elegido el mapa, vamos a seleccionar nuestro investigador.'
+          : 'Once the map is chosen, let\'s select our investigator.',
         side: 'top',
         onNextClick: () => goTo('/ListaPersonajes', '/ListaPersonajes'),
       },
     },
-  ], 'detalleMapa').drive();
+  ], 'detalleMapa');
 }
 
 // ─────────────────────────────────────────────────────────────
 // SEGMENTO 4 — LISTA DE INVESTIGADORES
 // ─────────────────────────────────────────────────────────────
 function segmentListaPersonajes() {
-  makeDriver([
+  driveSegment([
     {
       element: '[data-tour="expansion-tabs"]',
       popover: {
         title: es() ? '🔖 Pestañas de filtro' : '🔖 Filter tabs',
         description: es()
-          ? '<strong>Pulsa "Expansiones"</strong> para filtrar por caja, o <strong>"Arquetipos"</strong> para filtrar por rol: Superviviente, Místico, Experto, Defensor, Buscador o Neutral.'
-          : '<strong>Tap "Expansions"</strong> to filter by box, or <strong>"Archetypes"</strong> to filter by role: Survivor, Mystic, Rogue, Guardian, Seeker or Neutral.',
+          ? 'Pulsa "Expansiones" para filtrar por expansión, o "Arquetipos" para filtrar por rol: Superviviente, Místico, Experto, Defensor, Buscador o Neutral. O puedes no seleccionar ninguno y dejar que elija el destino con la opción al azar.'
+          : 'Tap "Expansions" to filter by expansion, or "Archetypes" to filter by role: Survivor, Mystic, Rogue, Guardian, Seeker or Neutral. Or select none and let fate decide with the random option.',
         side: 'bottom',
       },
     },
@@ -357,8 +451,8 @@ function segmentListaPersonajes() {
       popover: {
         title: es() ? '📦 Activar expansiones' : '📦 Enable expansions',
         description: es()
-          ? '<strong>Pulsa los botones de color</strong> para activar las expansiones que tengas. Los investigadores de esa expansión aparecerán abajo. El borde de cada carta coincide con el color de su expansión.'
-          : '<strong>Tap the colored buttons</strong> to enable the expansions you own. Investigators from that expansion appear below. Each card\'s border matches its expansion color.',
+          ? 'Pulsa los botones de color para activar las expansiones que tengas. Los investigadores de esa expansión aparecerán abajo. El borde de cada carta coincide con el color de su expansión.'
+          : 'Tap the colored buttons to activate the expansions you own. Investigators from that expansion appear below. Each card\'s border matches its expansion\'s color.',
         side: 'bottom',
       },
     },
@@ -367,37 +461,45 @@ function segmentListaPersonajes() {
       popover: {
         title: es() ? '🌐 Investigadores Online' : '🌐 Online Investigators',
         description: es()
-          ? '<strong>Pulsa aquí</strong> si tienes una partida online activa y quieres cargar tu investigador guardado en perfil. Requiere registro.'
-          : '<strong>Tap here</strong> if you have an active online game and want to load your saved profile investigator. Requires sign in.',
+          ? 'Aquí encontrarás los investigadores guardados que tengas. Requiere estar registrado.'
+          : 'Here you\'ll find your saved investigators. Requires being registered.',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="inv-grid"]',
+      onHighlightStarted: () => {
+        localStorage.setItem(CONTINUE_KEY, '/DetallePersonaje');
+        const grid = document.querySelector('[data-tour="inv-grid"]');
+        if (grid) {
+          const onTap = () => { grid.removeEventListener('click', onTap); destroy(); };
+          grid.addEventListener('click', onTap);
+        }
+      },
       popover: {
         title: es() ? '🃏 Elige un Investigador — Toca una carta' : '🃏 Choose an Investigator — Tap a card',
         description: es()
-          ? 'Cada carta muestra vida ❤️ y cordura 🧠 base. <strong>Toca ahora cualquier carta</strong> para ver su detalle. El tour continuará automáticamente en la pantalla de detalle.'
-          : 'Each card shows base life ❤️ and sanity 🧠. <strong>Tap any card now</strong> to see its detail. The tour will continue automatically on the detail screen.',
+          ? 'Cada carta muestra vida ❤️ y cordura 🧠 base. Vamos a ver el detalle de un investigador. Toca alguno para continuar.'
+          : 'Each card shows base life ❤️ and sanity 🧠. Let\'s see an investigator\'s detail — tap any one to continue.',
         side: 'top',
-        onNextClick: () => { destroy(); localStorage.setItem(CONTINUE_KEY, '/DetallePersonaje'); },
+        noNextBtn: true,
       },
     },
-  ], 'listaPersonaje').drive();
+  ], 'listaPersonaje');
 }
 
 // ─────────────────────────────────────────────────────────────
 // SEGMENTO 5 — DETALLE DE PERSONAJE
 // ─────────────────────────────────────────────────────────────
 function segmentDetallePersonaje() {
-  makeDriver([
+  driveSegment([
     {
       element: '[data-tour="detalle-img"]',
       popover: {
         title: es() ? '🖼️ Imagen e identidad' : '🖼️ Image & identity',
         description: es()
-          ? 'Imagen, nombre y rol. <strong>Usa los botones debajo</strong> para ver sus <em>pertenencias iniciales</em> (con qué objetos empieza), su <em>historia personal</em> con audio, y su <em>arquetipo</em>.'
-          : 'Image, name and role. <strong>Use the buttons below</strong> to see their <em>starting belongings</em>, their <em>personal story</em> with audio, and their <em>archetype</em>.',
+          ? 'Aquí puedes ver los datos básicos del personaje: imagen, nombre y rol. Usa los botones de la derecha para ver sus <em>pertenencias iniciales</em> (con qué objetos empieza), su <em>historia personal</em> con audio, su <em>arquetipo</em> y el dinero con el que empieza.'
+          : 'Here you can see the character\'s basic info: image, name and role. Use the buttons on the right to see their <em>starting belongings</em> (what items they begin with), their <em>personal story</em> with audio, their <em>archetype</em> and starting money.',
         side: 'right',
       },
     },
@@ -406,8 +508,8 @@ function segmentDetallePersonaje() {
       popover: {
         title: es() ? '📊 Atributos y especificaciones' : '📊 Attributes & specs',
         description: es()
-          ? 'Los valores base: <strong>Voluntad, Inteligencia, Combate y Agilidad</strong>. Determinan cuántos dados tiras en cada prueba. A mayor valor, más dados y más posibilidades de éxito.'
-          : 'Base values: <strong>Willpower, Intellect, Combat and Agility</strong>. They determine how many dice you roll in each test. Higher value = more dice = more chances of success.',
+          ? 'Aquí puedes ver la valoración del personaje (puedes aportar si estás registrado), comentarios de otros jugadores y los valores base: Vida, Cordura y los atributos: Saber, Influencia, Observación, Fuerza y Voluntad. Determinan cuántos dados base tiras en cada prueba. A mayor valor, más dados y más posibilidades de éxito.'
+          : 'Here you can see the character\'s rating (you can contribute if registered), comments from other players, and the base values: Life, Sanity and the attributes: Lore, Influence, Observation, Strength and Willpower. They determine how many base dice you roll in each test. Higher value = more dice = more chances of success.',
         side: 'top',
       },
     },
@@ -416,132 +518,130 @@ function segmentDetallePersonaje() {
       popover: {
         title: es() ? '✨ Habilidad especial' : '✨ Special ability',
         description: es()
-          ? 'La habilidad única de este investigador. <strong>Léela con atención</strong>, puede cambiar completamente tu estrategia. Algunos investigadores también tienen habilidades pasivas que se activan automáticamente.'
-          : 'This investigator\'s unique ability. <strong>Read it carefully</strong> — it can completely change your strategy. Some investigators also have passive abilities that activate automatically.',
+          ? 'La habilidad única de este investigador. Léela con atención, puede cambiar completamente tu estrategia. Algunos investigadores también tienen habilidades pasivas que se activan automáticamente. Debajo puedes ver la frase del personaje y, por último, el límite de concentración.'
+          : 'This investigator\'s unique ability. Read it carefully — it can completely change your strategy. Some investigators also have passive abilities that activate automatically. Below you can see the character\'s quote and finally, the concentration limit.',
         side: 'top',
       },
     },
     {
+      // El usuario pulsa "Comenzar" libremente, selecciona objetos iniciales y navega a PlayAH.
+      // El tour continúa automáticamente al cargar PlayAH gracias a CONTINUE_KEY.
       element: '[data-tour="detalle-comenzar"]',
+      onHighlightStarted: () => {
+        localStorage.setItem(CONTINUE_KEY, '/PlayAH');
+        const btn = document.querySelector('[data-tour="detalle-comenzar"]');
+        if (btn) {
+          const onTap = () => { btn.removeEventListener('click', onTap); destroy(); };
+          btn.addEventListener('click', onTap);
+        }
+      },
       popover: {
-        title: es() ? '▶️ Comenzar — Toca para entrar' : '▶️ Begin — Tap to enter',
+        title: es() ? '▶️ ¡Tu turno!' : '▶️ Your turn!',
         description: es()
-          ? 'Cuando estés listo, <strong>pulsa el botón verde "Comenzar"</strong> para iniciar la partida con este investigador. La app seleccionará tus objetos iniciales. El tour continuará en la pantalla de juego.'
-          : 'When ready, <strong>tap the green "Begin" button</strong> to start the game with this investigator. The app will select your starting items. The tour continues on the game screen.',
+          ? 'Pulsa el botón verde "Comenzar". Selecciona tus objetos iniciales en la ventana que aparecerá y después ¡empieza la aventura! El tour continuará automáticamente en la pantalla de juego.'
+          : 'Tap the green "Comenzar" button. Select your starting items in the window that appears, then the adventure begins! The tour will continue automatically on the game screen.',
         side: 'top',
-        onNextClick: () => goTo('/PlayAH', '/PlayAH'),
+        noNextBtn: true,
       },
     },
-  ], 'detallePersonaje').drive();
+  ], 'detallePersonaje');
 }
 
 // ─────────────────────────────────────────────────────────────
 // SEGMENTO 6 — PANTALLA DE JUEGO (Play)
 // ─────────────────────────────────────────────────────────────
 function segmentPlay() {
-  setPlayTab(0);   // arrancar en Tiradas
+  setPlayTab(0); // arrancar en Tiradas
 
-  makeDriver([
-    // ── Tabs Player / Map ──────────────────────────────────────
+  driveSegment([
+    // ── Pestañas Player / Map ──────────────────────────────
     {
       element: '[data-tour="play-tabs"]',
       popover: {
         title: es() ? '🎮 Pantalla de Juego' : '🎮 Game Screen',
         description: es()
-          ? '<strong>Pestaña Player:</strong> gestiona tu investigador. <strong>Pestaña Map:</strong> fichas generales de la mesa cuando hay mapa online activo. <strong>Toca las pestañas</strong> para cambiar entre vistas.'
-          : '<strong>Player tab:</strong> manage your investigator. <strong>Map tab:</strong> general table tokens when an online map is active. <strong>Tap the tabs</strong> to switch views.',
+          ? 'Tienes dos pestañas principales: <br><b>Player</b>: gestiona todo lo de tu personaje. <br><b>Map</b>: fichas globales de la mesa cuando hay un mapa online activo (perdición, pistas globales, tienda de objetos, reserva de Mitos). Puedes tocar las pestañas para cambiar entre vistas.'
+          : 'Two main tabs: <br><b>Player</b>: manage everything about your character. <br><b>Map</b>: global table tokens when an online map is active (doom, global clues, item shop, Mythos reserve). Tap the tabs to switch views.',
         side: 'bottom',
       },
     },
-    // ── Barra de navegación ────────────────────────────────────
+    // ── Barra de navegación ────────────────────────────────
     {
       element: '[data-tour="play-nav"]',
       popover: {
-        title: es() ? '🧭 Navega entre zonas — Toca los iconos' : '🧭 Navigate between zones — Tap the icons',
+        title: es() ? '🧭 Navegador' : '🧭 Navigator',
         description: es()
-          ? '<strong>Pulsa cada icono</strong> para acceder a su zona: <strong>🎲 Tiradas · 📍 Ubicación · 🤕 Estados · 🃏 Habilidades · ⚙️ Ajustes</strong>. El icono activo se muestra en verde.'
-          : '<strong>Tap each icon</strong> to access its zone: <strong>🎲 Dice · 📍 Location · 🤕 States · 🃏 Skills · ⚙️ Settings</strong>. The active icon shows in green.',
+          ? 'Pulsa cada icono para acceder a su zona: <br> 🎲 Tiradas <br> 📍 Ubicación en mapa (modo Online)<br> 🤕 Estados <br> 🃏 Habilidades <br> ⚙️ Ajustes. <br> El icono activo se muestra en verde.'
+          : 'Tap each icon to access its zone: <br>🎲 Dice Rolls <br>📍 Map Location (Online mode) <br>🤕 States <br>🃏 Skills <br>⚙️ Settings. <br>The active icon shows in green.',
         side: 'bottom',
       },
     },
-    // ── Vida y Cordura ─────────────────────────────────────────
-    {
-      element: '[data-tour="play-vida-cordura"]',
-      popover: {
-        title: es() ? '❤️🧠 Vida y Cordura — Toca para seleccionar' : '❤️🧠 Life & Sanity — Tap to select',
-        description: es()
-          ? '<strong>Pulsa el ❤️ o el 🧠</strong> para seleccionarlo. Si Vida llega a 0: inconsciente + pierdes objetos. Si Cordura llega a 0: enloqueces. ¡Vigílalos siempre!'
-          : '<strong>Tap ❤️ or 🧠</strong> to select it. Life at 0: unconscious + lose items. Sanity at 0: insanity. Watch them carefully!',
-        side: 'bottom',
-      },
-    },
-    // ── Recursos ───────────────────────────────────────────────
-    {
-      element: '[data-tour="play-recursos"]',
-      popover: {
-        title: es() ? '💰🔍 Recursos — Toca para seleccionar' : '💰🔍 Resources — Tap to select',
-        description: es()
-          ? '<strong>Pulsa el icono</strong> del recurso que quieras modificar. <strong>💰 Dinero:</strong> comprar objetos. <strong>🔍 Pistas:</strong> dados extra en pruebas. <strong>Restos:</strong> efectos especiales de un solo uso.'
-          : '<strong>Tap the icon</strong> of the resource to modify. <strong>💰 Money:</strong> buy items. <strong>🔍 Clues:</strong> extra dice in tests. <strong>Remnants:</strong> single-use special effects.',
-        side: 'top',
-      },
-    },
-    // ── Sumar / restar ─────────────────────────────────────────
+
+    // ── Vida, Recursos y Modificar (en un solo paso) ───────
     {
       element: '[data-tour="play-sumar-restar"]',
       popover: {
-        title: es() ? '➕➖ Modificar — Primero selecciona, luego pulsa aquí' : '➕➖ Modify — Select first, then tap here',
+        title: es() ? '❤️💰 Vida, Recursos y Modificar valores' : '❤️💰 Life, Resources & Modify Values',
         description: es()
-          ? '1) Toca el recurso a modificar (vida, cordura, dinero, pistas o restos). 2) <strong>Pulsa + o −</strong> para subir o bajarlo. El recurso activo queda resaltado en pantalla.'
-          : '1) Tap the resource to modify (life, sanity, money, clues or remnants). 2) <strong>Tap + or −</strong> to increase or decrease it. The active resource stays highlighted.',
+          ? 'Toca primero qué quieres modificar: ❤️ Vida, 🧠 Cordura, 💰 Dinero, 🔍 Pistas o Restos. El icono seleccionado se resaltará. Después usa los botones <b>+</b> y <b>−</b> de esta zona para subir o bajar el valor. <br>⚠️ Si Vida o Cordura llegan a 0, ¡la partida termina!'
+          : 'First tap what to modify: ❤️ Life, 🧠 Sanity, 💰 Money, 🔍 Clues or Remnants. The selected icon highlights. Then use <b>+</b> and <b>−</b> here to raise or lower the value. <br>⚠️ If Life or Sanity reach 0, the game ends!',
         side: 'top',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     // TAB 0 — TIRADAS (ya activo)
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
+    {
+      popover: {
+        title: es() ? '🎲 Zona de Tiradas de Dados' : '🎲 Dice Rolling Zone',
+        description: es()
+          ? 'Entramos ahora en la zona de Tiradas: el corazón del juego. Aquí gestionarás todas las pruebas. Elige un atributo, añade dados extra si los tienes y lanza los dados. ¡Vamos a verlo!'
+          : 'Now entering the Dice Rolling zone — the heart of the game. Here you\'ll manage all tests: choose an attribute, add extra dice if you have them, and roll. Let\'s see it!',
+        side: 'bottom',
+      },
+    },
     {
       element: '[data-tour="tiradas-atributos"]',
       popover: {
-        title: es() ? '🎲 Seleccionar atributo — Toca el icono' : '🎲 Select attribute — Tap the icon',
+        title: es() ? '🎲 Seleccionar atributo' : '🎲 Select attribute',
         description: es()
-          ? '<strong>Pulsa uno de los 5 atributos</strong> (Saber, Influencia, Observación, Fuerza, Voluntad) para cargar el número de dados base. El atributo seleccionado se muestra en color.'
-          : '<strong>Tap one of the 5 attributes</strong> (Lore, Influence, Observation, Strength, Willpower) to load the base dice count. The selected attribute highlights in color.',
+          ? 'Pulsa uno de los 5 atributos para cargar el número de dados base. El atributo seleccionado se muestra en color.'
+          : 'Tap one of the 5 attributes (Lore, Influence, Observation, Strength, Willpower) to load the base dice count. The selected attribute highlights in color.',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="tiradas-lanzar"]',
       popover: {
-        title: es() ? '🎲 Dados Extra y Lanzar — Toca TIRAR' : '🎲 Extra Dice & Roll — Tap THROW',
+        title: es() ? '🎲 Dados Extra y Lanzar' : '🎲 Extra Dice & Roll',
         description: es()
-          ? 'Usa <strong>+ y −</strong> para añadir dados extra (por pistas u objetos). El total aparece debajo. <strong>Pulsa el botón verde TIRAR</strong> para lanzar los dados y ver el resultado.'
-          : 'Use <strong>+ and −</strong> to add extra dice (from clues or items). The total shows below. <strong>Tap the green THROW button</strong> to roll and see the result.',
+          ? 'Usa + y − para añadir dados extra (por pistas u objetos). El total aparece debajo. Pulsa el botón verde TIRAR para lanzar los dados y ver el resultado.'
+          : 'Use + and − to add extra dice (from clues or items). The total shows below. Tap the green THROW button to roll and see the result.',
         side: 'top',
       },
     },
     {
       element: '[data-tour="tiradas-concentracion"]',
       popover: {
-        title: es() ? '🎯 Concentración — Fichas de bonificación' : '🎯 Concentration — Bonus tokens',
+        title: es() ? '🎯 Fichas de Concentración' : '🎯 Concentration tokens',
         description: es()
-          ? '<strong>Pulsa "Añadir"</strong> para elegir el tipo de ficha de concentración. Estas fichas añaden un dado extra de un tipo específico cuando las usas con "Usar 1". Muy útil en momentos críticos.'
-          : '<strong>Tap "Add"</strong> to choose a concentration token type. These tokens add one extra die of a specific type when used with "Use 1". Very useful in critical moments.',
+          ? 'Pulsa "Añadir" para elegir el tipo de ficha de concentración. Estas fichas añaden un dado extra de un tipo específico cuando las usas con "Usar 1".'
+          : 'Tap "Add" to choose a concentration token type. These tokens add one extra die of a specific type when used with "Use 1". Very useful in critical moments.',
         side: 'top',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     // PIVOT → TAB 1 — UBICACIÓN
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     {
       element: '[data-tour="play-nav"]',
       popover: {
-        title: es() ? '📍 Cambia a Ubicación — Toca el icono 📍' : '📍 Switch to Location — Tap the 📍 icon',
+        title: es() ? '📍 Cambia a Ubicación' : '📍 Switch to Location',
         description: es()
-          ? '<strong>Pulsa el icono 📍</strong> en la barra de navegación para ver tu ubicación en el mapa. Continuamos el tour automáticamente.'
-          : '<strong>Tap the 📍 icon</strong> in the navigation bar to see your map location. We\'ll continue the tour automatically.',
+          ? 'Ahora vamos a ver la zona de ubicación. Pulsa Siguiente y se cambiará automáticamente.'
+          : 'Now let\'s see the location zone. Press Next and it will switch automatically.',
         side: 'bottom',
         onNextClick: () => switchTabThenNext(1),
       },
@@ -549,24 +649,24 @@ function segmentPlay() {
     {
       element: '[data-tour="ubic-mapa"]',
       popover: {
-        title: es() ? '📍 Ubicación en el mapa — Toca una zona' : '📍 Map location — Tap a zone',
+        title: es() ? '📍 Ubicación en el mapa' : '📍 Map location',
         description: es()
-          ? '<strong>Pulsa la zona del tablero</strong> donde se encuentra tu investigador. En modo online, la app busca automáticamente otros investigadores en esa zona y propone una interacción aleatoria.'
-          : '<strong>Tap the board zone</strong> where your investigator is. In online mode, the app automatically finds other investigators in that zone and proposes a random interaction.',
+          ? 'Pulsa la zona del tablero donde se encuentra tu investigador. En modo online, la app busca automáticamente otros investigadores en esa zona y propone una interacción aleatoria. Para ver más sobre estos encuentros, ve a la zona de tutoriales.'
+          : 'Tap the board zone where your investigator is. In online mode, the app automatically finds other investigators in that zone and proposes a random interaction. To learn more about these encounters, visit the Tutorials section.',
         side: 'right',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     // PIVOT → TAB 2 — ESTADOS
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     {
       element: '[data-tour="play-nav"]',
       popover: {
-        title: es() ? '🤕 Cambia a Estados — Toca el icono 🤕' : '🤕 Switch to States — Tap the 🤕 icon',
+        title: es() ? '🤕 Cambia a Estados' : '🤕 Switch to States',
         description: es()
-          ? '<strong>Pulsa el icono 🤕</strong> para ver y gestionar los estados del investigador. Continuamos el tour automáticamente.'
-          : '<strong>Tap the 🤕 icon</strong> to see and manage investigator states. We\'ll continue the tour automatically.',
+          ? 'Ahora vamos a ver la zona de estados. Pulsa Siguiente y se cambiará automáticamente.'
+          : 'Now let\'s see the states zone. Press Next and it will switch automatically.',
         side: 'bottom',
         onNextClick: () => switchTabThenNext(2),
       },
@@ -574,10 +674,10 @@ function segmentPlay() {
     {
       element: '[data-tour="estados-filtros"]',
       popover: {
-        title: es() ? '🤕 Filtrar Estados — Activos o Todos' : '🤕 Filter States — Active or All',
+        title: es() ? '🤕 Filtrar Estados' : '🤕 Filter States',
         description: es()
-          ? '<strong>Pulsa "Activos"</strong> para ver solo los estados que tienes ahora, o <strong>"Todos"</strong> para ver la lista completa y activar/desactivar cualquiera pulsando sobre él.'
-          : '<strong>Tap "Active"</strong> to see only your current states, or <strong>"All"</strong> to see the full list and toggle any state by tapping it.',
+          ? 'Pulsa "Activos" para ver solo los estados que tienes ahora, o "Todos" para ver la lista completa y activar/desactivar cualquiera pulsando sobre él.'
+          : 'Tap "Active" to see only your current states, or "All" to see the full list and toggle any state by tapping it.',
         side: 'bottom',
       },
     },
@@ -586,22 +686,22 @@ function segmentPlay() {
       popover: {
         title: es() ? '🤕 Estados — Pulsa uno para activarlo' : '🤕 States — Tap one to toggle it',
         description: es()
-          ? '<strong>Pulsa cualquier estado</strong> para activarlo o desactivarlo. Los estados resaltados en verde están activos. <em>Bendición (4-5-6 = éxito), Maldición (solo 6 = éxito), Pacto Siniestro, Mancillado</em> y más.'
-          : '<strong>Tap any state</strong> to activate or deactivate it. States highlighted in green are active. <em>Blessing (4-5-6 = success), Curse (only 6), Sinister Pact, Defiled</em> and more.',
+          ? 'Pulsa cualquier estado para activarlo o desactivarlo. Los estados resaltados en verde están activos. Algunos estados no se pueden activar manualmente: se activan de forma automática como consecuencia de otra carta.'
+          : 'Tap any state to activate or deactivate it. States highlighted in green are active. Some states cannot be toggled manually — they activate automatically as a result of another card.',
         side: 'top',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     // PIVOT → TAB 3 — HABILIDADES
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     {
       element: '[data-tour="play-nav"]',
       popover: {
-        title: es() ? '🃏 Cambia a Habilidades — Toca el icono 🃏' : '🃏 Switch to Skills — Tap the 🃏 icon',
+        title: es() ? '🃏 Cambia a Habilidades' : '🃏 Switch to Skills',
         description: es()
-          ? '<strong>Pulsa el icono 🃏</strong> para ver las habilidades únicas y las cartas del investigador. Continuamos el tour automáticamente.'
-          : '<strong>Tap the 🃏 icon</strong> to see the investigator\'s unique skills and cards. We\'ll continue the tour automatically.',
+          ? 'Ahora vamos a ver la zona de habilidades únicas y gestión de cartas. Pulsa Siguiente y se cambiará automáticamente.'
+          : 'Now let\'s see the unique skills and card management zone. Press Next and it will switch automatically.',
         side: 'bottom',
         onNextClick: () => switchTabThenNext(3),
       },
@@ -612,31 +712,31 @@ function segmentPlay() {
         title: es() ? '✨ Habilidades especiales del investigador' : '✨ Investigator special skills',
         description: es()
           ? 'Aquí se muestran los efectos únicos de tu investigador. Están siempre disponibles: son las reglas especiales que diferencian a este personaje de todos los demás.'
-          : 'Here you see your investigator\'s unique effects. They\'re always available: these are the special rules that set this character apart from all others.',
+          : 'Here you see your investigator\'s unique effects. They\'re always available — these are the special rules that set this character apart from all others.',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="hab-pertenencias"]',
       popover: {
-        title: es() ? '🎒 Pertenencias — Pulsa + para buscar' : '🎒 Belongings — Tap + to search',
+        title: es() ? '🎒 Pertenencias' : '🎒 Belongings',
         description: es()
-          ? 'Lista de cartas y objetos que posee el investigador. <strong>Pulsa cualquier carta</strong> para ver su detalle. <strong>Pulsa el botón +</strong> para buscar y añadir nuevas cartas (compradas en la tienda o encontradas en el mapa).'
-          : 'List of cards and items the investigator owns. <strong>Tap any card</strong> to see its detail. <strong>Tap the + button</strong> to search and add new cards (bought in the store or found on the map).',
+          ? 'Lista de cartas y objetos que posee el investigador. Pulsa cualquier carta para ver su detalle. Pulsa el botón + para buscar y añadir nuevas cartas.'
+          : 'List of cards and items the investigator owns. Tap any card to see its detail. Tap the + button to search and add new cards (bought in the store or found on the map).',
         side: 'top',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     // PIVOT → TAB 4 — AJUSTES
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     {
       element: '[data-tour="play-nav"]',
       popover: {
-        title: es() ? '⚙️ Cambia a Ajustes — Toca el icono ⚙️' : '⚙️ Switch to Settings — Tap the ⚙️ icon',
+        title: es() ? '⚙️ Cambia a Ajustes' : '⚙️ Switch to Settings',
         description: es()
-          ? '<strong>Pulsa el icono ⚙️</strong> para ver los ajustes de la partida. Continuamos el tour automáticamente.'
-          : '<strong>Tap the ⚙️ icon</strong> to see game settings. We\'ll continue the tour automatically.',
+          ? 'Aquí podrás ver las opciones generales. Pulsa Siguiente y se cambiará automáticamente.'
+          : 'Here you\'ll see general game settings. Press Next and it will switch automatically.',
         side: 'bottom',
         onNextClick: () => switchTabThenNext(4),
       },
@@ -644,20 +744,20 @@ function segmentPlay() {
     {
       element: '[data-tour="ajustes-toggles"]',
       popover: {
-        title: es() ? '🔊🌐 Audio y Modo Online — Pulsa ON / OFF' : '🔊🌐 Audio & Online Mode — Tap ON / OFF',
+        title: es() ? '🔊🌐 Audio y Modo Online' : '🔊🌐 Audio & Online Mode',
         description: es()
-          ? '<strong>Efectos y Música:</strong> activa o desactiva con ON/OFF. <strong>Modo Online:</strong> conecta o desconecta la sincronización con otros jugadores. El botón 📡 fuerza una búsqueda manual de invitaciones.'
-          : '<strong>Effects & Music:</strong> toggle with ON/OFF. <strong>Online Mode:</strong> connect or disconnect sync with other players. The 📡 button forces a manual invitation search.',
+          ? 'Aquí puedes activar o desactivar los efectos de sonido o música, y habilitar o no los encuentros online.'
+          : 'Here you can toggle sound effects or music, and enable or disable online encounters.',
         side: 'bottom',
       },
     },
     {
       element: '[data-tour="ajustes-guardar"]',
       popover: {
-        title: es() ? '💾 Guardar Investigador — Toca para guardar' : '💾 Save Investigator — Tap to save',
+        title: es() ? '💾 Guardar Investigador' : '💾 Save Investigator',
         description: es()
-          ? '<strong>Pulsa este botón</strong> al finalizar la sesión para guardar el estado actual del investigador (vida, cordura, objetos, etc.) en tu perfil online. Necesitas estar registrado.'
-          : '<strong>Tap this button</strong> at the end of a session to save the investigator\'s current state (life, sanity, items, etc.) to your online profile. Requires sign in.',
+          ? 'Pulsa este botón al finalizar la sesión para guardar el estado actual del investigador (vida, cordura, objetos, etc.) en tu perfil. Necesitas estar registrado.'
+          : 'Tap this button at the end of a session to save the investigator\'s current state (life, sanity, items, etc.) to your profile. Requires being registered.',
         side: 'top',
       },
     },
@@ -666,36 +766,36 @@ function segmentPlay() {
       popover: {
         title: es() ? '🚪 Salir — Seleccionar o Terminar' : '🚪 Exit — Select or End',
         description: es()
-          ? '<strong>Seleccionar personaje:</strong> vuelve a la lista de investigadores sin borrar la partida. <strong>Terminar partida:</strong> cierra la partida completamente y regresa al menú principal.'
-          : '<strong>Select character:</strong> returns to the investigator list without ending the game. <strong>End game:</strong> closes the game completely and returns to the main menu.',
+          ? 'Seleccionar personaje: vuelve a la lista de investigadores sin borrar la partida. Terminar partida: cierra la partida completamente y regresa al menú principal.'
+          : 'Select character: returns to the investigator list without ending the game. End game: closes the game completely and returns to the main menu.',
         side: 'top',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
-    // Pestaña MAP (informacional)
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
+    // Información Pestaña Map (online)
+    // ══════════════════════════════════════════════════════
     {
       popover: {
         title: es() ? '🗺️ Pestaña Map — Mesa compartida' : '🗺️ Map tab — Shared table',
         description: es()
-          ? '<strong>Toca la pestaña "Map"</strong> arriba para ver las fichas globales: perdición, pistas de la mesa, tienda de objetos y reserva de Mitos. Necesita un mapa online activo. En ajustes del mapa verás el <strong>código de partida</strong> para que se unan otros jugadores.'
-          : '<strong>Tap the "Map" tab</strong> at the top to see global tokens: doom, table clues, item store and Mythos reserve. Requires an active online map. In map settings you\'ll find the <strong>game code</strong> for other players to join.',
+          ? 'La pestaña "Map" muestra las fichas globales de partida: perdición, pistas de la mesa, tienda de objetos y reserva de Mitos. Necesita un mapa online activo. En ajustes del mapa encontrarás el código de partida para que se unan otros jugadores.'
+          : 'The "Map" tab shows global game tokens: doom, table clues, item shop and Mythos reserve. Requires an active online map. In map settings you\'ll find the game code for other players to join.',
       },
     },
 
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     // Final
-    // ══════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════
     {
       popover: {
         title: es() ? '✅ ¡Tour completado!' : '✅ Tour complete!',
         description: es()
-          ? '¡Ya conoces toda la aplicación! Puedes relanzar este tour en cualquier momento desde <strong>Tutoriales</strong> en el menú principal.<br><br><em>¡Que los Dioses Exteriores no te encuentren, investigador!</em>'
-          : 'You now know the whole app! You can relaunch this tour any time from <strong>Tutorials</strong> in the main menu.<br><br><em>May the Outer Gods not find you, investigator!</em>',
+          ? '¡Ya conoces toda la aplicación! Puedes relanzar este tour en cualquier momento desde Tutoriales en el menú principal.<br><br><em>¡Que los Dioses Exteriores no te encuentren, investigador!</em>'
+          : 'You now know the whole app! You can relaunch this tour any time from Tutorials in the main menu.<br><br><em>May the Outer Gods not find you, investigator!</em>',
       },
     },
-  ], 'play').drive();
+  ], 'play');
 }
 
 // ─────────────────────────────────────────────────────────────

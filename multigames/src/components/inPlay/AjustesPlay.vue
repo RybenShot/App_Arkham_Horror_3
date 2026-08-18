@@ -62,7 +62,7 @@
       <!-- boton para guardar perdonaje OnLine -->
        <div data-tour="ajustes-guardar">
         <button @click="safeinvOnLine()" class="button is-fullwidth  is-warning">
-          <i class="fas fa-power-off mx-3"></i>{{ textoInterfaz.botones.safeInv || "guardar investigador" }}
+          {{ textoInterfaz.botones.safeInv || "💾 Guardar investigador" }}
         </button>
        </div>
 

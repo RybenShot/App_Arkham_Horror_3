@@ -220,4 +220,114 @@ html, body, #app {
   color: rgba(220, 210, 195, 0.7) !important;
   background: rgba(200, 144, 42, 0.06) !important;
 }
+
+/* Botón ✕ salir del tour (esquina del popover) */
+.ah-tour-exit-btn {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(200, 144, 42, 0.45) !important;
+  font-size: 0.85rem !important;
+  cursor: pointer !important;
+  line-height: 1 !important;
+  padding: 2px 4px !important;
+  transition: color 0.2s !important;
+  z-index: 10 !important;
+}
+.ah-tour-exit-btn:hover {
+  color: rgba(200, 144, 42, 0.85) !important;
+}
+
+/* Ocultar el ✕ nativo de driver.js (lo reemplazamos por el nuestro) */
+.ah-tour-popover .driver-popover-close-btn {
+  display: none !important;
+}
+
+/* Pista de toque para pasos sin botón Siguiente */
+.ah-tap-hint {
+  margin-top: 10px !important;
+  padding: 6px 10px !important;
+  background: rgba(200, 144, 42, 0.12) !important;
+  border: 1px solid rgba(200, 144, 42, 0.3) !important;
+  border-radius: 6px !important;
+  color: #e8d5a3 !important;
+  font-size: 0.78rem !important;
+  text-align: center !important;
+  font-style: italic !important;
+  animation: tap-pulse 1.8s ease-in-out infinite !important;
+}
+@keyframes tap-pulse {
+  0%, 100% { opacity: 0.75; }
+  50%       { opacity: 1; }
+}
+
+/* Overlay de confirmación al salir del tour */
+/* driver.js usa z-index:1000000000 y pointer-events:none en todo el DOM */
+.ah-tour-confirm {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(0, 0, 0, 0.65) !important;
+  z-index: 2000000000 !important;
+  padding: 20px !important;
+  pointer-events: auto !important;
+}
+.ah-tour-confirm-box {
+  background: rgba(6, 3, 14, 0.97) !important;
+  border: 1px solid rgba(200, 144, 42, 0.55) !important;
+  border-radius: 12px !important;
+  padding: 24px 20px !important;
+  max-width: 300px !important;
+  width: 100% !important;
+  box-shadow: 0 0 32px rgba(200, 144, 42, 0.2) !important;
+  text-align: center !important;
+}
+.ah-tour-confirm-title {
+  color: #e8d5a3 !important;
+  font-family: Georgia, serif !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 10px !important;
+}
+.ah-tour-confirm-text {
+  color: rgba(220, 210, 195, 0.75) !important;
+  font-size: 0.8rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 18px !important;
+}
+.ah-tour-confirm-box,
+.ah-tour-confirm-btns,
+.ah-tour-confirm-yes,
+.ah-tour-confirm-no {
+  pointer-events: auto !important;
+}
+.ah-tour-confirm-btns {
+  display: flex !important;
+  gap: 10px !important;
+  justify-content: center !important;
+}
+.ah-tour-confirm-yes {
+  background: rgba(180, 50, 50, 0.25) !important;
+  border: 1px solid rgba(200, 80, 80, 0.55) !important;
+  color: rgba(255, 180, 180, 0.9) !important;
+  border-radius: 6px !important;
+  padding: 7px 18px !important;
+  font-size: 0.82rem !important;
+  cursor: pointer !important;
+  font-family: Georgia, serif !important;
+}
+.ah-tour-confirm-no {
+  background: rgba(200, 144, 42, 0.18) !important;
+  border: 1px solid rgba(200, 144, 42, 0.55) !important;
+  color: #e8d5a3 !important;
+  border-radius: 6px !important;
+  padding: 7px 18px !important;
+  font-size: 0.82rem !important;
+  cursor: pointer !important;
+  font-family: Georgia, serif !important;
+}
 </style>
