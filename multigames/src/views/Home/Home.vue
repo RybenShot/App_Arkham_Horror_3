@@ -4,7 +4,12 @@
     <!-- ── Tour FAB (aparece tras 3 s) ───────────────────────── -->
     <div :class="['tour-fab', { visible: showTourButton }]">
       <button class="tour-fab-btn" @click="showTourModal = true" :title="textoInterfaz.lenguaje === 'español' ? 'Tour interactivo' : 'Interactive tour'">
-        🔦
+        <div class="fab-deity">
+          <div class="ah-deity-eye"><div class="ah-deity-pupil"></div></div>
+          <div class="ah-deity-tentacles">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
       </button>
     </div>
 
@@ -12,7 +17,14 @@
     <div v-if="showTourModal" class="tour-modal-overlay" @click.self="showTourModal = false">
       <div class="tour-modal-card">
         <button class="tour-modal-close" @click="showTourModal = false">×</button>
-        <div class="tour-modal-icon">🔮</div>
+        <div class="tour-modal-icon">
+          <div class="modal-deity">
+            <div class="ah-deity-eye"><div class="ah-deity-pupil"></div></div>
+            <div class="ah-deity-tentacles">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
         <template v-if="$store.state.lenguaje === 'español'">
           <h2 class="tour-modal-title">¡Alto ahí, investigador!</h2>
           <p class="tour-modal-text">
@@ -692,25 +704,49 @@ button     { background: none; border: 0; color: inherit; padding: 0; }
   pointer-events: auto;
 }
 .tour-fab-btn {
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: rgba(6, 3, 14, 0.93);
-  border: 1.5px solid rgba(200, 144, 42, 0.75);
-  box-shadow: 0 0 18px rgba(200, 144, 42, 0.25), 0 4px 14px rgba(0,0,0,0.7);
+  background: rgba(4, 1, 8, 0.96);
+  border: 1.5px solid rgba(180, 65, 10, 0.85);
+  box-shadow: 0 0 20px rgba(170, 50, 10, 0.35), 0 4px 14px rgba(0,0,0,0.8);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  animation: fab-beacon 2.8s ease-in-out infinite;
+  padding: 0;
+  animation: fab-beacon 3s ease-in-out infinite;
 }
 @keyframes fab-beacon {
-  0%, 100% { box-shadow: 0 0 18px rgba(200,144,42,0.25), 0 4px 14px rgba(0,0,0,0.7); }
-  50%       { box-shadow: 0 0 32px rgba(200,144,42,0.55), 0 4px 18px rgba(0,0,0,0.8); }
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(170, 50, 10, 0.35), 0 4px 14px rgba(0,0,0,0.8);
+  }
+  50% {
+    box-shadow: 0 0 38px rgba(200, 80, 15, 0.65), 0 0 12px rgba(255, 30, 0, 0.25), 0 4px 18px rgba(0,0,0,0.9);
+  }
 }
-.tour-fab-btn:active {
-  transform: scale(0.93);
+.tour-fab-btn:active { transform: scale(0.92); }
+
+/* contenedor del ojo dentro del FAB */
+.fab-deity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  transform: scale(0.82);   /* ajustar al círculo de 58px */
+  transform-origin: center center;
+}
+
+/* contenedor del ojo dentro del modal de bienvenida */
+.modal-deity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transform: scale(1.5);
+  transform-origin: center top;
+  margin-bottom: 8px;
 }
 
 /* ── Tour Modal ──────────────────────────────────────────── */
@@ -754,9 +790,12 @@ button     { background: none; border: 0; color: inherit; padding: 0; }
 }
 .tour-modal-close:hover { color: rgba(200,144,42,0.9); }
 .tour-modal-icon {
-  font-size: 2.4rem;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 0 10px rgba(200,144,42,0.5));
+  display: flex;
+  justify-content: center;
+  /* espacio extra para el ojo escalado ×1.5 (tentáculos incluidos ~70px altos) */
+  height: 74px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 12px rgba(190, 60, 10, 0.65));
 }
 .tour-modal-title {
   font-family: Georgia, serif;

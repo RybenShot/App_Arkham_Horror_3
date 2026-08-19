@@ -1,5 +1,5 @@
 <template>
-  <section class="px-2">
+  <section class="px-2" data-tour="tiradas-atributos-general">
     <div class="my-3 has-text-centered ">
       <p class="title mb-0 has-text-white">{{ textoInterfaz.titulo }}</p>
     </div>

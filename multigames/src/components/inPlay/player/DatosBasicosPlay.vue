@@ -35,11 +35,11 @@
       </div>
       
       <!-- datos variables -->
-      <div class="column is-half has-text-white pt-4">
+      <div class="column is-half has-text-white pt-4" data-tour="play-recursos">
         <p class="subtitle has-text-white has-text-centered mb-1"> {{ textoInterfaz.textoVariables }}</p>
 
         <!-- Vida - Cordura -->
-        <div class="columns is-mobile has-text-centered pt-2 espacioVidaCordura" data-tour="play-vida-cordura">
+        <div class="columns is-mobile has-text-centered pt-2 espacioVidaCordura" >
           <div @click="selectProperty('vida')" class="column pb-1 selector-item pr-0">
             <i class="fa-4x fas fa-heartbeat has-text-danger" :class="{ efectoBumBum: atributos.marcado.vida } "></i>
             <p class="contadorVidaCordura title has-text-white">{{ actualVida }}</p>
@@ -52,7 +52,7 @@
         </div>
 
         <!-- dinero, pistas y restos -->
-        <div class="columns is-mobile has-text-centered pt-2" data-tour="play-recursos">
+        <div class="columns is-mobile has-text-centered pt-2" >
           <div @click="selectProperty('dinero')" class="column p-0 selector-item" >
             <i class="fa-3x fas fa-money-bill-wave has-text-warning" :class="{ boxShadowYellow: atributos.marcado.dinero }"></i>
             <p class="contadorVidaCorduraPeques title has-text-white">{{ actualMoney }}</p>
@@ -70,7 +70,7 @@
         </div>
 
         <!-- sumar restar -->
-        <div class="columns is-mobile my-2" data-tour="play-sumar-restar">
+        <div class="columns is-mobile my-2">
           <button @click="sumarRestarPropiedad('-', 'vida')" class="column mx-5 button is-small p-0 is-danger pb-1"><i class="fas fa-window-minimize"></i></button>
           <button @click="sumarRestarPropiedad('+', 'vida')" class="column mx-5 button is-small p-0 is-primary "><i class="fas fa-plus"></i></button>
         </div>
@@ -89,25 +89,25 @@
       </div>
       
       <!-- Ubicacion  -->
-      <div @click="selectMenu(1)" class="column pt-0">
+      <div @click="selectMenu(1)" class="column pt-0" data-tour="play-nav-ubicacion">
         <i v-if="this.$store.state.StoreUbicationPlayer == true" class="has-text-success fa-2x fas fa-street-view"></i>
         <i v-if="this.$store.state.StoreUbicationPlayer == false" class="desactivado fa-2x fas fa-street-view"></i>
       </div>
 
       <!-- Estados -->
-      <div @click="selectMenu(2)" class="column pt-0">
+      <div @click="selectMenu(2)" class="column pt-0" data-tour="play-nav-estados">
         <i v-if="this.$store.state.StoreEstadosPlay == true" class="has-text-success fa-2x fas fa-user-injured"></i>
         <i v-if="this.$store.state.StoreEstadosPlay == false" class="desactivado fa-2x fas fa-user-injured"></i>
       </div>
 
       <!-- Habilidades -->
-      <div @click="selectMenu(3)" class="column pt-0">
+      <div @click="selectMenu(3)" class="column pt-0" data-tour="play-nav-habilidades">
         <i v-if="this.$store.state.StoreHabilidades == true" class="has-text-success fa-2x fas fa-address-card"></i>
         <i v-if="this.$store.state.StoreHabilidades == false" class="desactivado fa-2x fas fa-address-card"></i>
       </div>
 
       <!-- Ajustes -->
-      <div @click="selectMenu(4)" class="column pt-0">
+      <div @click="selectMenu(4)" class="column pt-0" data-tour="play-nav-ajustes">
         <i v-if="this.$store.state.StoreAjustesPlay == true" class="has-text-success fa-2x fas fa-cogs"></i>
         <i v-if="this.$store.state.StoreAjustesPlay == false" class="desactivado fa-2x fas fa-cogs"></i>
       </div>
