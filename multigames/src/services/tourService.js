@@ -241,11 +241,12 @@ function segmentHome() {
           : 'You arrive at the right moment. I will guide you through every corner of this app up to your first game. <br>Advance step by step... or use <em>Skip section</em> if you think you need no guidance. <em>(Those who believe that rarely do.)</em>',
       },
     },
+    //TODO
     {
       popover: {
         title: es() ? '❤️ Hecha con pasión' : '❤️ Made with passion',
         description: es()
-          ? 'Esta herramienta existe para Arkham Horror 3ª Ed.: seguimiento de partida, contenido de la comunidad, modo online y más. La creó un solo mortal impulsado por la pasión. Cualquier contribución ayuda a mantenerla viva. <br><em>Gracias, e intentad no enloquecer.</em>'
+          ? 'Esta herramienta existe para el juego de mesa Arkham Horror 3ª Ed.: seguimiento de partida, contenido de la comunidad, modo online y más. La creó un solo mortal impulsado por la pasión. Cualquier contribución ayuda a mantenerla viva. <br><em>Gracias, e intentad no enloquecer.</em>'
           : 'This tool exists for Arkham Horror 3rd Ed.: game tracking, community content, online mode and more. Built by a single mortal driven by passion. Any contribution helps keep it alive. <br><em>Thank you — and try not to go mad.</em>',
       },
     },
@@ -263,10 +264,10 @@ function segmentHome() {
     {
       element: '[data-tour="login-section"]',
       popover: {
-        title: es() ? '🔐 Iniciar Sesión — Importante' : '🔐 Sign In — Important',
+        title: es() ? '🔐 Iniciar Sesión — IMPORTANTE' : '🔐 Sign In — IMPORTANT',
         description: es()
-          ? 'Algunas secciones requieren que te identifiques: modo online, guardar tu investigador, votar mapas o crear partidas compartidas. Te recomiendo iniciar sesión antes de comenzar. <br>Si solo buscas partidas offline o crear mazos, puedes continuar sin registro. Pero el conocimiento completo tiene un precio.'
-          : 'Some sections require identification: online mode, saving your investigator, voting on maps or creating shared games. I recommend signing in before starting. <br>If you only seek offline play or deck building, you may proceed unregistered. But full knowledge has a price.',
+          ? 'Algunas secciones requieren que te identifiques: modo online, guardar tu investigador, votar mapas o crear partidas compartidas. Te recomiendo iniciar sesión antes de comenzar. <br>Si solo buscas partidas offline o crear mazos, puedes continuar sin registro.'
+          : 'Some sections require identification: online mode, saving your investigator, voting on maps or creating shared games. I recommend signing in before starting. <br>If you only seek offline play or deck building, you may proceed unregistered.',
         side: 'bottom',
         blockClick: true,
       },
@@ -422,8 +423,8 @@ function segmentDetalleMapa() {
       popover: {
         title: es() ? '📜 Historia con Audio' : '📜 Story with Audio',
         description: es()
-          ? 'Cada escenario tiene su propia historia. Léela para sumergirte en el misterio. O toca el 🔊 y escucharás la narración... Los detalles marcan la diferencia antes de empezar.'
-          : 'Every scenario has its own story. Read it to immerse yourself in the mystery. Or tap 🔊 to hear the narration... Details make all the difference before you start.',
+          ? 'Cada escenario tiene su propia historia. Léela para sumergirte en el misterio. O toca el 🔊 y escucharás la narración.'
+          : 'Every scenario has its own story. Read it to immerse yourself in the mystery. Or tap 🔊 to hear the narration.',
         side: 'bottom',
       },
     },
@@ -441,10 +442,10 @@ function segmentDetalleMapa() {
     {
       element: '[data-tour="mapa-btn-enemigos"]',
       popover: {
-        title: es() ? '👾 Los que se oponen a ti' : '👾 Those who oppose you',
+        title: es() ? '👾 Lista enemigos' : '👾 Enemy list',
         description: es()
-          ? 'Toca aquí para ver la lista completa de monstruos del escenario. El color de fondo de cada enemigo indica a qué expansión pertenece. Conócelos antes de encontrártelos.'
-          : 'Tap here to see the complete monster list for the scenario. The background colour of each enemy shows which expansion it belongs to. Know them before you meet them.',
+          ? 'Toca aquí para ver la lista completa de monstruos del escenario. El color de fondo de cada enemigo indica a qué expansión pertenece.'
+          : 'Tap here to see the complete monster list for the scenario. The background colour of each enemy shows which expansion it belongs to.',
         side: 'left',
         blockClick: true,
       },
@@ -452,10 +453,10 @@ function segmentDetalleMapa() {
     {
       element: '[data-tour="mapa-loseta-img"]',
       popover: {
-        title: es() ? '🧩 El tablero de esta noche' : '🧩 Tonight\'s board',
+        title: es() ? '🧩 El tablero' : '🧩 The board',
         description: es()
-          ? 'La disposición exacta de las losetas que compondrán tu pesadilla. Toca la imagen para verla ampliada y estudiar las zonas con calma.'
-          : 'The exact tile layout that will compose tonight\'s nightmare. Tap the image to see it enlarged and study each zone at your leisure.',
+          ? 'La disposición exacta de las losetas que compondrán tu pesadilla. Toca la imagen para verla ampliada.'
+          : 'The exact tile layout that will compose tonight\'s nightmare. Tap the image to see it enlarged.',
         side: 'right',
         blockClick: true,
       },
@@ -618,8 +619,8 @@ function segmentDetallePersonaje() {
       popover: {
         title: es() ? '▶️ El momento ha llegado' : '▶️ The moment has come',
         description: es()
-          ? 'Pulsa el botón verde "Comenzar". Selecciona tus objetos iniciales en la ventana que aparecerá y adéntrate en las sombras. El tour continuará automáticamente en la pantalla de juego. <br><em>Ve. Yo estaré observando.</em>'
-          : 'Tap the green "Comenzar" button. Select your starting items in the window that appears and step into the shadows. The tour will continue automatically on the game screen. <br><em>Go. I will be watching.</em>',
+          ? 'Pulsa el botón verde "Comenzar". Selecciona tus objetos iniciales en la ventana que aparecerá y adéntrate en las sombras. '
+          : 'Tap the green "Comenzar" button. Select your starting items in the window that appears and step into the shadows. ',
         side: 'top',
         noNextBtn: true,
       },
@@ -640,8 +641,8 @@ function segmentPlay() {
       popover: {
         title: es() ? '🎮 Tu cuartel general' : '🎮 Your headquarters',
         description: es()
-          ? 'Dos pestañas principales: <br><b>Player</b>: todo lo de tu personaje. <br><b>Map</b>: fichas globales cuando hay un mapa online activo (perdición, pistas globales, tienda, bolsa de Mitos). Toca las pestañas para cambiar de vista.'
-          : 'Two main tabs: <br><b>Player</b>: everything about your character. <br><b>Map</b>: global tokens when an online map is active (doom, global clues, item shop, Mythos bag). Tap the tabs to switch.',
+          ? 'Dos pestañas principales: <br><b>Player</b>: todo lo de tu personaje. <br><b>Map</b>: fichas globales cuando hay un mapa online activo (perdición, pistas globales, tienda, bolsa de Mitos).'
+          : 'Two main tabs: <br><b>Player</b>: everything about your character. <br><b>Map</b>: global tokens when an online map is active (doom, global clues, item shop, Mythos bag).',
         side: 'bottom',
         blockClick: true,
       },
@@ -650,7 +651,7 @@ function segmentPlay() {
     {
       element: '[data-tour="play-nav"]',
       popover: {
-        title: es() ? '🧭 Tu brújula en el caos' : '🧭 Your compass in the chaos',
+        title: es() ? '🧭 Navegador de juego' : '🧭 Game Browser',
         description: es()
           ? 'Pulsa cada icono para acceder a su zona: <br>🎲 Tiradas &nbsp;·&nbsp; 📍 Ubicación (Online) &nbsp;·&nbsp; 🤕 Estados &nbsp;·&nbsp; 🃏 Habilidades &nbsp;·&nbsp; ⚙️ Ajustes. <br>El icono activo se resalta en verde.'
           : 'Tap each icon to access its zone: <br>🎲 Dice Rolls &nbsp;·&nbsp; 📍 Location (Online) &nbsp;·&nbsp; 🤕 States &nbsp;·&nbsp; 🃏 Skills &nbsp;·&nbsp; ⚙️ Settings. <br>The active icon highlights in green.',
@@ -662,10 +663,10 @@ function segmentPlay() {
     {
       element: '[data-tour="play-recursos"]',
       popover: {
-        title: es() ? '❤️💰 Vida, Recursos y Modificar' : '❤️💰 Life, Resources & Modify',
+        title: es() ? '❤️💰 Vida y Recursos' : '❤️💰 Life and Resources',
         description: es()
-          ? 'Toca primero qué quieres modificar: ❤️ Vida, 🧠 Cordura, 💰 Dinero, 🔍 Pistas o Restos. El icono elegido se resaltará. Luego usa <b>+</b> y <b>−</b> para cambiar su valor. <br>⚠️ Vida o Cordura a 0: la partida termina. <em>(Lo veo suceder más a menudo de lo que imaginas.)</em>'
-          : 'First tap what to modify: ❤️ Life, 🧠 Sanity, 💰 Money, 🔍 Clues or Remnants. The chosen icon highlights. Then use <b>+</b> and <b>−</b> to change its value. <br>⚠️ Life or Sanity at 0: game over. <em>(I see it happen more often than you\'d imagine.)</em>',
+          ? 'Toca primero qué quieres modificar: ❤️ Vida, 🧠 Cordura, 💰 Dinero, 🔍 Pistas o Restos. El icono elegido se resaltará. Luego usa <b>+</b> y <b>−</b> para cambiar su valor.'
+          : 'First tap what to modify: ❤️ Life, 🧠 Sanity, 💰 Money, 🔍 Clues or Remnants. The chosen icon highlights. Then use <b>+</b> and <b>−</b> to change its value.',
         side: 'top',
       },
     },
@@ -736,8 +737,8 @@ function segmentPlay() {
       popover: {
         title: es() ? '📍 Tu posición en el tablero' : '📍 Your position on the board',
         description: es()
-          ? 'Pulsa la zona del tablero donde está tu investigador. En modo online, la app buscará a otros investigadores en esa misma zona y propondrá una interacción aleatoria. Para más sobre los encuentros, consulta Tutoriales.'
-          : 'Tap the board zone where your investigator is. In online mode, the app will search for other investigators in that zone and propose a random interaction. For more on encounters, check Tutorials.',
+          ? 'Cuando estes en modo online, aqui podras pulsar la zona del tablero donde esté tu investigador y la app buscará a otros investigadores en esa misma zona y propondrá una interacción aleatoria. Para más sobre los encuentros, consulta Tutoriales.'
+          : 'When you are in online mode, you can tap the area of the board where your investigator is located, and the app will search for other investigators in the same area and suggest a random interaction. For more information about encounters, check the Tutorials section.',
         side: 'right',
         blockClick: true,
       },
