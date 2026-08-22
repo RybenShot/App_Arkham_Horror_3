@@ -438,6 +438,13 @@ html, body, #app {
   cursor: default;
 }
 
+/* Fuerza clics en pasos pivot donde el botón es hijo del elemento resaltado.
+   Usa !important para ganar a .driver-active * { pointer-events: none } de driver.js. */
+.ah-tour-clickable {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
 .ah-tour-confirm {
   position: fixed !important;
   inset: 0 !important;

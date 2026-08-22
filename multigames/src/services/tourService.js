@@ -1,6 +1,7 @@
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { apiService } from '@/services/api.js';
+import mapaBGSimulacion from '@/assets/img/3-Mapas/BG9MapaAHNocheCerrada.jpg';
 
 const CONTINUE_KEY = 'ah_tour_continue';
 
@@ -11,6 +12,7 @@ let _lang             = 'español';
 let _currentSegment   = null;
 let _availableIdInv   = null;
 let _escHandler       = null;
+let _simMapActiva     = false; // true cuando hemos inyectado datos falsos para la simulación
 
 const es = () => _lang === 'español';
 
@@ -41,10 +43,25 @@ function showExitConfirm() {
 // ─────────────────────────────────────────────────────────────
 // Internals
 // ─────────────────────────────────────────────────────────────
+// driver.js solo invoca el onHighlightStarted GLOBAL (el de makeDriver, que limpia
+// la .ah-block-mask) cuando el paso no define su propio onHighlightStarted: usa
+// uno u otro, nunca ambos. Todo paso con onHighlightStarted propio debe llamar a
+// esto primero o la máscara de un paso anterior con blockClick puede quedar
+// bloqueando toda la pantalla (pointer-events:auto sobre el 100% del viewport).
+function clearBlockMask() {
+  document.querySelector('.ah-block-mask')?.remove();
+}
+
 function destroy() {
   document.querySelector('.ah-tour-confirm')?.remove();
   if (_escHandler) { document.removeEventListener('keydown', _escHandler, true); _escHandler = null; }
   if (_driverInstance) { _driverInstance.destroy(); _driverInstance = null; }
+
+  // Si el tour inyectó datos de simulación en el mapa, los limpiamos al salir
+  if (_simMapActiva && _store) {
+    _store.state.datosMapa = { id: null, title: '', BGMap: '', variables: { dooms: 0, clues: 0 } };
+    _simMapActiva = false;
+  }
 }
 
 function setPlayTab(index) {
@@ -78,7 +95,20 @@ async function skipToNext() {
       break;
     }
     case 'detallePersonaje': goTo('/PlayAH', '/PlayAH'); break;
-    case 'play': destroy(); break;
+    case 'play': {
+      const indiceActual   = _driverInstance?.getActiveIndex?.() ?? 0;
+      const indicePivotMap = 19; // índice del paso "Cambia a la pestaña Map" en segmentPlay
+
+      if (indiceActual < indicePivotMap) {
+        // El usuario está en la zona Player — saltar directamente a la sección Map.
+        // onHighlightStarted del paso pivot inyectará los datos de simulación si hacen falta.
+        _driverInstance.moveTo(indicePivotMap);
+      } else {
+        // Ya está en la zona Map — terminar el tour
+        destroy();
+      }
+      break;
+    }
     default: destroy();
   }
 }
@@ -139,16 +169,22 @@ function makeDriver(steps, segment) {
     steps,
 
     onHighlightStarted: (el, step) => {
+      // Limpiar siempre la máscara del paso anterior antes de crear una nueva.
+      // Necesario porque driver.js dispara onHighlightStarted antes que onDeselected
+      // cuando el paso tiene su propio hook onHighlightStarted.
+      document.querySelector('.ah-block-mask')?.remove();
+
       if (step?.popover?.blockClick) {
-        if (!document.querySelector('.ah-block-mask')) {
-          const mask = document.createElement('div');
-          mask.className = 'ah-block-mask';
-          document.body.appendChild(mask);
-        }
+        const mask = document.createElement('div');
+        mask.className = 'ah-block-mask';
+        document.body.appendChild(mask);
       }
     },
     onDeselected: (_el) => {
       document.querySelector('.ah-block-mask')?.remove();
+      // Limpiar también cualquier elemento con ah-tour-clickable que haya podido quedar
+      document.querySelectorAll('.ah-tour-clickable')
+        .forEach(el => el.classList.remove('ah-tour-clickable'));
     },
 
     onPopoverRender: (popover, { state }) => {
@@ -341,6 +377,7 @@ function segmentHome() {
         noNextBtn: true, // oculta el botón "Listo" — el tap es la única forma de avanzar
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         // Marcamos que el tour debe continuar en /ListaMapas cuando se llegue a esa ruta.
         localStorage.setItem(CONTINUE_KEY, '/ListaMapas');
 
@@ -377,6 +414,7 @@ function segmentListaMapas() {
         noNextBtn: true,
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         const filtros = document.querySelector('[data-tour="mapa-filtros"]');
         // { once: true } hace que el listener se elimine solo tras el primer tap
         filtros?.addEventListener('click', () => _driverInstance?.moveNext(), { once: true });
@@ -396,6 +434,7 @@ function segmentListaMapas() {
     {
       element: '[data-tour="mapa-grid"]',
       onHighlightStarted: () => {
+        clearBlockMask();
         localStorage.setItem(CONTINUE_KEY, '/DetalleMapa');
         const grid = document.querySelector('[data-tour="mapa-grid"]');
         if (grid) {
@@ -486,6 +525,7 @@ function segmentDetalleMapa() {
     {
       element: '[data-tour="mapa-btn-selec-inv"]',
       onHighlightStarted: () => {
+        clearBlockMask();
         localStorage.setItem(CONTINUE_KEY, '/ListaPersonajes');
         const grid = document.querySelector('[data-tour="mapa-btn-selec-inv"]');
         if (grid) {
@@ -532,6 +572,7 @@ function segmentListaPersonajes() {
         noNextBtn: true,
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         const buttons = document.querySelector('[data-tour="expansion-buttons"]');
         buttons?.addEventListener('click', () => _driverInstance?.moveNext(), { once: true });
       },
@@ -550,6 +591,7 @@ function segmentListaPersonajes() {
     {
       element: '[data-tour="inv-grid"]',
       onHighlightStarted: () => {
+        clearBlockMask();
         localStorage.setItem(CONTINUE_KEY, '/DetallePersonaje');
         const grid = document.querySelector('[data-tour="inv-grid"]');
         if (grid) {
@@ -609,6 +651,7 @@ function segmentDetallePersonaje() {
       // continueTourIfNeeded('/PlayAH') retoma el tour automáticamente.
       element: '[data-tour="detalle-comenzar"]',
       onHighlightStarted: () => {
+        clearBlockMask();
         localStorage.setItem(CONTINUE_KEY, '/PlayAH');
         const btn = document.querySelector('[data-tour="detalle-comenzar"]');
         if (btn) {
@@ -728,6 +771,7 @@ function segmentPlay() {
         noNextBtn: true,
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         const boton = document.querySelector('[data-tour="play-nav-ubicacion"]');
         boton?.addEventListener('click', () => _driverInstance?.moveNext(), { once: true });
       },
@@ -755,6 +799,7 @@ function segmentPlay() {
         noNextBtn: true,
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         const boton = document.querySelector('[data-tour="play-nav-estados"]');
         boton?.addEventListener('click', () => _driverInstance?.moveNext(), { once: true });
       },
@@ -793,6 +838,7 @@ function segmentPlay() {
         noNextBtn: true,
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         const boton = document.querySelector('[data-tour="play-nav-habilidades"]');
         boton?.addEventListener('click', () => _driverInstance?.moveNext(), { once: true });
       },
@@ -831,6 +877,7 @@ function segmentPlay() {
         noNextBtn: true,
       },
       onHighlightStarted: () => {
+        clearBlockMask();
         const boton = document.querySelector('[data-tour="play-nav-ajustes"]');
         boton?.addEventListener('click', () => _driverInstance?.moveNext(), { once: true });
       },
@@ -868,13 +915,128 @@ function segmentPlay() {
         blockClick: true,
       },
     },
-    // ── Pestaña Map (informacional) ────────────────────────
+    // ── PIVOT → Pestaña Map ────────────────────────────────
     {
+      element: '[data-tour="play-tabs"]',
       popover: {
-        title: es() ? '🗺️ Pestaña Map — Mesa compartida' : '🗺️ Map tab — Shared table',
+        title: es() ? '🗺️ Cambia a la pestaña Map' : '🗺️ Switch to the Map tab',
         description: es()
-          ? 'La pestaña "Map" muestra las fichas globales de partida: perdición, pistas globales, tienda de objetos y reserva de Mitos. Requiere un mapa online activo. En los ajustes del mapa encontrarás el código para que otros jugadores se unan.'
-          : 'The "Map" tab shows global game tokens: doom, global clues, item shop and Mythos reserve. Requires an active online map. In the map settings you\'ll find the code for other players to join.',
+          ? 'Ahora veremos la mesa compartida. Toca la pestaña <b>Map</b> para continuar.'
+          : 'Now we\'ll see the shared table. Tap the <b>Map</b> tab to continue.',
+        side: 'bottom',
+        noNextBtn: true,
+      },
+      onHighlightStarted: () => {
+        clearBlockMask();
+        // Inyectamos datos de simulación para que basicDataMap tenga contenido real
+        if (_store && !_store.state.datosMapa?.id) {
+          _store.state.datosMapa = {
+            id:               'tour-simulation',
+            isTourSimulation: true,            // evita llamadas a la API en basicDataMap
+            title:            es() ? 'Simulación — Tour' : 'Simulation — Tour',
+            translations:     { es: { title: 'Simulación — Tour' } },
+            BGMap:            mapaBGSimulacion,
+            variables:        { dooms: 3, clues: 5 },
+          };
+          _simMapActiva = true;
+        }
+
+        // Buefy renderiza los tabs como: nav.tabs > ul > li > a
+        // Driver.js aplica .driver-active *{pointer-events:none} a TODOS los descendientes
+        // del elemento resaltado, incluyendo li, ul y nav.
+        // Un simple style.pointerEvents='auto' en el <a> no basta porque sus ancestros
+        // siguen bloqueados. Usamos la clase .ah-tour-clickable (pointer-events:auto !important)
+        // aplicada a toda la cadena: a → li → ul → nav para garantizar que el clic llegue.
+        const mapTabBtn = [...document.querySelectorAll('.tabs ul li a')]
+          .find(a => a.textContent.trim() === 'Map');
+
+        if (mapTabBtn) {
+          const cadenaClickable = [
+            mapTabBtn,
+            mapTabBtn.parentElement,              // <li>
+            mapTabBtn.parentElement?.parentElement, // <ul>
+            mapTabBtn.closest('.tabs'),            // <nav class="tabs">
+          ].filter(Boolean);
+
+          cadenaClickable.forEach(el => el.classList.add('ah-tour-clickable'));
+
+          mapTabBtn.addEventListener('click', () => {
+            // Restaurar pointer-events en todos los elementos al hacer click
+            cadenaClickable.forEach(el => el.classList.remove('ah-tour-clickable'));
+            setTimeout(() => _driverInstance?.moveNext(), 350);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Map: Imagen y nombre del mapa ─────────────────────
+    {
+      element: '[data-tour="map-imagen-nombre"]',
+      popover: {
+        title: es() ? '🗺️ El escenario en juego' : '🗺️ The active scenario',
+        description: es()
+          ? 'Aquí verás la imagen y el nombre del mapa online activo. Es el escenario que todos los jugadores están compartiendo en esta sesión.'
+          : 'Here you see the image and name of the active online map — the scenario all players are sharing in this session.',
+        side: 'right',
+        blockClick: true,
+      },
+    },
+    // ── Map: Contadores + modificadores (paso unificado) ─────
+    {
+      element: '[data-tour="map-variables"]',
+      popover: {
+        title: es() ? '☠️➕➖ Perdición, Pistas y modificadores' : '☠️➕➖ Doom, Clues & modifiers',
+        description: es()
+          ? '<b>☠️ Perdición</b> (rojo): si llega al máximo, los Dioses Exteriores despiertan y la partida termina. <br><b>🔍 Pistas globales</b> (azul): pistas reunidas entre todos. <br>Toca el icono que quieras modificar y usa <b>+</b> / <b>−</b>. El cambio se sincroniza con todos en tiempo real.'
+          : '<b>☠️ Doom</b> (red): if it reaches its max, the Outer Gods awaken and the game ends. <br><b>🔍 Global clues</b> (blue): clues gathered by everyone. <br>Tap the icon you want to modify, then use <b>+</b> / <b>−</b>. Changes sync to all players in real time.',
+        side: 'left',
+        blockClick: true,
+      },
+    },
+    // ── Map: Nav → pivot a Tienda ────────────────────────────
+    {
+      element: '[data-tour="map-nav"]',
+      popover: {
+        title: es() ? '🧭 Secciones del mapa' : '🧭 Map sections',
+        description: es()
+          ? 'Cuatro secciones: 🏚️ <b>Encuentros</b> · 🛒 <b>Tienda</b> · 💀 <b>Mitos</b> · ⚙️ <b>Ajustes</b>. <br>Toca el icono de la <b>Tienda</b> 🛒 para verla.'
+          : 'Four sections: 🏚️ <b>Encounters</b> · 🛒 <b>Shop</b> · 💀 <b>Mythos</b> · ⚙️ <b>Settings</b>. <br>Tap the <b>Shop</b> 🛒 icon to see it.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: () => {
+        clearBlockMask();
+        const botonTienda = document.querySelector('[data-tour="map-nav-tienda"]');
+        if (botonTienda) {
+          // map-nav es el elemento resaltado — sus hijos tienen pointer-events:none por driver.js
+          botonTienda.style.pointerEvents = 'auto';
+          botonTienda.addEventListener('click', () => {
+            botonTienda.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 350);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Map: Tienda — cabecera ────────────────────────────────
+    {
+      element: '[data-tour="shop-header"]',
+      popover: {
+        title: es() ? '🛒 La Tienda compartida' : '🛒 The Shared Shop',
+        description: es()
+          ? 'La tienda permite que cualquier jugador compre objetos con el dinero del grupo. El host añade las cartas disponibles y los demás pueden adquirirlas durante la partida.'
+          : 'The shop lets any player buy items using the group\'s money. The host adds the available cards and others can purchase them during the game.',
+        side: 'bottom',
+        blockClick: true,
+      },
+    },
+    // ── Map: Tienda — controles ───────────────────────────────
+    {
+      element: '[data-tour="shop-controles"]',
+      popover: {
+        title: es() ? '➕📋 Gestionar la tienda' : '➕📋 Manage the shop',
+        description: es()
+          ? '<b>Añadir carta</b>: el host busca y añade objetos al catálogo. <b>Historial</b>: muestra las cartas ya vendidas en esta sesión. Solo el host puede añadir; todos pueden comprar.'
+          : '<b>Add card</b>: the host searches and adds items to the catalogue. <b>History</b>: shows cards already sold this session. Only the host can add; everyone can buy.',
+        side: 'bottom',
         blockClick: true,
       },
     },

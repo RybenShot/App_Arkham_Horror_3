@@ -1,12 +1,12 @@
 <template>
   <div class="shop-container">
     <!-- Título -->
-    <div class="shop-header">
+    <div data-tour="shop-header" class="shop-header">
       <h1 class="title is-3 has-text-white has-text-centered mb-3">{{ textoInterfaz.title }}</h1>
     </div>
 
     <!-- Botones de gestión -->
-    <div class="shop-controls mb-4">
+    <div data-tour="shop-controles" class="shop-controls mb-4">
       <div class="columns is-mobile is-gapless">
         <div class="column is-half pr-1">
           <button class="button is-success is-small is-fullwidth control-btn" @click="añadirItemALaTienda" :class="{ 'is-loading': loadingAdd }">

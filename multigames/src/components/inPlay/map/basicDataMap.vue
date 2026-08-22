@@ -8,15 +8,15 @@
 
     <div class="columns is-mobile">
       <!-- foto y nombre -->
-      <div class="column is-half image">
+      <div class="column is-half image" data-tour="map-imagen-nombre">
         <img class="is-rounded image image bordeImagen " :src="this.$store.state.datosMapa.BGMap" >
         <div class="mapName">
           <p class="title p-1 is-4 has-text-weight-bold has-text-white">{{ textoInterfaz.title }}</p>
         </div>
       </div>
-      
+
       <!-- datos variables -->
-      <div class="column is-half has-text-white pt-4">
+      <div data-tour="map-variables" class="column is-half has-text-white pt-4">
         <p class="subtitle has-text-white has-text-centered mb-1"> {{ textoInterfaz.textoVariables }}</p>
 
         <!-- perdicion - pistas -->
@@ -42,7 +42,7 @@
     </div>
 
     <!-- Navegacion -->
-    <div class="columns is-mobile has-text-centered has-text-white">
+    <div data-tour="map-nav" class="columns is-mobile has-text-centered has-text-white">
       <!-- Encuentros -->
       <div @click="(resetearNavegacion()), (this.$store.state.StoreEncountresPage = true)" class="column pt-0">
         <i v-if="this.$store.state.StoreEncountresPage == true" class="has-text-success fa-2x fas fa-house-damage"></i>
@@ -50,7 +50,7 @@
       </div> 
 
       <!-- Tienda -->
-      <div @click="(resetearNavegacion()), (this.$store.state.StoreShopPage = true)" class="column pt-0">
+      <div data-tour="map-nav-tienda" @click="(resetearNavegacion()), (this.$store.state.StoreShopPage = true)" class="column pt-0">
         <i v-if="this.$store.state.StoreShopPage == true" class="has-text-success fa-2x fas fa-store"></i>
         <i v-if="this.$store.state.StoreShopPage == false" class="desactivado fa-2x fas fa-store"></i>
       </div> 
@@ -172,8 +172,8 @@ export default {
       
     },
     async updateDataMap(){
-      // si no estamos en modo online no seguimos
-      if (!this.$store.state.datosMapa.id) {
+      // Si no hay mapa real activo (o es simulación del tour) no hacemos llamada a la API
+      if (!this.$store.state.datosMapa.id || this.$store.state.datosMapa.isTourSimulation) {
         return
       }
 
