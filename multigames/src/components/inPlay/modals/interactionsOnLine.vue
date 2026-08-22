@@ -2,7 +2,7 @@
   <div class="modal is-active">
     <div class="modal-background" @click="closeModal"></div>
     <div>
-      <div class="modal-card">
+      <div data-tour="interaccion-modal" class="modal-card">
         <header class="columns is-mobile modal-card-head BGBendicion m-0">
           <p class="modal-card-title has-text-weight-bold has-text-white has-text-left">{{ textoInterfaz.titulo }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger cruzeta" @click="closeModal"></i>
@@ -22,7 +22,7 @@
             <label class="label has-text-centered">{{ textoInterfaz.seleccionaIntencion }}</label>
             
             <!-- Botones de intención -->
-            <div class="columns is-mobile mt-3">
+            <div data-tour="interaccion-selector" class="columns is-mobile mt-3">
               <div class="column is-4">
                 
                 <button @click="selectedIntention = 'fight'" class="button is-danger is-fullwidth" 
@@ -61,7 +61,7 @@
             </p>
 
             <p class="control column is-half">
-              <button @click="acceptEncounter" class="button is-success is-fullwidth" :disabled="showIntentionSelector && !selectedIntention" >
+              <button data-tour="interaccion-aceptar" @click="acceptEncounter" class="button is-success is-fullwidth" :disabled="showIntentionSelector && !selectedIntention" >
                 <p>{{ textoInterfaz.botones.aceptar }}</p>
               </button>
             </p>
@@ -176,6 +176,31 @@ export default {
     },
 
     async acceptEncounter() {
+      const type = this.selectedIntention;
+
+      // Modo simulación del tour: sin llamada a la API ni sondeo real, solo el feedback visual
+      if (this.$store.state.datosMapa?.isTourSimulation) {
+        this.closeModal();
+        const intentionMessages = this.$store.state.lenguaje === 'español'
+          ? {
+              fight: '¡Agarras con fuerza tu puños y te preparas por lo que pueda pasar!',
+              trade: '¡Iniciando intercambio!',
+              resonance: '¡Conexión mística establecida!'
+            }
+          : {
+              fight: 'You grip your fists tightly and prepare for whatever may come!',
+              trade: 'Starting trade!',
+              resonance: 'Mystical connection established!'
+            };
+        this.$buefy.toast.open({
+          message: intentionMessages[type] || (this.$store.state.lenguaje === 'español' ? '¡Encuentro iniciado!' : 'Encounter started!'),
+          type: 'is-success',
+          duration: 4000
+        });
+        this.$emit('interaction-created', { simulated: true });
+        return;
+      }
+
       try {
         const idUserHost = this.$store.state.IDUserHost;
         const nameUserHost = this.$store.state.nameUserHost;
@@ -186,7 +211,6 @@ export default {
         console.log('🐛 [DEBUG interactionsOnLine] invData completo:', invData)
         // === FIN DEBUG ===
 
-        const type = this.selectedIntention; // Usar la intención seleccionada
         const idLocationMap = this.currentZone;
 
         // console.log('Creando interacción:', { idUserHost, idUserGuest, invData, type, idLocationMap });

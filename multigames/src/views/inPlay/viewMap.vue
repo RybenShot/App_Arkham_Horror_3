@@ -6,7 +6,7 @@
     <div v-if="this.$store.state.StoreEncountresPage == true"><EncountresPage/></div>
     <div v-if="this.$store.state.StoreShopPage == true"><StorePage/></div>
     <div v-if="this.$store.state.StoreReservaDeMitos == true"><ReservaDeMitos/></div>
-    <div v-if="this.$store.state.StoreAjustesPlay == true"><AjustesPlay/></div>
+    <div v-if="this.$store.state.StoreAjustesPlay == true"><AjustesPlay :esMapa="true"/></div>
 </template>
 
 <script>

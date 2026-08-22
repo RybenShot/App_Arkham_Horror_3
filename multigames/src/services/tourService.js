@@ -4,6 +4,12 @@ import { apiService } from '@/services/api.js';
 import mapaBGSimulacion from '@/assets/img/3-Mapas/BG9MapaAHNocheCerrada.jpg';
 
 const CONTINUE_KEY = 'ah_tour_continue';
+// Marcador para el menú rápido: cuando se pide ir directo a la Mesa compartida,
+// segmentPlay() lo comprueba nada más arrancar y salta el bloque Player.
+const JUMP_MAP_KEY = 'ah_tour_jump_map';
+// Selecciona qué segmento standalone arrancar al llegar a /PlayAH (fuera del tour general).
+// De momento el único valor usado es 'ubicacion' (mini-tutorial de moverse por el mapa).
+const MODE_KEY = 'ah_tour_mode';
 
 let _driverInstance   = null;
 let _router           = null;
@@ -113,6 +119,33 @@ async function skipToNext() {
   }
 }
 
+// Menú rápido tras la bienvenida: lleva directamente a una de las 4 grandes fases,
+// saltándose todo lo intermedio. Reutiliza el mismo mecanismo que "Saltar sección"
+// (goTo / CONTINUE_KEY) para retomar el tour en el segmento correspondiente.
+async function jumpToSection(destino) {
+  switch (destino) {
+    case 'mapas':
+      goTo('/ListaMapas', '/ListaMapas');
+      break;
+    case 'personajes':
+      goTo('/ListaPersonajes', '/ListaPersonajes');
+      break;
+    case 'jugar':
+    case 'mesa': {
+      destroy();
+      try {
+        const response = await apiService.obtainInvByID(_availableIdInv || 1);
+        _store.commit('setDatosInvestigator', response);
+      } catch (_) { /* navegar igualmente */ }
+      if (destino === 'mesa') localStorage.setItem(JUMP_MAP_KEY, '1');
+      localStorage.setItem(CONTINUE_KEY, '/PlayAH');
+      _router.push('/PlayAH');
+      break;
+    }
+    default: break;
+  }
+}
+
 function switchTabThenNext(index) {
   setPlayTab(index);
   setTimeout(() => _driverInstance?.moveNext(), 400);
@@ -186,6 +219,16 @@ function makeDriver(steps, segment) {
       document.querySelectorAll('.ah-tour-clickable')
         .forEach(el => el.classList.remove('ah-tour-clickable'));
     },
+    // driver.js llama a esto en vez de cerrar directamente cuando el usuario pulsa
+    // "Listo" en el último paso (o cualquier otro cierre "natural" del flujo interno).
+    // Si es el final del tour general, despedimos y redirigimos a Home; si no, cerramos sin más.
+    onDestroyStarted: () => {
+      const irAHome = _currentSegment === 'play' && !_driverInstance?.hasNextStep?.();
+      destroy();
+      if (irAHome) {
+        _router?.push('/');
+      }
+    },
 
     onPopoverRender: (popover, { state }) => {
       // ── El Archivista — inyectar encima del título ─────
@@ -209,6 +252,27 @@ function makeDriver(steps, segment) {
         popover.footer.insertBefore(skipBtn, target);
       else
         popover.footer.appendChild(skipBtn);
+
+      // ── Menú rápido de secciones (paso isMenu, tras la bienvenida) ─
+      if (state?.activeStep?.popover?.isMenu && !popover.description?.querySelector('.ah-tour-menu')) {
+        const opciones = [
+          { destino: 'mapas',      icono: '🗺️', es: 'Elegir un mapa',         en: 'Choose a map' },
+          { destino: 'personajes', icono: '🕵️', es: 'Elegir un investigador', en: 'Choose an investigator' },
+          { destino: 'jugar',      icono: '🎲', es: 'Jugar (mi ficha)',       en: 'Play (my sheet)' },
+          { destino: 'mesa',       icono: '🌐', es: 'Mesa compartida',        en: 'Shared table' },
+        ];
+        const menu = document.createElement('div');
+        menu.className = 'ah-tour-menu';
+        opciones.forEach(op => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'ah-tour-menu-btn';
+          btn.textContent = `${op.icono} ${es() ? op.es : op.en}`;
+          btn.addEventListener('click', () => jumpToSection(op.destino));
+          menu.appendChild(btn);
+        });
+        popover.description?.insertAdjacentElement('afterend', menu);
+      }
 
       // ── Ocultar Siguiente en pasos de toque obligatorio ─
       if (state?.activeStep?.popover?.noNextBtn) {
@@ -275,6 +339,16 @@ function segmentHome() {
         description: es()
           ? 'Llegas en el momento justo. Te guiaré por cada rincón de esta aplicación hasta tu primera partida. <br>Avanza paso a paso... o usa <em>Saltar sección</em> si crees que no necesitas guía. <em>(Rara vez quien lo cree tiene razón.)</em>'
           : 'You arrive at the right moment. I will guide you through every corner of this app up to your first game. <br>Advance step by step... or use <em>Skip section</em> if you think you need no guidance. <em>(Those who believe that rarely do.)</em>',
+      },
+    },
+    // ── Menú rápido: ir directo a la sección que interese ────
+    {
+      popover: {
+        title: es() ? '🧭 ¿Por dónde empezamos?' : '🧭 Where shall we start?',
+        description: es()
+          ? 'Si ya sabes lo que buscas, toca directamente esa sección. Si prefieres conocerlo todo, sigue con <em>Siguiente</em>.'
+          : 'If you already know what you\'re after, tap that section directly. If you\'d rather see everything, continue with <em>Next</em>.',
+        isMenu: true,
       },
     },
     //TODO
@@ -984,10 +1058,10 @@ function segmentPlay() {
     {
       element: '[data-tour="map-variables"]',
       popover: {
-        title: es() ? '☠️➕➖ Perdición, Pistas y modificadores' : '☠️➕➖ Doom, Clues & modifiers',
+        title: es() ? '☠️ Perdición y Pistas' : '☠️ Doom and Clues',
         description: es()
-          ? '<b>☠️ Perdición</b> (rojo): si llega al máximo, los Dioses Exteriores despiertan y la partida termina. <br><b>🔍 Pistas globales</b> (azul): pistas reunidas entre todos. <br>Toca el icono que quieras modificar y usa <b>+</b> / <b>−</b>. El cambio se sincroniza con todos en tiempo real.'
-          : '<b>☠️ Doom</b> (red): if it reaches its max, the Outer Gods awaken and the game ends. <br><b>🔍 Global clues</b> (blue): clues gathered by everyone. <br>Tap the icon you want to modify, then use <b>+</b> / <b>−</b>. Changes sync to all players in real time.',
+          ? '<b>Aqui se gestionaran las pistas y la perdicion general del mapa entre todos los jugadores'
+          : '<b>Here, the clues and the overall doom level of the map will be managed collectively by all players.',
         side: 'left',
         blockClick: true,
       },
@@ -996,9 +1070,9 @@ function segmentPlay() {
     {
       element: '[data-tour="map-nav"]',
       popover: {
-        title: es() ? '🧭 Secciones del mapa' : '🧭 Map sections',
+        title: es() ? '🧭 Navegación' : '🧭 Nav',
         description: es()
-          ? 'Cuatro secciones: 🏚️ <b>Encuentros</b> · 🛒 <b>Tienda</b> · 💀 <b>Mitos</b> · ⚙️ <b>Ajustes</b>. <br>Toca el icono de la <b>Tienda</b> 🛒 para verla.'
+          ? 'Cuatro secciones: 🏚️ <b>Encuentros</b> · 🛒 <b>Tienda</b> · 💀 <b>Reserva de mitos</b> · ⚙️ <b>Ajustes</b>. <br>Toca el icono de la <b>Tienda</b> 🛒 para verla. '
           : 'Four sections: 🏚️ <b>Encounters</b> · 🛒 <b>Shop</b> · 💀 <b>Mythos</b> · ⚙️ <b>Settings</b>. <br>Tap the <b>Shop</b> 🛒 icon to see it.',
         side: 'top',
         noNextBtn: true,
@@ -1022,35 +1096,449 @@ function segmentPlay() {
       popover: {
         title: es() ? '🛒 La Tienda compartida' : '🛒 The Shared Shop',
         description: es()
-          ? 'La tienda permite que cualquier jugador compre objetos con el dinero del grupo. El host añade las cartas disponibles y los demás pueden adquirirlas durante la partida.'
-          : 'The shop lets any player buy items using the group\'s money. The host adds the available cards and others can purchase them during the game.',
+          ? 'La tienda permite que cualquier jugador compre objetos con el dinero de su propio jugador. Se añadiran cartas aleatoriamente y una vez que una carta sea comprada no volverá a aparecer en la tienda (en esta partida claro esta). '
+          : 'The shop allows any player to purchase items using their own money. Cards will be added randomly, and once a card is purchased, it will not appear in the shop again (for that game, of course).',
         side: 'bottom',
         blockClick: true,
       },
     },
-    // ── Map: Tienda — controles ───────────────────────────────
+
+    // ── Map: Nav → pivot a Reserva de Mitos ───────────────────
     {
-      element: '[data-tour="shop-controles"]',
+      element: '[data-tour="map-nav"]',
       popover: {
-        title: es() ? '➕📋 Gestionar la tienda' : '➕📋 Manage the shop',
+        title: es() ? '🧭 Ahora, la Reserva de Mitos' : '🧭 Now, the Mythos Reserve',
         description: es()
-          ? '<b>Añadir carta</b>: el host busca y añade objetos al catálogo. <b>Historial</b>: muestra las cartas ya vendidas en esta sesión. Solo el host puede añadir; todos pueden comprar.'
-          : '<b>Add card</b>: the host searches and adds items to the catalogue. <b>History</b>: shows cards already sold this session. Only the host can add; everyone can buy.',
+          ? 'Toca el icono de 💀 <b>Reserva de mitos</b> para verla.'
+          : 'Tap the 💀 <b>Mythos Reserve</b> icon to see it.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: () => {
+        clearBlockMask();
+        // Inyectamos una reserva de mitos simulada con 4 fichas distintas para la demo
+        if (_store && _store.state.datosMapa) {
+          _store.state.datosMapa.mythosReserveInPlay = [
+            { type: 'doom',      reveal: false },
+            { type: 'clues',     reveal: false },
+            { type: 'enemies',   reveal: false },
+            { type: 'newspaper', reveal: false },
+          ];
+        }
+        const botonMitos = document.querySelector('[data-tour="map-nav-mitos"]');
+        if (botonMitos) {
+          // map-nav es el elemento resaltado — sus hijos tienen pointer-events:none por driver.js
+          botonMitos.style.pointerEvents = 'auto';
+          botonMitos.addEventListener('click', () => {
+            botonMitos.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 350);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: la reserva inicial ──────────────────────────────
+    {
+      element: '[data-tour="mitos-miniaturas"]',
+      popover: {
+        title: es() ? '💀 La reserva de mitos' : '💀 The mythos reserve',
+        description: es()
+          ? 'Estas son las fichas que hay ahora mismo en la reserva: empezamos con 4 distintas. Vamos a probar, una por una, cada acción que puedes hacer sobre ellas.'
+          : 'These are the tokens currently in the reserve — we\'re starting with 4 different ones. Let\'s try, one by one, every action you can do with them.',
         side: 'bottom',
         blockClick: true,
       },
     },
+    // ── Mitos: Añadir — botón ──────────────────────────────────
+    {
+      element: '[data-tour="mitos-btn-add"]',
+      popover: {
+        title: es() ? '➕ Añadir una ficha' : '➕ Add a token',
+        description: es()
+          ? 'Toca este botón para meter una ficha nueva en la reserva.'
+          : 'Tap this button to put a new token into the reserve.',
+        side: 'bottom',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.addEventListener('click', () => {
+            el.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 400);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Añadir — elegir tipo en el modal ─────────────────
+    {
+      element: '[data-tour="mitos-modal-add"]',
+      popover: {
+        title: es() ? '➕ Elige qué ficha añadir' : '➕ Choose which token to add',
+        description: es()
+          ? 'Toca cualquier tipo de ficha para añadirla a la reserva.'
+          : 'Tap any token type to add it to the reserve.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.querySelectorAll('button').forEach(btn => { btn.style.pointerEvents = 'auto'; });
+          el.addEventListener('click', (e) => {
+            if (e.target.closest('button')) {
+              setTimeout(() => _driverInstance?.moveNext(), 450);
+            }
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Eliminar — botón ──────────────────────────────────
+    {
+      element: '[data-tour="mitos-btn-remove"]',
+      popover: {
+        title: es() ? '🗑️ Eliminar una ficha' : '🗑️ Remove a token',
+        description: es()
+          ? 'Toca este botón para quitar una ficha de la reserva.'
+          : 'Tap this button to take a token out of the reserve.',
+        side: 'bottom',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.addEventListener('click', () => {
+            el.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 400);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Eliminar — elegir tipo en el modal ────────────────
+    {
+      element: '[data-tour="mitos-modal-remove"]',
+      popover: {
+        title: es() ? '🗑️ Elige qué ficha eliminar' : '🗑️ Choose which token to remove',
+        description: es()
+          ? 'Toca cualquier tipo de ficha para quitarla de la reserva.'
+          : 'Tap any token type to remove it from the reserve.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.querySelectorAll('button').forEach(btn => { btn.style.pointerEvents = 'auto'; });
+          el.addEventListener('click', (e) => {
+            if (e.target.closest('button')) {
+              setTimeout(() => _driverInstance?.moveNext(), 450);
+            }
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Sacar ficha + reactividad con el personaje ───────
+    {
+      element: '[data-tour="mitos-sacar"]',
+      popover: {
+        title: es() ? '🎴 Sacar ficha' : '🎴 Draw a token',
+        description: es()
+          ? 'Toca aquí para sacar al azar una de las fichas que aún no se han revelado. <br>Ojo: algunas fichas son <b>reactivas</b>. Según el personaje que estés jugando y los estados que tenga activos en ese momento (Pacto, Mancillado, Perseguido...), pueden disparar efectos automáticos al salir.'
+          : 'Tap here to draw at random one of the tokens that haven\'t been revealed yet. <br>Heads up: some tokens are <b>reactive</b>. Depending on the character you\'re playing and the states they currently have active (Pact, Tainted, Pursued...), they can trigger automatic effects when drawn.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.addEventListener('click', () => {
+            el.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 600);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Devolver — botón ──────────────────────────────────
+    {
+      element: '[data-tour="mitos-btn-return"]',
+      popover: {
+        title: es() ? '♻️ Devolver una ficha' : '♻️ Return a token',
+        description: es()
+          ? 'Toca este botón para devolver a la reserva la ficha que acabas de revelar.'
+          : 'Tap this button to return the token you just revealed back to the reserve.',
+        side: 'bottom',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.addEventListener('click', () => {
+            el.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 400);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Devolver — elegir ficha en el modal ───────────────
+    {
+      element: '[data-tour="mitos-modal-return"]',
+      popover: {
+        title: es() ? '♻️ Elige qué ficha devolver' : '♻️ Choose which token to return',
+        description: es()
+          ? 'Toca la ficha revelada para devolverla a la reserva sin revelar.'
+          : 'Tap the revealed token to return it to the reserve, unrevealed.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.querySelectorAll('button').forEach(btn => { btn.style.pointerEvents = 'auto'; });
+          el.addEventListener('click', (e) => {
+            if (e.target.closest('button')) {
+              setTimeout(() => _driverInstance?.moveNext(), 450);
+            }
+          }, { once: true });
+        }
+      },
+    },
+    // ── Mitos: Reiniciar — botón ──────────────────────────────────
+    {
+      element: '[data-tour="mitos-btn-reset"]',
+      popover: {
+        title: es() ? '↺ Reiniciar la reserva' : '↺ Reset the reserve',
+        description: es()
+          ? 'Por último, toca este botón: pone todas las fichas de nuevo sin revelar, lista para la siguiente ronda.'
+          : 'Finally, tap this button: it puts every token back as unrevealed, ready for the next round.',
+        side: 'bottom',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.addEventListener('click', () => {
+            el.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 400);
+          }, { once: true });
+        }
+      },
+    },
+
+    // ── Map: Nav → pivot a Ajustes ─────────────────────────────
+    {
+      element: '[data-tour="map-nav"]',
+      popover: {
+        title: es() ? '🧭 Por último, Ajustes' : '🧭 Finally, Settings',
+        description: es()
+          ? 'Toca el icono de ⚙️ <b>Ajustes</b> para verlo.'
+          : 'Tap the ⚙️ <b>Settings</b> icon to see it.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: () => {
+        clearBlockMask();
+        const botonAjustes = document.querySelector('[data-tour="map-nav-ajustes"]');
+        if (botonAjustes) {
+          botonAjustes.style.pointerEvents = 'auto';
+          botonAjustes.addEventListener('click', () => {
+            botonAjustes.style.pointerEvents = '';
+            setTimeout(() => _driverInstance?.moveNext(), 350);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Map: Ajustes — código del mapa ─────────────────────────
+    {
+      element: '[data-tour="ajustes-map-code"]',
+      popover: {
+        title: es() ? '🔑 Código del mapa' : '🔑 Map code',
+        description: es()
+          ? 'El resto de ajustes ya los conoces. Esto sí es nuevo: aquí tienes el código de esta partida online. Compártelo con el resto de jugadores para que se unan a tu mesa.'
+          : 'You already know the rest of the settings. This one\'s new: here\'s this online game\'s code. Share it with the other players so they can join your table.',
+        side: 'top',
+        blockClick: true,
+      },
+    },
+
     // ── Final ──────────────────────────────────────────────
     {
       popover: {
         title: es() ? '✅ El tour ha concluido' : '✅ The tour is complete',
         description: es()
-          ? 'Ya conoces todo lo que necesitas para enfrentarte a las sombras, investigador. Puedes relanzar este tour en cualquier momento desde Tutoriales en el menú principal.<br><br><em>Que los Dioses Exteriores te ignoren... y si no... al menos que sea rápido.</em>'
-          : 'You now know everything you need to face the shadows, investigator. You can relaunch this tour any time from Tutorials in the main menu.<br><br><em>May the Outer Gods ignore you... and if they don\'t... at least may it be swift.</em>',
+          ? 'Ya conoces todo lo que necesitas para enfrentarte a las sombras, investigador. Pero esto es solo el principio: hay muchas más cosas esperando a que las descubras jugando. Explora, prueba, equivócate... así es como se sobrevive en Arkham.<br><br>Puedes relanzar este tour en cualquier momento desde Tutoriales en el menú principal.<br><br><em>Que los Dioses Exteriores te ignoren... y si no... al menos que sea rápido.</em>'
+          : 'You now know everything you need to face the shadows, investigator. But this is just the beginning: there\'s much more waiting for you to discover by playing. Explore, try things, make mistakes... that\'s how you survive in Arkham.<br><br>You can relaunch this tour any time from Tutorials in the main menu.<br><br><em>May the Outer Gods ignore you... and if they don\'t... at least may it be swift.</em>',
         blockClick: true,
       },
     },
   ], 'play');
+
+  // Si desde el menú rápido de Home se pidió ir directo a la Mesa compartida,
+  // saltamos aquí mismo el bloque Player nada más arrancar el driver.
+  if (localStorage.getItem(JUMP_MAP_KEY)) {
+    localStorage.removeItem(JUMP_MAP_KEY);
+    _driverInstance?.moveTo(19); // índice del paso "Cambia a la pestaña Map" (mismo que usa skipToNext)
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// SEGMENTO STANDALONE — Moverse por el mapa (lanzado desde Tutoriales)
+// ─────────────────────────────────────────────────────────────
+function segmentUbicacion() {
+  setPlayTab(1); // pestaña "Ubicación" dentro del bloque Player
+
+  driveSegment([
+    // ── Mini-mapa: introducción ─────────────────────────────
+    {
+      element: '[data-tour="ubic-mapa"]',
+      popover: {
+        title: es() ? '🗺️ Tu ubicación en el mapa' : '🗺️ Your location on the map',
+        description: es()
+          ? 'Este mini-mapa representa la localización actual de la partida. Los puntos marcados son las zonas a las que puedes moverte.'
+          : 'This mini-map represents the game\'s current location. The marked points are the zones you can move to.',
+        side: 'bottom',
+        blockClick: true,
+      },
+      onHighlightStarted: () => {
+        // Este paso define su propio onHighlightStarted, así que el global (el que añade
+        // la máscara de blockClick) no se ejecuta: replicamos aquí ese mismo comportamiento.
+        clearBlockMask();
+        const mask = document.createElement('div');
+        mask.className = 'ah-block-mask';
+        document.body.appendChild(mask);
+
+        // Inyectamos aquí (y no antes de driveSegment) el mapa "La llegada de Azathoth"
+        // simulado, con sus zonas reales — driveSegment → makeDriver empieza llamando a
+        // destroy(), que si _simMapActiva ya estuviera a true borraría datosMapa justo
+        // después de rellenarlo.
+        if (_store) {
+          _store.state.datosMapa = {
+            id:               'tour-simulation',
+            isTourSimulation: true,
+            title:            'The Arrival of Azathoth',
+            translations:     { es: { title: 'La llegada de Azathoth' } },
+            BGMap:            mapaBGSimulacion,
+            imgMap:           'LosetasMapa1.png',
+            variables:        { dooms: 0, clues: 0 },
+            clickablePoints: [
+              { id: 2,  name: 'Barrio Este',        x: 13,   y: 3,  size: 11 },
+              { id: 3,  name: 'Barrio Flubial',      x: 43,   y: 20, size: 11 },
+              { id: 1,  name: 'Centro',              x: 13,   y: 38, size: 11 },
+              { id: 6,  name: 'Distrito  Comercial', x: 43,   y: 55, size: 11 },
+              { id: 7,  name: 'Barrio Norte',        x: 13,   y: 72, size: 11 },
+              { id: 66, name: 'Calle Farola',        x: 18.5, y: 26, size: 6 },
+              { id: 66, name: 'Calle Farola',        x: 33.5, y: 51, size: 6 },
+              { id: 66, name: 'Calle Farola',        x: 48,   y: 43, size: 6 },
+              { id: 77, name: 'Calle bosque',        x: 33,   y: 68, size: 6 },
+              { id: 77, name: 'Calle bosque',        x: 19,   y: 60, size: 6 },
+              { id: 88, name: 'Calle puente',        x: 33,   y: 17, size: 6 },
+              { id: 88, name: 'Calle puente',        x: 33,   y: 34, size: 6 },
+            ],
+          };
+          _simMapActiva = true;
+        }
+      },
+    },
+    // ── Mini-mapa: moverse a una zona ───────────────────────
+    {
+      element: '[data-tour="ubic-mapa"]',
+      popover: {
+        title: es() ? '👆 Muévete' : '👆 Move',
+        description: es()
+          ? 'Toca cualquiera de los puntos para mover tu ficha a esa zona.'
+          : 'Tap any of the points to move your token to that zone.',
+        side: 'bottom',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.querySelectorAll('.clickable-point').forEach(p => { p.style.pointerEvents = 'auto'; });
+          el.addEventListener('click', (e) => {
+            if (e.target.closest('.clickable-point')) {
+              // El punto dispara la simulación de handlePointClick, que tarda ~900ms
+              // en abrir el modal de encuentro — esperamos un poco más antes de avanzar.
+              setTimeout(() => _driverInstance?.moveNext(), 1300);
+            }
+          }, { once: true });
+        }
+      },
+    },
+    // ── Encuentro: introducción ─────────────────────────────
+    {
+      element: '[data-tour="interaccion-modal"]',
+      popover: {
+        title: es() ? '👥 ¡Encuentro!' : '👥 Encounter!',
+        description: es()
+          ? 'Te has topado con otro investigador en esta zona. Puedes elegir cómo reaccionar: Combate, Intercambio o Resonancia.'
+          : 'You\'ve run into another investigator in this zone. You can choose how to react: Combat, Trade or Resonance.',
+        side: 'top',
+        blockClick: true,
+      },
+    },
+    // ── Encuentro: elegir intención ─────────────────────────
+    {
+      element: '[data-tour="interaccion-selector"]',
+      popover: {
+        title: es() ? '🎭 Elige tu intención' : '🎭 Choose your intention',
+        description: es()
+          ? 'Toca cualquiera de las tres para probarla.'
+          : 'Tap any of the three to try it out.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.querySelectorAll('button').forEach(btn => { btn.style.pointerEvents = 'auto'; });
+          el.addEventListener('click', (e) => {
+            if (e.target.closest('button')) {
+              setTimeout(() => _driverInstance?.moveNext(), 400);
+            }
+          }, { once: true });
+        }
+      },
+    },
+    // ── Encuentro: confirmar ────────────────────────────────
+    {
+      element: '[data-tour="interaccion-aceptar"]',
+      popover: {
+        title: es() ? '✅ Confirma' : '✅ Confirm',
+        description: es()
+          ? 'Toca aquí para confirmar tu elección y enviarla al otro investigador.'
+          : 'Tap here to confirm your choice and send it to the other investigator.',
+        side: 'top',
+        noNextBtn: true,
+      },
+      onHighlightStarted: (el) => {
+        clearBlockMask();
+        if (el) {
+          el.style.pointerEvents = 'auto';
+          el.addEventListener('click', () => {
+            setTimeout(() => _driverInstance?.moveNext(), 500);
+          }, { once: true });
+        }
+      },
+    },
+    // ── Final ────────────────────────────────────────────────
+    {
+      popover: {
+        title: es() ? '✅ Interacción recreada' : '✅ Interaction recreated',
+        description: es()
+          ? 'En una partida real, el otro investigador recibiría tu propuesta y podría aceptarla o rechazarla. '
+          : 'In a real game, the other investigator would receive your proposal and could accept or reject it. ',
+        blockClick: true,
+      },
+    },
+  ], 'ubicacion');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -1068,6 +1556,7 @@ export function notifyInvListLoaded(firstIdInv) { _availableIdInv = firstIdInv; 
 
 export function startTourFromHome() {
   localStorage.removeItem(CONTINUE_KEY);
+  localStorage.removeItem(JUMP_MAP_KEY);
   segmentHome();
 }
 
@@ -1076,12 +1565,35 @@ export function continueTourIfNeeded(route) {
   if (!next || next !== route) return;
   localStorage.removeItem(CONTINUE_KEY);
 
+  const modo = localStorage.getItem(MODE_KEY);
+
   const delay = route === '/PlayAH' ? 900 : 500;
   setTimeout(() => {
+    if (route === '/PlayAH' && modo === 'ubicacion') {
+      localStorage.removeItem(MODE_KEY);
+      segmentUbicacion();
+      return;
+    }
     if      (route === '/ListaMapas')        segmentListaMapas();
     else if (route === '/DetalleMapa')       segmentDetalleMapa();
     else if (route === '/ListaPersonajes')   segmentListaPersonajes();
     else if (route === '/DetallePersonaje')  segmentDetallePersonaje();
     else if (route === '/PlayAH')            segmentPlay();
   }, delay);
+}
+
+// Mini-tutorial standalone "Moverse por el mapa", lanzado desde la ventana de Tutoriales.
+// A diferencia del tour general, no encadena Home→Mapas→Personajes: recupera un investigador
+// real (igual que el menú rápido) y va directo a /PlayAH, donde segmentUbicacion() inyecta
+// un mapa online simulado para poder demostrar el movimiento sin depender de una partida real.
+export async function startUbicacionTour() {
+  localStorage.removeItem(CONTINUE_KEY);
+  localStorage.removeItem(JUMP_MAP_KEY);
+  try {
+    const response = await apiService.obtainInvByID(_availableIdInv || 1);
+    _store.commit('setDatosInvestigator', response);
+  } catch (_) { /* continuamos igualmente */ }
+  localStorage.setItem(MODE_KEY, 'ubicacion');
+  localStorage.setItem(CONTINUE_KEY, '/PlayAH');
+  _router.push('/PlayAH');
 }

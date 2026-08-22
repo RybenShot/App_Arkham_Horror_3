@@ -21,16 +21,16 @@
     <!-- botones de modals -->
     <div class="columns is-mobile is-centered botones-accion">
       <div class="column is-narrow">
-        <button @click="restablecerReserva" class="button is-warning mt-3"><i class="fas fa-undo"></i></button>
+        <button data-tour="mitos-btn-reset" @click="restablecerReserva" class="button is-warning mt-3"><i class="fas fa-undo"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalAgregar" class="button is-primary mt-3"><i class="fas fa-plus"></i></button>
+        <button data-tour="mitos-btn-add" @click="abrirModalAgregar" class="button is-primary mt-3"><i class="fas fa-plus"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalEliminar" class="button is-danger mt-3"><i class="fas fa-trash-alt"></i></button>
+        <button data-tour="mitos-btn-remove" @click="abrirModalEliminar" class="button is-danger mt-3"><i class="fas fa-trash-alt"></i></button>
       </div>
       <div class="column is-narrow">
-        <button @click="abrirModalDevolver" class="button is-link mt-3"><i class="fas fa-recycle"></i></button>
+        <button data-tour="mitos-btn-return" @click="abrirModalDevolver" class="button is-link mt-3"><i class="fas fa-recycle"></i></button>
       </div>
 
       <!-- Informacion 
@@ -42,7 +42,7 @@
 
     <!-- miniaturas de mitos -->
     <p class="has-text-white">{{ textoInterfaz.reservaDeMitos }}</p>
-    <div class="mb-2">
+    <div data-tour="mitos-miniaturas" class="mb-2">
       <span v-for="(ficha, index) in $store.state.datosMapa.mythosReserveInPlay" :key="index">
         <i class="px-1" :class="[
           {'has-text-perdicion fas fa-star-of-life':ficha.type == 'doom' },
@@ -59,7 +59,7 @@
 
     </div>
 
-    <div class="px-4">
+    <div data-tour="mitos-sacar" class="px-4">
       <button @click="revelarFicha" class="button is-success is-fullwidth">{{ textoInterfaz.botones.sacaFicha }}</button>
     </div>
 
@@ -93,7 +93,7 @@
           <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.añadir }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalAgregar"></i>
         </header>
-        <section class="modal-card-body ">
+        <section data-tour="mitos-modal-add" class="modal-card-body ">
           <div class="buttons is-centered">
             <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click='agregarFicha("add", tipo)' :class="['button', tipo.color]">
               <i :class="tipo.icon" class="px-1"></i> 
@@ -113,7 +113,7 @@
           <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.eliminar }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalEliminar"></i>
         </header>
-        <section class="modal-card-body">
+        <section data-tour="mitos-modal-remove" class="modal-card-body">
           <div class="buttons is-centered">
             <button v-for="tipo in tiposFicha" :key="tipo.tipo" @click='eliminarFicha("remove", tipo)' :class="['button', tipo.color]">
               <i :class="tipo.icon" class="px-1"></i> 
@@ -133,7 +133,7 @@
           <p class="modal-card-title has-text-white">{{ textoInterfaz.textoModals.devolver }}</p>
           <i class="fa-2x fas fa-times-circle has-text-danger" @click="cerrarModalDevolver"></i>
         </header>
-        <section class="modal-card-body">
+        <section data-tour="mitos-modal-return" class="modal-card-body">
           <div class="buttons is-centered">
             <button v-for="(ficha, index) in this.$store.state.datosMapa.mythosReserveInPlay.filter(f => f.reveal)" :key="index" class="m-2 p-2"
               @click="devolverFicha('reset', ficha)">
@@ -311,6 +311,22 @@ export default {
      */
     async revelarFicha() {
       try {
+        // Modo simulación del tour: no llamamos a la API, sacamos la ficha localmente
+        if (this.$store.state.datosMapa.isTourSimulation) {
+          const disponibles = this.$store.state.datosMapa.mythosReserveInPlay.filter(f => !f.reveal);
+          if (disponibles.length === 0) {
+            alert("No quedan mas fichas de mitos en la reserva");
+            return;
+          }
+          const ficha = disponibles[Math.floor(Math.random() * disponibles.length)];
+          ficha.reveal = true;
+          this.fichaMostrada = ficha;
+          setTimeout(() => {
+            this.comprobarFicha()
+          }, 3000);
+          return;
+        }
+
         // llamamos a API para que me de una ficha de mitos
         const response = await apiService.getMithToken(this.$store.state.datosMapa.id);
         // la guardamos de forma global
@@ -326,7 +342,7 @@ export default {
         alert("No quedan mas fichas de mitos en la reserva")
         throw error;
       }
-      
+
     },
 
     // actualiza los datos del mapa en el store
@@ -354,6 +370,12 @@ export default {
      */
     async restablecerReserva() {
       try {
+        if (this.$store.state.datosMapa.isTourSimulation) {
+          this.$store.state.datosMapa.mythosReserveInPlay.forEach(f => { f.reveal = false; });
+          this.fichaMostrada = null;
+          return;
+        }
+
         const response = await apiService.ressetMithReserve(this.$store.state.datosMapa.id);
         console.log(response)
         this.updateDataMap()
@@ -372,6 +394,12 @@ export default {
      */
     async agregarFicha(action, tipo) {
       try {
+        if (this.$store.state.datosMapa.isTourSimulation) {
+          this.$store.state.datosMapa.mythosReserveInPlay.push({ type: tipo.tipo, reveal: false });
+          this.cerrarModalAgregar()
+          return;
+        }
+
         const response = await apiService.modifieMithReserve(this.$store.state.datosMapa.id, action, tipo.tipo);
         console.log(response)
         this.updateDataMap()
@@ -391,6 +419,14 @@ export default {
      */
     async eliminarFicha(action, tipo) {
       try {
+        if (this.$store.state.datosMapa.isTourSimulation) {
+          const reserva = this.$store.state.datosMapa.mythosReserveInPlay;
+          const idx = reserva.findIndex(f => f.type === tipo.tipo);
+          if (idx !== -1) reserva.splice(idx, 1);
+          this.cerrarModalEliminar();
+          return;
+        }
+
         const response = await apiService.modifieMithReserve(this.$store.state.datosMapa.id, action, tipo.tipo);
         console.log(response)
         this.updateDataMap()
@@ -411,6 +447,12 @@ export default {
      */
     async devolverFicha(action, ficha) {
       try {
+        if (this.$store.state.datosMapa.isTourSimulation) {
+          ficha.reveal = false;
+          this.cerrarModalDevolver();
+          return;
+        }
+
         const response = await apiService.modifieMithReserve(this.$store.state.datosMapa.id, action, ficha.type);
         console.log(response)
         this.updateDataMap()

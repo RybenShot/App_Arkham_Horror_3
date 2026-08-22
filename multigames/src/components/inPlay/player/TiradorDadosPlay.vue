@@ -104,6 +104,7 @@
 
 <script>
 import staticDie from "@/components/inPlay/modals/events/figth/launcherStaticDie.vue";
+import { apiService } from '@/services/api.js';
 
 export default {
   name: "TiraDados",
@@ -271,6 +272,12 @@ export default {
   },
   mounted(){
     this.rellenarTextoSegunIdioma();
+    // Cargamos las imágenes de dados personalizadas del usuario (si aún no se han cargado esta sesión)
+    if (this.$store.state.IDUserHost && this.$store.state.diceImages.length === 0) {
+      apiService.getDiceImages(this.$store.state.IDUserHost)
+        .then(images => this.$store.commit('setDiceImages', images))
+        .catch(() => {});
+    }
   }
 }
 </script>

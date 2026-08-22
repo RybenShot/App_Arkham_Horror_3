@@ -434,6 +434,39 @@ export const apiService = {
     }
   },
 
+  // IMÁGENES DE DADOS (cara personalizada del 6, máx. 5 por usuario)
+  async getDiceImages(idUser){
+    try {
+      const response = await axios.get(`${API_URL}/diceImages/${idUser}`)
+      return response.data.images
+    } catch (error) {
+      console.error(`❌ Error al obtener las imágenes de dados`, error);
+      throw error;
+    }
+  },
+
+  async uploadDiceImage(idUser, data){
+    try {
+      const payload = { idUser, data }
+      const response = await axios.post(`${API_URL}/diceImages`, payload)
+      return response.data.images
+    } catch (error) {
+      console.error(`❌ Error al subir la imagen de dado`, error);
+      throw error;
+    }
+  },
+
+  async deleteDiceImage(idUser, imageId){
+    try {
+      const payload = { idUser, imageId }
+      const response = await axios.post(`${API_URL}/diceImages/delete`, payload)
+      return response.data.images
+    } catch (error) {
+      console.error(`❌ Error al borrar la imagen de dado`, error);
+      throw error;
+    }
+  },
+
   // Get tienda de Mapa On Line
   async getShopItems(idMapInPlay){
     try {

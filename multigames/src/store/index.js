@@ -117,6 +117,8 @@ export default createStore({
     StoreModalInteractionsOnLine: false,
     IDUserHost: null,
     nameUserHost: null,
+    // Imágenes personalizadas para la cara 6 del dado (máx. 5, ver modalAjustes.vue)
+    diceImages: [],
     responseObjectsInPlay:[],
     // variable para mostrar el modal de busqueda de objetos
     modalBuscarObjeto: false,
@@ -478,6 +480,10 @@ export default createStore({
 
     setUserHost(state, id) {
       state.IDUserHost = id;
+    },
+
+    setDiceImages(state, images) {
+      state.diceImages = images || [];
     },
 
     setUserName(state, name) {

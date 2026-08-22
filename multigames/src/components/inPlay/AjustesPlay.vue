@@ -45,7 +45,7 @@
       </div>
 
       <!-- id de Mapa onLine -->
-      <div v-if="this.$store.state.datosMapa.id">
+      <div :data-tour="esMapa ? 'ajustes-map-code' : null" v-if="this.$store.state.datosMapa.id">
         <p class="subtitle has-text-white mb-0">{{ textoInterfaz.mapCode }}</p>
         <b-field >
           <b-input placeholder="1234-1234-1234"
@@ -90,6 +90,12 @@ import { audioService_audioInPlay } from '@/services/GestionAudio/audioService_s
 
 export default {
   name: "AjustesPlay",
+  props: {
+    // Este componente se monta a la vez en la pestaña Player y en la pestaña Map (comparten
+    // el mismo StoreAjustesPlay). Con esta prop distinguimos la instancia del mapa para que
+    // el tour (data-tour="ajustes-map-code") no apunte a la copia oculta de la pestaña Player.
+    esMapa: { type: Boolean, default: false },
+  },
   data(){
     return{
       audioIniciado: false,

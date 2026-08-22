@@ -15,7 +15,7 @@
         <div class="face face-4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
         <div class="face face-5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
         <div class="face face-6">
-          <img src="@/assets/img/ZZOtros/LogoSimple.png" alt="logo">
+          <img :src="face6Image" alt="logo">
         </div>
       </div>
     </div>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { logoDado, pickRandomFace6 } from "@/services/diceFaceHelper.js";
+
 export default {
   name: 'FigthDiceRoll',
   emits: ['dice-rolled', 'auto-advance'],
@@ -52,6 +54,7 @@ export default {
       isRolling: false,
       animationClass: '',
       desvanecerDado: null,
+      face6Image: logoDado,
       textoInterfaz: { tapEnDado: '' }
     }
   },
@@ -75,6 +78,8 @@ export default {
         return
       }
 
+      // Elegimos al azar (logo por defecto o una de tus imágenes) en cada tirada
+      this.face6Image = pickRandomFace6(this.$store)
       this.isRolling = true
       this.desvanecerDado = 'desvanecerDado'
 

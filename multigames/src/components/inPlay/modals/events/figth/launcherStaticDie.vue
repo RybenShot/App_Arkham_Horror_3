@@ -7,9 +7,9 @@
           <div class="dot center"></div>
         </div>
         
-        <!-- Cara 6 - Seis puntos -->
+        <!-- Cara 6 - Seis puntos (o la imagen personalizada del jugador) -->
         <div class="face back face-6">
-          <img src="@/assets/img/ZZOtros/LogoSimple.png" alt="cara en dado del logo">
+          <img :src="face6Image" alt="cara en dado del logo">
         </div>
         
         <!-- Cara 2 - Dos puntos diagonales -->
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { logoDado, pickRandomFace6 } from "@/services/diceFaceHelper.js";
+
 export default {
   name: "DiceRoller",
   props: {
@@ -69,19 +71,22 @@ export default {
     },
   },
   data() {
-    return { 
+    return {
       result: 0,
       isRolling: false,
-      animationClass: ''
+      animationClass: '',
+      face6Image: logoDado,
     }
-  }, 
+  },
   methods: {
     rollDice() {
+      // Elegimos al azar (logo por defecto o una de tus imágenes) en cada tirada
+      this.face6Image = pickRandomFace6(this.$store);
       this.animationClass = 'roll-transition';
 
       setTimeout(() => {
         if (this.isRolling) return;
-        
+
         this.isRolling = true;
         this.result = (this.forceResult !== null) ? this.forceResult : Math.floor(Math.random() * 6) + 1;
         this.animationClass = `roll-to-${this.result}`;

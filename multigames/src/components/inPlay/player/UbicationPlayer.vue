@@ -102,8 +102,11 @@ export default {
 
     // Callback cuando se crea una interacción desde el modal (HOST)
     onInteractionCreated(interactionResult) {
+      // En el tour no hay una interacción real que sondear en el backend
+      if (interactionResult?.simulated) return;
+
       // console.log('Interacción creada:', interactionResult);
-      
+
       // Iniciar polling para esperar respuesta del GUEST
       const interactionId = interactionResult.idInteraction;
       const userId = this.$store.state.IDUserHost;
@@ -118,6 +121,29 @@ export default {
     },
 
     handlePointClick(point) {
+      // Modo simulación del tour: nos saltamos la confirmación y la llamada a la API,
+      // y simulamos directamente que se ha encontrado otro investigador en la zona.
+      if (this.$store.state.datosMapa.isTourSimulation) {
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? `Movido a ${point.name}` : `Moved to ${point.name}`,
+          type: 'is-success',
+          duration: 2500
+        });
+        setTimeout(() => {
+          this.foundUserData = {
+            idUser: 'tour-simulation-guest',
+            invData: {
+              name: this.$store.state.lenguaje === 'español' ? 'Investigador de ejemplo' : 'Example investigator',
+              position: '',
+              translations: { es: { name: 'Investigador de ejemplo', position: '' } }
+            }
+          };
+          this.currentZoneData = point.id;
+          this.$store.state.StoreModalInteractionsOnLine = true;
+        }, 900);
+        return;
+      }
+
       // Mostrar confirmación de ubicación
       const textoConfirmacion = this.$store.state.lenguaje === 'español' ? `¿Estás seguro de ir a "${point.name}"?` : `Are you sure you want to go to "${point.name}"?`;
 

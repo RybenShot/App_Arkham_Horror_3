@@ -396,6 +396,32 @@ html, body, #app {
   66%      { transform: scaleY(1.3) scaleX(0.7); opacity: 0.65; }
 }
 
+/* Menú rápido de secciones (paso "isMenu" justo después de la bienvenida) */
+.ah-tour-menu {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin-top: 10px !important;
+}
+.ah-tour-menu-btn {
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
+  background: rgba(200, 144, 42, 0.08) !important;
+  border: 1px solid rgba(200, 144, 42, 0.3) !important;
+  color: #e8d5a3 !important;
+  border-radius: 5px !important;
+  padding: 7px 10px !important;
+  font-size: 0.8rem !important;
+  font-family: Georgia, serif !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+}
+.ah-tour-menu-btn:hover {
+  border-color: rgba(200, 144, 42, 0.6) !important;
+  background: rgba(200, 144, 42, 0.16) !important;
+}
+
 /* Pista de toque para pasos sin botón Siguiente */
 .ah-tap-hint {
   margin-top: 10px !important;
