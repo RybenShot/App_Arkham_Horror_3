@@ -119,6 +119,15 @@ export default createStore({
     nameUserHost: null,
     // Imágenes personalizadas para la cara 6 del dado (máx. 5, ver modalAjustes.vue)
     diceImages: [],
+    // Diseño del lanzador de dados a pantalla completa: 'clasico' (logo/imágenes propias
+    // en la cara 6) o 'gotico' (diseño numerado, ver AjustesPlay.vue)
+    tipoDadoSkin: 'clasico',
+    // Logros desbloqueados: [{ id, unlockedAt, claimed, claimedAt }], ver services/achievementsService.js
+    achievements: [],
+    // monedas obtenidas al reclamar recompensas de logros
+    coins: 0,
+    // id del logro a mostrar en el toast de "logro desbloqueado" (null = oculto)
+    achievementToastId: null,
     responseObjectsInPlay:[],
     // variable para mostrar el modal de busqueda de objetos
     modalBuscarObjeto: false,
@@ -484,6 +493,19 @@ export default createStore({
 
     setDiceImages(state, images) {
       state.diceImages = images || [];
+    },
+
+    setAchievements(state, achievements) {
+      state.achievements = achievements || [];
+    },
+    setCoins(state, coins) {
+      state.coins = coins || 0;
+    },
+    showAchievementToast(state, achievementId) {
+      state.achievementToastId = achievementId;
+    },
+    hideAchievementToast(state) {
+      state.achievementToastId = null;
     },
 
     setUserName(state, name) {

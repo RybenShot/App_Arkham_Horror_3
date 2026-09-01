@@ -70,14 +70,30 @@
 
     </div>
     
-    <!-- Resultados -->
-    <div v-if="showDice" class="resultados mx-2">
-      <hr class="my-1">
-      <div class="columns is-mobile is-multiline is-centered">
-        <div v-for="(d, index) in NDadosTotal" :key="index" class="column is-narrow">
-          <staticDie :ref="`diceRoller${index}`" size="tiny" :rerollable="false" :success-only="true" @result="handleDiceResult" />
+    <!-- Lanzador de dados a pantalla completa: sin tapete, el área de choque es la propia pantalla -->
+    <teleport to="body">
+      <transition name="dice-overlay-fade">
+        <div v-if="rollingFullscreen" class="dice-fullscreen-overlay">
+          <DiceRollerCanvas
+            ref="diceRollerFullscreen"
+            :count="NDadosTotal"
+            :success-threshold="successThreshold"
+            @settled="handleDiceSettled"
+          />
         </div>
-      </div>
+      </transition>
+    </teleport>
+
+    <!-- Resultados: aparecen uno a uno tras cerrarse el lanzador -->
+    <div v-if="resultadosVisibles.length" class="resultados mx-2">
+      <hr class="my-1">
+      <transition-group name="dado-pop" tag="div" class="columns is-mobile is-multiline is-centered">
+        <div v-for="(valor, idx) in resultadosVisibles" :key="idx" class="column is-narrow">
+          <div class="resultado-tile" :class="{ acierto: esExito(valor), fatal: valor === 1 }">
+            <i class="fas" :class="iconoDado(valor)"></i>
+          </div>
+        </div>
+      </transition-group>
     </div>
 
     <!-- Modal para Concentración -->
@@ -103,12 +119,23 @@
 </template>
 
 <script>
-import staticDie from "@/components/inPlay/modals/events/figth/launcherStaticDie.vue";
+import DiceRollerCanvas from "./diceRoller/DiceRollerCanvas.vue";
 import { apiService } from '@/services/api.js';
+
+// Iconos de Font Awesome para cada valor del dado en la zona de resultados
+// (siempre el dado "normal" de FA, independiente del diseño elegido en Ajustes)
+const ICONOS_DADO = {
+  1: "fa-dice-one",
+  2: "fa-dice-two",
+  3: "fa-dice-three",
+  4: "fa-dice-four",
+  5: "fa-dice-five",
+  6: "fa-dice-six"
+};
 
 export default {
   name: "TiraDados",
-  components: { staticDie },
+  components: { DiceRollerCanvas },
   data(){
     return{
       //Atributo activado
@@ -117,8 +144,8 @@ export default {
       NDadosAtributo: 0,
       NDeDadosExtra: 0,
       resultados: [],
-      diceResults: [],
-      showDice: false,
+      resultadosVisibles: [],
+      rollingFullscreen: false,
       sumaResultado: 0,
 
       modalConcentracionAbierto: false,
@@ -193,23 +220,37 @@ export default {
     async tirarDados() {
       if (this.NDadosTotal <= 0) return;
       this.resultados = [];
-      this.diceResults = [];
-      this.showDice = true;
+      this.resultadosVisibles = [];
+      this.rollingFullscreen = true;
       await this.$nextTick();
-      for (let i = 0; i < this.NDadosTotal; i++) {
-        this.$refs[`diceRoller${i}`][0].rollDice();
-      }
+      this.$refs.diceRollerFullscreen.roll();
     },
-    handleDiceResult(result) {
-      this.diceResults.push(result);
-      this.resultados.push(result);
-      if (this.diceResults.length === this.NDadosTotal) {
-        setTimeout(() => { this.comprobarResultado(); }, 500);
-      }
+    // Se dispara al asentarse todos los dados en el lanzador a pantalla completa.
+    // Se dejan ver 2s los resultados y luego se cierra el lanzador, mostrando
+    // los resultados uno a uno en la zona de resultados.
+    handleDiceSettled(result) {
+      this.resultados = result.values;
+      setTimeout(() => {
+        this.rollingFullscreen = false;
+        this.mostrarResultadosUnoAUno(result.values);
+        const tiempoRevelado = result.values.length * 140 + 300;
+        setTimeout(() => { this.comprobarResultado(); }, tiempoRevelado);
+      }, 2000);
+    },
+    mostrarResultadosUnoAUno(valores) {
+      valores.forEach((valor, i) => {
+        setTimeout(() => { this.resultadosVisibles.push(valor); }, i * 140);
+      });
+    },
+    esExito(valor) {
+      return valor >= this.successThreshold;
+    },
+    iconoDado(valor) {
+      return ICONOS_DADO[valor];
     },
     vaciarArray: function () {
       this.resultados = [];
-      this.diceResults = [];
+      this.resultadosVisibles = [];
       this.sumaResultado = 0;
     },
 
@@ -268,6 +309,13 @@ export default {
     //! ESTA FUNCION SE USA COMO VARIABLE
     concentracionFichas() {
       return this.$store.getters.getConcentrationInPlay;
+    },
+    // Umbral de acierto vigente: 6 por defecto, 5 con la mejora de acierto,
+    // 4 con la mejora superior (misma regla que antes usaba cada dado suelto)
+    successThreshold() {
+      if (this.$store.state.AvAcierto3) return 4;
+      if (this.$store.state.AvAcierto2) return 5;
+      return 6;
     }
   },
   mounted(){
@@ -325,5 +373,47 @@ export default {
 .fatal {
   border: solid red ;
   box-shadow: 0 0 20px red;
+}
+
+/* Lanzador de dados a pantalla completa */
+.dice-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  background: rgba(0, 0, 0, 0.88);
+}
+.dice-fullscreen-overlay > * {
+  flex: 1;
+}
+.dice-overlay-fade-enter-active,
+.dice-overlay-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.dice-overlay-fade-enter-from,
+.dice-overlay-fade-leave-to {
+  opacity: 0;
+}
+
+/* Resultados: aparición uno a uno */
+.resultado-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.6rem;
+  color: #fff;
+  background-color: #1a1a1a;
+  border-radius: 90%;
+  border: solid 0.1px rgba(255, 255, 255, 0.25);
+}
+.dado-pop-enter-active {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.dado-pop-enter-from {
+  opacity: 0;
+  transform: scale(0.4) translateY(6px);
+}
+.dado-pop-move {
+  transition: transform 0.35s ease;
 }
 </style>

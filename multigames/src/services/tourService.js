@@ -1,6 +1,7 @@
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { apiService } from '@/services/api.js';
+import { unlockAchievement } from '@/services/achievementsService.js';
 import mapaBGSimulacion from '@/assets/img/3-Mapas/BG9MapaAHNocheCerrada.jpg';
 
 const CONTINUE_KEY = 'ah_tour_continue';
@@ -224,6 +225,9 @@ function makeDriver(steps, segment) {
     // Si es el final del tour general, despedimos y redirigimos a Home; si no, cerramos sin más.
     onDestroyStarted: () => {
       const irAHome = _currentSegment === 'play' && !_driverInstance?.hasNextStep?.();
+      if (irAHome && _store) {
+        unlockAchievement(_store, 'tutorial_general');
+      }
       destroy();
       if (irAHome) {
         _router?.push('/');

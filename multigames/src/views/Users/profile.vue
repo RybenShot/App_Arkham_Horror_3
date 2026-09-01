@@ -18,42 +18,75 @@
 
       <!-- Tarjeta avatar + identidad -->
       <div class="avatar-card">
-        <img class="avatar-img"
-          :src="$store.state.datosPJactual.imgInv || '/img/1-inv/57-Nameless.jpg'"
-          alt="Investigador">
-        <div class="avatar-info">
-          <p class="avatar-name">{{ user.fullName || user.firstName || user.username }}</p>
-          <p class="avatar-username">@{{ user.username || 'Investigador' }}</p>
-          <p class="avatar-email">{{ user.primaryEmailAddress?.emailAddress }}</p>
+        <div class="avatar-main-row">
+          <img class="avatar-img"
+            :src="$store.state.datosPJactual.imgInv || '/img/1-inv/57-Nameless.jpg'"
+            alt="Investigador">
+          <div class="avatar-info">
+            <p class="avatar-name">{{ user.fullName || user.firstName || user.username }}</p>
+            <p class="avatar-username">@{{ user.username || 'Investigador' }}</p>
+            <p class="avatar-email">{{ user.primaryEmailAddress?.emailAddress }}</p>
+          </div>
+          <span class="coin-pill" ref="coinPill" :class="{ bump: coinBump }">
+            <i class="fas fa-coins"></i>{{ displayedCoins }}
+          </span>
+        </div>
+
+        <!-- User ID -->
+        <div class="user-id-zone">
+          <p class="user-id-label">{{ textoInterfaz.isAuth.titleIDUsuario }}</p>
+          <div class="user-id-row">
+            <code class="user-id-code">{{ user.id }}</code>
+            <button class="copy-id-btn" @click="copyCode()">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="stats-row">
-        <div class="stat-card">
-          <span class="stat-num">{{ getMapsLength() }}</span>
-          <span class="stat-label">{{ $store.state.lenguaje === 'español' ? 'Mapas' : 'Maps' }}</span>
+      <!-- Logros: insignias conseguidas (solo se muestran las conseguidas o con algo por reclamar) -->
+      <div v-if="achievementGroups.length" class="badges-divider-row">
+        <span class="divider-line"></span>
+        <div class="badges-strip">
+          <div
+            v-for="group in achievementGroups"
+            :key="group.groupId"
+            class="badge-slot"
+            @click="onBadgeClick(group, $event)"
+          >
+            <div
+              v-if="usesFlipCard(group)"
+              class="badge-flip"
+              :class="{ flipped: badgeRevealed(group), evolving: evolvingGroups[group.groupId] }"
+              :style="evolvingGroups[group.groupId] ? { '--ring-color': ringColor(group) } : {}"
+            >
+              <span
+                class="badge-face badge-front badge-icon-face blink"
+                :class="group.currentDef ? `medal-${group.currentDef.medal}` : ''"
+              >
+                <i v-if="group.currentDef" :class="group.currentDef.icon"></i>
+                <template v-else>?</template>
+              </span>
+              <span
+                class="badge-face badge-back badge-icon-face"
+                :class="`medal-${(group.pendingDef || group.currentDef).medal}`"
+              >
+                <i :class="(group.pendingDef || group.currentDef).icon"></i>
+              </span>
+            </div>
+            <div v-else class="badge-static badge-icon-face" :class="`medal-${group.currentDef.medal}`">
+              <i :class="group.currentDef.icon"></i>
+            </div>
+          </div>
         </div>
-        <div class="stat-card">
-          <span class="stat-num">{{ getInvestigadoresCount() }}</span>
-          <span class="stat-label">{{ $store.state.lenguaje === 'español' ? 'Investigadores' : 'Investigators' }}</span>
-        </div>
-        <div class="stat-card stat-soon">
-          <span class="stat-num">🏆</span>
-          <span class="stat-label">{{ $store.state.lenguaje === 'español' ? 'Pronto' : 'Soon' }}</span>
-        </div>
+        <span class="divider-line"></span>
       </div>
 
-      <!-- User ID -->
-      <div class="user-id-zone">
-        <p class="user-id-label">{{ textoInterfaz.isAuth.titleIDUsuario }}</p>
-        <div class="user-id-row">
-          <code class="user-id-code">{{ user.id }}</code>
-          <button class="copy-id-btn" @click="copyCode()">
-            <i class="fas fa-copy"></i>
-          </button>
-        </div>
-      </div>
+      <!-- [TEMP] acceso directo a /logros para pruebas — eliminar antes de producción -->
+      <router-link to="/logros" class="temp-logros-btn">
+        <i class="fas fa-list"></i>
+        {{ $store.state.lenguaje === 'español' ? 'Ver logros' : 'View achievements' }}
+      </router-link>
 
       <!-- Tabs: Mapas / Investigadores -->
       <section class="prof-tabs-section">
@@ -103,6 +136,23 @@
       </div>
     </div>
 
+    <!-- Monedas y chispas del efecto de evolución -->
+    <teleport to="body">
+      <i
+        v-for="coin in flyingCoins"
+        :key="`coin-${coin.id}`"
+        class="fas fa-coins flying-coin"
+        :style="{ left: coin.left + 'px', top: coin.top + 'px', '--dx': coin.dx + 'px', '--dy': coin.dy + 'px', animationDelay: coin.delay + 'ms' }"
+      ></i>
+      <i
+        v-for="spark in sparkles"
+        :key="`spark-${spark.id}`"
+        class="fas fa-star evolution-spark"
+        :class="`medal-${spark.medal}`"
+        :style="{ left: spark.left + 'px', top: spark.top + 'px', '--dx': spark.dx + 'px', '--dy': spark.dy + 'px' }"
+      ></i>
+    </teleport>
+
   </div>
 </template>
 
@@ -113,8 +163,12 @@ import MapCard from '@/components/mapas/MapCard.vue'
 import InvestigatorCard from '@/components/personajes/invCard.vue'
 import { apiService } from '@/services/api.js'
 import { useStore } from 'vuex' // importamos esto para poder usar el store en el setup
+import { ensureAchievementsLoaded, claimAchievement, getAchievementGroups } from '@/services/achievementsService.js'
 
 import { BIcon, BTabs, BTabItem, BTag } from "buefy";
+
+let coinSeq = 0;
+let sparkSeq = 0;
 
 export default {
   name: "ProfileView",
@@ -149,8 +203,43 @@ export default {
 
     return { user, isSignedIn, signOut, userMaps, userInv }
   },
+  computed: {
+    // Una entrada por logro (agrupando sus niveles bronce/plata/oro), con el nivel
+    // ya reclamado (currentDef) y el siguiente nivel pendiente de reclamar (pendingDef).
+    // Los logros sin ningún nivel desbloqueado (locked) no se muestran en el resumen.
+    achievementGroups() {
+      const unlockedList = this.$store.state.achievements;
+      return getAchievementGroups()
+        .map(tiers => {
+          let currentDef = null;
+          let pendingDef = null;
+          for (const tierDef of tiers) {
+            const encontrado = unlockedList.find(u => u.id === tierDef.id);
+            if (!encontrado) continue;
+            if (encontrado.claimed) currentDef = tierDef;
+            else pendingDef = tierDef;
+          }
+          return {
+            groupId: tiers[0].group,
+            currentDef,
+            pendingDef,
+            state: pendingDef ? 'pending' : (currentDef ? 'claimed' : 'locked'),
+          };
+        })
+        .filter(group => group.state !== 'locked');
+    },
+  },
   data() {
     return {
+      // ids de grupo ya "girados" localmente (evita que la insignia vuelva a mostrar
+      // el "?" mientras se confirma el reclamo, o si ya se reclamó en esta sesión)
+      flippedGroups: {},
+      // ids de grupo mostrando el efecto de evolución (brillo + partículas) justo al revelarse
+      evolvingGroups: {},
+      flyingCoins: [],
+      sparkles: [],
+      displayedCoins: 0,
+      coinBump: false,
       textoInterfaz: {
         title: "",
         noAuth: {
@@ -171,7 +260,13 @@ export default {
       onLineMaps: true,
     }
   },
-  
+
+  watch: {
+    '$store.state.coins'(nuevo, viejo) {
+      this.animarContadorMonedas(viejo || 0, nuevo || 0);
+    },
+  },
+
   methods: {
     // Obtener lista de investigadores
     getInvestigadores() {
@@ -243,9 +338,134 @@ export default {
     getMapsLength() {
       return this.userMaps.length
     },
+
+    // Una vez girada (o mientras siga pendiente), la insignia usa la carta giratoria;
+    // así, aunque el reclamo se confirme a mitad del giro, no cambia de estructura y no da un salto visual.
+    usesFlipCard(group) {
+      return group.state === 'pending' || !!this.flippedGroups[group.groupId];
+    },
+
+    badgeRevealed(group) {
+      return !!this.flippedGroups[group.groupId];
+    },
+
+    ringColor(group) {
+      const medal = (group.pendingDef || group.currentDef)?.medal;
+      return { oro: '#ffd700', plata: '#d7d9dd', bronce: '#cd7f32' }[medal] || '#c8902a';
+    },
+
+    onBadgeClick(group, event) {
+      if (group.state === 'pending') {
+        this.onTapPending(group, event);
+        return;
+      }
+      this.$router.push('/logros');
+    },
+
+    // Gira la insignia para revelar el nivel conseguido, reclama su recompensa y dispara
+    // el efecto de evolución (brillo, chispas y monedas) al completarse el giro.
+    async onTapPending(group, event) {
+      if (this.flippedGroups[group.groupId]) return;
+      const sourceRect = event.currentTarget.getBoundingClientRect();
+      this.flippedGroups[group.groupId] = true;
+
+      // esperamos como mínimo lo que dura el giro (0.5s) para que el efecto de evolución
+      // se dispare siempre justo al revelarse, sin importar lo rápido que responda el servidor
+      const esperaMinima = new Promise(resolve => setTimeout(resolve, 500));
+      const [coinsGanadas] = await Promise.all([
+        claimAchievement(this.$store, group.pendingDef.id),
+        esperaMinima,
+      ]);
+
+      if (coinsGanadas) {
+        this.dispararEvolucion(group, sourceRect, coinsGanadas);
+      } else {
+        delete this.flippedGroups[group.groupId];
+      }
+    },
+
+    dispararEvolucion(group, sourceRect, coinsGanadas) {
+      this.evolvingGroups[group.groupId] = true;
+      setTimeout(() => { delete this.evolvingGroups[group.groupId]; }, 800);
+
+      this.lanzarChispas(sourceRect, (group.pendingDef || group.currentDef).medal);
+      this.lanzarMonedas(sourceRect, coinsGanadas);
+    },
+
+    lanzarChispas(sourceRect, medal) {
+      const cx = sourceRect.left + sourceRect.width / 2;
+      const cy = sourceRect.top + sourceRect.height / 2;
+      const n = 6;
+      for (let i = 0; i < n; i++) {
+        const angulo = (Math.PI * 2 * i) / n + Math.random() * 0.4;
+        const distancia = 26 + Math.random() * 12;
+        const id = sparkSeq++;
+        this.sparkles.push({
+          id,
+          left: cx,
+          top: cy,
+          medal,
+          dx: Math.cos(angulo) * distancia,
+          dy: Math.sin(angulo) * distancia,
+        });
+        setTimeout(() => {
+          this.sparkles = this.sparkles.filter(s => s.id !== id);
+        }, 650);
+      }
+    },
+
+    lanzarMonedas(sourceRect, coinsGanadas) {
+      const targetEl = this.$refs.coinPill;
+      if (!targetEl) return;
+      const targetRect = targetEl.getBoundingClientRect();
+      const startX = sourceRect.left + sourceRect.width / 2;
+      const startY = sourceRect.top + sourceRect.height / 2;
+      const endX = targetRect.left + targetRect.width / 2;
+      const endY = targetRect.top + targetRect.height / 2;
+
+      const n = Math.min(coinsGanadas, 6);
+      for (let i = 0; i < n; i++) {
+        const id = coinSeq++;
+        const jitterX = (Math.random() - 0.5) * 20;
+        const jitterY = (Math.random() - 0.5) * 20;
+        const delay = i * 70;
+        this.flyingCoins.push({
+          id,
+          left: startX + jitterX,
+          top: startY + jitterY,
+          dx: endX - startX - jitterX,
+          dy: endY - startY - jitterY,
+          delay,
+        });
+        setTimeout(() => {
+          this.flyingCoins = this.flyingCoins.filter(c => c.id !== id);
+        }, 700 + delay);
+      }
+
+      setTimeout(() => {
+        this.coinBump = true;
+        setTimeout(() => { this.coinBump = false; }, 350);
+      }, 500);
+    },
+
+    animarContadorMonedas(desde, hasta) {
+      if (desde === hasta) return;
+      const duracion = 500;
+      const inicio = performance.now();
+      const paso = (ahora) => {
+        const progreso = Math.min((ahora - inicio) / duracion, 1);
+        this.displayedCoins = Math.round(desde + (hasta - desde) * progreso);
+        if (progreso < 1) requestAnimationFrame(paso);
+      };
+      requestAnimationFrame(paso);
+    },
   },
   mounted(){
     this.rellenarTextosegunIdioma();
+    this.displayedCoins = this.$store.state.coins;
+    if (this.isSignedIn) {
+      ensureAchievementsLoaded(this.$store);
+    }
     setTimeout(() => {
         this.count++;
     }, 3 * 1000);
@@ -306,14 +526,19 @@ export default {
 /* ── Avatar card ──────────────────────────── */
 .avatar-card {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
+  gap: 12px;
   margin: 14px 14px 12px;
   background: rgba(6, 3, 14, 0.78);
   border: 1px solid rgba(200, 144, 42, 0.38);
   border-radius: 16px;
   padding: 14px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+.avatar-main-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 .avatar-img {
   width: 78px;
@@ -350,50 +575,173 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* ── Stats row ────────────────────────────── */
-.stats-row {
+.coin-pill {
   display: flex;
-  gap: 9px;
-  margin: 0 14px 12px;
-}
-.stat-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 4px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(200, 144, 42, 0.22);
-  border-radius: 12px;
-  padding: 11px 4px;
+  flex-shrink: 0;
+  color: rgba(232, 213, 163, 0.75);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.15s ease;
 }
-.stat-num {
-  color: #e8d5a3;
-  font-family: Georgia, serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
+.coin-pill i { color: rgba(255, 215, 0, 0.65); }
+.coin-pill.bump { transform: scale(1.25); }
+
+/* ── Logros: insignias centradas ───────────── */
+.badges-divider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 14px 14px;
+  text-decoration: none;
 }
-.stat-soon .stat-num { font-size: 1.1rem; }
-.stat-label {
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(200, 144, 42, 0.3);
+}
+.divider-line:first-child { background: linear-gradient(to right, transparent, rgba(200, 144, 42, 0.3)); }
+.divider-line:last-child  { background: linear-gradient(to left, transparent, rgba(200, 144, 42, 0.3)); }
+
+/* [TEMP] acceso directo de pruebas a /logros — eliminar antes de producción */
+.temp-logros-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 auto 14px;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
   color: rgba(220, 210, 195, 0.55);
-  font-size: 0.62rem;
-  text-align: center;
-  letter-spacing: 0.03em;
+  font-size: 0.68rem;
+  text-decoration: none;
+}
+.temp-logros-btn:active { background: rgba(255, 255, 255, 0.08); }
+.badges-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  perspective: 300px;
+}
+.badge-slot {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 
-/* ── User ID ──────────────────────────────── */
+/* ── Círculo con icono, coloreado según la medalla conseguida ── */
+.badge-icon-face {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  border: 1px solid transparent;
+}
+.badge-icon-face.medal-oro    { border-color: rgba(255, 215, 0, 0.55); color: rgba(255, 215, 0, 0.85); }
+.badge-icon-face.medal-plata  { border-color: rgba(215, 217, 221, 0.55); color: rgba(215, 217, 221, 0.85); }
+.badge-icon-face.medal-bronce { border-color: rgba(205, 127, 50, 0.55); color: rgba(205, 127, 50, 0.85); }
+
+/* ── Insignia giratoria (pendiente de reclamar → revelada) ───── */
+.badge-flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.badge-flip.flipped { transform: rotateY(180deg); }
+.badge-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.badge-front {
+  font-weight: 700;
+  --glow-color: rgba(200, 144, 42, 0.75);
+  border-color: var(--glow-color);
+  background: rgba(0, 0, 0, 0.15);
+  color: var(--glow-color);
+}
+.badge-front.medal-oro    { --glow-color: #ffd700; }
+.badge-front.medal-plata  { --glow-color: #d7d9dd; }
+.badge-front.medal-bronce { --glow-color: #cd7f32; }
+.badge-front.blink { animation: badge-blink 1.3s ease-in-out infinite; }
+@keyframes badge-blink {
+  0%, 100% { box-shadow: 0 0 4px var(--glow-color); }
+  50%      { box-shadow: 0 0 14px var(--glow-color); }
+}
+.badge-back { transform: rotateY(180deg); }
+
+/* ── Efecto de evolución: pop + anillo expansivo al revelarse ── */
+.badge-flip.evolving { animation: badge-evolve-pop 0.6s ease-out; }
+@keyframes badge-evolve-pop {
+  0%   { transform: rotateY(180deg) scale(1); }
+  35%  { transform: rotateY(180deg) scale(1.55); }
+  100% { transform: rotateY(180deg) scale(1); }
+}
+.badge-flip.evolving::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--ring-color, #ffd700);
+  animation: badge-ring-burst 0.8s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes badge-ring-burst {
+  0%   { transform: scale(0.6); opacity: 0.95; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* ── Monedas y chispas volando desde la insignia ──────────────── */
+.flying-coin {
+  position: fixed;
+  z-index: 3000;
+  color: #ffd700;
+  font-size: 0.9rem;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.75));
+  animation: coin-fly 0.7s ease-in forwards;
+}
+@keyframes coin-fly {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
+}
+.evolution-spark {
+  position: fixed;
+  z-index: 3000;
+  font-size: 0.55rem;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: spark-burst 0.6s ease-out forwards;
+}
+.evolution-spark.medal-oro    { color: #ffd700; }
+.evolution-spark.medal-plata  { color: #d7d9dd; }
+.evolution-spark.medal-bronce { color: #cd7f32; }
+@keyframes spark-burst {
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity: 0; }
+}
+
+/* ── User ID (dentro de la tarjeta de avatar) ─ */
 .user-id-zone {
-  margin: 0 14px 14px;
-  background: rgba(0, 0, 0, 0.42);
-  border: 1px solid rgba(200, 144, 42, 0.18);
-  border-radius: 10px;
-  padding: 11px 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(200, 144, 42, 0.16);
 }
 .user-id-label {
-  color: rgba(200, 144, 42, 0.75);
-  font-size: 0.72rem;
+  color: rgba(200, 144, 42, 0.7);
+  font-size: 0.68rem;
   font-weight: 600;
   margin-bottom: 7px;
   letter-spacing: 0.04em;

@@ -13,6 +13,12 @@
       </button>
     </div>
 
+    <!-- ── Cartel colgante: entrada a la máquina expendedora ─── -->
+    <div class="shop-sign-wrapper" @click="goToMaquinaExpendedora()">
+      <span class="shop-sign-rope"></span>
+      <span class="shop-sign-board">{{ $store.state.lenguaje === 'español' ? 'ABIERTO' : 'OPEN' }}</span>
+    </div>
+
     <!-- ── Modal Tour (gracioso) ─────────────────────────────── -->
     <div v-if="showTourModal" class="tour-modal-overlay" @click.self="showTourModal = false">
       <div class="tour-modal-card">
@@ -47,6 +53,53 @@
           <div class="tour-modal-buttons">
             <button class="tour-btn-yes" @click="launchTour">Yes, show me the way! 🔦</button>
             <button class="tour-btn-no"  @click="showTourModal = false; showTourButton = false">I know what I'm doing 🎩</button>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- ── Modal: cómo instalar (cuando el navegador no ofrece el diálogo
+         nativo de instalación, p.ej. Brave) ────────────────────────── -->
+    <div v-if="showInstallHelpModal" class="tour-modal-overlay" @click.self="showInstallHelpModal = false">
+      <div class="tour-modal-card">
+        <button class="tour-modal-close" @click="showInstallHelpModal = false">×</button>
+        <div class="tour-modal-icon">
+          <i class="fas fa-download" style="font-size: 2.2rem; color: #e8d5a3;"></i>
+        </div>
+        <template v-if="$store.state.lenguaje === 'español'">
+          <h2 class="tour-modal-title">Instalar la app</h2>
+          <p class="tour-modal-text">
+            Tu navegador no me deja instalarla con un toque, pero puedes hacerlo a mano:<br><br>
+            <template v-if="plataformaInstall === 'ios'">
+              Toca el icono <strong>Compartir</strong> (el cuadrado con la flecha hacia arriba) y elige <strong>«Añadir a pantalla de inicio»</strong>. Si no lo ves, abre esta página en Safari.
+            </template>
+            <template v-else-if="plataformaInstall === 'android'">
+              Abre el menú <strong>⋮</strong> de tu navegador (arriba a la derecha) y toca <strong>«Instalar aplicación»</strong> o <strong>«Añadir a pantalla de inicio»</strong>.
+            </template>
+            <template v-else>
+              Busca el icono de instalar en la barra de direcciones, o abre el menú de tu navegador y busca <strong>«Instalar aplicación»</strong>.
+            </template>
+          </p>
+          <div class="tour-modal-buttons">
+            <button class="tour-btn-yes" @click="showInstallHelpModal = false">Entendido</button>
+          </div>
+        </template>
+        <template v-else>
+          <h2 class="tour-modal-title">Install the app</h2>
+          <p class="tour-modal-text">
+            Your browser won't let me install it with one tap, but you can do it by hand:<br><br>
+            <template v-if="plataformaInstall === 'ios'">
+              Tap the <strong>Share</strong> icon (the square with an arrow pointing up) and choose <strong>"Add to Home Screen"</strong>. If you don't see it, open this page in Safari.
+            </template>
+            <template v-else-if="plataformaInstall === 'android'">
+              Open your browser's <strong>⋮</strong> menu (top right) and tap <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.
+            </template>
+            <template v-else>
+              Look for the install icon in the address bar, or open your browser's menu and look for <strong>"Install app"</strong>.
+            </template>
+          </p>
+          <div class="tour-modal-buttons">
+            <button class="tour-btn-yes" @click="showInstallHelpModal = false">Got it</button>
           </div>
         </template>
       </div>
@@ -114,6 +167,10 @@
         <button class="sec-btn" @click="abrirAjustes()">
           <i class="fas fa-cog"></i>
           <span>{{ $store.state.lenguaje == 'español' ? 'Ajustes' : 'Settings' }}</span>
+        </button>
+        <button v-if="!pwaInstallState.installed" class="sec-btn" @click="instalarApp()">
+          <i class="fas fa-download"></i>
+          <span>{{ $store.state.lenguaje == 'español' ? 'Instalar app' : 'Install app' }}</span>
         </button>
       </div>
 
@@ -191,6 +248,7 @@ import ModalDonacion from '@/components/home/modalDonacion.vue';
 import ModalAjustes from '@/components/home/modalAjustes.vue';
 
 import { initTour, startTourFromHome } from '@/services/tourService.js';
+import { pwaInstallState, promptInstall, detectPlatform } from '@/services/pwaInstallService.js';
 
 
 export default {
@@ -227,6 +285,9 @@ export default {
   },
   data() {
     return {
+      pwaInstallState,
+      plataformaInstall: detectPlatform(),
+      showInstallHelpModal: false,
       audioIniciado: false,
       contadorVisitas: null,
       contadorUsuariosActivos: null,
@@ -380,6 +441,30 @@ export default {
     abrirAjustes(){
       this.SonidoTecla()
       this.$store.state.StoreModalAjustes = true
+    },
+
+    goToMaquinaExpendedora(){
+      this.$router.push('/maquina-expendedora')
+    },
+
+    // Lanza el diálogo nativo de instalación de la PWA (sólo existe si el
+    // navegador ya disparó beforeinstallprompt; ver pwaInstallService.js).
+    async instalarApp(){
+      this.SonidoTecla()
+      // Si el navegador ofrece el diálogo nativo (Chrome/Edge/Android...), lo
+      // usamos. Si no (Brave, Firefox, iOS...), mostramos cómo hacerlo a mano.
+      if (!this.pwaInstallState.canInstall) {
+        this.showInstallHelpModal = true;
+        return;
+      }
+      const outcome = await promptInstall();
+      if (outcome === 'dismissed') {
+        this.$buefy.toast.open({
+          message: this.$store.state.lenguaje === 'español' ? 'Instalación cancelada' : 'Installation cancelled',
+          type: 'is-warning',
+          duration: 2500,
+        });
+      }
     },
 
     iniciarAudio() {
@@ -686,6 +771,57 @@ button     { background: none; border: 0; color: inherit; padding: 0; }
 
 /* ── Footer idioma ────────────────────────────────────── */
 .lang-row { display: flex; justify-content: center; gap: 20px; padding: 12px; }
+
+/* ── Cartel colgante (entrada a la máquina expendedora) ───── */
+.shop-sign-wrapper {
+  position: fixed;
+  top: -430px;
+  left: calc(50% + 95px);
+  height: 480px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: sign-sway 7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.shop-sign-rope {
+  flex: 1;
+  width: 2px;
+  background: repeating-linear-gradient(
+    180deg,
+    #8a7358 0px, #8a7358 2px,
+    #4a3d2c 2px, #4a3d2c 4px
+  );
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+}
+.shop-sign-board {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background: linear-gradient(160deg, #6b4a2e, #4a3320 60%, #2e1f12);
+  border: 2px solid #241809;
+  border-radius: 3px;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 200, 140, 0.15),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    0 3px 6px rgba(0, 0, 0, 0.5);
+  color: #2a1c10;
+  font-family: Georgia, serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 0 rgba(255, 210, 150, 0.3), 0 -1px 1px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  transform: rotate(-1.5deg);
+  cursor: pointer;
+  pointer-events: auto;
+}
+@keyframes sign-sway {
+  from { transform: rotate(-1.2deg); }
+  to   { transform: rotate(1.2deg); }
+}
 
 /* ── Tour FAB ────────────────────────────────────────────── */
 .tour-fab {

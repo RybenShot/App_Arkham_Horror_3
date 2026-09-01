@@ -7,11 +7,15 @@
 
     <!-- Overlay de fundido a negro -->
     <div class="black-fade" :class="{ visible: fadeOverlay }"></div>
+
+    <!-- Notificación de logro desbloqueado (estilo Steam/PlayStation) -->
+    <AchievementToast />
   </div>
 </template>
 
 <script>
 import LoadingPage from '@/components/helpers/loadingPage.vue';
+import AchievementToast from '@/components/achievements/AchievementToast.vue';
 import { apiService } from '@/services/api.js';
 import { initTour, updateLang } from '@/services/tourService.js';
 
@@ -23,12 +27,32 @@ export default {
       descripcion: "",
       parrafo: "",
       fadeOverlay: false,
+      swRegistration: null,
     }
   },
   components: {
-    LoadingPage
+    LoadingPage,
+    AchievementToast
   },
   methods: {
+    onSwUpdated(event) {
+      this.swRegistration = event.detail;
+      const esEspanol = this.$store.state.lenguaje == 'español';
+
+      this.$buefy.snackbar.open({
+        message: esEspanol
+          ? 'Hay una nueva versión disponible.'
+          : 'A new version is available.',
+        type: 'is-warning',
+        position: 'is-bottom',
+        actionText: esEspanol ? 'Actualizar' : 'Update',
+        indefinite: true,
+        onAction: () => {
+          if (!this.swRegistration || !this.swRegistration.waiting) return;
+          this.swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+      });
+    },
     rellenarTextosegunIdioma(){
       if(this.$store.state.lenguaje == 'español'){
         this.titulo = "Vista en PC no disponible";
@@ -54,6 +78,8 @@ export default {
     }
   },
   created() {
+    document.addEventListener('swUpdated', this.onSwUpdated);
+
     const FADE = 350
 
     this.$router.beforeEach((_to, _from, next) => {
@@ -87,6 +113,9 @@ export default {
     await this.obtainWellcomeApi();
     await this.obtainVisitsApi();
     this.$store.state.loadingPageState = false;
+  },
+  beforeUnmount() {
+    document.removeEventListener('swUpdated', this.onSwUpdated);
   },
   watch: {
     '$store.state.lenguaje'(val) { updateLang(val); }

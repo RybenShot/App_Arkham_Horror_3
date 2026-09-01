@@ -467,6 +467,39 @@ export const apiService = {
     }
   },
 
+  // LOGROS
+  async getAchievements(idUser){
+    try {
+      const response = await axios.get(`${API_URL}/achievements/${idUser}`)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al obtener los logros`, error);
+      throw error;
+    }
+  },
+
+  async unlockAchievement(idUser, achievementId){
+    try {
+      const payload = { idUser, achievementId }
+      const response = await axios.post(`${API_URL}/achievements`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al desbloquear el logro`, error);
+      throw error;
+    }
+  },
+
+  async claimAchievement(idUser, achievementId, coins){
+    try {
+      const payload = { idUser, achievementId, coins }
+      const response = await axios.post(`${API_URL}/achievements/claim`, payload)
+      return response.data
+    } catch (error) {
+      console.error(`❌ Error al reclamar el logro`, error);
+      throw error;
+    }
+  },
+
   // Get tienda de Mapa On Line
   async getShopItems(idMapInPlay){
     try {

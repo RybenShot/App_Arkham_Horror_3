@@ -8,6 +8,7 @@
           <p class="title is-6 has-text-white mb-3 pt-2">{{ textoInterfaz.efectoInmersion }}</p>
           <p class="title is-6 has-text-white">{{ textoInterfaz.musicaAmb }}</p>
           <p class="title is-6 has-text-white">{{ textoInterfaz.modoOnLine }}</p>
+          <p class="title is-6 has-text-white mt-3">{{ textoInterfaz.tipoDado.label }}</p>
         </div>
         <div class="column has-text-left">
           <div class="buttons has-addons m-0">
@@ -41,6 +42,33 @@
               <span class="icon is-small"><i class="fas fa-satellite-dish"></i></span>
             </button>
           </div>
+          <div class="buttons has-addons mt-3">
+            <button class="button is-small is-link" @click="modalTipoDado = true">
+              {{ textoInterfaz.tipoDado.elegir }} ({{ nombreTipoDadoActual }})
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal para elegir el diseño de dado -->
+      <div v-if="modalTipoDado" class="modal is-active">
+        <div class="modal-background" @click="modalTipoDado = false"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">{{ textoInterfaz.tipoDado.titulo }}</p>
+            <button class="delete" @click="modalTipoDado = false"></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="dados-opciones-grid">
+              <div v-for="skin in diceSkins" :key="skin.id" class="dado-opcion"
+                :class="{ seleccionado: $store.state.tipoDadoSkin === skin.id }"
+                :title="skin.nombre[$store.state.lenguaje] || skin.nombre.español"
+                :aria-label="skin.nombre[$store.state.lenguaje] || skin.nombre.español"
+                @click="$store.state.tipoDadoSkin = skin.id">
+                <DiceFloatPreview :skin="skin" />
+              </div>
+            </div>
+          </section>
         </div>
       </div>
 
@@ -79,6 +107,8 @@
 import { invitationService } from '@/services/invitationService.js';
 import { apiService } from '@/services/api.js';
 import { audioService_effects } from '@/services/GestionAudio/audioService_effects.js';
+import { DICE_SKINS, getDiceSkin } from '@/components/inPlay/player/diceRoller/diceSkins.js';
+import DiceFloatPreview from '@/components/inPlay/player/diceRoller/DiceFloatPreview.vue';
 
 import { useUser, useAuth } from '@clerk/vue'
 import { onMounted } from 'vue'
@@ -90,6 +120,7 @@ import { audioService_audioInPlay } from '@/services/GestionAudio/audioService_s
 
 export default {
   name: "AjustesPlay",
+  components: { DiceFloatPreview },
   props: {
     // Este componente se monta a la vez en la pestaña Player y en la pestaña Map (comparten
     // el mismo StoreAjustesPlay). Con esta prop distinguimos la instancia del mapa para que
@@ -99,6 +130,8 @@ export default {
   data(){
     return{
       audioIniciado: false,
+      modalTipoDado: false,
+      diceSkins: DICE_SKINS,
       textoInterfaz:{
         titulo: "",
         musicaAmb:"",
@@ -108,6 +141,11 @@ export default {
         botones: {
           seleccionPersonaje: "",
           terminarPartida: ""
+        },
+        tipoDado: {
+          label: "",
+          elegir: "",
+          titulo: ""
         }
       },
     }
@@ -164,6 +202,10 @@ export default {
         this.textoInterfaz.botones.seleccionPersonaje = "Volver a selección de personaje";
         this.textoInterfaz.botones.terminarPartida = "Terminar partida";
 
+        this.textoInterfaz.tipoDado.label = "Tipo de dado";
+        this.textoInterfaz.tipoDado.elegir = "Elegir";
+        this.textoInterfaz.tipoDado.titulo = "Tipo de dado";
+
       }else if(this.$store.state.lenguaje == 'ingles'){
         this.textoInterfaz.titulo = "Settings";
         this.textoInterfaz.musicaAmb = "Background Music";
@@ -172,6 +214,10 @@ export default {
         this.textoInterfaz.mapCode = "Map code:";
         this.textoInterfaz.botones.seleccionPersonaje = "Back to character selection";
         this.textoInterfaz.botones.terminarPartida = "End game";
+
+        this.textoInterfaz.tipoDado.label = "Dice type";
+        this.textoInterfaz.tipoDado.elegir = "Choose";
+        this.textoInterfaz.tipoDado.titulo = "Dice type";
       }
     },
     // Método para copiar el código del mapa al portapapeles
@@ -312,6 +358,10 @@ export default {
   computed: {
     codeIDMapInPlay(){
       return this.$store.state.datosMapa.id
+    },
+    nombreTipoDadoActual(){
+      const skin = getDiceSkin(this.$store.state.tipoDadoSkin)
+      return skin.nombre[this.$store.state.lenguaje] || skin.nombre.español
     }
   },
   mounted(){
@@ -337,5 +387,50 @@ export default {
 .poll-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+/* Sin texto, sólo el dado flotando: tarjetas compactas para aprovechar el
+   ancho en móvil (caben 4 por fila en vez de 2-3). */
+.dados-opciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 0.5rem;
+}
+.dado-opcion {
+  position: relative;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.35rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.dado-opcion:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.dado-opcion.seleccionado {
+  border-color: rgba(120, 255, 140, 0.4);
+}
+/* Resplandor sutil y difuso detrás del dado elegido: un brillo ambiental que
+   respira despacio, no un halo marcado ni un efecto de botón */
+.dado-opcion.seleccionado::before {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 255, 140, 0.3) 0%, rgba(120, 255, 140, 0.1) 45%, transparent 75%);
+  filter: blur(14px);
+  animation: dado-brillo 3.2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.dado-opcion.seleccionado :deep(.dice-float-wrap) {
+  position: relative;
+  z-index: 1;
+}
+@keyframes dado-brillo {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dado-opcion.seleccionado::before { animation: none; opacity: 0.55; }
 }
 </style>

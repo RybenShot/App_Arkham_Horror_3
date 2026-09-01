@@ -19,8 +19,10 @@ if (process.env.NODE_ENV === 'production') {
     updatefound () {
       console.log('New content is downloading.')
     },
-    updated () {
+    updated (registration) {
       console.log('New content is available; please refresh.')
+      // Avisamos a la app (App.vue) para que muestre el aviso de actualización.
+      document.dispatchEvent(new CustomEvent('swUpdated', { detail: registration }))
     },
     offline () {
       console.log('No internet connection found. App is running in offline mode.')
@@ -28,5 +30,14 @@ if (process.env.NODE_ENV === 'production') {
     error (error) {
       console.error('Error during service worker registration:', error)
     }
+  })
+
+  // Cuando el nuevo service worker toma el control (tras pulsar "Actualizar"),
+  // recargamos la página una sola vez para servir la versión nueva.
+  let refreshing = false
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return
+    refreshing = true
+    window.location.reload()
   })
 }

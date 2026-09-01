@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // HOME
 import Home from '../views/Home/Home.vue'
 import Credits from '../views/Home/creditos.vue'
+import Logros from '../views/Home/logros.vue'
+import MaquinaExpendedora from '../views/Home/maquinaExpendedora.vue'
 import Tutoriales from '../views/Tutoriales/Tutoriales.vue'
 // PERFIL
 import Profile from '../views/Users/profile.vue'
@@ -21,6 +23,8 @@ const routes = [
   // HOME
  {path: '/', name: 'home', component: Home},
  {path: '/credits', name: 'credits', component: Credits},
+ {path: '/logros', name: 'logros', component: Logros},
+ {path: '/maquina-expendedora', name: 'maquina_expendedora', component: MaquinaExpendedora},
  {path: '/tutoriales', name: 'tutoriales', component: Tutoriales},
 
   // PROFILE
