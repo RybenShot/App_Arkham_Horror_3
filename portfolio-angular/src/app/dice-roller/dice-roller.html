@@ -1,0 +1,18 @@
+<div class="dice-demo">
+  <p class="dice-demo-label">▸ minijuego — el mismo motor de físicas de la app: 5 y 6 son acierto</p>
+  <div class="dice-controls">
+    <button class="dice-step" (click)="decDice()" aria-label="Menos dados" type="button">−</button>
+    <span class="dice-count">{{ diceCount }}</span>
+    <button class="dice-step" (click)="incDice()" aria-label="Más dados" type="button">+</button>
+    <button class="dice-roll" (click)="rollDice()" [disabled]="rollDisabled" type="button">Tirar</button>
+  </div>
+  <div class="dice-canvas-wrap"><canvas #diceCanvas></canvas></div>
+  <p class="dice-result">
+    @if (resultState) {
+      <b>{{ resultState.marked }}</b> acierto{{ resultState.marked === 1 ? '' : 's' }}
+      de {{ resultState.total }} dado{{ resultState.total === 1 ? '' : 's' }}.
+    } @else {
+      {{ diceStatusText }}
+    }
+  </p>
+</div>

@@ -382,6 +382,9 @@ export default {
   z-index: 9999;
   display: flex;
   background: rgba(0, 0, 0, 0.88);
+  /* En vista ordenador se limita al mismo ancho que ya usa #app en vista móvil (App.vue) */
+  max-width: 430px;
+  margin: 0 auto;
 }
 .dice-fullscreen-overlay > * {
   flex: 1;

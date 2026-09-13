@@ -1,0 +1,105 @@
+<div class="split" id="trayectoria">
+  <div class="col col-logic" id="logic">
+    <div class="wrap-inner" style="max-width:520px; margin-left:auto;">
+      <div class="col-head">
+        <p class="kicker">// Zona de lógica</p>
+        <h2>Desarrollo</h2>
+        <img class="divider-img" src="/img/divider-logic.png" alt="">
+        <p>Aqui puedes ver mis proyectos y experiencia a nivel tecnico.</p>
+      </div>
+
+      <p class="section-label">Experiencia</p>
+
+      <div class="card" (mousemove)="onCardMouseMove($event)">
+        <div class="card-glow"></div>
+        <img class="corner-accent tl" src="/img/corner-logic.png" alt="">
+        <img class="corner-accent tr" src="/img/corner-logic.png" alt="">
+        <div class="row1"><h3>App Arkham Horror</h3><span class="meta">2022 — hoy · Málaga</span></div>
+        <p>Proyecto propio, en solitario: compañera digital para el juego de mesa Arkham Horror 3ª Ed. Diseño en Figma, frontend en Vue, API REST propia, y ahora también documentación y refactor apoyados en agentes de código.</p>
+        <a class="link" href="https://arkhamhorror-39297.web.app/#/" target="_blank" rel="noopener">Probar la app →</a>
+        &nbsp;&nbsp;
+        <a class="link" href="https://github.com/RybenShot/App_Arkham_Horror_3" target="_blank" rel="noopener">Ver el código →</a>
+
+        <figure class="proof-shot">
+          <img src="/img/mesa-vs-app.jpg" alt="Toda la mesa de juego de Arkham Horror con mazos, tablero, fichas y dados, junto a un móvil mostrando la misma información en la app">
+          <figcaption>Todo lo de la izquierda cabe en el móvil de la derecha.</figcaption>
+        </figure>
+
+        <app-dice-roller></app-dice-roller>
+      </div>
+
+      <div class="card" (mousemove)="onCardMouseMove($event)">
+        <div class="card-glow"></div>
+        <img class="corner-accent tr" src="/img/corner-hexdiamond.png" alt="">
+        <div class="row1"><h3>FullStack Developer · Cysnet</h3><span class="meta">Mar 2024 — Ene 2025 · Pamplona</span></div>
+        <p>Consultora. Trabajé sobre la web de <a class="link" href="https://www.aedashomes.com/" target="_blank" rel="noopener">Aedas Homes</a>: nuevas páginas integradas con Magnolia y base de datos, gestión de incidencias, testing de funcionalidades. Aprendí Java y Magnolia desde cero en 2 meses; sostuve el servidor en solitario un mes entero; integré Cookiebot con Google Tag Manager.</p>
+      </div>
+
+      <div class="card" (mousemove)="onCardMouseMove($event)">
+        <div class="card-glow"></div>
+        <img class="corner-accent bl" src="/img/corner-radar.png" alt="">
+        <div class="row1"><h3>Data Scientist · Opplus · BBVA</h3><span class="meta">Ene — Nov 2023 · Málaga</span></div>
+        <p>Análisis y desarrollo de procesos de datos. Aprendí Python en un mes y ya estaba produciendo con él.</p>
+      </div>
+
+      <p class="section-label">Herramientas</p>
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h4>Lenguajes</h4>
+          <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">C</span></div>
+        </div>
+        <div class="skill-group">
+          <h4>Frameworks</h4>
+          <div class="chips"><span class="chip">Vue</span><span class="chip">Angular</span><span class="chip">React</span><span class="chip">Node</span><span class="chip">Express</span><span class="chip">Magnolia</span></div>
+        </div>
+        <div class="skill-group">
+          <h4>Infra &amp; datos</h4>
+          <div class="chips"><span class="chip">Firebase</span><span class="chip">MongoDB</span><span class="chip">Git</span><span class="chip">Figma</span><span class="chip">Postman</span></div>
+        </div>
+      </div>
+
+      <p class="section-label">Formación</p>
+      <div class="edu-item"><b>Desarrollador Web</b> — Campus 42, Fundación Telefónica<span>2023 — 2024 · Málaga · aprendizaje por pares: aprender de los demás, y saber explicárselo a alguien más</span></div>
+      <div class="edu-item"><b>Técnico Desarrollador APP WEB</b> — Escuela de Organización Industrial (EOI)<span>2021 · Málaga</span></div>
+    </div>
+  </div>
+
+  <div class="seam"></div>
+
+  <div class="col col-creative" id="creative">
+    <div class="wrap-inner" style="max-width:520px;">
+      <div class="col-head">
+        <p class="kicker">✎ Zona creativa</p>
+        <h2>Mundos</h2>
+        <img class="divider-img" src="/img/divider-creative.png" alt="">
+        <p>Cuando no hay teclado de por medio, sigo diseñando sistemas — solo que estos se resuelven con un d100 y una hoja de cordura.</p>
+      </div>
+
+      <p class="section-label">Oficios</p>
+
+      <div class="card" (mousemove)="onCardMouseMove($event)">
+        <div class="card-glow"></div>
+        <img class="corner-accent tl" src="/img/corner-creative.png" alt="">
+        <img class="corner-accent tr" src="/img/corner-creative.png" alt="">
+        <div class="row1"><h3>Guardián de La Llamada de Cthulhu</h3></div>
+        <p>Suelo dirigir partidas como Guardián: construyo campañas, interpreto a media docena de PNJs a la vez y disfruto viendo a mis investigadores tomar la decisión exactamente equivocada. Y fuera de esa mesa, cuando estrenamos cualquier juego nuevo con el grupo, suelo ser quien acaba explicando las reglas.</p>
+      </div>
+
+      <div class="card" (mousemove)="onCardMouseMove($event)">
+        <div class="card-glow"></div>
+        <img class="corner-accent tl" src="/img/corner-compassstar.png" alt="">
+        <div class="row1"><h3>Diseño de cartas de Magic</h3></div>
+        <p>Diseño cartas propias para Magic: The Gathering — el mismo instinto de balancear un sistema de juego, solo que aquí el "edge case" es una combo rota con dos cartas que nadie más vio venir.</p>
+      </div>
+
+      <div class="card" (mousemove)="onCardMouseMove($event)">
+        <div class="card-glow"></div>
+        <img class="corner-accent br" src="/img/corner-leafvine.png" alt="">
+        <div class="row1"><h3>Homebrew de mesa</h3></div>
+        <p>Rara vez dejo un juego de mesa tal cual viene en la caja. En cuanto noto que uno empieza a repetirse, le añado variantes o reglas caseras — básicamente lo reinvento antes de que se vuelva aburrido, para bien o para mal de quien juega conmigo.</p>
+      </div>
+
+      <p class="story">Juego a juegos de mesa desde mi primer Monopoly. El presupuesto no siempre da para todo lo que me gustaría tener en la estantería, así que hago lo que mejor sé hacer: <em>encontrar la solución</em>. Visito librerías y ludotecas donde puedo sentarme a jugar partidas de segunda mano. Resolutivo hasta en el ocio.</p>
+    </div>
+  </div>
+</div>

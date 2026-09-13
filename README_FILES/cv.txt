@@ -1,0 +1,80 @@
+sebastianjimenezroman@hotmail.com ~ 600 358 809 ~ github.com/RybenShot ~ /in/sebastian-jimenez-roman/
+
+Sebastián Jiménez Román
+Developer FullStack
+Enfocado sobre la innovación y transformación digital. Habilidad
+para ver problemas y posibles soluciones a los mismos de forma
+creativa. Adaptativo a aprender nuevos lenguajes o Frameworks.
+Creador de herramientas en uso sobre gestión de datos para juegos
+de mesa.
+TRABAJOS MÁS RECIENTES
+< FullStack Developer en Cysnet />
+Marzo 2024 - Enero 2025 [Pamplona, España]
+https://www.aedashomes.com/
+RESPONSABILIDADES
+● Gestión de tickets de incidencias de Usuario de la web.
+● Creación de nuevas páginas para la web con Magnolia integrando datos de la base
+de datos.
+● Escucha y comprensión de los requerimientos del cliente.
+● Testing y propuesta de soluciones sobre nuevas funcionalidades de la web.
+LOGROS
+● En solo 2 meses aprendí a programar de 0 con Java y Magnolia logrando
+incorporarme de forma efectiva al equipo.
+● Mantenimiento de servidor durante 1 mes como único técnico del equipo.
+● Implementación de cookiebot junto con Google Tag Manager a la web y gestionar
+sus cookies.
+< Data Scientist en Opplus-BBVA />
+Enero 2023 - Noviembre 2023 [Málaga, España]
+RESPONSABILIDADES
+● Técnico en análisis de datos.
+● Desarrollo de nuevos procesos de análisis de datos.
+● Resolver problemas de procesos de datos.
+LOGROS
+● En solo 1 mes aprendí Python y empecé a trabajar.
+< Desarrollador FullStack en proyecto Propio - APP Arkham Horror />
+Agosto 2022 - Presente [Málaga, España]
+https://arkhamhorror-39297.web.app/#/
+RESPONSABILIDADES
+● Desarrollo de diseño web con Figma
+● Desarrollo Frontend con Vue
+● Actualización de nuevas funcionalidades
+
+sebastianjimenezroman@hotmail.com ~ 600 358 809 ~ github.com/RybenShot ~ /in/sebastian-jimenez-roman/
+
+LOGROS
+● Resolución del problema del espacio en mesa, digitalizando fichas de personajes,
+objetos, tokens, dados, etc.
+● Facilitar y automatizar procesos sin perder la experiencia de juego de mesa
+● Se ha extendido la experiencia de juego añadiendo creaciones de la comunidad.
+● Debido a la complejidad del juego hay muchas cosas que se escapan durante la
+partida así que se han automatizado procesos para recordar al usuario de hacer algo
+cuando pase X cosa.
+
+HABILIDADES
+● HTML
+● CSS
+● JavaScript
+● C
+● Git
+● Github
+
+● Vue
+● Angular
+● React
+● Magnolia
+● Node
+● Express
+
+● Firebase
+● MongoDb
+● Figma
+● Postman
+
+EDUCACIÓN
+Desarrollador WEB por Campus 42 Fundación Telefónica
+Septiembre 2023 - Noviembre 2024 [Málaga, España]
+Técnico Desarrollador APP WEB por Escuela de Organización industrial (EOI)
+Febrero 2021 - Julio 2021 [Málaga, España]
+Educación Secundaria Obligatoria por IES Torre Atalaya
+IDIOMAS
+Español e Inglés.

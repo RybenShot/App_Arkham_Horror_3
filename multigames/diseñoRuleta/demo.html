@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruleta — demo</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#111;color:#eee;padding:24px;max-width:900px;margin:0 auto}
+
+  /* --- lo único que la mecánica necesita --- */
+  .ruleta{position:relative;overflow:hidden}
+  .ruleta-cinta{display:flex;will-change:transform}
+  .ruleta-carta{flex:0 0 auto}
+
+  /* --- estética de ejemplo, sustituible entera --- */
+  .ruleta{height:150px;border:1px solid #333;border-radius:4px;background:#181818}
+  .ruleta-cinta{height:100%;align-items:center}
+  .aguja{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#e0b23a;z-index:2}
+  .ruleta-carta{height:120px}
+  .muestra{width:100%;height:100%;background:var(--c);border-radius:3px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+  /* --- revelado de la carta ganadora --- */
+  .revelado{position:fixed;inset:0;z-index:10;display:grid;place-items:center;
+    background:rgba(0,0,0,0);opacity:0;pointer-events:none;
+    transition:opacity .4s ease, background .4s ease}
+  .revelado.visible{opacity:1;background:rgba(0,0,0,.72);pointer-events:auto;cursor:pointer}
+  .carta-grande{width:min(62vw,240px);aspect-ratio:3/4;border-radius:8px;background:var(--c,#555);
+    box-shadow:0 24px 70px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.18);
+    display:flex;align-items:flex-end;padding:12px;
+    opacity:0;transform:scale(.86) translateY(18px);
+    transition:opacity .45s ease, transform .6s cubic-bezier(.16,1,.3,1)}
+  .revelado.visible .carta-grande{opacity:1;transform:none}
+  .etiqueta{width:100%;background:rgba(0,0,0,.55);color:#fff;border-radius:4px;
+    padding:6px 8px;font-size:.85rem;text-align:center}
+  @media (prefers-reduced-motion:reduce){
+    .revelado,.carta-grande{transition-duration:.01ms}
+  }
+
+  button{padding:10px 18px;font-size:1rem;margin:16px 0;cursor:pointer}
+  #salida{font-family:ui-monospace,monospace;white-space:pre-wrap;background:#0b0b0b;padding:12px;border:1px solid #333}
+</style>
+</head>
+<body>
+
+<div class="ruleta" id="ruleta"><div class="aguja"></div></div>
+<button id="girar">Girar</button>
+
+<div class="revelado" id="revelado" aria-live="polite">
+  <div class="carta-grande"><span class="etiqueta"></span></div>
+</div>
+<div id="salida">—</div>
+
+<script type="module">
+import { Ruleta } from './ruleta.js';
+
+// Tus objetos. El módulo no impone ningún campo salvo el peso.
+const baraja = [
+  { id:'a1', nombre:'Cuchillo mareal', rango:'común',    color:'#8b94a3', peso:800 },
+  { id:'a2', nombre:'Lente de niebla', rango:'raro',     color:'#4f83d6', peso:160 },
+  { id:'a3', nombre:'Espejo de sal',   rango:'épico',    color:'#9d5cf0', peso:32  },
+  { id:'a4', nombre:'Corona del nadir',rango:'legendario',color:'#e03a3a', peso:6  },
+  { id:'a5', nombre:'Llave del umbral',rango:'único',    color:'#f2b544', peso:1   }
+];
+
+const ruleta = new Ruleta(document.getElementById('ruleta'), {
+  cartas: baraja,
+  peso: c => c.peso,
+  render: c => `<div class="muestra" style="--c:${c.color}"></div>`,
+  onPaso: (carta, i, velocidad) => { /* aquí van los clics de sonido, vibración, etc. */ }
+});
+
+// Revelado: presentación pura, fuera del módulo. Entra, se queda, se va.
+const capa = document.getElementById('revelado');
+const grande = capa.querySelector('.carta-grande');
+const etiqueta = capa.querySelector('.etiqueta');
+const SALIDA = 450; // debe coincidir con la transición más larga de salida
+
+function revelar(carta, permanencia = 2200) {
+  return new Promise((resolver) => {
+    grande.style.setProperty('--c', carta.color);
+    etiqueta.textContent = `${carta.nombre} · ${carta.rango}`;
+
+    let temporizador;
+    const cerrar = () => {
+      clearTimeout(temporizador);
+      capa.removeEventListener('click', cerrar);
+      capa.classList.remove('visible');
+      setTimeout(resolver, SALIDA);   // esperamos a que acabe el fundido
+    };
+
+    requestAnimationFrame(() => capa.classList.add('visible'));
+    temporizador = setTimeout(cerrar, permanencia);
+    capa.addEventListener('click', cerrar);   // tocar la salta antes
+  });
+}
+
+document.getElementById('girar').addEventListener('click', async (e) => {
+  e.target.disabled = true;
+  const premio = await ruleta.girar();       // o ruleta.girar(objetoDelServidor)
+  document.getElementById('salida').textContent = JSON.stringify(premio, null, 2);
+  await revelar(premio);
+  e.target.disabled = false;
+});
+</script>
+</body>
+</html>
