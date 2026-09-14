@@ -1,18 +1,67 @@
-<div class="dice-demo">
-  <p class="dice-demo-label">▸ minijuego — el mismo motor de físicas de la app: 5 y 6 son acierto</p>
-  <div class="dice-controls">
-    <button class="dice-step" (click)="decDice()" aria-label="Menos dados" type="button">−</button>
-    <span class="dice-count">{{ diceCount }}</span>
-    <button class="dice-step" (click)="incDice()" aria-label="Más dados" type="button">+</button>
-    <button class="dice-roll" (click)="rollDice()" [disabled]="rollDisabled" type="button">Tirar</button>
+@if (totalHits > 0) {
+  <div class="dice-hits-badge" [class.dice-hits-badge-hidden]="isOpen">
+    <span class="dice-hits-dot"></span> {{ totalHits }} {{ (totalHits === 1 ? 'dice.hit.singular' : 'dice.hit.plural') | t }}
   </div>
-  <div class="dice-canvas-wrap"><canvas #diceCanvas></canvas></div>
-  <p class="dice-result">
-    @if (resultState) {
-      <b>{{ resultState.marked }}</b> acierto{{ resultState.marked === 1 ? '' : 's' }}
-      de {{ resultState.total }} dado{{ resultState.total === 1 ? '' : 's' }}.
-    } @else {
-      {{ diceStatusText }}
-    }
-  </p>
+}
+
+<div class="dice-fab-physics" #diePhysics>
+  <div class="dice-fab-wrap" [class.dice-fab-hidden]="isOpen">
+    <button
+      class="dice-fab"
+      type="button"
+      (click)="openTray()"
+      [attr.aria-hidden]="isOpen"
+      [tabindex]="isOpen ? -1 : 0"
+      [attr.aria-label]="'dice.aria.roll' | t"
+    >
+      <div class="die3d">
+        <div class="face front face-1">
+          <div class="dot center"></div>
+        </div>
+        <div class="face back face-6">
+          <img src="/img/dado-logo.png" alt="">
+        </div>
+        <div class="face right face-2">
+          <div class="dot top-left"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+        <div class="face left face-5">
+          <div class="dot top-left"></div>
+          <div class="dot top-right"></div>
+          <div class="dot center"></div>
+          <div class="dot bottom-left"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+        <div class="face top face-3">
+          <div class="dot top-left"></div>
+          <div class="dot center"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+        <div class="face bottom face-4">
+          <div class="dot top-left"></div>
+          <div class="dot top-right"></div>
+          <div class="dot bottom-left"></div>
+          <div class="dot bottom-right"></div>
+        </div>
+      </div>
+    </button>
+    <div class="dice-fab-shadow"></div>
+  </div>
+</div>
+
+<div class="dice-overlay" [class.dice-overlay-open]="isOpen" (click)="closeTray()">
+  <div class="dice-tray" (click)="$event.stopPropagation()">
+    <button class="dice-tray-close" type="button" (click)="closeTray()" [attr.aria-label]="'dice.aria.close' | t">✕</button>
+
+    <div class="dice-canvas-wrap"><canvas #diceCanvas></canvas></div>
+
+    <p class="dice-result">
+      @if (resultState) {
+        <b>{{ resultState.marked }}</b> {{ (resultState.marked === 1 ? 'dice.hit.singular' : 'dice.hit.plural') | t }}
+        {{ 'dice.of' | t }} {{ resultState.total }} {{ (resultState.total === 1 ? 'dice.die.singular' : 'dice.die.plural') | t }}.
+      } @else {
+        {{ diceStatusText | t }}
+      }
+    </p>
+  </div>
 </div>

@@ -1,0 +1,81 @@
+/* ---------- formulario de contacto ---------- */
+.contact-form {
+  max-width: 420px;
+  margin: 8px auto 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.contact-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-form label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--dust);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  background: var(--ink-2);
+  border: 1px solid var(--terminal-dim);
+  border-radius: 4px;
+  color: var(--parchment);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 10px 12px;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.contact-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--terminal);
+  box-shadow: 0 0 0 3px rgba(61, 218, 176, 0.12);
+}
+
+.contact-form button[type="submit"] {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--terminal);
+  border-radius: 4px;
+  color: var(--terminal);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background-color .15s, color .15s;
+}
+
+.contact-form button[type="submit"]:hover:not(:disabled) {
+  background: var(--terminal);
+  color: var(--ink);
+}
+
+.contact-form button[type="submit"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.contact-form-note {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--dust);
+}
+
+.contact-form-note.contact-form-ok { color: var(--terminal); }
+.contact-form-note.contact-form-err { color: var(--ember); }

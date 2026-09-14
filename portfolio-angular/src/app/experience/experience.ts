@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { DiceRoller } from '../dice-roller/dice-roller';
+import { TranslatePipe } from '../i18n/translate.pipe';
 
 @Component({
   selector: 'app-experience',
-  imports: [DiceRoller],
+  imports: [TranslatePipe],
   templateUrl: './experience.html',
   styleUrl: './experience.css',
 })

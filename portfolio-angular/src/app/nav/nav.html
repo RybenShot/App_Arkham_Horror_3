@@ -1,8 +1,13 @@
 <header class="topbar">
   <a href="#top" class="mark">SJR<span>.</span></a>
   <nav>
-    <a href="#sobre-mi">Sobre mi</a>
-    <a href="#trayectoria">Trayectoria</a>
-    <a href="#contact">Contacto</a>
+    <a href="#sobre-mi">{{ 'nav.about' | t }}</a>
+    <a href="#trayectoria">{{ 'nav.path' | t }}</a>
+    <a href="#contact">{{ 'nav.contact' | t }}</a>
   </nav>
+  <div class="lang-switch" role="group" aria-label="Idioma / Language / Idioma">
+    <button type="button" [class.active]="languageService.lang() === 'es'" (click)="languageService.setLang('es')">ES</button>
+    <button type="button" [class.active]="languageService.lang() === 'en'" (click)="languageService.setLang('en')">EN</button>
+    <button type="button" [class.active]="languageService.lang() === 'pt'" (click)="languageService.setLang('pt')">PT</button>
+  </div>
 </header>

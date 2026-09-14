@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { TranslatePipe } from '../i18n/translate.pipe';
 
 const AVATAR_VARIATIONS = [
   '/img/avatar-v1.jpg', // Cthulhu / Guardián
@@ -11,7 +12,7 @@ const AVATAR_VARIATIONS = [
 
 @Component({
   selector: 'app-hero',
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './hero.html',
   styleUrl: './hero.css',
 })
